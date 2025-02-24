@@ -2,7 +2,7 @@ import React from 'react'
 
 const Home = () => {
   return (
-    <div>Hi nakul!</div>
+    <div> Home page pencho</div>
   )
 }
 
