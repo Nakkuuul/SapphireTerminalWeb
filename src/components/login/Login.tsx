@@ -65,7 +65,7 @@ const Login = () => {
         <ProgressBar currentStep={currentStep} isRedirecting={isRedirecting} />
       </div>
       
-      <div className="container mx-auto max-w-2xl flex flex-col items-center justify-center gap-4 sm:gap-6">
+      <div className="scale-75 container mx-auto max-w-2xl flex flex-col items-center justify-center gap-4 sm:gap-6">
         <div className={`w-full max-w-md lg:max-w-xl min-h-[550px] sm:min-h-[600px] md:min-h-[650px] p-6 sm:p-8 md:p-10 shadow-2xl transition-colors duration-300 flex flex-col ${
           isDarkMode ? "bg-[#1E1E1E]" : "bg-white"
         }`}>

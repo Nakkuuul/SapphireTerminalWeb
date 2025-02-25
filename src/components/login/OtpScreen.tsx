@@ -36,7 +36,7 @@ const OtpScreen: React.FC<OtpScreenProps> = ({ username, greeting }) => {
 
   const handleOtpComplete = () => {
     setIsRedirecting(true);
-    setTimeout(() => router.push("/hello"), 500);
+    setTimeout(() => router.push("/"), 500);
   };
 
   const handleOtpChange = (index: number, value: string) => {
