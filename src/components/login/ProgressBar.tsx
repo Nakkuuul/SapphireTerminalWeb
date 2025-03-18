@@ -1,5 +1,3 @@
-
-// src/components/login/ProgressBar.tsx
 'use client';
 
 import React from "react";
@@ -15,15 +13,16 @@ const ProgressBar: React.FC<ProgressBarProps> = ({ currentStep, isRedirecting })
   const { isDarkMode } = useTheme();
   const progressValue = React.useMemo(() => {
     if (isRedirecting) return 100;
-    if (currentStep === 0) return 0;
-    return 50;
+    if (currentStep === 0) return 33.33;
+    if (currentStep === 1) return 66.66;
+    return currentStep * 33.33;
   }, [currentStep, isRedirecting]);
 
   return (
     <div
-      className={`w-full h-1 ${
-        isDarkMode ? "bg-[#121212]" : "bg-white"
-      } overflow-hidden rounded-full`}
+      className={`w-full h-2 ${
+        isDarkMode ? "bg-[#121212]" : "bg-gray-200"
+      } overflow-hidden`}
     >
       <motion.div
         className="h-full bg-[#02B42D] origin-left"

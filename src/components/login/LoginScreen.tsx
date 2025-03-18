@@ -3,23 +3,27 @@
 import React, { useState, FormEvent } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import { useTheme } from "@/context/ThemeContext";
+import TroubleLogin from "./trouble/TroubleLogin";
 
 interface LoginScreenProps {
   setCurrentStep: (step: number) => void;
   username: string;
   setUsername: (username: string) => void;
+  setShowProgressBar?: (show: boolean) => void;
 }
 
 const LoginScreen: React.FC<LoginScreenProps> = ({ 
   setCurrentStep, 
   username, 
-  setUsername 
+  setUsername,
+  setShowProgressBar = () => {} // Optional prop with default no-op function
 }) => {
   const { isDarkMode } = useTheme();
   const [password, setPassword] = useState<string>("");
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [error, setError] = useState<boolean>(false);
   const [shake, setShake] = useState<boolean>(false);
+  const [showTroubleLogin, setShowTroubleLogin] = useState<boolean>(false);
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -32,18 +36,32 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
     }
   };
 
+  const handleTroubleLogin = () => {
+    setShowTroubleLogin(true);
+    setShowProgressBar(false); // Hide progress bar when entering trouble login flow
+  };
+
+  const handleTroubleLoginCancel = () => {
+    setShowTroubleLogin(false);
+    setShowProgressBar(true); // Show progress bar when returning to main login
+  };
+
+  if (showTroubleLogin) {
+    return <TroubleLogin onCancel={handleTroubleLoginCancel} />;
+  }
+
   return (
-    <div className="flex-1 flex flex-col justify-center space-y-6 sm:space-y-8 px-4 sm:px-6">
-      <div className="text-center space-y-3 sm:space-y-4">
+    <div className="flex-1 flex flex-col justify-center space-y-4 px-2">
+      <div className="text-center space-y-2">
         <h1
-          className={`text-2xl sm:text-3xl md:text-4xl font-normal ${
+          className={`text-xl sm:text-2xl font-normal ${
             isDarkMode ? "text-white" : "text-black"
           }`}
         >
           Sapphire Terminal
         </h1>
         <p
-          className={`text-sm sm:text-base ${
+          className={`text-xs sm:text-sm ${
             isDarkMode ? "text-gray-300" : "text-gray-600"
           }`}
         >
@@ -51,10 +69,10 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
         </p>
       </div>
 
-      <form onSubmit={handleSubmit} className="space-y-6 sm:space-y-8">
+      <form onSubmit={handleSubmit} className="space-y-4">
         <div>
           <h3
-            className={`text-base sm:text-lg font-medium mb-2 sm:mb-3 ${
+            className={`text-sm font-medium mb-1 ${
               isDarkMode ? "text-gray-200" : "text-gray-700"
             }`}
           >
@@ -67,7 +85,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
               setError(false);
               setUsername(e.target.value.toUpperCase());
             }}
-            className={`w-full p-3 sm:p-4 rounded-lg transition-all duration-200 
+            className={`w-full p-2 rounded-lg transition-all duration-200 
               ${shake ? "animate-[shake_0.5s_ease-in-out]" : ""} 
               ${
                 isDarkMode
@@ -80,14 +98,14 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
                   : isDarkMode
                   ? "border-gray-600 focus:border-blue-400 focus:ring-blue-400"
                   : "border-gray-300 focus:border-blue-500 focus:ring-blue-400"
-              } border focus:ring-2 focus:ring-opacity-50`}
+              } border focus:ring-1 focus:ring-opacity-50`}
             placeholder="Enter your code"
           />
         </div>
 
         <div className="relative w-full">
           <h3
-            className={`text-base sm:text-lg font-medium mb-2 sm:mb-3 ${
+            className={`text-sm font-medium mb-1 ${
               isDarkMode ? "text-gray-200" : "text-gray-700"
             }`}
           >
@@ -101,7 +119,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
                 setError(false);
                 setPassword(e.target.value);
               }}
-              className={`w-full p-3 sm:p-4 rounded-lg transition-all duration-200 
+              className={`w-full p-2 rounded-lg transition-all duration-200 
                 ${shake ? "animate-[shake_0.5s_ease-in-out]" : ""} 
                 ${
                   isDarkMode
@@ -114,39 +132,40 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
                     : isDarkMode
                     ? "border-gray-600 focus:border-blue-400 focus:ring-blue-400"
                     : "border-gray-300 focus:border-blue-500 focus:ring-blue-400"
-                } border focus:ring-2 focus:ring-opacity-50`}
+                } border focus:ring-1 focus:ring-opacity-50`}
               placeholder="Enter your password"
             />
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
-              className={`absolute inset-y-0 right-0 flex items-center px-4 ${
+              className={`absolute inset-y-0 right-0 flex items-center px-3 ${
                 isDarkMode
                   ? "text-gray-400 hover:text-white"
                   : "text-gray-600 hover:text-gray-900"
               } transition-colors duration-200`}
             >
-              {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+              {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
             </button>
           </div>
           <button 
             type="button"
-            className="absolute right-0 mt-2 text-sm text-blue-400 hover:text-blue-500 transition-colors duration-200"
+            onClick={handleTroubleLogin}
+            className="absolute right-0 mt-1 text-xs text-blue-400 hover:text-blue-500 transition-colors duration-200"
           >
             Trouble Logging In?
           </button>
         </div>
 
-        <div className="pt-4 sm:pt-6 flex flex-col items-center">
+        <div className="pt-3 flex flex-col items-center">
           {error && (
-            <p className="text-red-500 mb-4 text-base text-center">
+            <p className="text-red-500 mb-3 text-sm text-center">
               ⚠️ Invalid username or password
             </p>
           )}
           <button
             type="submit"
             disabled={!username || !password}
-            className={`w-full p-3 sm:p-4 text-white font-semibold text-base sm:text-lg rounded-lg transition-all duration-200 ${
+            className={`w-full p-2 text-white font-semibold text-sm rounded-lg transition-all duration-200 ${
               !username || !password
                 ? "bg-[#00A645] cursor-not-allowed opacity-70"
                 : "bg-[#00C853] hover:bg-[#00B649]"
@@ -158,7 +177,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
             href="https://www.sapphirebroking.com/signup"
             target="_blank"
             rel="noopener noreferrer"
-            className={`text-center mt-2 sm:mt-4 text-sm sm:text-base hover:text-gray-500 transform transition-all duration-200 ease-in-out ${
+            className={`text-center mt-2 text-xs hover:text-gray-500 transition-all duration-200 ${
               isDarkMode ? "text-gray-400" : "text-gray-600"
             }`}
           >

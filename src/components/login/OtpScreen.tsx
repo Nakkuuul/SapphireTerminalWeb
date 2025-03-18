@@ -1,4 +1,3 @@
-// src/components/login/OtpScreen.tsx
 'use client';
 
 import React, { useState, useEffect } from 'react';
@@ -65,20 +64,20 @@ const OtpScreen: React.FC<OtpScreenProps> = ({ username, greeting }) => {
   };
 
   return (
-    <div key="otp" className="flex-1 flex flex-col justify-center space-y-6 sm:space-y-8 px-4 sm:px-6">
-      <h2 className={`text-2xl sm:text-3xl md:text-4xl font-semibold ${isDarkMode ? "text-white" : "text-gray-900"}`}>
+    <div key="otp" className="flex-1 flex flex-col justify-center space-y-3 px-2">
+      <h2 className={`text-xl font-semibold ${isDarkMode ? "text-white" : "text-gray-900"}`}>
         {greeting}, {username}!
       </h2>
-      <div className="space-y-2 sm:space-y-3">
-        <h3 className={`text-xl sm:text-2xl font-normal ${isDarkMode ? "text-white" : "text-gray-900"}`}>
+      <div className="space-y-1">
+        <h3 className={`text-lg font-normal ${isDarkMode ? "text-white" : "text-gray-900"}`}>
           Enter OTP
         </h3>
-        <p className={`text-base sm:text-lg ${isDarkMode ? "text-gray-300" : "text-gray-600"}`}>
+        <p className={`text-xs ${isDarkMode ? "text-gray-300" : "text-gray-600"}`}>
           We have sent an OTP to registered email & phone
         </p>
       </div>
 
-      <div className="flex justify-start gap-2 sm:gap-4">
+      <div className="flex justify-start gap-1 sm:gap-2 py-2">
         {otp.map((digit, index) => (
           <input
             key={index}
@@ -102,8 +101,8 @@ const OtpScreen: React.FC<OtpScreenProps> = ({ username, greeting }) => {
               }
             }}
             name={`otp-${index}`}
-            className={`w-8 sm:w-12 h-12 sm:h-16 text-center border-t-0 border-l-0 border-r-0 border-b-2 
-                     text-xl sm:text-2xl font-bold outline-none transition-all duration-200 ${
+            className={`w-7 h-10 text-center border-t-0 border-l-0 border-r-0 border-b-2 
+                     text-lg font-bold outline-none transition-all duration-200 ${
                        isDarkMode
                          ? "bg-[#1E1E1E] border-gray-400 text-white focus:border-white"
                          : "bg-white border-gray-300 text-gray-900 focus:border-black"
@@ -115,14 +114,14 @@ const OtpScreen: React.FC<OtpScreenProps> = ({ username, greeting }) => {
       </div>
 
       <div className="flex justify-between items-center">
-        <button className="text-[#22F07D] transition-colors duration-200 text-base sm:text-lg">
+        <button className="text-[#22F07D] transition-colors duration-200 text-sm">
           Resend OTP
         </button>
       </div>
       <div className="flex justify-end">
         <button
           onClick={demon}
-          className={`text-sm sm:text-base transition-colors duration-200 
+          className={`text-xs transition-colors duration-200 
             ${iE
               ? "text-blue-400 hover:text-blue-500"
               : isF
