@@ -18,7 +18,7 @@ function TradeSelector({ activeComponent, closedComponent }: TradeSelectorProps)
           className={`flex-1 px-6 py-3 rounded-full text-sm font-medium transition-all duration-300 ${
             selected === "active"
               ? "bg-green-100 text-green-600 "
-              : "text-gray-500 bg-[#D1D5DB] hover:bg-gray-200"
+              : "text-gray-500 hover:bg-gray-200"
           }`}
           onClick={() => setSelected("active")}
         >

@@ -19,10 +19,10 @@ function Selector() {
         <Link
           key={tab.name}
           href={tab.path}
-          className={`min-w-[170px] px-6 py-2 text-sm text-center flex items-center justify-center rounded-sm border transition-all duration-300 ${
+          className={`min-w-[170px] px-6 py-2 font-semibold text-sm text-center flex items-center justify-center rounded-sm border transition-all duration-300 ${
             pathname === tab.path
-              ? "bg-green-100 text-[#1DB954] border-[1px] border-[#22A06B] shadow-md"
-              : "bg-white text-gray-600 border-gray-300 hover:bg-gray-100"
+              ? "bg-green-100 text-[#1DB954] border-[1px] border-[#22A06B]"
+              : "bg-[#F6F6F6] text-gray-600 border-[#D1D5DB] hover:bg-gray-100"
           }`}
         >
           {tab.name}

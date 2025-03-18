@@ -1,4 +1,6 @@
+"use client"
 // components/Sidebar.tsx
+
 import React from 'react';
 
 interface Stock {

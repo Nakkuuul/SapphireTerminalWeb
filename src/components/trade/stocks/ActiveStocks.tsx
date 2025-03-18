@@ -56,6 +56,14 @@ export default function TradesList() {
 
   return (
     <div className="space-y-4">
+      <div className='flex'>
+        <div className='flex-1'>
+          hii
+        </div>
+        <div className='flex-1 justify-end'>
+          hello
+        </div>
+      </div>
       {activeTradesData.map((trade, index) => (
         <TradeCard key={index} {...trade} />
       ))}
