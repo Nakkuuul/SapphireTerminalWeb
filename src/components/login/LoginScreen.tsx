@@ -155,7 +155,9 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
             Login
           </button>
           <a
-            href="#"
+            href="https://www.sapphirebroking.com/signup"
+            target="_blank"
+            rel="noopener noreferrer"
             className={`text-center mt-2 sm:mt-4 text-sm sm:text-base hover:text-gray-500 transform transition-all duration-200 ease-in-out ${
               isDarkMode ? "text-gray-400" : "text-gray-600"
             }`}

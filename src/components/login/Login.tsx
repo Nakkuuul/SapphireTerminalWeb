@@ -89,15 +89,24 @@ const Login = () => {
               <div className={`flex flex-wrap justify-center items-center gap-3 sm:gap-6 md:gap-8 text-sm sm:text-base ${
                 isDarkMode ? "text-gray-300" : "text-gray-600"
               }`}>
-                <a href="#" className="hover:text-[#CDCDCD] hover:scale-110 transform transition-all duration-200 ease-in-out">
+                <a href="https://www.sapphirebroking.com/privacy-policy"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="hover:text-[#CDCDCD] hover:scale-110 transform transition-all duration-200 ease-in-out">
                   Privacy Policy
                 </a>
                 <span className={`${isDarkMode ? "text-[#FFEAEA]" : "text-black"} font-extrabold`}>•</span>
-                <a href="#" className="hover:text-[#CDCDCD] hover:scale-110 transform transition-all duration-200 ease-in-out">
+                <a href="https://www.sapphirebroking.com/terms-and-conditions"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="hover:text-[#CDCDCD] hover:scale-110 transform transition-all duration-200 ease-in-out">
                   Terms & Conditions
                 </a>
                 <span className={`${isDarkMode ? "text-[#FFEAEA]" : "text-black"} font-extrabold`}>•</span>
-                <a href="#" className="hover:text-[#CDCDCD] hover:scale-110 transform transition-all duration-200 ease-in-out">
+                <a href="https://www.sapphirebroking.com/contact"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="hover:text-[#CDCDCD] hover:scale-110 transform transition-all duration-200 ease-in-out">
                   Contact Us
                 </a>
               </div>
