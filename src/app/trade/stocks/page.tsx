@@ -2,15 +2,14 @@
 
 import Selector from '@/components/gen-components/Selector'
 import TradeSelector from '@/components/gen-components/TradeSelector'
-import ActiveStocks from '@/components/StocksPage/ActiveStocks'
-import ClosedStocks from '@/components/StocksPage/ClosedStocks'
+import ActiveStocks from '@/components/trade/stocks/ActiveStocks'
+import ClosedStocks from '@/components/trade/stocks/ClosedStocks'
 import React from 'react'
 
 function stocks() {
   return (
     <>
-    <div>trade/stocks page</div>
-    <h1>heheheh</h1>
+    {/* <div>trade/stocks page</div> */}
     <Selector />
     <TradeSelector
       activeComponent={<ActiveStocks />} 

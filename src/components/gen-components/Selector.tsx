@@ -14,14 +14,14 @@ function Selector() {
   ];
 
   return (
-    <div className="flex w-full justify-between">
+    <div className="flex w-full justify-center items-center gap-x-12">
       {tabs.map((tab) => (
         <Link
           key={tab.name}
           href={tab.path}
-          className={`flex-1 text-center px-6 py-2 rounded-md border transition-all duration-300 mx-1 ${
+          className={`min-w-[170px] px-6 py-2 text-sm text-center flex items-center justify-center rounded-sm border transition-all duration-300 ${
             pathname === tab.path
-              ? "bg-green-100 text-green-600 border-green-400 shadow-md"
+              ? "bg-green-100 text-[#1DB954] border-[1px] border-[#22A06B] shadow-md"
               : "bg-white text-gray-600 border-gray-300 hover:bg-gray-100"
           }`}
         >

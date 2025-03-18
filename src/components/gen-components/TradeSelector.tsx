@@ -13,12 +13,12 @@ function TradeSelector({ activeComponent, closedComponent }: TradeSelectorProps)
   return (
     <div className="flex flex-col w-full mt-4">
       {/* Toggle Buttons */}
-      <div className="flex bg-gray-100 rounded-full p-1 w-full ">
+      <div className="flex border-[1px] border-[#D1D5DB] rounded-full p-1 w-full ">
         <button
           className={`flex-1 px-6 py-3 rounded-full text-sm font-medium transition-all duration-300 ${
             selected === "active"
               ? "bg-green-100 text-green-600 "
-              : "text-gray-500 hover:bg-gray-200"
+              : "text-gray-500 bg-[#D1D5DB] hover:bg-gray-200"
           }`}
           onClick={() => setSelected("active")}
         >
