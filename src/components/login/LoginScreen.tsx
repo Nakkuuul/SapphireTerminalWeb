@@ -51,17 +51,17 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
   }
 
   return (
-    <div className="flex-1 flex flex-col justify-center space-y-4 px-2">
+    <div className="flex-1 flex flex-col justify-center space-y-4 px-6">
       <div className="text-center space-y-2">
         <h1
-          className={`text-xl sm:text-2xl font-normal ${
+          className={`text-xl -mt-20 sm:text-3xl font-normal ${
             isDarkMode ? "text-white" : "text-black"
           }`}
         >
           Sapphire Terminal
         </h1>
         <p
-          className={`text-xs sm:text-sm ${
+          className={`text-xs sm:text-sm   ${
             isDarkMode ? "text-gray-300" : "text-gray-600"
           }`}
         >
@@ -72,7 +72,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
           <h3
-            className={`text-sm font-medium mb-1 ${
+            className={`text-sm  font-medium mb-3 ${
               isDarkMode ? "text-gray-200" : "text-gray-700"
             }`}
           >
@@ -85,7 +85,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
               setError(false);
               setUsername(e.target.value.toUpperCase());
             }}
-            className={`w-full p-2 rounded-lg transition-all duration-200 
+            className={`w-full p-3 rounded-lg transition-all duration-200 
               ${shake ? "animate-[shake_0.5s_ease-in-out]" : ""} 
               ${
                 isDarkMode
@@ -105,7 +105,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
 
         <div className="relative w-full">
           <h3
-            className={`text-sm font-medium mb-1 ${
+            className={`text-sm font-medium mb-3 ${
               isDarkMode ? "text-gray-200" : "text-gray-700"
             }`}
           >
@@ -119,7 +119,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
                 setError(false);
                 setPassword(e.target.value);
               }}
-              className={`w-full p-2 rounded-lg transition-all duration-200 
+              className={`w-full p-3 rounded-lg transition-all duration-200 
                 ${shake ? "animate-[shake_0.5s_ease-in-out]" : ""} 
                 ${
                   isDarkMode
@@ -165,7 +165,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
           <button
             type="submit"
             disabled={!username || !password}
-            className={`w-full p-2 text-white font-semibold text-sm rounded-lg transition-all duration-200 ${
+            className={`w-full py-3 mt-3 text-white font-semibold text-sm rounded-lg transition-all duration-200 ${
               !username || !password
                 ? "bg-[#00A645] cursor-not-allowed opacity-70"
                 : "bg-[#00C853] hover:bg-[#00B649]"
@@ -177,7 +177,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
             href="https://www.sapphirebroking.com/signup"
             target="_blank"
             rel="noopener noreferrer"
-            className={`text-center mt-2 text-xs hover:text-gray-500 transition-all duration-200 ${
+            className={`text-center  mt-2 text-xs hover:text-gray-500 transition-all duration-200 ${
               isDarkMode ? "text-gray-400" : "text-gray-600"
             }`}
           >

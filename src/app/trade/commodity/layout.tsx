@@ -9,7 +9,7 @@ const inter = Inter({ subsets: ['latin'] });
 export const metadata = {
   title: 'Trading Platform',
   description: 'A modern trading platform interface',
-};
+};  
 
 export default function RootLayout({
   children,

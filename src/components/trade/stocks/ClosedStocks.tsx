@@ -22,57 +22,46 @@ export default function ClosedTradesList() {
     {
       date: '24 Jan 2025',
       time: '12:30',
-      security: 'MRF',
+      security: 'TATAMOTORS 27 FEB FUT',
       type: 'BUY',
-      entryPrice: '₹2,042.63',
-      exitPrice: '₹2,042.63',
-      quantity: '₹2,042.63',
+      entryPrice: '₹4,780.90',
+      exitPrice: '₹4,780.90',
+      quantity: '100',
       duration: '1 month',
-      net: '+1'
+      net: '100'
     },
     {
       date: '24 Jan 2025',
       time: '12:30',
-      security: 'TATASTEEL',
-      type: 'SELL',
-      entryPrice: '₹8223.60',
-      exitPrice: '₹8223.60',
-      quantity: '₹8223.60',
+      security: 'TATAMOTORS 27 FEB FUT',
+      type: 'BUY',
+      entryPrice: '₹4,780.90',
+      exitPrice: '₹4,780.90',
+      quantity: '100',
       duration: '2 months',
-      net: '-'
+      net: '100'
     },
     {
       date: '24 Jan 2025',
       time: '12:30',
-      security: 'ITC',
+      security: 'TATAMOTORS 27 FEB FUT',
       type: 'BUY',
-      entryPrice: '₹92,467.00',
-      exitPrice: '₹92,467.00',
-      quantity: '₹92,467.00',
+      entryPrice: '₹4,780.90',
+      exitPrice: '₹4,780.90',
+      quantity: '100',
       duration: '1 year',
-      net: '+↑'
+      net: '100'
     },
     {
       date: '24 Jan 2025',
       time: '12:30',
-      security: 'MOTILALOSWL',
-      type: 'SELL',
-      entryPrice: '₹88.50',
-      exitPrice: '₹88.50',
-      quantity: '₹88.50',
-      duration: '6 months',
-      net: '-'
-    },
-    {
-      date: '24 Jan 2025',
-      time: '12:30',
-      security: 'WIPRO',
+      security: 'TATAMOTORS 27 FEB FUT',
       type: 'BUY',
-      entryPrice: '₹924.5',
-      exitPrice: '₹924.5',
-      quantity: '₹924.5',
-      duration: '4 year',
-      net: '+↑'
+      entryPrice: '₹4,780.90',
+      exitPrice: '₹4,780.90',
+      quantity: '100',
+      duration: '6 months',
+      net: '100'
     }
   ];
 
@@ -115,92 +104,174 @@ export default function ClosedTradesList() {
         </div>
       </div>
       
-      {/* Scrollable Table */}
-      <div className="w-full overflow-x-auto">
-        <table className="min-w-full border-collapse">
-          <thead>
-            <tr className="bg-gray-50">
-              <th className="p-3 text-left text-sm font-medium text-gray-500 whitespace-nowrap">
-                <div className="flex items-center">
-                  Date & Time
-                  <ArrowUpDown size={14} className="ml-1" />
-                </div>
-              </th>
-              <th className="p-3 text-left text-sm font-medium text-gray-500 whitespace-nowrap">
-                <div className="flex items-center">
-                  Security
-                  <ArrowUpDown size={14} className="ml-1" />
-                </div>
-              </th>
-              <th className="p-3 text-left text-sm font-medium text-gray-500 whitespace-nowrap">
-                <div className="flex items-center">
-                  Entry Price
-                  <ArrowUpDown size={14} className="ml-1" />
-                </div>
-              </th>
-              <th className="p-3 text-left text-sm font-medium text-gray-500 whitespace-nowrap">
-                <div className="flex items-center">
-                  Exit Price
-                  <ArrowUpDown size={14} className="ml-1" />
-                </div>
-              </th>
-              <th className="p-3 text-left text-sm font-medium text-gray-500 whitespace-nowrap">
-                <div className="flex items-center">
-                  Quantity
-                  <ArrowUpDown size={14} className="ml-1" />
-                </div>
-              </th>
-              <th className="p-3 text-left text-sm font-medium text-gray-500 whitespace-nowrap">
-                <div className="flex items-center">
-                  Duration
-                  <ArrowUpDown size={14} className="ml-1" />
-                </div>
-              </th>
-              <th className="p-3 text-left text-sm font-medium text-gray-500 whitespace-nowrap">
-                <div className="flex items-center">
-                  Net
-                </div>
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {closedTradesData.map((trade, index) => (
-              <tr key={index} className="border-t hover:bg-gray-50">
-                <td className="p-3 whitespace-nowrap">
-                  <div className="text-sm text-gray-900">{trade.date}</div>
-                  <div className="text-sm text-gray-500">{trade.time}</div>
-                </td>
-                <td className="p-3 whitespace-nowrap">
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm font-medium text-gray-900">{trade.security}</span>
-                    <span className={`ml-2 px-2 py-0.5 text-xs rounded ${
-                      trade.type === 'BUY' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
-                    }`}>
-                      {trade.type}
-                    </span>
+      {viewMode === 'list' ? (
+        /* List View - Scrollable Table */
+        <div className="w-full overflow-x-auto">
+          <table className="min-w-full border-collapse">
+            <thead>
+              <tr className="bg-gray-50">
+                <th className="p-3 text-left text-sm font-medium text-gray-500 whitespace-nowrap">
+                  <div className="flex items-center">
+                    Date & Time
+                    <ArrowUpDown size={14} className="ml-1" />
                   </div>
-                </td>
-                <td className="p-3 whitespace-nowrap text-sm text-gray-900">{trade.entryPrice}</td>
-                <td className="p-3 whitespace-nowrap text-sm text-gray-900">{trade.exitPrice}</td>
-                <td className="p-3 whitespace-nowrap text-sm text-gray-900">{trade.quantity}</td>
-                <td className="p-3 whitespace-nowrap text-sm text-gray-900">{trade.duration}</td>
-                <td className="p-3 whitespace-nowrap">
-                  <div className={`text-sm font-medium ${
-                    trade.net.includes('+') ? 'text-green-600' : 'text-red-600'
-                  }`}>
-                    {trade.net}
+                </th>
+                <th className="p-3 text-left text-sm font-medium text-gray-500 whitespace-nowrap">
+                  <div className="flex items-center">
+                    Security
+                    <ArrowUpDown size={14} className="ml-1" />
                   </div>
-                </td>
-                <td className="p-3 whitespace-nowrap">
-                  <button className="text-gray-400 hover:text-gray-600">
-                    <MoreVertical size={16} />
-                  </button>
-                </td>
+                </th>
+                <th className="p-3 text-left text-sm font-medium text-gray-500 whitespace-nowrap">
+                  <div className="flex items-center">
+                    Entry Price
+                    <ArrowUpDown size={14} className="ml-1" />
+                  </div>
+                </th>
+                <th className="p-3 text-left text-sm font-medium text-gray-500 whitespace-nowrap">
+                  <div className="flex items-center">
+                    Exit Price
+                    <ArrowUpDown size={14} className="ml-1" />
+                  </div>
+                </th>
+                <th className="p-3 text-left text-sm font-medium text-gray-500 whitespace-nowrap">
+                  <div className="flex items-center">
+                    Quantity
+                    <ArrowUpDown size={14} className="ml-1" />
+                  </div>
+                </th>
+                <th className="p-3 text-left text-sm font-medium text-gray-500 whitespace-nowrap">
+                  <div className="flex items-center">
+                    Duration
+                    <ArrowUpDown size={14} className="ml-1" />
+                  </div>
+                </th>
+                <th className="p-3 text-left text-sm font-medium text-gray-500 whitespace-nowrap">
+                  <div className="flex items-center">
+                    Net
+                  </div>
+                </th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+            </thead>
+            <tbody>
+              {closedTradesData.map((trade, index) => (
+                <tr key={index} className="border-t hover:bg-gray-50">
+                  <td className="p-3 whitespace-nowrap">
+                    <div className="text-sm text-gray-900">{trade.date}</div>
+                    <div className="text-sm text-gray-500">{trade.time}</div>
+                  </td>
+                  <td className="p-3 whitespace-nowrap">
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm font-medium text-gray-900">{trade.security}</span>
+                      <span className={`ml-2 px-2 py-0.5 text-xs rounded ${
+                        trade.type === 'BUY' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
+                      }`}>
+                        {trade.type}
+                      </span>
+                    </div>
+                  </td>
+                  <td className="p-3 whitespace-nowrap text-sm text-gray-900">{trade.entryPrice}</td>
+                  <td className="p-3 whitespace-nowrap text-sm text-gray-900">{trade.exitPrice}</td>
+                  <td className="p-3 whitespace-nowrap text-sm text-gray-900">{trade.quantity}</td>
+                  <td className="p-3 whitespace-nowrap text-sm text-gray-900">{trade.duration}</td>
+                  <td className="p-3 whitespace-nowrap">
+                    <div className="text-sm font-medium text-gray-900">
+                      {trade.net}
+                    </div>
+                  </td>
+                  <td className="p-3 whitespace-nowrap">
+                    <button className="text-gray-400 hover:text-gray-600">
+                      <MoreVertical size={16} />
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      ) : (
+        /* Grid View */
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4">
+          {closedTradesData.map((trade, index) => (
+            <div key={index} className="border rounded-lg overflow-hidden bg-white">
+              {/* Card Header */}
+              <div className="flex justify-between items-center p-3 border-b">
+                <div className="flex items-center gap-2">
+                  <div className="w-6 h-6 bg-blue-100 rounded-md flex items-center justify-center">
+                    <svg className="w-4 h-4 text-blue-600" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                      <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
+                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm0-2a6 6 0 100-12 6 6 0 000 12z" clipRule="evenodd" />
+                    </svg>
+                  </div>
+                  <div>
+                    <div className="font-medium text-sm">{trade.security}</div>
+                    <div className="text-xs text-gray-500">
+                      <span>{trade.date}</span> · <span>{trade.time}</span>
+                    </div>
+                  </div>
+                </div>
+                <div className="flex items-center">
+                  <span className={`px-2 py-0.5 text-xs rounded ${
+                    trade.type === 'BUY' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
+                  }`}>
+                    {trade.type}
+                  </span>
+                  <div className="ml-2 text-xs bg-yellow-100 text-yellow-800 px-2 py-0.5 rounded">
+                    {index % 2 === 0 ? "Target Met" : "Stopped Out"}
+                  </div>
+                </div>
+              </div>
+              
+              {/* Card Content */}
+              <div className="grid grid-cols-3 gap-1 p-3">
+                <div className="flex flex-col">
+                  <span className="text-xs text-gray-500">Entry Price</span>
+                  <span className="text-sm font-medium">{trade.entryPrice}</span>
+                </div>
+                <div className="flex flex-col">
+                  <span className="text-xs text-gray-500">Exit Price</span>
+                  <span className="text-sm font-medium">{trade.exitPrice}</span>
+                </div>
+                <div className="flex flex-col">
+                  <span className="text-xs text-gray-500">Quantity</span>
+                  <span className="text-sm font-medium">{trade.quantity}</span>
+                </div>
+                
+                <div className="flex flex-col mt-1">
+                  <span className="text-xs text-gray-500">Net G/L</span>
+                  <span className="text-sm font-medium">{trade.net}</span>
+                </div>
+              </div>
+              
+              {/* Card Footer */}
+              <div className="p-3 pt-0 flex justify-between items-center">
+                <div className="text-xs text-gray-500">
+                  <span>Posted by: <span className="text-gray-700">(Posted.by)</span></span>
+                </div>
+                <div className="flex items-center">
+                  <div className="flex items-center text-xs">
+                    <span className="text-gray-500 mr-1">Margin req.: </span>
+                    <span className="text-gray-700">₹1,34,099</span>
+                    <svg className="w-3 h-3 ml-1 text-gray-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                      <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2h2a1 1 0 100-2H9z" clipRule="evenodd" />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+              
+              {/* Action Button */}
+              <div className="border-t">
+                <button className="flex items-center justify-center w-full p-2 bg-green-50 text-green-600 hover:bg-green-100 transition-colors">
+                  About Trade
+                  <svg className="w-4 h-4 ml-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                    <path fillRule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clipRule="evenodd" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
