@@ -13,9 +13,9 @@ function TradeSelector({ activeComponent, closedComponent }: TradeSelectorProps)
   return (
     <div className="flex flex-col w-full mt-4">
       {/* Toggle Buttons */}
-      <div className="flex border-[1px] border-[#D1D5DB] rounded-full p-1 w-full ">
+      <div className="flex border-[1px] border-[#D1D5DB] rounded-full p-1 w-full">
         <button
-          className={`flex-1 px-6 py-3 rounded-full text-sm font-medium transition-all duration-300 ${
+          className={`flex-1 px-3 sm:px-6 py-2 sm:py-3 rounded-full text-xs sm:text-sm font-medium transition-all duration-300 ${
             selected === "active"
               ? "bg-green-100 text-green-600 "
               : "text-gray-500 hover:bg-gray-200"
@@ -25,7 +25,7 @@ function TradeSelector({ activeComponent, closedComponent }: TradeSelectorProps)
           Active Trade
         </button>
         <button
-          className={`flex-1 px-6 py-3 rounded-full text-sm font-medium transition-all duration-300 ${
+          className={`flex-1 px-3 sm:px-6 py-2 sm:py-3 rounded-full text-xs sm:text-sm font-medium transition-all duration-300 ${
             selected === "closed"
               ? "bg-green-100 text-green-600"
               : "text-gray-500 hover:bg-gray-200"
@@ -37,7 +37,7 @@ function TradeSelector({ activeComponent, closedComponent }: TradeSelectorProps)
       </div>
 
       {/* Render Content Based on Selection */}
-      <div className="mt-6 w-full">{selected === "active" ? activeComponent : closedComponent}</div>
+      <div className="mt-4 sm:mt-6 w-full">{selected === "active" ? activeComponent : closedComponent}</div>
     </div>
   );
 }

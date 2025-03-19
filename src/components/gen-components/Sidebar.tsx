@@ -51,7 +51,7 @@ const Sidebar: React.FC = () => {
   ];
 
   return (
-    <div className="fixed top-16 left-0 bottom-0 w-1/4 bg-white border-r border-gray-200 overflow-auto">
+    <div className="hidden md:block fixed top-16 left-0 bottom-0 w-1/4 bg-white border-r border-gray-200 overflow-auto">
       <div className="p-4">
         <div className="relative">
           <input

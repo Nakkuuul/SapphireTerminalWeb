@@ -131,7 +131,7 @@ const Navbar = () => {
               <div className="flex items-center">
                 <div className="h-8 w-8 rounded-full overflow-hidden border border-gray-300">
                   <Image 
-                    src="/profile.png" 
+                    src="/globe.svg" 
                     alt="Profile" 
                     width={32} 
                     height={32} 
@@ -197,7 +197,7 @@ const Navbar = () => {
           <div className="absolute backdrop-blur-md shadow-sm pb-3 top-5 right-6 flex items-center justify-between w-full">
             <div className="ml-10 items-center flex">
               <Image
-                src="/logo.svg"
+                src="/globe.svg"
                 alt="Sapphire Logo"
                 width={100}
                 height={100}
@@ -272,7 +272,7 @@ const Navbar = () => {
           <div className="mt-auto border-t border-gray-200 pt-6 flex items-center">
             <div className="h-10 w-10 rounded-full overflow-hidden border border-gray-300">
               <Image 
-                src="/profile.png" 
+                src="/globe.svg" 
                 alt="Profile" 
                 width={40} 
                 height={40} 
