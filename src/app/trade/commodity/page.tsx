@@ -1,5 +1,5 @@
-import Selector from '@/components/gen-components/Selector'
-import TradeSelector from '@/components/gen-components/TradeSelector'
+import Selector from '@/components/trade/Selector'
+import TradeSelector from '@/components/trade/TradeSelector'
 import ActiveOption from '@/components/trade/option/ActiveOption'
 import ClosedOption from '@/components/trade/option/ClosedOption'
 import React from 'react'
