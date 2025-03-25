@@ -136,18 +136,18 @@ const Positions: React.FC = () => {
   };
 
   return (
-    <div className="w-full py-8 ">
+    <div className="w-full py-8 px-2">
       {/* Header Summary */}
       <div className="flex w-full mb-4">
         <div className="w-1/2 bg-gray-50 p-4">
-          <div className="font-medium" style={{ fontSize: '16px' }}>Daily P&L</div>
-          <div className="font-bold text-[#F10930]" style={{ fontSize: '20px' }}>
+          <div className="text-base font-medium">Daily P&L</div>
+          <div className="text-xl font-medium text-red-500">
             {formatCurrency(summaryData.dailyPL.value)} {formatPercentage(summaryData.dailyPL.percentage)}
           </div>
         </div>
         <div className="w-1/2 bg-gray-50 p-4">
-          <div className="font-medium" style={{ fontSize: '16px' }}>Net P&L</div>
-          <div className="font-bold text-[#34A853]" style={{ fontSize: '20px' }}>
+          <div className="text-base font-medium">Net P&L</div>
+          <div className="text-xl font-medium text-green-500">
             {formatCurrency(summaryData.netPL.value)} {formatPercentage(summaryData.netPL.percentage)}
           </div>
         </div>
@@ -155,7 +155,7 @@ const Positions: React.FC = () => {
 
       {/* Positions Section Header */}
       <div className="flex justify-between items-center mb-4">
-        <h2 className="font-medium" style={{ fontSize: '16px' }}>Positions (5)</h2>
+        <h2 className="text-base font-medium">Positions (5)</h2>
         <div className="flex items-center gap-2">
           <button className="flex items-center px-3 py-1 border rounded-md text-sm">
             <svg className="w-4 h-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -179,45 +179,45 @@ const Positions: React.FC = () => {
         <table className="min-w-full divide-y divide-gray-200">
           <thead>
             <tr className="bg-gray-50">
-              <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase" style={{ fontSize: '14px' }}>Action</th>
-              <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase" style={{ fontSize: '14px' }}>Security</th>
-              <th className="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase"></th>
-              <th className="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase" style={{ fontSize: '14px' }}>Qty.</th>
-              <th className="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase" style={{ fontSize: '14px' }}>Avg. Price</th>
-              <th className="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase" style={{ fontSize: '14px' }}>LTP</th>
-              <th className="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase" style={{ fontSize: '14px' }}>Net P&L</th>
-              <th className="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase" style={{ fontSize: '14px' }}>Daily P&L</th>
+              <th className="px-4 py-3 text-left text-xs font-medium  uppercase">Action</th>
+              <th className="px-4 py-3 text-left text-xs font-medium  uppercase">Security</th>
+              <th className="px-4 py-3 text-center text-xs font-medium  uppercase"></th>
+              <th className="px-4 py-3 text-right text-xs font-medium  uppercase">Qty.</th>
+              <th className="px-4 py-3 text-right text-xs font-medium  uppercase">Avg. Price</th>
+              <th className="px-4 py-3 text-right text-xs font-medium  uppercase">LTP</th>
+              <th className="px-4 py-3 text-right text-xs font-medium  uppercase">Net P&L</th>
+              <th className="px-4 py-3 text-right text-xs font-medium  uppercase">Daily P&L</th>
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
             {positions.map((position, index) => (
               <tr key={index}>
-                <td className="px-4 py-3 whitespace-nowrap" style={{ fontSize: '14px' }}>{position.type}</td>
-                <td className="px-4 py-3 whitespace-nowrap" style={{ fontSize: '14px' }}>{position.security}</td>
+                <td className="px-4 py-3 whitespace-nowrap text-[#6B7280] text-sm">{position.type}</td>
+                <td className="px-4 py-3 whitespace-nowrap text-[#6B7280] text-sm">{position.security}</td>
                 <td className="px-1 py-3 whitespace-nowrap">
                   <div className={`text-xs px-2 py-1 rounded-sm ${position.action === 'BUY' 
-                    ? 'bg-[#D5FFC6] text-[#34A853]' 
-                    : 'bg-[#FFE4DD] text-[#F10930]'}`}>
+                    ? 'bg-green-100 text-green-500' 
+                    : 'bg-red-100 text-red-500'}`}>
                     {position.action}
                   </div>
                 </td>
-                <td className="px-4 py-3 whitespace-nowrap text-right" style={{ fontSize: '14px' }}>{position.quantity}</td>
-                <td className="px-4 py-3 whitespace-nowrap text-right" style={{ fontSize: '14px' }}>{formatCurrency(position.avgPrice)}</td>
-                <td className="px-4 py-3 whitespace-nowrap text-right" style={{ fontSize: '14px' }}>{formatCurrency(position.ltp)}</td>
-                <td className={`px-4 py-3 whitespace-nowrap text-right ${position.netPL.value < 0 ? 'text-[#F10930]' : 'text-[#34A853]'}`} style={{ fontSize: '14px' }}>
+                <td className="px-4 py-3 whitespace-nowrap text-[#6B7280] text-right text-sm">{position.quantity}</td>
+                <td className="px-4 py-3 whitespace-nowrap text-[#6B7280] text-right text-sm">{formatCurrency(position.avgPrice)}</td>
+                <td className="px-4 py-3 whitespace-nowrap text-[#6B7280] text-right text-sm">{formatCurrency(position.ltp)}</td>
+                <td className={`px-4 py-3 whitespace-nowrap text-right text-sm ${position.netPL.value < 0 ? 'text-red-500' : 'text-green-500'}`}>
                   {formatCurrency(position.netPL.value)} {formatPercentage(position.netPL.percentage)}
                 </td>
-                <td className={`px-4 py-3 whitespace-nowrap text-right ${position.dailyPL.value < 0 ? 'text-[#F10930]' : 'text-[#34A853]'}`} style={{ fontSize: '14px' }}>
+                <td className={`px-4 py-3 whitespace-nowrap text-right text-sm ${position.dailyPL.value < 0 ? 'text-red-500' : 'text-green-500'}`}>
                   {formatCurrency(position.dailyPL.value)} {formatPercentage(position.dailyPL.percentage)}
                 </td>
               </tr>
             ))}
             <tr className="bg-gray-50 font-medium">
-              <td colSpan={6} className="px-4 py-3 whitespace-nowrap" style={{ fontSize: '14px' }}>Total</td>
-              <td className="px-4 py-3 whitespace-nowrap text-right text-[#34A853]" style={{ fontSize: '14px' }}>
+              <td colSpan={6} className="px-4 py-3 whitespace-nowrap text-sm">Total</td>
+              <td className="px-4 py-3 whitespace-nowrap text-right text-sm text-green-500">
                 {formatCurrency(totalNetPL.value)} {formatPercentage(totalNetPL.percentage)}
               </td>
-              <td className="px-4 py-3 whitespace-nowrap text-right text-[#34A853]" style={{ fontSize: '14px' }}>
+              <td className="px-4 py-3 whitespace-nowrap text-right text-sm text-green-500">
                 {formatCurrency(totalDailyPL.value)} {formatPercentage(totalDailyPL.percentage)}
               </td>
             </tr>

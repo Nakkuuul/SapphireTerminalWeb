@@ -154,26 +154,26 @@ const PortfolioDashboard: React.FC = () => {
   };
 
   return (
-    <div className="portfolio-dashboard max-w-6xl mx-auto p-3">
+    <div className="portfolio-dashboard max-w-6xl mx-auto py-8 px-2">
       {/* Summary Section */}
       <div className="grid grid-cols-4 bg-gray-100 rounded-md mb-4">
         <div className="p-3">
           <div className="text-xs text-gray-600">Investment Value</div>
-          <div className="font-bold text-sm">{formatCurrency(portfolioSummary.investmentValue)}</div>
+          <div className="font-semibold text-sm">{formatCurrency(portfolioSummary.investmentValue)}</div>
         </div>
         <div className="p-3">
           <div className="text-xs text-gray-600">Current Value</div>
-          <div className="font-bold text-sm">{formatCurrency(portfolioSummary.currentValue)}</div>
+          <div className="font-semibold text-sm">{formatCurrency(portfolioSummary.currentValue)}</div>
         </div>
         <div className="p-3">
           <div className="text-xs text-gray-600">Daily P&L</div>
-          <div className="font-bold text-sm text-green-500">
+          <div className="font-semibold text-sm text-green-500">
             {formatCurrency(portfolioSummary.dailyPL.value)} {formatPercentage(portfolioSummary.dailyPL.percentage)}
           </div>
         </div>
         <div className="p-3">
           <div className="text-xs text-gray-600">Net P&L</div>
-          <div className="font-bold text-sm text-red-500">
+          <div className="font-semibold text-sm text-red-500">
             {formatCurrency(portfolioSummary.netPL.value)} {formatPercentage(portfolioSummary.netPL.percentage)}
           </div>
         </div>

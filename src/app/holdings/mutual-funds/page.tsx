@@ -84,7 +84,7 @@ const MutualFundsTable = () => {
   };
 
   return (
-    <div className="w-full">
+    <div className="w-full py-8 px-2">
       {/* Header Summary */}
       <div className="grid grid-cols-5 bg-gray-50 mb-4">
         <div className="p-4">
@@ -145,20 +145,20 @@ const MutualFundsTable = () => {
         <table className="min-w-full divide-y divide-gray-200">
           <thead>
             <tr className="bg-gray-50">
-              <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Security</th>
-              <th className="px-6 py-2 text-center text-xs font-medium text-gray-500 uppercase"></th>
-              <th className="px-4 py-2 text-right text-xs font-medium text-gray-500 uppercase">Units</th>
-              <th className="px-4 py-2 text-right text-xs font-medium text-gray-500 uppercase">Avg. NAV</th>
-              <th className="px-4 py-2 text-right text-xs font-medium text-gray-500 uppercase">Market NAV</th>
-              <th className="px-4 py-2 text-right text-xs font-medium text-gray-500 uppercase">Investment value</th>
-              <th className="px-4 py-2 text-right text-xs font-medium text-gray-500 uppercase">Net P&L</th>
-              <th className="px-4 py-2 text-right text-xs font-medium text-gray-500 uppercase">Daily P&L</th>
+              <th className="px-4 py-2 text-left text-base font-medium text-black uppercase">Security</th>
+              <th className="px-6 py-2 text-center text-sm font-medium text-black uppercase"></th>
+              <th className="px-4 py-2 text-right text-sm font-medium text-black uppercase">Units</th>
+              <th className="px-4 py-2 text-right text-sm font-medium text-black uppercase">Avg. NAV</th>
+              <th className="px-4 py-2 text-right text-sm font-medium text-black uppercase">Market NAV</th>
+              <th className="px-4 py-2 text-right text-sm font-medium text-black uppercase">Investment value</th>
+              <th className="px-4 py-2 text-right text-sm font-medium text-black uppercase">Net P&L</th>
+              <th className="px-4 py-2 text-right text-sm font-medium text-black uppercase">Daily P&L</th>
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
             {holdings.map((holding, index) => (
               <tr key={index}>
-                <td className="px-4 py-2 whitespace-nowrap text-sm">{holding.security}</td>
+                <td className="px-4 py-2 whitespace-nowrap text-[#6B7280] text-sm">{holding.security}</td>
                 <td className="px-1 py-2 whitespace-nowrap text-center">
                   <button className="text-gray-400">
                     <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -166,10 +166,9 @@ const MutualFundsTable = () => {
                     </svg>
                   </button>
                 </td>
-                <td className="px-4 py-2 whitespace-nowrap text-sm text-right">{holding.units}</td>
-                <td className="px-4 py-2 whitespace-nowrap text-sm text-right">{formatCurrency(holding.avgNav)}</td>
-                <td className="px-4 py-2 whitespace-nowrap text-sm text-right">{formatCurrency(holding.marketNav)}</td>
-                <td className="px-4 py-2 whitespace-nowrap text-sm text-right">{formatCurrency(holding.investmentValue)}</td>
+                <td className="px-4 py-2 whitespace-nowrap text-[#6B7280] text-sm text-right">{holding.units}</td>
+                <td className="px-4 py-2 whitespace-nowrap text-[#6B7280] text-sm text-right">{formatCurrency(holding.avgNav)}</td>
+                <td className="px-4 py-2 whitespace-nowrap text-[#6B7280] text-sm text-right">{formatCurrency(holding.marketNav)}</td>
                 <td className={`px-4 py-2 whitespace-nowrap text-sm text-right ${holding.netPL.value < 0 ? 'text-red-500' : 'text-green-500'}`}>
                   {formatCurrency(holding.netPL.value)} {formatPercentage(holding.netPL.percentage)}
                 </td>
@@ -180,7 +179,7 @@ const MutualFundsTable = () => {
             ))}
             <tr className="bg-gray-50 font-medium">
               <td colSpan={5} className="px-4 py-2 whitespace-nowrap text-sm">Total</td>
-              <td className="px-4 py-2 whitespace-nowrap text-sm text-right">{formatCurrency(totalInvestmentValue)}</td>
+              <td className="px-4 py-2 whitespace-nowrap text-[#6B7280] text-sm text-right">{formatCurrency(totalInvestmentValue)}</td>
               <td className="px-4 py-2 whitespace-nowrap text-sm text-right text-green-500">
                 {formatCurrency(totalNetPL.value)} {formatPercentage(totalNetPL.percentage)}
               </td>
