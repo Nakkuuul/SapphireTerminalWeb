@@ -20,15 +20,17 @@ const Navbar = () => {
   // Main navigation links without sub-routes for Trade section
   const navLinks = [
     { href: "/", label: "Home" },
-    { href: "/trade/stocks", label: "Trade" },
+    { href: "/trade", label: "Trade" },
     { href: "/news", label: "News" },
     { href: "/watchlist", label: "Watchlist" },
     { href: "/orders", label: "Orders" },
-    { href: "/holdings/equity", label: "Holdings" },
+    { href: "/holdings", label: "Holdings" },
     { href: "/funds", label: "Funds" },
   ];
 
   useEffect(() => {
+    // Set the active link based on the pathname
+    // This will also handle setting active state for parent routes
     setActiveLink(pathname);
   }, [pathname]);
 
@@ -54,10 +56,18 @@ const Navbar = () => {
     setSidebarOpen(!isSidebarOpen);
   };
 
+  // Function to check if a route is active, including child routes
+  const isRouteActive = (href: String) => {
+    if (href === "/") {
+      return pathname === "/";
+    }
+    return pathname === href || pathname.startsWith(`${href}/`);
+  };
+
   return (
     <>
-      <nav className="fixed font-poppins w-full top-0 z-50 bg-white border-b border-gray-200">
-        <div className="w-full mx-auto flex items-center justify-between h-14 px-4">
+      <nav className="fixed font-poppins w-full top-0 z-50 bg-white border-b-[3px] border-gray-200">
+        <div className="w-full mx-auto flex items-center justify-between h-[70px] px-4">
           {/* Main single-row layout */}
           <div className="w-full flex items-center justify-between">
             {/* Left section with logo and stock information */}
@@ -93,22 +103,22 @@ const Navbar = () => {
             <div className="hidden lg:flex flex-1 justify-center items-center">
               <div className="flex items-center space-x-8">
                 {navLinks.map((link) => {
-                  // Check if this is the active route
-                  const isActiveRoute = activeLink === link.href;
+                  // Check if this is the active route or its child route
+                  const isActive = isRouteActive(link.href);
                   
                   return (
                     <div key={link.href} className="relative group">
                       <Link
                         href={link.href}
-                        className="relative group text-sm font-medium py-2 transition-all duration-300"
+                        className="relative group text-lg font-medium py-2 transition-all duration-300"
                         onClick={() => setActiveLink(link.href)}
                       >
                         {link.label}
                         
                         {/* Green underline animation (for both hover & active states) */}
                         <span
-                          className={`absolute bottom-0 left-0 h-[3px] bg-[#064D51] transition-all duration-300 ${
-                            isActiveRoute ? "w-full" : "w-0"
+                          className={`absolute -bottom-5 left-0 h-[3px] bg-[#1DB954] transition-all duration-300 ${
+                            isActive ? "w-[100%]" : "w-0"
                           } group-hover:w-full`}
                         ></span>
                       </Link>
@@ -254,7 +264,7 @@ const Navbar = () => {
                 key={link.href}
                 href={link.href}
                 className={`text-lg font-medium py-2 border-l-4 pl-4 transition-colors duration-200 ${
-                  activeLink === link.href
+                  isRouteActive(link.href)
                     ? "border-[#064D51] text-[#064D51]"
                     : "border-transparent hover:border-gray-300 hover:text-gray-700"
                 }`}
