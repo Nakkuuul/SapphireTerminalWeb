@@ -158,22 +158,22 @@ const PortfolioDashboard: React.FC = () => {
       {/* Summary Section */}
       <div className="grid grid-cols-4 bg-gray-100 rounded-md mb-4">
         <div className="p-3">
-          <div className="text-xs text-gray-600">Investment Value</div>
-          <div className="font-semibold text-sm">{formatCurrency(portfolioSummary.investmentValue)}</div>
+          <div className="text-base text-gray-600">Investment Value</div>
+          <div className="font-semibold text-xl">{formatCurrency(portfolioSummary.investmentValue)}</div>
         </div>
         <div className="p-3">
-          <div className="text-xs text-gray-600">Current Value</div>
-          <div className="font-semibold text-sm">{formatCurrency(portfolioSummary.currentValue)}</div>
+          <div className="text-base text-gray-600">Current Value</div>
+          <div className="font-semibold text-xl">{formatCurrency(portfolioSummary.currentValue)}</div>
         </div>
         <div className="p-3">
-          <div className="text-xs text-gray-600">Daily P&L</div>
-          <div className="font-semibold text-sm text-green-500">
+          <div className="text-sbasem text-gray-600">Daily P&L</div>
+          <div className="font-semibold text-xl text-green-500">
             {formatCurrency(portfolioSummary.dailyPL.value)} {formatPercentage(portfolioSummary.dailyPL.percentage)}
           </div>
         </div>
         <div className="p-3">
-          <div className="text-xs text-gray-600">Net P&L</div>
-          <div className="font-semibold text-sm text-red-500">
+          <div className="text-base text-gray-600">Net P&L</div>
+          <div className="font-semibold text-xl text-red-500">
             {formatCurrency(portfolioSummary.netPL.value)} {formatPercentage(portfolioSummary.netPL.percentage)}
           </div>
         </div>
@@ -210,61 +210,27 @@ const PortfolioDashboard: React.FC = () => {
           <table className="min-w-full divide-y divide-gray-200">
             <thead>
               <tr className="bg-gray-50">
-                <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" style={{ fontSize: '12px' }}>
+                <th className="px-4 py-2 text-left text-base font-medium">
                   Security
-                  <button className="ml-1 inline-block align-text-bottom">
-                    <svg className="w-2 h-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"></path>
-                    </svg>
-                  </button>
                 </th>
-                <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" style={{ fontSize: '12px' }}>
+                <th className="px-4 py-2 text-left text-base font-medium" >
                   Qty
-                  <button className="ml-1 inline-block align-text-bottom">
-                    <svg className="w-2 h-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"></path>
-                    </svg>
-                  </button>
                 </th>
-                <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" style={{ fontSize: '12px' }}>
+                <th className="px-4 py-2 text-left text-base font-medium  " >
                   Avg. Price
-                  <button className="ml-1 inline-block align-text-bottom">
-                    <svg className="w-2 h-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"></path>
-                    </svg>
-                  </button>
                 </th>
-                <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" style={{ fontSize: '12px' }}>
+                <th className="px-4 py-2 text-left text-base font-medium ">
                   LTP
-                  <button className="ml-1 inline-block align-text-bottom">
-                    <svg className="w-2 h-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"></path>
-                    </svg>
-                  </button>
                 </th>
-                <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" style={{ fontSize: '12px' }}>
+                <th className="px-4 py-2 text-left text-base font-medium ">
                   Investment Value
-                  <button className="ml-1 inline-block align-text-bottom">
-                    <svg className="w-2 h-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"></path>
-                    </svg>
-                  </button>
+
                 </th>
-                <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" style={{ fontSize: '12px' }}>
+                <th className="px-4 py-2 text-left text-base font-medium ">
                   Net P&L
-                  <button className="ml-1 inline-block align-text-bottom">
-                    <svg className="w-2 h-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"></path>
-                    </svg>
-                  </button>
                 </th>
-                <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" style={{ fontSize: '12px' }}>
+                <th className="px-4 py-2 text-left text-base font-medium  " >
                   Daily P&L
-                  <button className="ml-1 inline-block align-text-bottom">
-                    <svg className="w-2 h-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"></path>
-                    </svg>
-                  </button>
                 </th>
               </tr>
             </thead>
@@ -273,7 +239,7 @@ const PortfolioDashboard: React.FC = () => {
                 <tr key={index}>
                   <td className="px-4 py-2 whitespace-nowrap">
                     <div className="flex items-center">
-                      <span style={{ fontSize: '14px' }}>{holding.security}</span>
+                      <span className='text-[#6B7280]' style={{ fontSize: '14px' }}>{holding.security}</span>
                       <button className="ml-2">
                         <svg className="w-3 h-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z"></path>
@@ -281,10 +247,10 @@ const PortfolioDashboard: React.FC = () => {
                       </button>
                     </div>
                   </td>
-                  <td className="px-4 py-2 whitespace-nowrap" style={{ fontSize: '14px' }}>{holding.quantity}</td>
-                  <td className="px-4 py-2 whitespace-nowrap" style={{ fontSize: '14px' }}>{formatCurrency(holding.avgPrice)}</td>
-                  <td className="px-4 py-2 whitespace-nowrap" style={{ fontSize: '14px' }}>{formatCurrency(holding.ltp)}</td>
-                  <td className="px-4 py-2 whitespace-nowrap" style={{ fontSize: '14px' }}>{formatCurrency(holding.investmentValue)}</td>
+                  <td className="px-4 py-2 text-[#6B7280] whitespace-nowrap" style={{ fontSize: '14px' }}>{holding.quantity}</td>
+                  <td className="px-4 py-2 text-[#6B7280] whitespace-nowrap" style={{ fontSize: '14px' }}>{formatCurrency(holding.avgPrice)}</td>
+                  <td className="px-4 py-2 text-[#6B7280] whitespace-nowrap" style={{ fontSize: '14px' }}>{formatCurrency(holding.ltp)}</td>
+                  <td className="px-4 py-2 text-[#6B7280] whitespace-nowrap" style={{ fontSize: '14px' }}>{formatCurrency(holding.investmentValue)}</td>
                   <td className="px-4 py-2 whitespace-nowrap text-green-500" style={{ fontSize: '14px' }}>
                     {formatCurrency(holding.netPL.value)} {formatPercentage(holding.netPL.percentage)}
                   </td>
@@ -298,7 +264,7 @@ const PortfolioDashboard: React.FC = () => {
                 <td className="px-4 py-2 whitespace-nowrap"></td>
                 <td className="px-4 py-2 whitespace-nowrap"></td>
                 <td className="px-4 py-2 whitespace-nowrap"></td>
-                <td className="px-4 py-2 whitespace-nowrap" style={{ fontSize: '14px' }}>{formatCurrency(totalInvestmentValue)}</td>
+                <td className="px-4 py-2 text-[#6B7280] whitespace-nowrap" style={{ fontSize: '14px' }}>{formatCurrency(totalInvestmentValue)}</td>
                 <td className="px-4 py-2 whitespace-nowrap text-green-500" style={{ fontSize: '14px' }}>
                   {formatCurrency(totalNetPL.value)} {formatPercentage(totalNetPL.percentage)}
                 </td>

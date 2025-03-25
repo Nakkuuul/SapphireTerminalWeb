@@ -145,14 +145,14 @@ const MutualFundsTable = () => {
         <table className="min-w-full divide-y divide-gray-200">
           <thead>
             <tr className="bg-gray-50">
-              <th className="px-4 py-2 text-left text-base font-medium text-black uppercase">Security</th>
-              <th className="px-6 py-2 text-center text-sm font-medium text-black uppercase"></th>
-              <th className="px-4 py-2 text-right text-sm font-medium text-black uppercase">Units</th>
-              <th className="px-4 py-2 text-right text-sm font-medium text-black uppercase">Avg. NAV</th>
-              <th className="px-4 py-2 text-right text-sm font-medium text-black uppercase">Market NAV</th>
-              <th className="px-4 py-2 text-right text-sm font-medium text-black uppercase">Investment value</th>
-              <th className="px-4 py-2 text-right text-sm font-medium text-black uppercase">Net P&L</th>
-              <th className="px-4 py-2 text-right text-sm font-medium text-black uppercase">Daily P&L</th>
+              <th className="px-4 py-2 text-left text-base font-medium text-black ">Security</th>
+              <th className="px-6 py-2 text-center text-base font-medium text-black "></th>
+              <th className="px-4 py-2 text-right text-base font-medium text-black ">Units</th>
+              <th className="px-4 py-2 text-right text-base font-medium text-black ">Avg. NAV</th>
+              <th className="px-4 py-2 text-right text-base font-medium text-black ">Market NAV</th>
+              <th className="px-4 py-2 text-right text-base font-medium text-black ">Investment value</th>
+              <th className="px-4 py-2 text-right text-base font-medium text-black ">Net P&L</th>
+              <th className="px-4 py-2 text-right text-base font-medium text-black ">Daily P&L</th>
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">

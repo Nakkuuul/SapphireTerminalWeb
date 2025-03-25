@@ -179,14 +179,14 @@ const Positions: React.FC = () => {
         <table className="min-w-full divide-y divide-gray-200">
           <thead>
             <tr className="bg-gray-50">
-              <th className="px-4 py-3 text-left text-xs font-medium  uppercase">Action</th>
-              <th className="px-4 py-3 text-left text-xs font-medium  uppercase">Security</th>
-              <th className="px-4 py-3 text-center text-xs font-medium  uppercase"></th>
-              <th className="px-4 py-3 text-right text-xs font-medium  uppercase">Qty.</th>
-              <th className="px-4 py-3 text-right text-xs font-medium  uppercase">Avg. Price</th>
-              <th className="px-4 py-3 text-right text-xs font-medium  uppercase">LTP</th>
-              <th className="px-4 py-3 text-right text-xs font-medium  uppercase">Net P&L</th>
-              <th className="px-4 py-3 text-right text-xs font-medium  uppercase">Daily P&L</th>
+              <th className="px-4 py-3 text-left text-base font-medium">Action</th>
+              <th className="px-4 py-3 text-left text-base  font-medium">Security</th>
+              <th className="px-4 py-3 text-center text-base font-medium"></th>
+              <th className="px-4 py-3 text-right text-base font-medium">Qty.</th>
+              <th className="px-4 py-3 text-right text-base  font-medium">Avg. Price</th>
+              <th className="px-4 py-3 text-right text-base font-medium">LTP</th>
+              <th className="px-4 py-3 text-right text-base font-medium">Net P&L</th>
+              <th className="px-4 py-3 text-right text-base font-medium">Daily P&L</th>
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
