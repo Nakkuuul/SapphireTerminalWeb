@@ -9,7 +9,7 @@ const ProfileIcon = () => (
 );
 
 // UPI Payment Modal Component
-const UpiPaymentModal = ({ isOpen, onClose, onSuccess }) => {
+const UpiPaymentModal = ({ isOpen, onClose, onSuccess }: { isOpen: boolean, onClose: () => void, onSuccess?: () => void }) => {
   // State for multi-step flow
   const [step, setStep] = useState(1); // 1: Select app, 2: Enter UPI ID
   const [selectedApp, setSelectedApp] = useState(null);
@@ -17,7 +17,7 @@ const UpiPaymentModal = ({ isOpen, onClose, onSuccess }) => {
   const [upiDomain, setUpiDomain] = useState('ybl');
 
   // Handle app selection
-  const handleAppSelect = (app) => {
+  const handleAppSelect = (app: any) => {
     setSelectedApp(app);
     if (app === 'phonepe') {
       setStep(2); // Move to PhonePe UPI ID entry

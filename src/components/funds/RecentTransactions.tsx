@@ -1,6 +1,7 @@
 // components/RecentTransactions.tsx
 import React from 'react';
 import { ArrowUp, ArrowDown, RefreshCw } from 'lucide-react';
+import { recentTransactions } from '@/constants/funds-data';
 
 interface Transaction {
   id: string;
@@ -21,14 +22,16 @@ const formatCurrency = (value: number): string => {
   }).format(value);
 };
 
-const RecentTransactions: React.FC<RecentTransactionsProps> = ({ transactions }) => {
+const RecentTransactions: React.FC<RecentTransactionsProps> = () => {
+  const transactions: Transaction[] = recentTransactions as Transaction[];
+
   return (
     <div className="mb-6">
       <h2 className="text-lg font-medium mb-4">Recent Transactions</h2>
       
       <div className="space-y-3">
-        {transactions.map((transaction, index) => (
-          <div key={index} className="bg-gray-50 rounded-md p-3">
+        {transactions.map((transaction) => (
+          <div key={transaction.id} className="bg-gray-50 rounded-md p-3">
             <div className="flex justify-between mb-1">
               <div className="text-xs text-[#6B7280]">{transaction.id}</div>
               <div className="text-sm font-medium">₹{formatCurrency(transaction.amount)}</div>

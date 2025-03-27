@@ -36,7 +36,7 @@ const ProfileIcon = () => (
 );
 
 // QR Code payment modal
-const QrPaymentModal = ({ isOpen, onClose, onSuccess }) => {
+const QrPaymentModal = ({ isOpen, onClose, onSuccess }: { isOpen: boolean, onClose: () => void, onSuccess?: () => void }) => {
   // State for timer
   const [timeLeft, setTimeLeft] = React.useState('4:48');
   

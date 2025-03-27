@@ -8,7 +8,6 @@ import RecentTransactions from '@/components/funds/RecentTransactions';
 import BalanceChart from '@/components/funds/BalanceChart';
 import DepositPage from '@/components/funds/DepositPage';
 import WithdrawPage from '@/components/funds/Withdraw';
-
 // Import sample data - replace with API calls in production
 import {
   fundsSummary,
@@ -21,6 +20,15 @@ import {
   chartData
 } from '@/constants/funds-data';
 
+// Define Transaction interface
+interface Transaction {
+  id: string;
+  amount: number;
+  date: string;
+  status: 'success' | 'processing' | 'failed';
+  statusText: string;
+}
+
 export default function FundsPage() {
   const [activeSection, setActiveSection] = useState<'main' | 'deposit' | 'withdraw'>('main');
   
@@ -31,29 +39,8 @@ export default function FundsPage() {
   const [margins, setMargins] = useState(marginData);
   const [premiums, setPremiums] = useState(premiumData);
   const [withdrawable, setWithdrawable] = useState(withdrawableBalance);
-  const [transactions, setTransactions] = useState(recentTransactions);
+  const [transactions, setTransactions] = useState<Transaction[]>(recentTransactions as Transaction[]);
   const [chartValues, setChartValues] = useState(chartData);
-
-  // For real backend integration, you would use something like this:
-  // React.useEffect(() => {
-  //   async function fetchData() {
-  //     try {
-  //       const response = await fetch('/api/funds');
-  //       const data = await response.json();
-  //       setSummaryData(data.summary);
-  //       setBalanceData(data.balance);
-  //       setProfitLossData(data.pnl);
-  //       setMargins(data.margins);
-  //       setPremiums(data.premiums);
-  //       setWithdrawable(data.withdrawable);
-  //       setTransactions(data.transactions);
-  //       setChartValues(data.chart);
-  //     } catch (error) {
-  //       console.error('Error fetching funds data:', error);
-  //     }
-  //   }
-  //   fetchData();
-  // }, []);
 
   // Handle navigation between sections
   const handleNavigate = (section: 'main' | 'deposit' | 'withdraw') => {

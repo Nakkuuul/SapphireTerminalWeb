@@ -9,7 +9,7 @@ const ProfileIcon = () => (
 );
 
 // Bank Transfer Modal Component
-const BankTransferModal = ({ isOpen, onClose, onSuccess }) => {
+const BankTransferModal = ({ isOpen, onClose, onSuccess }: { isOpen: boolean, onClose: () => void, onSuccess?: () => void }) => {
   // Bank details data
   const bankDetails = [
     {
