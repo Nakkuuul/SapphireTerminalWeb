@@ -2,6 +2,9 @@
 
 import React, { useState } from 'react';
 import { ChevronLeft, ChevronDown } from 'lucide-react';
+import UpiPaymentModal from '@/components/funds/pop-ups/UpiPaymentModal';
+import QrPaymentModal from '@/components/funds/pop-ups/QrPaymentModal';
+import BankTransferModal from '@/components/funds/pop-ups/BankTransferModal';
 
 // Import sample data - replace with API calls in production
 import { depositAmountOptions, banks, depositHistory } from '@/constants/funds-data';
@@ -19,12 +22,6 @@ interface DepositPageProps {
   onBack: () => void;
 }
 
-// Payment method interface
-interface PaymentMethod {
-  id: string;
-  name: string;
-}
-
 // Main Deposit Page Component
 const DepositPage: React.FC<DepositPageProps> = ({ onBack }) => {
   // State management
@@ -33,13 +30,10 @@ const DepositPage: React.FC<DepositPageProps> = ({ onBack }) => {
   const [selectedPaymentMode, setSelectedPaymentMode] = useState('upi');
   const [history, setHistory] = useState(depositHistory);
   
-  // Payment methods can come from backend in future
-  const paymentMethods: PaymentMethod[] = [
-    { id: 'upi', name: 'UPI' },
-    { id: 'qr', name: 'Scan QR' },
-    { id: 'netbanking', name: 'Net Banking' },
-    { id: 'transfer', name: 'Bank Transfer' }
-  ];
+  // Modal states
+  const [isUpiModalOpen, setIsUpiModalOpen] = useState(false);
+  const [isQrModalOpen, setIsQrModalOpen] = useState(false);
+  const [isBankTransferModalOpen, setIsBankTransferModalOpen] = useState(false);
 
   // Handle amount selection
   const handleAmountSelect = (amount: number) => {
@@ -57,14 +51,39 @@ const DepositPage: React.FC<DepositPageProps> = ({ onBack }) => {
     setSelectedPaymentMode(mode);
   };
   
-  // Handle form submission - will be connected to API
-  const handleSubmit = () => {
-    // In production, make an API call to process the deposit
-    alert(`Depositing ₹${selectedAmount?.toLocaleString()} using ${selectedPaymentMode}`);
+  // Handle payment button click
+  const handlePaymentClick = () => {
+    if (!selectedAmount) {
+      alert('Please enter an amount');
+      return;
+    }
+    
+    // Open the appropriate modal based on the selected payment mode
+    if (selectedPaymentMode === 'upi') {
+      setIsUpiModalOpen(true);
+    } else if (selectedPaymentMode === 'qr') {
+      setIsQrModalOpen(true);
+    } else if (selectedPaymentMode === 'netbanking' || selectedPaymentMode === 'transfer') {
+      setIsBankTransferModalOpen(true);
+    }
+  };
+  
+  // Handle successful payment
+  const handlePaymentSuccess = () => {
+    // Close all modals
+    setIsUpiModalOpen(false);
+    setIsQrModalOpen(false);
+    setIsBankTransferModalOpen(false);
+    
+    // In a real implementation, you would update the UI and show a success message
+    alert(`Successfully added ₹${selectedAmount?.toLocaleString()}`);
+    
+    // Reset form or navigate back
+    // onBack(); // Uncomment to navigate back after successful payment
   };
 
   return (
-    <div className="max-w-[75%] mx-auto">
+    <div className="max-w-2xl mx-auto">
       {/* Back button */}
       <button onClick={onBack} className="flex items-center text-[#6B7280] mb-4">
         <ChevronLeft size={20} className="mr-1" />
@@ -101,7 +120,7 @@ const DepositPage: React.FC<DepositPageProps> = ({ onBack }) => {
         
         {/* Quick Amount Selection */}
         <div className="flex space-x-3 mb-6">
-          {depositAmountOptions.map((amount) => (
+          {depositAmountOptions.map((amount: any) => (
             <div 
               key={amount}
               className={`border rounded-md px-3 py-1 text-sm cursor-pointer ${
@@ -121,27 +140,83 @@ const DepositPage: React.FC<DepositPageProps> = ({ onBack }) => {
         <div className="mb-6">
           <p className="text-sm text-[#6B7280] mb-2">Payment mode:</p>
           <div className="grid grid-cols-4 gap-3">
-            {paymentMethods.map((method) => (
-              <button 
-                key={method.id}
-                className={`flex items-center justify-center border rounded-md py-2 ${
-                  selectedPaymentMode === method.id 
-                    ? 'border-[#1DB954] text-[#1DB954]' 
-                    : 'border-gray-300 text-[#6B7280]'
-                }`}
-                onClick={() => handlePaymentModeSelect(method.id)}
-              >
-                {getPaymentIcon(method.id)}
-                {method.name}
-              </button>
-            ))}
+            <button 
+              className={`flex items-center justify-center border rounded-md py-2 ${
+                selectedPaymentMode === 'upi' 
+                  ? 'border-[#1DB954] text-[#1DB954]' 
+                  : 'border-gray-300 text-[#6B7280]'
+              }`}
+              onClick={() => handlePaymentModeSelect('upi')}
+            >
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="mr-1">
+                <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                <path d="M2 12H22" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                <path d="M12 2C14.5013 4.73835 15.9228 8.29203 16 12C15.9228 15.708 14.5013 19.2616 12 22C9.49872 19.2616 8.07725 15.708 8 12C8.07725 8.29203 9.49872 4.73835 12 2Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+              UPI
+            </button>
+            
+            <button 
+              className={`flex items-center justify-center border rounded-md py-2 ${
+                selectedPaymentMode === 'qr' 
+                  ? 'border-[#1DB954] text-[#1DB954]' 
+                  : 'border-gray-300 text-[#6B7280]'
+              }`}
+              onClick={() => handlePaymentModeSelect('qr')}
+            >
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="mr-1">
+                <path d="M3 11V3H11V11H3Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                <path d="M3 21V17H7V21H3Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                <path d="M13 21V13H21V21H13Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                <path d="M13 7V3H17V7H13Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                <path d="M21 11V3H21.01" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                <path d="M13 11H17" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                <path d="M11 17V13" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                <path d="M7 13H3" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+              Scan QR
+            </button>
+            
+            <button 
+              className={`flex items-center justify-center border rounded-md py-2 ${
+                selectedPaymentMode === 'netbanking' 
+                  ? 'border-[#1DB954] text-[#1DB954]' 
+                  : 'border-gray-300 text-[#6B7280]'
+              }`}
+              onClick={() => handlePaymentModeSelect('netbanking')}
+            >
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="mr-1">
+                <path d="M20 12V22H4V12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                <path d="M22 7H2V12H22V7Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                <path d="M12 22V7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                <path d="M12 7H16.5C17.3284 7 18 6.32843 18 5.5C18 4.67157 17.3284 4 16.5 4C15.6716 4 15 4.67157 15 5.5V7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                <path d="M12 7H7.5C6.67157 7 6 6.32843 6 5.5C6 4.67157 6.67157 4 7.5 4C8.32843 4 9 4.67157 9 5.5V7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+              Net Banking
+            </button>
+            
+            <button 
+              className={`flex items-center justify-center border rounded-md py-2 ${
+                selectedPaymentMode === 'transfer' 
+                  ? 'border-[#1DB954] text-[#1DB954]' 
+                  : 'border-gray-300 text-[#6B7280]'
+              }`}
+              onClick={() => handlePaymentModeSelect('transfer')}
+            >
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="mr-1">
+                <path d="M16 6L12 2L8 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                <path d="M12 2V15" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                <path d="M22 11L22 17C22 18.6569 20.6569 20 19 20L5 20C3.34315 20 2 18.6569 2 17L2 11" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+              Bank Transfer
+            </button>
           </div>
         </div>
         
         {/* Submit Button */}
         <button 
           className="w-full bg-[#1DB954] text-white py-2 rounded-md font-medium"
-          onClick={handleSubmit}
+          onClick={handlePaymentClick}
           disabled={!selectedAmount}
         >
           Add {selectedAmount ? `₹${selectedAmount.toLocaleString()}` : 'amount'}
@@ -164,7 +239,7 @@ const DepositPage: React.FC<DepositPageProps> = ({ onBack }) => {
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
-              {history.map((item, index) => (
+              {history.map((item: { account: string, bank: string, date: string, time: string, amount: number, status: string }, index: number) => (
                 <tr key={index}>
                   <td className="px-4 py-4 whitespace-nowrap text-sm text-[#6B7280]">{item.account}</td>
                   <td className="px-4 py-4 whitespace-nowrap text-sm text-[#6B7280]">{item.bank}</td>
@@ -192,55 +267,27 @@ const DepositPage: React.FC<DepositPageProps> = ({ onBack }) => {
           </table>
         </div>
       </div>
+
+      {/* Payment Modals */}
+      <UpiPaymentModal 
+        isOpen={isUpiModalOpen} 
+        onClose={() => setIsUpiModalOpen(false)} 
+        onSuccess={handlePaymentSuccess} 
+      />
+      
+      <QrPaymentModal 
+        isOpen={isQrModalOpen} 
+        onClose={() => setIsQrModalOpen(false)} 
+        onSuccess={handlePaymentSuccess} 
+      />
+      
+      <BankTransferModal 
+        isOpen={isBankTransferModalOpen} 
+        onClose={() => setIsBankTransferModalOpen(false)} 
+        onSuccess={handlePaymentSuccess} 
+      />
     </div>
   );
 };
-
-// Helper function to get payment icons
-function getPaymentIcon(method: string) {
-  switch (method) {
-    case 'upi':
-      return (
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="mr-1">
-          <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-          <path d="M2 12H22" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-          <path d="M12 2C14.5013 4.73835 15.9228 8.29203 16 12C15.9228 15.708 14.5013 19.2616 12 22C9.49872 19.2616 8.07725 15.708 8 12C8.07725 8.29203 9.49872 4.73835 12 2Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-        </svg>
-      );
-    case 'qr':
-      return (
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="mr-1">
-          <path d="M3 11V3H11V11H3Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-          <path d="M3 21V17H7V21H3Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-          <path d="M13 21V13H21V21H13Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-          <path d="M13 7V3H17V7H13Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-          <path d="M21 11V3H21.01" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-          <path d="M13 11H17" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-          <path d="M11 17V13" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-          <path d="M7 13H3" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-        </svg>
-      );
-    case 'netbanking':
-      return (
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="mr-1">
-          <path d="M20 12V22H4V12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-          <path d="M22 7H2V12H22V7Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-          <path d="M12 22V7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-          <path d="M12 7H16.5C17.3284 7 18 6.32843 18 5.5C18 4.67157 17.3284 4 16.5 4C15.6716 4 15 4.67157 15 5.5V7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-          <path d="M12 7H7.5C6.67157 7 6 6.32843 6 5.5C6 4.67157 6.67157 4 7.5 4C8.32843 4 9 4.67157 9 5.5V7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-        </svg>
-      );
-    case 'transfer':
-      return (
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="mr-1">
-          <path d="M16 6L12 2L8 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-          <path d="M12 2V15" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-          <path d="M22 11L22 17C22 18.6569 20.6569 20 19 20L5 20C3.34315 20 2 18.6569 2 17L2 11" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-        </svg>
-      );
-    default:
-      return null;
-  }
-}
 
 export default DepositPage;
