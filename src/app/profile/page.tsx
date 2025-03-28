@@ -1,7 +1,7 @@
 'use client'
 import React, { useState, useEffect } from 'react';
 import PersonalInformation from '@/components/profile/PersonalInformation';
-import DematAccountDetails from '@/components/profile/DematAccount';
+import DematAccountDetails from '@/components/profile/DematAccountDetails';
 import TradingSegments from '@/components/profile/TradingSegments ';
 import BrokeragePlan from '@/components/profile/BrokeragePlan';
 import BankAndNomineeDetails from '@/components/profile/BankAndNomineeDetails';

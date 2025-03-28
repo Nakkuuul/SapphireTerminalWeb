@@ -1,6 +1,14 @@
 import React from 'react';
 
-const DematAccountDetails = ({ dematData = {} }) => {
+// Define a type for dematData prop
+type DematData = {
+  boId?: string;
+  dpId?: string;
+  participantName?: string;
+  depository?: string;
+};
+
+const DematAccountDetails = ({ dematData = {} }: { dematData?: DematData }) => {
   // Default values as fallbacks in case data is not provided
   const {
     boId = "1234839294940193",

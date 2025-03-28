@@ -1,6 +1,16 @@
 import React from 'react';
 
-const PersonalInformation = ({ userData = {} }) => {
+// Define a type for userData prop
+type UserData = {
+  name?: string;
+  accountId?: string;
+  pan?: string;
+  phone?: string;
+  location?: string;
+  email?: string;
+};
+
+const PersonalInformation = ({ userData = {} }: { userData?: UserData }) => {
   // Default values as fallbacks in case data is not provided
   const {
     name = "Nakul Pratap Thakur",
