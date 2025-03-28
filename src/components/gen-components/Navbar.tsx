@@ -3,9 +3,11 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { FaTwitter, FaLinkedin, FaInstagram } from "react-icons/fa";
 
 const Navbar = () => {
+  const router = useRouter();
   const pathname = usePathname();
   const [activeLink, setActiveLink] = useState(pathname);
   const [isSidebarOpen, setSidebarOpen] = useState(false);
@@ -139,7 +141,10 @@ const Navbar = () => {
 
               {/* User Profile Avatar with Dropdown Arrow */}
               <div className="flex items-center">
-                <div className="h-8 w-8 rounded-full overflow-hidden border border-gray-300">
+                <div 
+                  className="h-8 w-8 cursor-pointer rounded-full overflow-hidden border border-gray-300"
+                  onClick={() => router.push('/profile')}
+                >
                   <Image 
                     src="/globe.svg" 
                     alt="Profile" 
