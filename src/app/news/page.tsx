@@ -76,7 +76,7 @@ const VideoPlayerPage = () => {
   const [timerWidth, setTimerWidth] = useState(100);
   const [showControls, setShowControls] = useState(true);
   const videoContainerRef = useRef(null);
-  const timerRef = useRef(null);
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
     // Simulating API fetch
@@ -107,12 +107,12 @@ const VideoPlayerPage = () => {
     startTimer();
 
     return () => {
-      if (timerRef.current) clearInterval(timerRef.current);
+      if (timerRef.current) clearInterval(timerRef.current as NodeJS.Timeout);
     };
   }, [currentVideoIndex]);
 
   const startTimer = () => {
-    if (timerRef.current) clearInterval(timerRef.current);
+    if (timerRef.current) clearInterval(timerRef.current as NodeJS.Timeout);
     
     const timerDuration = 30000; // 30 seconds
     const intervalTime = 100; // Update every 100ms for smooth animation
@@ -124,7 +124,7 @@ const VideoPlayerPage = () => {
       setTimerWidth(prevWidth => {
         // If timer is completed, go to next video
         if (prevWidth <= decrementPerInterval) {
-          clearInterval(timerRef.current);
+          clearInterval(timerRef.current as NodeJS.Timeout);
           handleNextVideo();
           return 0;
         }
@@ -160,7 +160,7 @@ const VideoPlayerPage = () => {
     
     // Pause/resume the 30-second timer
     if (!isPaused) {
-      if (timerRef.current) clearInterval(timerRef.current);
+      if (timerRef.current) clearInterval(timerRef.current as NodeJS.Timeout);
     } else {
       startTimer();
     }
@@ -197,7 +197,7 @@ const VideoPlayerPage = () => {
   }
 
   // Helper function to extract video ID from YouTube URL
-  const getYouTubeThumbnail = (url) => {
+  const getYouTubeThumbnail = (url: any ) => {
     try {
       const regExp = /^.*(youtu.be\/|v\/|e\/|u\/\w+\/|embed\/|v=)([^#&?]*).*/;
       const match = url.match(regExp);
