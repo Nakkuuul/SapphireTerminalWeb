@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 
 interface TradeSelectorProps {
   activeComponent: React.ReactNode;
@@ -9,26 +9,64 @@ interface TradeSelectorProps {
 
 function TradeSelector({ activeComponent, closedComponent }: TradeSelectorProps) {
   const [selected, setSelected] = useState<"active" | "closed">("active");
+  const [indicatorStyle, setIndicatorStyle] = useState({});
+  const activeButtonRef = useRef<HTMLButtonElement>(null);
+  const closedButtonRef = useRef<HTMLButtonElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  // Update the indicator position when selection changes
+  useEffect(() => {
+    const updateIndicator = () => {
+      const currentButton = selected === "active" ? activeButtonRef.current : closedButtonRef.current;
+      const container = containerRef.current;
+      
+      if (currentButton && container) {
+        const buttonRect = currentButton.getBoundingClientRect();
+        const containerRect = container.getBoundingClientRect();
+        
+        setIndicatorStyle({
+          width: `${buttonRect.width}px`,
+          height: `${buttonRect.height}px`,
+          transform: `translateX(${buttonRect.left - containerRect.left}px)`,
+        });
+      }
+    };
+    
+    // Update on selection change
+    updateIndicator();
+    
+    // Update on window resize
+    window.addEventListener('resize', updateIndicator);
+    return () => window.removeEventListener('resize', updateIndicator);
+  }, [selected]);
 
   return (
-    <div className="flex flex-col w-full mt-4">
+    <div className="flex flex-col w-full ">
       {/* Toggle Buttons */}
-      <div className="flex border-[1px] border-[#D1D5DB] rounded-full p-1 w-full">
+      <div className="flex border-[1px] border-[#D1D5DB] rounded-full p-1 w-full relative" ref={containerRef}>
+        {/* Animated Indicator */}
+        <div 
+          className="absolute left-0 bg-green-100 rounded-full transition-all duration-300 ease-in-out"
+          style={indicatorStyle}
+        />
+        
         <button
-          className={`flex-1 px-3 sm:px-6 py-2 sm:py-3 rounded-full text-xs sm:text-sm font-medium transition-all duration-300 ${
+          ref={activeButtonRef}
+          className={`flex-1 px-3 sm:px-6 py-2 sm:py-3 rounded-full text-xs sm:text-xl font-medium transition-colors duration-300 z-10 ${
             selected === "active"
-              ? "bg-green-100 text-green-600 "
-              : "text-gray-500 hover:bg-gray-200"
+              ? "text-green-600"
+              : "text-gray-500 hover:text-gray-700"
           }`}
           onClick={() => setSelected("active")}
         >
           Active Trade
         </button>
         <button
-          className={`flex-1 px-3 sm:px-6 py-2 sm:py-3 rounded-full text-xs sm:text-sm font-medium transition-all duration-300 ${
+          ref={closedButtonRef}
+          className={`flex-1 px-3 sm:px-6 py-2 sm:py-3 rounded-full text-xs sm:text-xl font-medium transition-colors duration-300 z-10 ${
             selected === "closed"
-              ? "bg-green-100 text-green-600"
-              : "text-gray-500 hover:bg-gray-200"
+              ? "text-green-600"
+              : "text-gray-500 hover:text-gray-700"
           }`}
           onClick={() => setSelected("closed")}
         >

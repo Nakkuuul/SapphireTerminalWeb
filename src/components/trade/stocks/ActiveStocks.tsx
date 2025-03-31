@@ -106,25 +106,25 @@ export default function TradesList() {
   };
 
   return (
-    <div className="space-y-4">
-      <div className='flex items-center justify-between py-2'>
+    <div className="space-y-6">
+      <div className='flex items-center justify-between'>
         {/* WhatsApp Alerts Button on the left */}
         <div className='flex items-center'>
-        <button className="flex items-center gap-2 rounded-full bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm border border-gray-200">
-        <FaWhatsapp size={20} className="text-green-500" />
+        <button className="flex items-center gap-2 rounded-md  bg-[#F4F4F9] px-5 py-2 text-lg font-medium text-[#333333] border border-[#D1D5DB]">
+        <FaWhatsapp size={24} className="text-green-500" />
         <span>Get alerts on WhatsApp</span>
         </button>
         </div>
 
         {/* Search Feature on the right */}
-        <div className='relative max-w-xs'>
-          <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-            <Search size={16} className="text-gray-400" />
+        <div className='relative max-w-'>
+          <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+            <Search size={16} className="text-[#686868]" />
           </div>
           <input
             type="text"
             placeholder="Search everything..."
-            className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-blue-500"
+            className="w-full pl-3 pr-3 py-3 border border-[#D1D5DB] rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-blue-500"
             value={searchQuery}
             onChange={handleSearchChange}
           />

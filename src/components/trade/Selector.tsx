@@ -27,14 +27,14 @@ function Selector() {
   return (
     <>
       {/* Desktop Version - Horizontal Tabs */}
-      <div className="hidden md:flex w-full justify-center items-center gap-x-4 lg:gap-x-12">
+      <div className="hidden md:flex w-full justify-center items-center pb-6 gap-x-4 lg:gap-x-12">
         {tabs.map((tab) => (
           <Link
             key={tab.name}
             href={tab.path}
-            className={`min-w-[100px] lg:min-w-[170px] px-3 lg:px-6 py-2 font-semibold text-xs lg:text-sm text-center flex items-center justify-center rounded-sm border transition-all duration-300 ${
+            className={`min-w-[100px] lg:min-w-[170px] px-3 lg:px-6 py-[10px] font-medium text-xs lg:text-xl text-center flex items-center justify-center rounded-[4px] border transition-all duration-300 ${
               pathname === tab.path
-                ? "bg-green-100 text-[#1DB954] border-[1px] border-[#22A06B]"
+                ? "bg-[#D1FADF99] text-[#1DB954] border-[1px] border-[#22A06B]"
                 : "bg-[#F6F6F6] text-gray-600 border-[#D1D5DB] hover:bg-gray-100"
             }`}
           >

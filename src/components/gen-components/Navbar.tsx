@@ -68,7 +68,7 @@ const Navbar = () => {
 
   return (
     <>
-      <nav className="fixed font-poppins w-full top-0 z-50 bg-white border-b-[3px] border-gray-200">
+      <nav className="fixed px-9 font-poppins w-full top-0 z-50 bg-white border-b-[3px] border-gray-200">
         <div className="w-full mx-auto flex items-center justify-between h-[70px] px-4">
           {/* Main single-row layout */}
           <div className="w-full flex items-center justify-between">
@@ -131,7 +131,7 @@ const Navbar = () => {
             </div>
 
             {/* Desktop Right Side Elements */}
-            <div className="hidden md:flex items-center space-x-4">
+            <div className="hidden md:flex items-center bg-black space-x-4">
               {/* Notifications Bell Icon */}
               <button className="text-gray-700">
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">

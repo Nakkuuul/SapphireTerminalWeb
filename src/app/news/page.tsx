@@ -1,6 +1,6 @@
 'use client'
 import React, { useState, useEffect, useRef } from 'react';
-import { ChevronUp, ChevronDown, Heart, MessageSquare, Share2, Maximize } from 'lucide-react';
+import { Heart, MessageSquare, Share2, Maximize, Pause, Play } from 'lucide-react';
 
 const VideoPlayerPage = () => {
   // This would be fetched from your backend API
@@ -12,7 +12,6 @@ const VideoPlayerPage = () => {
       time: '12:56:04',
       description: 'Two analytics firms have jointly analysed the market data industry, concluding that rising costs are unsustainable. Substantive Research CEO Mike Charades warns that vendor price hikes outpace banks and asset managers\' budget growth, making current spending levels unviable. Without adjustments, financial firms may struggle to manage escalating data expenses.',
       source: 'Economic Times',
-      // YouTube embed URL - modified to embed format
       videoUrl: 'https://www.youtube.com/embed/EaLQALGEoNE',
       thumbnailUrl: '/api/placeholder/400/320',
       likes: 54,
@@ -25,7 +24,6 @@ const VideoPlayerPage = () => {
       time: '10:30:22',
       description: 'Financial experts are raising alarms about the rapidly increasing costs of market data services. As vendors continue to raise prices, many institutions are finding it difficult to justify the expense.',
       source: 'Bloomberg',
-      // Using a different YouTube video as example
       videoUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ',
       thumbnailUrl: '/api/placeholder/400/320',
       likes: 42,
@@ -70,24 +68,22 @@ const VideoPlayerPage = () => {
   ];
 
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
-  const [isFullscreen, setIsFullscreen] = useState(false);
+  const [isEnlarged, setIsEnlarged] = useState(false);
   const [isLiked, setIsLiked] = useState(false);
+  const [isPaused, setIsPaused] = useState(false);
   const [videos, setVideos] = useState(dummyVideos);
   const [loading, setLoading] = useState(false);
-  const videoContainerRef = useRef<HTMLDivElement>(null);
+  const [timerWidth, setTimerWidth] = useState(100);
+  const [showControls, setShowControls] = useState(true);
+  const videoContainerRef = useRef(null);
+  const timerRef = useRef(null);
 
-  // This useEffect would be used to fetch videos from your backend
   useEffect(() => {
     // Simulating API fetch
     const fetchVideos = async () => {
       try {
         setLoading(true);
-        // In production, this would be replaced with actual API call:
-        // const response = await fetch('/api/videos');
-        // const data = await response.json();
-        // setVideos(data);
-
-        // Using dummy data for now
+        // In production, this would be replaced with actual API call
         setTimeout(() => {
           setVideos(dummyVideos);
           setLoading(false);
@@ -101,44 +97,72 @@ const VideoPlayerPage = () => {
     fetchVideos();
   }, []);
 
-  // Reset isLiked when changing videos
+  // Reset isLiked and timer when changing videos
   useEffect(() => {
     setIsLiked(false);
+    setTimerWidth(100);
+    setShowControls(true);
+    
+    // Start the 30-second timer
+    startTimer();
+
+    return () => {
+      if (timerRef.current) clearInterval(timerRef.current);
+    };
   }, [currentVideoIndex]);
+
+  const startTimer = () => {
+    if (timerRef.current) clearInterval(timerRef.current);
+    
+    const timerDuration = 30000; // 30 seconds
+    const intervalTime = 100; // Update every 100ms for smooth animation
+    const decrementPerInterval = (100 * intervalTime) / timerDuration;
+    
+    setTimerWidth(100);
+    
+    timerRef.current = setInterval(() => {
+      setTimerWidth(prevWidth => {
+        // If timer is completed, go to next video
+        if (prevWidth <= decrementPerInterval) {
+          clearInterval(timerRef.current);
+          handleNextVideo();
+          return 0;
+        }
+        return prevWidth - decrementPerInterval;
+      });
+    }, intervalTime);
+  };
 
   const handleNextVideo = () => {
     if (currentVideoIndex < videos.length - 1) {
       setCurrentVideoIndex(currentVideoIndex + 1);
+    } else {
+      // Loop back to the first video if at the end
+      setCurrentVideoIndex(0);
     }
   };
 
   const handlePreviousVideo = () => {
     if (currentVideoIndex > 0) {
       setCurrentVideoIndex(currentVideoIndex - 1);
+    } else {
+      // Loop to the last video if at the beginning
+      setCurrentVideoIndex(videos.length - 1);
     }
   };
 
-  const toggleFullscreen = () => {
-    if (!document.fullscreenElement && videoContainerRef.current) {
-      if (videoContainerRef.current.requestFullscreen) {
-        videoContainerRef.current.requestFullscreen()
-          .then(() => {
-            setIsFullscreen(true);
-          })
-          .catch(err => {
-            console.error('Error attempting to enable fullscreen:', err);
-          });
-      }
+  const toggleEnlarged = () => {
+    setIsEnlarged(!isEnlarged);
+  };
+
+  const togglePlayPause = () => {
+    setIsPaused(!isPaused);
+    
+    // Pause/resume the 30-second timer
+    if (!isPaused) {
+      if (timerRef.current) clearInterval(timerRef.current);
     } else {
-      if (document.exitFullscreen) {
-        document.exitFullscreen()
-          .then(() => {
-            setIsFullscreen(false);
-          })
-          .catch(err => {
-            console.error('Error attempting to exit fullscreen:', err);
-          });
-      }
+      startTimer();
     }
   };
 
@@ -158,15 +182,9 @@ const VideoPlayerPage = () => {
     setVideos(updatedVideos);
   };
 
-  // Handle exit fullscreen
-  useEffect(() => {
-    const handleFullscreenChange = () => {
-      setIsFullscreen(!!document.fullscreenElement);
-    };
-
-    document.addEventListener('fullscreenchange', handleFullscreenChange);
-    return () => document.removeEventListener('fullscreenchange', handleFullscreenChange);
-  }, []);
+  const toggleControls = () => {
+    setShowControls(!showControls);
+  };
 
   const currentVideo = videos[currentVideoIndex];
 
@@ -179,7 +197,7 @@ const VideoPlayerPage = () => {
   }
 
   // Helper function to extract video ID from YouTube URL
-  const getYouTubeThumbnail = (url: any) => {
+  const getYouTubeThumbnail = (url) => {
     try {
       const regExp = /^.*(youtu.be\/|v\/|e\/|u\/\w+\/|embed\/|v=)([^#&?]*).*/;
       const match = url.match(regExp);
@@ -191,7 +209,7 @@ const VideoPlayerPage = () => {
   };
 
   return (
-    <div className="max-w-4xl mx-auto px-4 pb-8">
+    <div className="mx-auto px-4 pb-8">
       <div className="flex flex-col md:flex-row">
         {/* Left Sidebar - Previous News */}
         <div className="w-full md:w-1/4 pr-0 md:pr-4 mb-4 md:mb-0">
@@ -215,64 +233,82 @@ const VideoPlayerPage = () => {
         </div>
 
         {/* Main Content - Video Player */}
-        <div className="w-full md:w-3/4">
+        <div className={`w-full md:w-1/2 transition-all duration-300 ${isEnlarged ? 'md:w-full md:h-full' : ''}`}>
+          {/* Video Header - Date and Time */}
+          <div className="flex justify-between mb-2">
+            <div className="text-sm text-gray-500">{currentVideo.date}</div>
+            <div className="text-sm text-gray-500">{currentVideo.time}</div>
+          </div>
+          
           {/* Video Player */}
           <div 
             ref={videoContainerRef}
-            className="relative bg-black rounded-md mb-4 overflow-hidden"
-            style={{ aspectRatio: '16/9' }}
+            className="relative bg-black rounded-md mb-0 overflow-hidden"
+            style={{ 
+              aspectRatio: '16/9',
+              position: 'relative',
+              transition: 'all 0.3s ease'
+            }}
+            onClick={toggleControls}
           >
             {/* Using iframe to embed the video */}
             <iframe
-              src={`${currentVideo.videoUrl}?autoplay=0&rel=0&showinfo=0&modestbranding=1`}
+              src={`${currentVideo.videoUrl}?autoplay=1&rel=0&showinfo=0&modestbranding=1&controls=0`}
               title={currentVideo.title}
-              className="w-full h-full"
+              className="w-full h-full pointer-events-none"
               frameBorder="0"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowFullScreen
             ></iframe>
             
-            {/* Next/Previous controls */}
-            <div className="absolute inset-0 pointer-events-none">
-              <div className="absolute left-0 top-0 bottom-0 w-16 flex items-center justify-center pointer-events-auto">
-                <button 
-                  onClick={handlePreviousVideo} 
-                  disabled={currentVideoIndex === 0}
-                  className={`p-2 rounded-full bg-white/20 backdrop-blur-sm hover:bg-white/30 transition ${currentVideoIndex === 0 ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
-                >
-                  <ChevronUp size={24} />
-                </button>
+            {/* Video Controls */}
+            {showControls && (
+              <div className="absolute inset-0 pointer-events-none">
+                {/* Play/Pause Button (Top Left) */}
+                <div className="absolute top-4 left-4 pointer-events-auto">
+                  <button 
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      togglePlayPause();
+                    }}
+                    className="bg-white/20 backdrop-blur-sm p-2 rounded-full hover:bg-white/30 transition"
+                  >
+                    {isPaused ? (
+                      <Play size={20} className="text-white" />
+                    ) : (
+                      <Pause size={20} className="text-white" />
+                    )}
+                  </button>
+                </div>
+                
+                {/* Enlarge Button (Top Right) */}
+                <div className="absolute top-4 right-4 pointer-events-auto">
+                  <button 
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      toggleEnlarged();
+                    }}
+                    className="bg-white/20 backdrop-blur-sm p-2 rounded-full hover:bg-white/30 transition"
+                  >
+                    <Maximize size={20} className="text-white" />
+                  </button>
+                </div>
               </div>
-              
-              <div className="absolute right-0 top-0 bottom-0 w-16 flex items-center justify-center pointer-events-auto">
-                <button 
-                  onClick={handleNextVideo} 
-                  disabled={currentVideoIndex === videos.length - 1}
-                  className={`p-2 rounded-full bg-white/20 backdrop-blur-sm hover:bg-white/30 transition ${currentVideoIndex === videos.length - 1 ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
-                >
-                  <ChevronDown size={24} />
-                </button>
-              </div>
-              
-              <div className="absolute bottom-4 right-4 pointer-events-auto">
-                <button 
-                  onClick={toggleFullscreen}
-                  className="bg-white/20 backdrop-blur-sm p-2 rounded-full hover:bg-white/30 transition"
-                >
-                  <Maximize size={20} className="text-white" />
-                </button>
-              </div>
-            </div>
+            )}
           </div>
+          
+          {/* Timer Bar */}
+          {timerWidth > 0 && (
+            <div className="w-full h-1 bg-gray-200">
+              <div 
+                className="h-full bg-green-500 transition-all" 
+                style={{ width: `${timerWidth}%` }}
+              ></div>
+            </div>
+          )}
 
           {/* Video Info */}
-          <div className="mb-6">
-            <div className="flex items-center text-sm text-gray-500 mb-2">
-              <span>{currentVideo.date}</span>
-              <span className="mx-2">•</span>
-              <span>{currentVideo.time}</span>
-            </div>
-            
+          <div className="mt-4 mb-6">
             <h1 className="text-2xl font-bold mb-4">{currentVideo.title}</h1>
             
             <p className="text-gray-700 mb-4">
@@ -285,12 +321,33 @@ const VideoPlayerPage = () => {
           </div>
 
           {/* Interaction Bar */}
-          <div className="border-t border-b py-4 grid grid-cols-3">
+          {/* <div className="border-t border-b py-4 grid grid-cols-3">
             <button 
-              className={`flex flex-col items-center ${isLiked ? 'text-red-500' : 'text-gray-600'}`}
+              className="flex flex-col items-center text-gray-600"
               onClick={toggleLike}
             >
-              <Heart fill={isLiked ? "currentColor" : "none"} size={20} />
+              <Heart fill={isLiked ? "black" : "none"} stroke="currentColor" size={20} />
+              <span className="text-sm mt-1">{currentVideo.likes}</span>
+            </button>
+            
+            <button className="flex flex-col items-center text-gray-600">
+              <MessageSquare size={20} />
+              <span className="text-sm mt-1">{currentVideo.comments}</span>
+            </button>
+            
+            <button className="flex flex-col items-center text-gray-600">
+              <Share2 size={20} />
+              <span className="text-sm mt-1">Share</span>
+            </button>
+          </div> */}
+        </div>
+        <div className='bottom-0 right-52 z-10'>
+          <div className="px-2 py-4 gap-y-5 grid grid-row-3">
+            <button 
+              className="flex flex-col items-center text-gray-600"
+              onClick={toggleLike}
+            >
+              <Heart fill={isLiked ? "black" : "none"} stroke="currentColor" size={20} />
               <span className="text-sm mt-1">{currentVideo.likes}</span>
             </button>
             
