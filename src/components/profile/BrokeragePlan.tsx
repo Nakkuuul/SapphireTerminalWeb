@@ -1,7 +1,19 @@
 import React from 'react';
 import { Info } from 'lucide-react';
 
-const BrokeragePlan = ({ brokerageData = [] }) => {
+type BrokerageRow = {
+  security: string;
+  planType: string;
+  brokerage: string;
+  minimumBrokerage: string;
+  additionalCharges: string;
+};
+
+type BrokeragePlanProps = {
+  brokerageData?: BrokerageRow[];
+};
+
+const BrokeragePlan = ({ brokerageData = [] }: BrokeragePlanProps) => {
   // Default data if no props provided
   const defaultBrokerageData = [
     {
@@ -66,18 +78,20 @@ const BrokeragePlan = ({ brokerageData = [] }) => {
   const brokerageRows = brokerageData.length > 0 ? brokerageData : defaultBrokerageData;
 
   return (
-    <div className="bg-white rounded-lg shadow-sm p-4 mb-4">
-      <h3 className="font-medium text-gray-700 mb-4">Brokerage Plan</h3>
+    <div className="border border-[#D1D5DB] mb-6">
+      <div className="bg-[#F4F4F9] border-b-[#D1D5DB] p-3">
+        <h3 className="text-lg font-normal text-[#1A1A1A]">Brokerage Plan</h3>
+      </div>
       
-      <div className="overflow-x-auto">
-        <table className="w-full">
-          <thead className="bg-gray-50">
+      <div className="overflow-x-auto p-6">
+        <table className="w-full border-collapse">
+          <thead>
             <tr>
-              <th className="p-3 text-left text-sm font-medium text-gray-700">Security</th>
-              <th className="p-3 text-left text-sm font-medium text-gray-700">Plan type</th>
-              <th className="p-3 text-left text-sm font-medium text-gray-700">Brokerage</th>
-              <th className="p-3 text-left text-sm font-medium text-gray-700">Minimum Brokerage</th>
-              <th className="p-3 text-left text-sm font-medium text-gray-700">
+              <th className="p-3 text-left text-base font-medium text-gray-900 border bg-[#B8DBD94D]">Security</th>
+              <th className="p-3 text-left text-base font-medium text-gray-900 border bg-[#B8DBD94D]">Plan type</th>
+              <th className="p-3 text-left text-base font-medium text-gray-900 border bg-[#B8DBD94D]">Brokerage</th>
+              <th className="p-3 text-left text-base font-medium text-gray-900 border bg-[#B8DBD94D]">Minimum Brokerage</th>
+              <th className="p-3 text-left text-base font-medium text-gray-900 border bg-[#B8DBD94D]">
                 <div className="flex items-center">
                   Additional Charges
                   <Info size={16} className="ml-1 text-gray-400" />
@@ -85,14 +99,17 @@ const BrokeragePlan = ({ brokerageData = [] }) => {
               </th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-gray-200">
+          <tbody>
             {brokerageRows.map((row, index) => (
-              <tr key={index} className="bg-white">
-                <td className="p-3 text-sm text-gray-700">{row.security}</td>
-                <td className="p-3 text-sm text-gray-700">{row.planType}</td>
-                <td className="p-3 text-sm text-gray-700">{row.brokerage}</td>
-                <td className="p-3 text-sm text-gray-700">{row.minimumBrokerage}</td>
-                <td className="p-3 text-sm text-gray-700">{row.additionalCharges}</td>
+              <tr key={index}>
+                <td className="p-3 text-sm font-medium text-gray-500 border">{row.security}</td>
+                <td className="p-3 text-sm font-medium text-gray-500 border">{row.planType}</td>
+                <td className="p-3 text-sm font-medium text-gray-500 border">{row.brokerage}</td>
+                <td className="p-3 text-sm font-medium text-gray-500 border">{row.minimumBrokerage}</td>
+                <td className="p-3 text-sm font-medium text-gray-500 border flex items-center">
+                  {row.additionalCharges}
+                  <Info size={16} className="ml-1 text-gray-400" />
+                </td>
               </tr>
             ))}
           </tbody>

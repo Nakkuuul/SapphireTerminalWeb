@@ -77,7 +77,7 @@ const ProfilePage = () => {
   }
 
   return (
-    <div className="max-w-4xl mx-auto p-4">
+    <div className="mx-auto">
       <PersonalInformation userData={profileData.userData} />
       <DematAccountDetails dematData={profileData.dematData} />
       <TradingSegments segmentsData={profileData.segmentsData} />

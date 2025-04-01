@@ -22,8 +22,9 @@ const PersonalInformation = ({ userData = {} }: { userData?: UserData }) => {
   } = userData;
 
   return (
-    <div className="bg-white rounded-lg shadow-sm p-4 mb-4">
-      <div className="flex items-center mb-4">
+    <>
+    <div className="bg-[#F4F4F9] border border-[#D1D5DB] p-3 mb-6">
+      <div className="flex items-center">
         <div className="bg-gray-100 rounded-lg p-3 mr-4">
           <span className="text-3xl">👨</span>
         </div>
@@ -32,10 +33,11 @@ const PersonalInformation = ({ userData = {} }: { userData?: UserData }) => {
           <p className="text-gray-500 text-sm">{accountId}</p>
         </div>
       </div>
+    </div>
+    <div className='mb-6 border border-[#D1D5DB]'>
+    <h3 className="font-normal text-lg text-[#1A1A1A] py-4 px-3 bg-[#F4F4F9] border-b mb-4">Personal Information</h3>
       
-      <h3 className="font-medium text-gray-700 py-2 border-b mb-4">Personal Information</h3>
-      
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-2 px-3 py-3 gap-4">
         <div>
           <p className="text-sm text-gray-500">PAN</p>
           <p className="font-medium">{pan}</p>
@@ -54,6 +56,7 @@ const PersonalInformation = ({ userData = {} }: { userData?: UserData }) => {
         </div>
       </div>
     </div>
+    </>
   );
 };
 
