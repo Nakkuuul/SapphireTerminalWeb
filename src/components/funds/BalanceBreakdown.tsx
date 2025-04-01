@@ -16,25 +16,23 @@ interface BalanceBreakdownProps {
   margins: {
     spanMargin: number;
     exposureMargin: number;
-    spanAddOn: number;
+    cncAmount: number;
     commodityAdditionalMargin: number;
-    cashIntradayMISMargin: number;
+    cashIntradayMTFMargin: number;
     coroMargin: number;
   };
   premiums: {
-    optionPremium: number;
+    fnoOptionPremium: number;
     currencyPremium: number;
     commodityPremium: number;
     totalPremium: number;
   };
   withdrawable: number;
+  totalBalance: number;
 }
 
 const formatCurrency = (value: number): string => {
-  return new Intl.NumberFormat('en-IN', {
-    maximumFractionDigits: 2,
-    minimumFractionDigits: 2
-  }).format(value);
+  return new Intl.NumberFormat('en-IN').format(value);
 };
 
 const BalanceBreakdown: React.FC<BalanceBreakdownProps> = ({ 
@@ -42,114 +40,115 @@ const BalanceBreakdown: React.FC<BalanceBreakdownProps> = ({
   profitLossData, 
   margins, 
   premiums, 
-  withdrawable 
+  withdrawable,
+  totalBalance
 }) => {
   return (
-    <div>
+    <div className="border border-gray-200 rounded-md p-4">
       <div className="flex items-center mb-4">
-        <h2 className="text-lg font-medium">Total Balance</h2>
-        <Info size={16} className="ml-2 text-gray-400" />
+        <h2 className="text-base font-medium text-[#1DB954]">Total Balance <Info size={16} className="inline ml-1 text-gray-400" /></h2>
+        <div className="ml-auto text-base font-medium text-[#1DB954]">₹{formatCurrency(totalBalance)}</div>
       </div>
       
-      <div className="bg-gray-50 rounded-md p-4 mb-4">
-        <table className="w-full">
-          <tbody className="text-sm">
-            <tr>
-              <td className="py-2 text-[#6B7280]">Cash Balance</td>
-              <td className="py-2 text-right">₹{formatCurrency(balanceData.cashBalance)}</td>
+      <div className="mb-4">
+        <table className="w-full text-sm">
+          <tbody>
+            <tr className="bg-[#F4F4F9]">
+              <td className="py-2 pl-2 text-[#6B7280] text-[14px]">Cash Balance</td>
+              <td className="py-2 pr-2 text-right text-[14px]">₹{formatCurrency(balanceData.cashBalance)}</td>
             </tr>
             <tr>
-              <td className="py-2 text-[#6B7280]">Collateral Balance</td>
-              <td className="py-2 text-right">₹{formatCurrency(balanceData.collateralBalance)}</td>
+              <td className="py-2 pl-2 text-[#6B7280] text-[14px]">Collateral Balance</td>
+              <td className="py-2 pr-2 text-right text-[14px]">₹{formatCurrency(balanceData.collateralBalance)}</td>
+            </tr>
+            <tr className="bg-[#F4F4F9]">
+              <td className="py-2 pl-2 text-[#6B7280] text-[14px]">Collateral (Liquid Funds)</td>
+              <td className="py-2 pr-2 text-right text-[14px]">₹{formatCurrency(balanceData.collateralLiquidFunds)}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      
+      <div className="flex items-center mb-4">
+        <h2 className="text-base font-medium text-[#1DB954]">Margin Utilised <Info size={16} className="inline ml-1 text-gray-400" /></h2>
+        <div className="ml-auto text-base font-medium text-[#1DB954]">₹{formatCurrency(balanceData.marginUtilised)}</div>
+      </div>
+      
+      <div className="mb-4">
+        <h3 className="text-base font-medium mb-2">P&L (Profit & Loss)</h3>
+        <table className="w-full text-sm">
+          <tbody>
+            <tr className="bg-[#F4F4F9]">
+              <td className="py-2 pl-2 text-[#6B7280] text-[14px]">Realized P&L</td>
+              <td className="py-2 pr-2 text-right text-[14px]">₹{formatCurrency(profitLossData.realizedPL)}</td>
             </tr>
             <tr>
-              <td className="py-2 text-[#6B7280]">Collateral (Liquid Funds)</td>
-              <td className="py-2 text-right">₹{formatCurrency(balanceData.collateralLiquidFunds)}</td>
-            </tr>
-            <tr className="border-t border-gray-200">
-              <td className="py-2 font-medium text-[#1DB954]">Margin Utilised</td>
-              <td className="py-2 text-right font-medium text-[#1DB954]">₹{formatCurrency(balanceData.marginUtilised)}</td>
+              <td className="py-2 pl-2 text-[#6B7280] text-[14px]">Unrealized P&L</td>
+              <td className="py-2 pr-2 text-right text-[14px]">₹{formatCurrency(profitLossData.unrealizedPL)}</td>
             </tr>
           </tbody>
         </table>
       </div>
       
       <div className="mb-4">
-        <h3 className="text-md font-medium mb-2">P&L (Profit & Loss)</h3>
+        <h3 className="text-base font-medium mb-2">Margin</h3>
         <table className="w-full text-sm">
           <tbody>
-            <tr>
-              <td className="py-1 text-[#6B7280]">Realized P&L</td>
-              <td className="py-1 text-right">₹{formatCurrency(profitLossData.realizedPL)}</td>
+            <tr className="bg-[#F4F4F9]">
+              <td className="py-2 pl-2 text-[#6B7280] text-[14px]">Span Margin</td>
+              <td className="py-2 pr-2 text-right text-[14px]">₹{formatCurrency(margins.spanMargin)}</td>
             </tr>
             <tr>
-              <td className="py-1 text-[#6B7280]">Unrealized P&L</td>
-              <td className="py-1 text-right">₹{formatCurrency(profitLossData.unrealizedPL)}</td>
+              <td className="py-2 pl-2 text-[#6B7280] text-[14px]">Exposure Margin</td>
+              <td className="py-2 pr-2 text-right text-[14px]">₹{formatCurrency(margins.exposureMargin)}</td>
+            </tr>
+            <tr className="bg-[#F4F4F9]">
+              <td className="py-2 pl-2 text-[#6B7280] text-[14px]">CNC Amount</td>
+              <td className="py-2 pr-2 text-right text-[14px]">₹{formatCurrency(margins.cncAmount)}</td>
+            </tr>
+            <tr>
+              <td className="py-2 pl-2 text-[#6B7280] text-[14px]">Commodity Additional Margin</td>
+              <td className="py-2 pr-2 text-right text-[14px]">₹{formatCurrency(margins.commodityAdditionalMargin)}</td>
+            </tr>
+            <tr className="bg-[#F4F4F9]">
+              <td className="py-2 pl-2 text-[#6B7280] text-[14px]">Cash Intraday / MTF Margin</td>
+              <td className="py-2 pr-2 text-right text-[14px]">₹{formatCurrency(margins.cashIntradayMTFMargin)}</td>
+            </tr>
+            <tr>
+              <td className="py-2 pl-2 text-[#6B7280] text-[14px]">CORO Margin</td>
+              <td className="py-2 pr-2 text-right text-[14px]">₹{formatCurrency(margins.coroMargin)}</td>
             </tr>
           </tbody>
         </table>
       </div>
       
       <div className="mb-4">
-        <h3 className="text-md font-medium mb-2">Margin</h3>
+        <h3 className="text-base font-medium mb-2">Premiums</h3>
         <table className="w-full text-sm">
           <tbody>
-            <tr>
-              <td className="py-1 text-[#6B7280]">Span Margin</td>
-              <td className="py-1 text-right">₹{formatCurrency(margins.spanMargin)}</td>
+            <tr className="bg-[#F4F4F9]">
+              <td className="py-2 pl-2 text-[#6B7280] text-[14px]">FNO Premium</td>
+              <td className="py-2 pr-2 text-right text-[14px]">₹{formatCurrency(premiums.fnoOptionPremium)}</td>
             </tr>
             <tr>
-              <td className="py-1 text-[#6B7280]">Exposure Margin</td>
-              <td className="py-1 text-right">₹{formatCurrency(margins.exposureMargin)}</td>
+              <td className="py-2 pl-2 text-[#6B7280] text-[14px]">Currency Premium</td>
+              <td className="py-2 pr-2 text-right text-[14px]">₹{formatCurrency(premiums.currencyPremium)}</td>
+            </tr>
+            <tr className="bg-[#F4F4F9]">
+              <td className="py-2 pl-2 text-[#6B7280] text-[14px]">Commodity Premium</td>
+              <td className="py-2 pr-2 text-right text-[14px]">₹{formatCurrency(premiums.commodityPremium)}</td>
             </tr>
             <tr>
-              <td className="py-1 text-[#6B7280]">SPAN Add-on</td>
-              <td className="py-1 text-right">₹{formatCurrency(margins.spanAddOn)}</td>
-            </tr>
-            <tr>
-              <td className="py-1 text-[#6B7280]">Commodity Additional Margin</td>
-              <td className="py-1 text-right">₹{formatCurrency(margins.commodityAdditionalMargin)}</td>
-            </tr>
-            <tr>
-              <td className="py-1 text-[#6B7280]">Cash Intraday / MIS Margin</td>
-              <td className="py-1 text-right">₹{formatCurrency(margins.cashIntradayMISMargin)}</td>
-            </tr>
-            <tr>
-              <td className="py-1 text-[#6B7280]">CORO Margin</td>
-              <td className="py-1 text-right">₹{formatCurrency(margins.coroMargin)}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      
-      <div className="mb-4">
-        <h3 className="text-md font-medium mb-2">Premiums</h3>
-        <table className="w-full text-sm">
-          <tbody>
-            <tr>
-              <td className="py-1 text-[#6B7280]">Option Premium</td>
-              <td className="py-1 text-right">₹{formatCurrency(premiums.optionPremium)}</td>
-            </tr>
-            <tr>
-              <td className="py-1 text-[#6B7280]">Currency Premium</td>
-              <td className="py-1 text-right">₹{formatCurrency(premiums.currencyPremium)}</td>
-            </tr>
-            <tr>
-              <td className="py-1 text-[#6B7280]">Commodity Premium</td>
-              <td className="py-1 text-right">₹{formatCurrency(premiums.commodityPremium)}</td>
-            </tr>
-            <tr>
-              <td className="py-1 text-[#6B7280]">Total Premium</td>
-              <td className="py-1 text-right">₹{formatCurrency(premiums.totalPremium)}</td>
+              <td className="py-2 pl-2 text-[#6B7280] text-[14px]">Total Premium</td>
+              <td className="py-2 pr-2 text-right text-[14px]">₹{formatCurrency(premiums.totalPremium)}</td>
             </tr>
           </tbody>
         </table>
       </div>
       
       <div className="flex items-center">
-        <h2 className="text-[#1DB954] font-medium">Withdrawable Balance</h2>
-        <Info size={16} className="ml-2 text-gray-400" />
-        <div className="ml-auto text-[#1DB954] font-medium">₹{formatCurrency(withdrawable)}</div>
+        <h2 className="text-base font-medium text-[#1DB954]">Withdrawable Balance <Info size={16} className="inline ml-1 text-gray-400" /></h2>
+        <div className="ml-auto text-base font-medium text-[#1DB954]">₹{formatCurrency(withdrawable)}</div>
       </div>
     </div>
   );

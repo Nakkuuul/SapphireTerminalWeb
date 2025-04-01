@@ -24,14 +24,13 @@ const BalanceChart: React.FC<BalanceChartProps> = ({ data }) => {
     : -60;
 
   return (
-    <div>
-      <h2 className="text-lg font-medium mb-4">Total Balance Breakup</h2>
+    <div className='border border-[#D1D5DB] mt-4 rounded-md'>
+      <h2 className="text-lg border-b border-b-[#D1D5DB] font-medium p-3 ">Total Balance Breakup</h2>
       
-      <div className="relative bg-gray-50 rounded-md p-6 flex flex-col items-center">
-        <div className="w-48 h-24 overflow-hidden relative">
-          <div className="w-48 h-48 bg-gray-200 rounded-full absolute -bottom-24"></div>
+      <div className="relative rounded-md p-6 flex flex-col items-center">
+        <div className="w-24 h-24 overflow-hidden relative">
           <div 
-            className="w-48 h-48 border-[16px] border-transparent border-t-[#1DB954] rounded-full absolute -bottom-24"
+            className="w-48 h-48 border-[16px] border-transparent border-t-[#FBBC05] rounded-full absolute -bottom-24"
             style={{ transform: `rotate(${rotationDegree}deg)` }}
           ></div>
         </div>

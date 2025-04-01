@@ -1,14 +1,14 @@
 // components/RecentTransactions.tsx
 import React from 'react';
-import { ArrowUp, ArrowDown, RefreshCw } from 'lucide-react';
-import { recentTransactions } from '@/constants/funds-data';
+import TransactionStatusBadge from '@/components/gen-components/TransactionStatusBadge';
+import TransactionStatusIcon from '@/components/gen-components/TrasactionStatusIcon';
 
 interface Transaction {
   id: string;
   amount: number;
   date: string;
-  status: 'success' | 'processing' | 'failed';
-  statusText: string;
+  status: 'completed' | 'processing' | 'failed';
+  cardLastDigits: string;
 }
 
 interface RecentTransactionsProps {
@@ -19,42 +19,30 @@ const formatCurrency = (value: number): string => {
   return new Intl.NumberFormat('en-IN', {
     maximumFractionDigits: 2,
     minimumFractionDigits: 2
-  }).format(value);
+  }).format(Math.abs(value));
 };
 
-const RecentTransactions: React.FC<RecentTransactionsProps> = () => {
-  const transactions: Transaction[] = recentTransactions as Transaction[];
-
+const RecentTransactions: React.FC<RecentTransactionsProps> = ({ transactions }) => {
   return (
-    <div className="mb-6">
-      <h2 className="text-lg font-medium mb-4">Recent Transactions</h2>
+    <div className="border border-gray-200 rounded-lg p-4 bg-white">
+      <div className="mb-4 text-gray-800 font-medium">Recent Transactions</div>
       
       <div className="space-y-3">
         {transactions.map((transaction) => (
           <div key={transaction.id} className="bg-gray-50 rounded-md p-3">
             <div className="flex justify-between mb-1">
-              <div className="text-xs text-[#6B7280]">{transaction.id}</div>
-              <div className="text-sm font-medium">₹{formatCurrency(transaction.amount)}</div>
-            </div>
-            <div className="flex justify-between items-center">
-              <div className="text-xs text-[#6B7280]">{transaction.date}</div>
-              <div className={`flex items-center text-xs px-2 py-0.5 rounded-sm ${
-                transaction.status === 'success' 
-                  ? 'bg-green-100 text-[#1DB954]' 
-                  : transaction.status === 'processing' 
-                    ? 'bg-[#FFF6DC] text-[#FFBF00]' 
-                    : 'bg-red-100 text-red-500'
-              }`}>
-                {transaction.statusText}
+              <div className="text-xs text-gray-500">#{transaction.id}</div>
+              <div className="text-sm font-medium text-gray-800">
+                {transaction.amount < 0 ? '-' : ''}₹{formatCurrency(transaction.amount)}
               </div>
-              <div className="flex items-center">
-                {transaction.status === 'success' ? (
-                  <ArrowUp size={16} className="text-[#1DB954]" />
-                ) : transaction.status === 'processing' ? (
-                  <RefreshCw size={16} className="text-[#FFBF00]" />
-                ) : (
-                  <ArrowDown size={16} className="text-red-500" />
-                )}
+            </div>
+            
+            <div className="flex justify-between items-center">
+              <div className="text-xs text-gray-500">{transaction.date}</div>
+              <TransactionStatusBadge status={transaction.status} />
+              <div className="flex items-center space-x-2">
+                <TransactionStatusIcon status={transaction.status} />
+                <div className="text-xs text-gray-500">***** {transaction.cardLastDigits}</div>
               </div>
             </div>
           </div>

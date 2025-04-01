@@ -30,7 +30,7 @@ const ActionButtons = ({ onDeposit, onWithdraw }: ActionButtonsProps) => {
       
       <div className="flex-grow"></div>
       
-      <button className="flex items-center text-[#6B7280] px-4 py-2 rounded-md hover:bg-gray-50">
+      <button className="flex items-center border border-[#D1D5DB] text-[#6B7280] px-4 py-2 rounded-md hover:bg-gray-50">
         <span className="mr-2">View All Transaction History</span>
         <ChevronRight size={18} />
       </button>

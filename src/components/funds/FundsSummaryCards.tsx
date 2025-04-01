@@ -1,7 +1,7 @@
+// components/FundsSummaryCards.tsx
 import React from 'react';
-import { Info } from 'lucide-react';
+import { Equal, Info, Plus } from 'lucide-react';
 
-// Define the Props Interface
 interface FundsSummaryCardsProps {
   data: {
     availableMargin: number;
@@ -11,27 +11,49 @@ interface FundsSummaryCardsProps {
 }
 
 const FundsSummaryCards: React.FC<FundsSummaryCardsProps> = ({ data }) => {
+  const formatCurrency = (value: number) => {
+    return new Intl.NumberFormat('en-IN', {
+      maximumFractionDigits: 2,
+      minimumFractionDigits: 2
+    }).format(value);
+  };
+
   return (
-    <div className="grid grid-cols-3 gap-4 mb-6">
-      <div className="bg-gray-50 p-4 rounded-md">
-        <div className="text-xs text-[#6B7280] mb-1 flex items-center">
-          Available Margin <Info size={14} className="ml-2 text-gray-400" />
+    <div className="bg-[#F4F4F9] rounded-md mb-6 px-6 py-4 flex justify-between items-center">
+      {/* Available Margin */}
+      <div className="flex flex-col items-center">
+        <div className="text-xs text-[#6B7280] flex items-center">
+          Available Margin <Info size={14} className="ml-1 text-gray-400" />
         </div>
-        <div className="font-semibold text-xl">₹{data.availableMargin.toFixed(2)}</div>
+        <div className="text-xl font-semibold text-[#1A1A1A] mt-1">
+          ₹{formatCurrency(data.availableMargin)}
+        </div>
       </div>
 
-      <div className="bg-gray-50 p-4 rounded-md">
-        <div className="text-xs text-[#6B7280] mb-1 flex items-center">
-          Cash Balance <Info size={14} className="ml-2 text-gray-400" />
+      {/* Equals Symbol */}
+      <Equal className='text-[#6B7280]' />
+
+      {/* Cash Balance */}
+      <div className="flex flex-col items-center">
+        <div className="text-xs text-[#6B7280] flex items-center">
+          Cash Balance <Info size={14} className="ml-1 text-gray-400" />
         </div>
-        <div className="font-semibold text-xl">₹{data.cashBalance.toFixed(2)}</div>
+        <div className="text-xl font-semibold text-[#1A1A1A] mt-1">
+          ₹{formatCurrency(data.cashBalance)}
+        </div>
       </div>
 
-      <div className="bg-gray-50 p-4 rounded-md">
-        <div className="text-xs text-[#6B7280] mb-1 flex items-center">
-          Margin from Pledge <Info size={14} className="ml-2 text-gray-400" />
+      {/* Plus Symbol */}
+      <Plus className='text-[#6B7280]'/>
+
+      {/* Margin from Pledge */}
+      <div className="flex flex-col items-center">
+        <div className="text-xs text-[#6B7280] flex items-center">
+          Margin from Pledge <Info size={14} className="ml-1 text-gray-400" />
         </div>
-        <div className="font-semibold text-xl">₹{data.marginFromPledge.toFixed(2)}</div>
+        <div className="text-xl font-semibold text-[#1A1A1A] mt-1">
+          ₹{formatCurrency(data.marginFromPledge)}
+        </div>
       </div>
     </div>
   );
