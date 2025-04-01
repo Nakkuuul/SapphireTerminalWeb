@@ -21,19 +21,30 @@ function TradeSelector({ activeComponent, closedComponent }: TradeSelectorProps)
       const container = containerRef.current;
       
       if (currentButton && container) {
+        // Calculate position relative to the container with padding adjustment
         const buttonRect = currentButton.getBoundingClientRect();
         const containerRect = container.getBoundingClientRect();
         
+        // Account for the parent's padding (1px) to ensure the indicator stays inside
+        const containerPadding = 4; // 1rem = 4px
+        
+        // Calculate top offset to center vertically
+        const containerHeight = containerRect.height;
+        const buttonHeight = buttonRect.height;
+        const topOffset = containerHeight-buttonHeight-containerPadding-containerPadding/2; // Adjust for padding
+        
         setIndicatorStyle({
-          width: `${buttonRect.width}px`,
-          height: `${buttonRect.height}px`,
-          transform: `translateX(${buttonRect.left - containerRect.left}px)`,
+          width: buttonRect.width,
+          height: buttonRect.height,
+          left: currentButton.offsetLeft,
+          top: topOffset,
+          position: 'absolute'
         });
       }
     };
     
-    // Update on selection change
-    updateIndicator();
+    // Initial update with a small delay to ensure DOM is fully rendered
+    setTimeout(updateIndicator, 0);
     
     // Update on window resize
     window.addEventListener('resize', updateIndicator);
@@ -41,12 +52,12 @@ function TradeSelector({ activeComponent, closedComponent }: TradeSelectorProps)
   }, [selected]);
 
   return (
-    <div className="flex flex-col w-full ">
+    <div className="flex flex-col w-full">
       {/* Toggle Buttons */}
       <div className="flex border-[1px] border-[#D1D5DB] rounded-full p-1 w-full relative" ref={containerRef}>
         {/* Animated Indicator */}
         <div 
-          className="absolute left-0 bg-green-100 rounded-full transition-all duration-300 ease-in-out"
+          className="absolute bg-green-100 rounded-full transition-all duration-300 ease-in-out"
           style={indicatorStyle}
         />
         
