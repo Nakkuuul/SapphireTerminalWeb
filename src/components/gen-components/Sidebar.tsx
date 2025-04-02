@@ -1,10 +1,11 @@
 "use client"
-// components/Sidebar.tsx
 
 import React from 'react';
 
 interface Stock {
   name: string;
+  symbol: string;
+  category: string;
   value: string;
   change: string;
   isPositive: boolean;
@@ -12,39 +13,82 @@ interface Stock {
 }
 
 const Sidebar: React.FC = () => {
+  const marketIndices = [
+    {
+      name: 'Nifty 50',
+      value: '21,754.29',
+      change: '+37.02 (+0.17%)',
+      isPositive: true
+    },
+    {
+      name: 'Sensex',
+      value: '71,715.96',
+      change: '-27.43 (-0.38%)',
+      isPositive: false
+    }
+  ];
+
   const stocks: Stock[] = [
     {
       name: 'Reliance Industries Ltd.',
+      symbol: 'RELIANCE',
+      category: 'NSE',
       value: '2,042.63',
-      change: '+0.00 (+0.00%)',
+      change: '+0.10 (+0.47%)',
       isPositive: true,
       icon: '🏭'
     },
     {
       name: 'Tata Consultancy Services Ltd.',
+      symbol: 'TCS',
+      category: 'NSE',
       value: '2,042.63',
-      change: '-12.70 (-0.17%)',
+      change: '-12.70 (-0.24%)',
       isPositive: false,
       icon: '💻'
     },
     {
       name: 'HDFC Bank Ltd.',
+      symbol: 'HDFCBANK',
+      category: 'NSE',
       value: '2,042.63',
-      change: '+6.85 (+0.34%)',
+      change: '+6.85 (+0.42%)',
       isPositive: true,
       icon: '🏦'
     },
     {
       name: 'Bharti Airtel Ltd.',
+      symbol: 'BHARTIARTL',
+      category: 'NSE',
       value: '2,042.63',
-      change: '-2.16 (-0.11%)',
-      isPositive: false,
+      change: '+0.10 (+0.47%)',
+      isPositive: true,
       icon: '📱'
     },
     {
       name: 'Bharti Airtel Ltd.',
+      symbol: 'BHARTIARTL',
+      category: 'NSE',
       value: '2,042.63',
-      change: '+0.00 (+0.00%)',
+      change: '+0.10 (+0.47%)',
+      isPositive: true,
+      icon: '📱'
+    },
+    {
+      name: 'Bharti Airtel Ltd.',
+      symbol: 'BHARTIARTL',
+      category: 'NSE',
+      value: '2,042.63',
+      change: '+0.10 (+0.47%)',
+      isPositive: true,
+      icon: '📱'
+    },
+    {
+      name: 'Bharti Airtel Ltd.',
+      symbol: 'BHARTIARTL',
+      category: 'NSE',
+      value: '2,042.63',
+      change: '+0.10 (+0.47%)',
       isPositive: true,
       icon: '📱'
     }
@@ -52,52 +96,64 @@ const Sidebar: React.FC = () => {
 
   return (
     <div className="hidden md:block fixed top-16 left-0 bottom-0 w-1/4 bg-white border-r border-gray-200 overflow-auto">
-      <div className="p-4">
-        <div className="relative">
-          <input
-            type="text"
-            placeholder="Search everything..."
-            className="w-full p-2 pl-8 border border-gray-300 rounded-md text-sm"
-          />
-          <div className="absolute left-2 top-2.5">
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-            </svg>
+
+
+      {/* Search and filter */}
+      <div className="p-9">
+        <div className="flex justify-between items-center">
+          <div className="relative flex-1 mr-2">
+            <input
+              type="text"
+              placeholder="Search everything..."
+              className="w-full py-1.5 pl-8 pr-3 border border-gray-300 rounded-md text-xs"
+            />
+            <div className="absolute left-2 top-1/2 transform -translate-y-1/2">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              </svg>
+            </div>
           </div>
-          <div className="absolute right-2 top-2">
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <button className="flex items-center justify-center px-3 py-1.5 border border-gray-300 rounded-md">
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
             </svg>
-          </div>
+            <span className="ml-1 text-xs">Filter</span>
+          </button>
         </div>
         
-        <div className="flex mt-4 mb-2">
+        {/* Number buttons */}
+        <div className="flex mt-4">
           {[1, 2, 3, 4, 5, 6].map((num, index) => (
             <button 
               key={num}
-              className={`w-8 h-8 text-xs flex items-center justify-center rounded-md ${num === 3 ? 'bg-green-500 text-white' : 'bg-gray-100 text-gray-700'}`}
-              style={{ marginRight: index < 5 ? '4px' : 0 }}
+              className={`w-7 h-7 text-xs flex items-center justify-center rounded-md ${
+                num === 3 ? 'bg-green-500 text-white' : 'bg-gray-100 text-gray-700'
+              } ${index < 5 ? 'mr-1' : ''}`}
             >
               {num}
             </button>
           ))}
         </div>
         
+        {/* Stock list */}
         <div className="mt-4">
           {stocks.map((stock, index) => (
-            <div key={index} className="py-2 border-b border-gray-100">
-              <div className="flex items-center">
-                <div className="w-6 h-6 bg-gray-100 rounded-md flex items-center justify-center mr-2">
-                  <span>{stock.icon}</span>
+            <div key={index} className="py-2 border-b border-gray-100 flex items-start">
+              <div className="min-w-5 h-5 flex items-center justify-center mr-2">
+                <span className="text-sm">{stock.icon}</span>
+              </div>
+              <div className="flex-grow pr-2">
+                <div className="text-xs font-medium truncate">{stock.name}</div>
+                <div className="text-[10px] text-gray-500 flex">
+                  <span>{stock.symbol}</span>
+                  <span className="mx-1">•</span>
+                  <span>{stock.category}</span>
                 </div>
-                <div className="flex-grow">
-                  <div className="text-sm font-medium">{stock.name}</div>
-                  <div className="flex items-center text-xs">
-                    <span className="text-gray-600 mr-2">{stock.value}</span>
-                    <span className={stock.isPositive ? 'text-green-500' : 'text-red-500'}>
-                      {stock.change}
-                    </span>
-                  </div>
+              </div>
+              <div className="text-right ml-1 border-l border-gray-100 pl-2">
+                <div className="text-xs font-medium">{stock.value}</div>
+                <div className={`text-[10px] ${stock.isPositive ? 'text-green-500' : 'text-red-500'}`}>
+                  {stock.change}
                 </div>
               </div>
             </div>
