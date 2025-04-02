@@ -2,8 +2,9 @@
 
 import React, { useState, useEffect } from 'react';
 import TradeCard from '../stocks/TradeCard';
-import { Search } from 'lucide-react';
-import Image from 'next/image';
+import { Search, X } from 'lucide-react';
+import { HiOutlineAdjustments } from "react-icons/hi";
+// import Image from 'next/image';
 import { FaWhatsapp } from 'react-icons/fa';
 
 // Define the Trade interface
@@ -29,13 +30,15 @@ interface Trade {
 export default function TradesList() {
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [filteredTrades, setFilteredTrades] = useState<Trade[]>([]);
+  const [showFilters, setShowFilters] = useState<boolean>(false);
+  const [filterType, setFilterType] = useState<string>('');
   
   // This is where you would normally fetch your active trades data
   const activeTradesData: Trade[] = [
     {
       symbol: 'HINDUUNILVR',
       date: '27 FEB',
-      type: 'BUY',
+      type: 'SELL',
       price: 1489.68,
       percentChange: 2.56,
       entryPrice: 4780.90,
@@ -80,20 +83,27 @@ export default function TradesList() {
     }
   ];
 
-  // Filter trades based on search query
+  // Filter trades based on search query and filter type
   useEffect(() => {
-    if (searchQuery.trim() === '') {
-      setFilteredTrades(activeTradesData);
-    } else {
+    let filtered = [...activeTradesData];
+    
+    // Apply type filter if selected
+    if (filterType) {
+      filtered = filtered.filter(trade => trade.type === filterType);
+    }
+    
+    // Apply search query if entered
+    if (searchQuery.trim() !== '') {
       const lowercasedQuery = searchQuery.toLowerCase();
-      const filtered = activeTradesData.filter(trade => 
+      filtered = filtered.filter(trade => 
         trade.symbol.toLowerCase().includes(lowercasedQuery) ||
         trade.type.toLowerCase().includes(lowercasedQuery) ||
         (trade.postedBy && trade.postedBy.toLowerCase().includes(lowercasedQuery))
       );
-      setFilteredTrades(filtered);
     }
-  }, [searchQuery]);
+    
+    setFilteredTrades(filtered);
+  }, [searchQuery, filterType]);
 
   // Initialize filtered trades with all trades on component mount
   useEffect(() => {
@@ -105,41 +115,106 @@ export default function TradesList() {
     setSearchQuery(e.target.value);
   };
 
+  // Reset all filters
+  const resetFilters = () => {
+    setFilterType('');
+    setShowFilters(false);
+  };
+
   return (
-    <div className="space-y-4">
-      <div className='flex items-center justify-between py-2'>
+    <div className="space-y-6">
+      <div className='flex items-center justify-between flex-wrap gap-2'>
         {/* WhatsApp Alerts Button on the left */}
         <div className='flex items-center'>
-        <button className="flex items-center gap-2 rounded-full bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm border border-gray-200">
-        <FaWhatsapp size={20} className="text-green-500" />
-        <span>Get alerts on WhatsApp</span>
-        </button>
+          <button className="flex items-center gap-2 rounded-md bg-[#F4F4F9] px-5 py-2.5 text-lg font-medium text-[#333333] border border-[#D1D5DB] h-[42px]">
+            <FaWhatsapp size={24} className="text-green-500" />
+            <span>Get alerts on WhatsApp</span>
+          </button>
         </div>
-
-        {/* Search Feature on the right */}
-        <div className='relative max-w-xs'>
-          <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-            <Search size={16} className="text-gray-400" />
-          </div>
-          <input
-            type="text"
-            placeholder="Search everything..."
-            className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-blue-500"
-            value={searchQuery}
-            onChange={handleSearchChange}
-          />
-          {searchQuery && (
+        
+        <div className='flex items-center gap-2'>
+          {/* Filter Button */}
+          <div className='relative'>
             <button 
-              onClick={() => setSearchQuery('')}
-              className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400 hover:text-gray-600"
+              onClick={() => setShowFilters(!showFilters)} 
+              className={`flex items-center gap-2 px-5 py-2.5 bg-[#F4F4F9] rounded-md border h-[42px] ${showFilters || filterType ? 'border-blue-500 bg-blue-50 text-blue-600' : 'border-[#D1D5DB] text-gray-700'}`}
             >
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-              </svg>
+              <HiOutlineAdjustments size={16} />
+              <span>Filter</span>
+              {filterType && (
+                <div className="ml-1 flex h-5 w-5 items-center justify-center rounded-full bg-blue-500 text-xs text-white">
+                  1
+                </div>
+              )}
             </button>
-          )}
+            
+            {/* Filter Dropdown */}
+            {showFilters && (
+              <div className="absolute z-10 mt-1 w-48 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5">
+                <div className="py-1">
+                  <div className="px-4 py-2 text-sm font-medium text-gray-700">Trade Type</div>
+                  <button
+                    className={`w-full px-4 py-2 text-left text-sm ${filterType === 'BUY' ? 'bg-blue-50 text-blue-600' : 'text-gray-700 hover:bg-gray-100'}`}
+                    onClick={() => setFilterType('BUY')}
+                  >
+                    Buy
+                  </button>
+                  <button
+                    className={`w-full px-4 py-2 text-left text-sm ${filterType === 'SELL' ? 'bg-blue-50 text-blue-600' : 'text-gray-700 hover:bg-gray-100'}`}
+                    onClick={() => setFilterType('SELL')}
+                  >
+                    Sell
+                  </button>
+                  {filterType && (
+                    <div className="border-t border-gray-100 px-4 py-2">
+                      <button
+                        className="text-sm text-red-500 hover:text-red-700"
+                        onClick={resetFilters}
+                      >
+                        Clear Filters
+                      </button>
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
+          </div>
+            
+          {/* Search Feature */}
+          <div className='relative'>
+            <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+              <Search size={16} className="text-[#686868]" />
+            </div>
+            <input
+              type="text"
+              placeholder="Search everything..."
+              className="w-full pl-3 pr-10 py-2.5 border border-[#D1D5DB] rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-blue-500 h-[42px]"
+              value={searchQuery}
+              onChange={handleSearchChange}
+            />
+            {searchQuery && (
+              <button 
+                onClick={() => setSearchQuery('')}
+                className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400 hover:text-gray-600"
+              >
+                <X size={16} />
+              </button>
+            )}
+          </div>
         </div>
       </div>
+
+      {filterType && (
+        <div className="flex items-center bg-blue-50 px-4 py-2 rounded-md">
+          <span className="text-sm text-gray-700">Filtered by: </span>
+          <span className="ml-2 inline-flex items-center rounded-full bg-blue-100 px-2.5 py-0.5 text-xs font-medium text-blue-800">
+            {filterType} trades
+            <button onClick={resetFilters} className="ml-1 text-blue-500 hover:text-blue-700">
+              <X size={14} />
+            </button>
+          </span>
+        </div>
+      )}
 
       {filteredTrades.length === 0 ? (
         <div className="bg-white p-6 text-center rounded-lg border">
@@ -152,9 +227,12 @@ export default function TradesList() {
             <button
               type="button"
               className="inline-flex items-center px-3 py-2 border border-gray-300 shadow-sm text-sm leading-4 font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none"
-              onClick={() => setSearchQuery('')}
+              onClick={() => {
+                setSearchQuery('');
+                setFilterType('');
+              }}
             >
-              Clear search
+              Clear all filters
             </button>
           </div>
         </div>

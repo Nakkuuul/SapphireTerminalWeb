@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
-import { ArrowUpDown, Filter, Grid, List, MoreVertical, X, ChevronDown } from 'lucide-react';
+import { ArrowUpDown, Filter, Grid, List, MoreVertical, X, ArrowRight } from 'lucide-react';
 
 interface ClosedTrade {
   date: string;
@@ -384,88 +384,91 @@ export default function ClosedTradesList() {
         </div>
       ) : (
         /* Grid View */
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4">
-          {filteredTrades.map((trade, index) => (
-            <div key={index} className="border rounded-lg overflow-hidden bg-white">
-              {/* Card Header */}
-              <div className="flex justify-between items-center p-3 border-b">
-                <div className="flex items-center gap-2">
-                  <div className="w-6 h-6 bg-blue-100 rounded-md flex items-center justify-center">
-                    <svg className="w-4 h-4 text-blue-600" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                      <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
-                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm0-2a6 6 0 100-12 6 6 0 000 12z" clipRule="evenodd" />
-                    </svg>
-                  </div>
-                  <div>
-                    <div className="font-medium text-sm">{trade.security}</div>
-                    <div className="text-xs text-[#6B7280]">
-                      <span>{trade.date}</span> · <span>{trade.time}</span>
-                    </div>
-                  </div>
-                </div>
-                <div className="flex items-center">
-                  <span className={`px-2 py-0.5 text-xs rounded ${
-                    trade.type === 'BUY' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
-                  }`}>
-                    {trade.type}
-                  </span>
-                  <div className="ml-2 text-xs bg-yellow-100 text-yellow-800 px-2 py-0.5 rounded">
-                    {index % 2 === 0 ? "Target Met" : "Stopped Out"}
-                  </div>
+      <div className=''>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2  gap-4">
+        {filteredTrades.map((trade, index) => (
+          <div key={index} className="border border-[#8F8F8FCC] rounded-lg overflow-hidden  bg-[#F4F4F9]">
+            {/* Card Header */}
+            <div className="flex items-center p-4">
+              <div className="w-8 h-8 bg-indigo-100 rounded-md flex items-center justify-center mr-3">
+                <svg className="w-4 h-4 text-indigo-600" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                  <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
+                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm0-2a6 6 0 100-12 6 6 0 000 12z" clipRule="evenodd" />
+                </svg>
+              </div>
+              <div>
+                <div className="font-medium text-sm">{trade.security}</div>
+                <div className="text-xs text-[#6B7280] flex items-center">
+                  <span>{trade.date}</span> · <span>{trade.time}</span>
                 </div>
               </div>
-              
-              {/* Card Content */}
-              <div className="grid grid-cols-3 gap-1 p-3">
-                <div className="flex flex-col">
-                  <span className="text-xs text-[#6B7280]">Entry Price</span>
-                  <span className="text-sm font-medium">{trade.entryPrice}</span>
-                </div>
-                <div className="flex flex-col">
-                  <span className="text-xs text-[#6B7280]">Exit Price</span>
-                  <span className="text-sm font-medium">{trade.exitPrice}</span>
-                </div>
-                <div className="flex flex-col">
-                  <span className="text-xs text-[#6B7280]">Quantity</span>
-                  <span className="text-sm font-medium">{trade.quantity}</span>
-                </div>
-                
-                <div className="flex flex-col mt-1">
-                  <span className="text-xs text-[#6B7280]">Net G/L</span>
-                  <span className={`text-sm font-medium ${trade.net.startsWith('+') ? 'text-green-600' : 'text-red-600'}`}>
-                    {trade.net}
-                  </span>
-                </div>
-              </div>
-              
-              {/* Card Footer */}
-              <div className="p-3 pt-0 flex justify-between items-center">
-                <div className="text-xs text-[#6B7280]">
-                  <span>Posted by: <span className="text-gray-700">(Posted.by)</span></span>
-                </div>
-                <div className="flex items-center">
-                  <div className="flex items-center text-xs">
-                    <span className="text-[#6B7280] mr-1">Margin req.: </span>
-                    <span className="text-gray-700">₹1,34,099</span>
-                    <svg className="w-3 h-3 ml-1 text-[#6B7280]" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                      <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2h2a1 1 0 100-2H9z" clipRule="evenodd" />
-                    </svg>
-                  </div>
-                </div>
-              </div>
-              
-              {/* Action Button */}
-              <div className="border-t">
-                <button className="flex items-center justify-center w-full p-2 bg-green-50 text-green-600 hover:bg-green-100 transition-colors">
-                  About Trade
-                  <svg className="w-4 h-4 ml-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                    <path fillRule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clipRule="evenodd" />
-                  </svg>
-                </button>
+              <div className="ml-auto">
+                <span className={`px-2 py-0.5 text-xs rounded ${
+                  trade.type === 'BUY' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
+                }`}>
+                  {trade.type}
+                </span>
               </div>
             </div>
-          ))}
-        </div>
+
+            {/* Status Label */}
+            <div className="px-3">
+              <div className="text-xs text-right">
+                <span className="text-gray-500">Status</span>
+              </div>
+              <div className="text-xs text-right font-medium text-green-600">
+                Target Met
+              </div>
+            </div>
+            
+            {/* Card Content */}
+            <div className="grid grid-cols-4 p-4">
+              <div className="flex flex-col">
+                <span className="text-base text-gray-500">Entry Price</span>
+                <span className="text-lg font-medium">{trade.entryPrice}</span>
+              </div>
+              <div className="flex flex-col">
+                <span className="text-base text-gray-500">Exit Price</span>
+                <span className="text-lg font-medium">{trade.exitPrice}</span>
+              </div>
+              <div className="flex flex-col">
+                <span className="text-base text-gray-500">Quantity</span>
+                <span className="text-lg font-medium">{trade.quantity}</span>
+              </div>
+              <div className="flex flex-col">
+                <span className="text-base text-gray-500">Net G/L</span>
+                <span className="text-lg font-medium">{trade.net}</span>
+              </div>
+            </div>
+            
+            {/* Posted By */}
+            <div className=" p-3 ">
+              <div className="text-base py-3 px-2 rounded bg-[rgba(184,219,217,0.3)] text-gray-500">
+                Posted by: <span className="text-base text-black ">(Posted.by)</span>
+              </div>
+            </div>
+            
+            {/* Margin Requirement */}
+            <div className="px-3 py-2 border-t flex items-center justify-center">
+              <span className="text-base text-gray-500">Margin req.: </span>
+              <span className="text-base ml-1">₹1,34,099</span>
+              <svg className="w-3 h-3 ml-1 text-gray-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2h2a1 1 0 100-2H9z" clipRule="evenodd" />
+              </svg>
+            </div>
+            
+            {/* Action Button */}
+            <div className="p-3">
+              <button className="flex items-center justify-center w-full p-3  rounded bg-[#00C853] text-white hover:bg-green-400 transition-colors">
+                About Trade
+                <ArrowRight size={22} className='ml-3' />
+              </button>
+            </div>
+          </div>
+        ))}
+      </div>
+      </div>
+
       )}
     </div>
   );

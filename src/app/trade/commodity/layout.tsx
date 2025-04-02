@@ -9,7 +9,7 @@ const inter = Inter({ subsets: ['latin'] });
 export const metadata = {
   title: 'Trading Platform',
   description: 'A modern trading platform interface',
-};  
+};
 
 export default function RootLayout({
   children,
@@ -19,9 +19,9 @@ export default function RootLayout({
   return (
     <div className={inter.className}>
       <Navbar />
-      <div className="flex pt-16">
+      <div className="flex pt-[74px]">
         <Sidebar />
-        <main className=" sm:ml-[25%] w-3/4 p-6">
+        <main className=" sm:ml-[25%] w-3/4 py-6 px-9">
           {children}
         </main>
       </div>
