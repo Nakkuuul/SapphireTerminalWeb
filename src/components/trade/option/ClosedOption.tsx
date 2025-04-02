@@ -232,18 +232,18 @@ export default function ClosedTradesList() {
           </div>
           
           {/* View Mode Toggle - Same height as search */}
-          <div className="flex  border rounded-lg overflow-hidden">
+          <div className="flex border rounded-lg overflow-hidden">
             <button 
-              className={`p-3 h-full ${viewMode === 'grid' ? 'bg-[#F6F6F6]' : 'bg-white'}`}
+              className={`p-3 h-full ${viewMode === 'grid' ? 'bg-[#F6F6F6] text-[#28A745]' : 'text-[#212529]'}`}
               onClick={() => setViewMode('grid')}
             >
-              <LayoutGrid size={20} className="text-gray-700" />
+              <LayoutGrid size={20} />
             </button>
             <button 
-              className={`p-3 h-full ${viewMode === 'list' ? 'bg-[#F6F6F6]' : 'bg-white'}`}
+              className={`p-3 h-full ${viewMode === 'list' ? 'bg-[#F6F6F6] text-[#28A745]' : 'text-[#212529]'}`}
               onClick={() => setViewMode('list')}
             >
-              <List size={20} className="text-gray-700" />
+              <List size={20} />
             </button>
           </div>
         </div>
@@ -300,59 +300,61 @@ export default function ClosedTradesList() {
         </div>
       ) : viewMode === 'list' ? (
         /* List View - Scrollable Table with updated styles */
-        <div className="w-full overflow-x-auto border rounded-lg">
-          <table className="min-w-full border-collapse">
+        <div className="w-full overflow-x-auto border rounded-lg ">
+          <div className="min-w-max">
+            <table className="w-full border-collapse">
             <thead>
               <tr className="bg-gray-50 border-b">
-                <th className="p-4 text-left font-medium text-black text-base whitespace-nowrap border-r relative w-40">
-                  <div className="flex items-center">
+                <th className="p-4 text-left font-medium text-black text-base whitespace-nowrap border-r w-48">
+                  <div className="flex items-center justify-between">
                     <span>Date & Time</span>
-                    <ArrowUpDown size={16} className="text-gray-500 absolute right-4" />
+                    <ArrowUpDown size={16} className="text-gray-500 ml-2" />
                   </div>
                 </th>
-                <th className="p-4 text-left font-medium text-black text-base whitespace-nowrap border-r relative w-64">
-                  <div className="flex items-center">
+                <th className="p-4 text-left font-medium text-black text-base whitespace-nowrap border-r w-64">
+                  <div className="flex items-center justify-between">
                     <span>Security</span>
-                    <ArrowUpDown size={16} className="text-gray-500 absolute right-4" />
+                    <ArrowUpDown size={16} className="text-gray-500 ml-2" />
                   </div>
                 </th>
-                <th className="p-4 text-left font-medium text-black text-base whitespace-nowrap border-r relative w-40">
-                  <div className="flex items-center">
+                <th className="p-4 text-left font-medium text-black text-base whitespace-nowrap border-r w-40">
+                  <div className="flex items-center justify-between">
                     <span>Entry Price</span>
-                    <ArrowUpDown size={16} className="text-gray-500 absolute right-4" />
+                    <ArrowUpDown size={16} className="text-gray-500 ml-2" />
                   </div>
                 </th>
-                <th className="p-4 text-left font-medium text-black text-base whitespace-nowrap border-r relative w-40">
-                  <div className="flex items-center">
+                <th className="p-4 text-left font-medium text-black text-base whitespace-nowrap border-r w-40">
+                  <div className="flex items-center justify-between">
                     <span>Exit Price</span>
-                    <ArrowUpDown size={16} className="text-gray-500 absolute right-4" />
+                    <ArrowUpDown size={16} className="text-gray-500 ml-2" />
                   </div>
                 </th>
-                <th className="p-4 text-left font-medium text-black text-base whitespace-nowrap border-r relative w-40">
-                  <div className="flex items-center">
+                <th className="p-4 text-left font-medium text-black text-base whitespace-nowrap border-r w-40">
+                  <div className="flex items-center justify-between">
                     <span>Quantity</span>
-                    <ArrowUpDown size={16} className="text-gray-500 absolute right-4" />
+                    <ArrowUpDown size={16} className="text-gray-500 ml-2" />
                   </div>
                 </th>
-                <th className="p-4 text-left font-medium text-black text-base whitespace-nowrap border-r relative w-40">
-                  <div className="flex items-center">
+                <th className="p-4 text-left font-medium text-black text-base whitespace-nowrap border-r w-40">
+                  <div className="flex items-center justify-between">
                     <span>Duration</span>
-                    <ArrowUpDown size={16} className="text-gray-500 absolute right-4" />
+                    <ArrowUpDown size={16} className="text-gray-500 ml-2" />
                   </div>
                 </th>
-                <th className="p-4 text-left font-medium text-black text-base whitespace-nowrap relative w-24">
-                  <div className="flex items-center">
+                <th className="p-4 text-left font-medium text-black text-base whitespace-nowrap w-24">
+                  <div className="flex items-center justify-between">
                     <span>Net</span>
+                    <ArrowUpDown size={16} className="text-gray-500 ml-2" />
                   </div>
                 </th>
+                <th className="p-4 w-16"></th>
               </tr>
             </thead>
             <tbody>
               {filteredTrades.map((trade, index) => (
                 <tr key={index} className={`border-t hover:bg-gray-50 ${index === filteredTrades.length - 1 ? '' : 'border-b'}`}>
                   <td className="p-4 whitespace-nowrap border-r">
-                    <div className="text-sm text-gray-900">{trade.date}</div>
-                    <div className="text-sm text-[#6B7280]">{trade.time}</div>
+                    <div className="text-sm text-gray-900">{trade.date}, {trade.time}</div>
                   </td>
                   <td className="p-4 whitespace-nowrap border-r">
                     <div className="flex items-center justify-between">
@@ -373,7 +375,7 @@ export default function ClosedTradesList() {
                       {trade.net}
                     </div>
                   </td>
-                  <td className="p-4 whitespace-nowrap">
+                  <td className="p-4 whitespace-nowrap text-center">
                     <button className="text-gray-400 hover:text-gray-600">
                       <MoreVertical size={16} />
                     </button>
@@ -382,6 +384,7 @@ export default function ClosedTradesList() {
               ))}
             </tbody>
           </table>
+          </div>
         </div>
       ) : (
         /* Grid View */
