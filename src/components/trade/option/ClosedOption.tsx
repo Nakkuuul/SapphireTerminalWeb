@@ -356,7 +356,7 @@ export default function ClosedTradesList() {
                   </td>
                   <td className="p-4 whitespace-nowrap border-r">
                     <div className="flex items-center justify-between">
-                      <span className="text-sm font-medium text-gray-900">{trade.security}</span>
+                      <span className="font-medium text-gray-900">{trade.security}</span>
                       <span className={`ml-2 px-2 py-0.5 text-xs rounded ${
                         trade.type === 'BUY' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
                       }`}>
@@ -398,7 +398,7 @@ export default function ClosedTradesList() {
                 </svg>
               </div>
               <div>
-                <div className="font-medium text-sm">{trade.security}</div>
+                <div className="font-medium text-lg">{trade.security}</div>
                 <div className="text-xs text-[#6B7280] flex items-center">
                   <span>{trade.date}</span> · <span>{trade.time}</span>
                 </div>
@@ -426,19 +426,19 @@ export default function ClosedTradesList() {
             <div className="grid grid-cols-4 p-4">
               <div className="flex flex-col">
                 <span className="text-base text-gray-500">Entry Price</span>
-                <span className="text-lg font-medium">{trade.entryPrice}</span>
+                <span className="text-base font-medium">{trade.entryPrice}</span>
               </div>
               <div className="flex flex-col">
                 <span className="text-base text-gray-500">Exit Price</span>
-                <span className="text-lg font-medium">{trade.exitPrice}</span>
+                <span className="text-base font-medium">{trade.exitPrice}</span>
               </div>
               <div className="flex flex-col">
                 <span className="text-base text-gray-500">Quantity</span>
-                <span className="text-lg font-medium">{trade.quantity}</span>
+                <span className="text-base font-medium">{trade.quantity}</span>
               </div>
               <div className="flex flex-col">
                 <span className="text-base text-gray-500">Net G/L</span>
-                <span className="text-lg font-medium">{trade.net}</span>
+                <span className="text-base font-medium">{trade.net}</span>
               </div>
             </div>
             

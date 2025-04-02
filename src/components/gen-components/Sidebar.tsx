@@ -39,7 +39,7 @@ const Sidebar: React.FC = () => {
       icon: '🏭'
     },
     {
-      name: 'Tata Consultancy Services Ltd.',
+      name: 'Tata Consultancy Ltd.',
       symbol: 'TCS',
       category: 'NSE',
       value: '2,042.63',

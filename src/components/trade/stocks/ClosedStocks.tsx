@@ -1,7 +1,8 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
-import { ArrowUpDown, Filter, Grid, List, MoreVertical, X, ArrowRight } from 'lucide-react';
+import { ArrowUpDown, List, MoreVertical, X, ArrowRight, LayoutGrid } from 'lucide-react';
+import { HiOutlineAdjustments } from "react-icons/hi";
 
 interface ClosedTrade {
   date: string;
@@ -175,7 +176,7 @@ export default function ClosedTradesList() {
               }`}
               onClick={() => setShowFilters(!showFilters)}
             >
-              <Filter size={16} />
+              <HiOutlineAdjustments size={16} />
               <span className="text-sm">Filter</span>
               {getActiveFiltersCount() > 0 && (
                 <div className="ml-1 flex h-5 w-5 items-center justify-center rounded-full bg-blue-500 text-xs text-white">
@@ -231,18 +232,18 @@ export default function ClosedTradesList() {
           </div>
           
           {/* View Mode Toggle - Same height as search */}
-          <div className="flex h-10 border rounded-lg overflow-hidden">
+          <div className="flex  border rounded-lg overflow-hidden">
             <button 
-              className={`p-1.5 h-full ${viewMode === 'grid' ? 'bg-gray-200' : 'bg-white'}`}
+              className={`p-3 h-full ${viewMode === 'grid' ? 'bg-[#F6F6F6]' : 'bg-white'}`}
               onClick={() => setViewMode('grid')}
             >
-              <Grid size={16} className="text-gray-700" />
+              <LayoutGrid size={20} className="text-gray-700" />
             </button>
             <button 
-              className={`p-1.5 h-full ${viewMode === 'list' ? 'bg-gray-200' : 'bg-white'}`}
+              className={`p-3 h-full ${viewMode === 'list' ? 'bg-[#F6F6F6]' : 'bg-white'}`}
               onClick={() => setViewMode('list')}
             >
-              <List size={16} className="text-gray-700" />
+              <List size={20} className="text-gray-700" />
             </button>
           </div>
         </div>
@@ -355,7 +356,7 @@ export default function ClosedTradesList() {
                   </td>
                   <td className="p-4 whitespace-nowrap border-r">
                     <div className="flex items-center justify-between">
-                      <span className="text-sm font-medium text-gray-900">{trade.security}</span>
+                      <span className="font-medium text-gray-900">{trade.security}</span>
                       <span className={`ml-2 px-2 py-0.5 text-xs rounded ${
                         trade.type === 'BUY' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
                       }`}>
@@ -397,7 +398,7 @@ export default function ClosedTradesList() {
                 </svg>
               </div>
               <div>
-                <div className="font-medium text-sm">{trade.security}</div>
+                <div className="font-medium text-lg">{trade.security}</div>
                 <div className="text-xs text-[#6B7280] flex items-center">
                   <span>{trade.date}</span> · <span>{trade.time}</span>
                 </div>
@@ -425,19 +426,19 @@ export default function ClosedTradesList() {
             <div className="grid grid-cols-4 p-4">
               <div className="flex flex-col">
                 <span className="text-base text-gray-500">Entry Price</span>
-                <span className="text-lg font-medium">{trade.entryPrice}</span>
+                <span className="text-base font-medium">{trade.entryPrice}</span>
               </div>
               <div className="flex flex-col">
                 <span className="text-base text-gray-500">Exit Price</span>
-                <span className="text-lg font-medium">{trade.exitPrice}</span>
+                <span className="text-base font-medium">{trade.exitPrice}</span>
               </div>
               <div className="flex flex-col">
                 <span className="text-base text-gray-500">Quantity</span>
-                <span className="text-lg font-medium">{trade.quantity}</span>
+                <span className="text-base font-medium">{trade.quantity}</span>
               </div>
               <div className="flex flex-col">
                 <span className="text-base text-gray-500">Net G/L</span>
-                <span className="text-lg font-medium">{trade.net}</span>
+                <span className="text-base font-medium">{trade.net}</span>
               </div>
             </div>
             
