@@ -126,9 +126,9 @@ const Sidebar: React.FC = () => {
           {[1, 2, 3, 4, 5, 6].map((num, index) => (
             <button 
               key={num}
-              className={`w-7 h-7 text-xs flex items-center justify-center rounded-md ${
-                num === 3 ? 'bg-green-500 text-white' : 'bg-gray-100 text-gray-700'
-              } ${index < 5 ? 'mr-1' : ''}`}
+              className={`w-9 h-9 text-sm flex items-center justify-center rounded-md ${
+                num === 3 ? 'bg-[#EEFFF2] border border-[#28A745] text-[#28A745]' : 'bg-[#F4F4F9] border border-[#D1D5DB] text-[#495057]'
+              } ${index < 5 ? 'mr-3' : ''}`}
             >
               {num}
             </button>

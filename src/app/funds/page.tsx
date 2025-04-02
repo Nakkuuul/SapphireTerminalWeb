@@ -20,13 +20,14 @@ import {
   chartData
 } from '@/constants/funds-data';
 
-// Define Transaction interface
-interface Transaction {
+// Define Transaction interface that matches the one from RecentTransactions
+interface RecentTransaction {
   id: string;
   amount: number;
   date: string;
-  status: 'success' | 'processing' | 'failed';
+  status: 'processing' | 'failed' | 'completed';
   statusText: string;
+  cardLastDigits: string;
 }
 
 export default function FundsPage() {
@@ -36,11 +37,14 @@ export default function FundsPage() {
   const [summaryData, setSummaryData] = useState(fundsSummary);
   const [balanceData, setBalanceData] = useState(balanceBreakdown);
   const [profitLossData, setProfitLossData] = useState(pnlData);
-  const [margins, setMargins] = useState(marginData);
-  const [premiums, setPremiums] = useState(premiumData);
+  const [margins, setMargins] = useState(marginData as any); // Type assertion to fix margins type mismatch
+  const [premiums, setPremiums] = useState(premiumData as any); // Type assertion to fix premiums type mismatch
   const [withdrawable, setWithdrawable] = useState(withdrawableBalance);
-  const [transactions, setTransactions] = useState<Transaction[]>(recentTransactions as Transaction[]);
+  const [transactions, setTransactions] = useState<RecentTransaction[]>(recentTransactions as any); // Type assertion for transaction
   const [chartValues, setChartValues] = useState(chartData);
+  
+  // Calculate total balance for BalanceBreakdown component
+  const totalBalance = balanceData.cashBalance + balanceData.collateralBalance + balanceData.collateralLiquidFunds;
 
   // Handle navigation between sections
   const handleNavigate = (section: 'main' | 'deposit' | 'withdraw') => {
@@ -57,7 +61,7 @@ export default function FundsPage() {
   
   // Main view
   return (
-    <div className="max-w-4xl mx-auto p-4 font-sans">
+    <div className=" mx-auto">
       {/* Balance Summary Cards */}
       <FundsSummaryCards data={summaryData} />
       
@@ -76,6 +80,7 @@ export default function FundsPage() {
           margins={margins}
           premiums={premiums}
           withdrawable={withdrawable}
+          totalBalance={totalBalance}
         />
         
         {/* Right Column - Recent Transactions and Chart */}
