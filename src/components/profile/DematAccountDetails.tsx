@@ -19,11 +19,11 @@ const DematAccountDetails = ({ dematData = {} }: { dematData?: DematData }) => {
 
   return (
     <div className="border border-[#D1D5DB] mb-6">
-      <div className="bg-[#F4F4F9] border-b-[#D1D5DB] p-3">
+      <div className="bg-[#F4F4F9] border-b-[#D1D5DB] px-6 py-3">
         <h3 className="text-lg  text-[#1A1A1A]">Demat Account Details</h3>
       </div>
       
-      <div className="p-4">
+      <div className="p-6">
         <div className="grid grid-cols-2 gap-4 gap-y-6">
           <div>
             <p className="text-sm text-gray-500">Demat Account (BO) ID</p>

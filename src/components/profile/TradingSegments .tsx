@@ -30,11 +30,11 @@ const TradingSegments = ({ segmentsData = [] }: SegmentsProps) => {
 
   return (
     <div className="border border-[#D1D5DB] mb-6">
-      <div className="bg-[#F4F4F9] border-b-[#D1D5DB]  p-4">
+      <div className="bg-[#F4F4F9] border-b-[#D1D5DB] px-6 py-3">
         <h3 className="text-lg font-normal text-gray-900">Segments</h3>
       </div>
       
-      <div className="p-4">
+      <div className="p-6">
         <div className="grid grid-cols-4 gap-3">
           {segments.map((segment, index) => (
             <div 

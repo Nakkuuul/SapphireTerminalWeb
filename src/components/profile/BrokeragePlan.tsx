@@ -79,7 +79,7 @@ const BrokeragePlan = ({ brokerageData = [] }: BrokeragePlanProps) => {
 
   return (
     <div className="border border-[#D1D5DB] mb-6">
-      <div className="bg-[#F4F4F9] border-b-[#D1D5DB] p-3">
+      <div className="bg-[#F4F4F9] border-b-[#D1D5DB] px-6 py-3">
         <h3 className="text-lg font-normal text-[#1A1A1A]">Brokerage Plan</h3>
       </div>
       
