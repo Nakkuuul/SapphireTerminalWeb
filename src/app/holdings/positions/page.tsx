@@ -142,14 +142,14 @@ const Positions: React.FC = () => {
       {/* Header Summary */}
       <div className="flex w-full mb-4">
         <div className="w-1/2 border-r border-[#D1D5DB] text-center bg-[#F4F4F9] p-4">
-          <div className="text-base font-medium">Daily P&L</div>
-          <div className="text-xl font-medium text-red-500">
+          <div className="text-base text-[#6B7280] font-medium">Daily P&L</div>
+          <div className="text-xl font-medium text-[#E53935]">
             {formatCurrency(summaryData.dailyPL.value)} {formatPercentage(summaryData.dailyPL.percentage)}
           </div>
         </div>
         <div className="w-1/2 text-center bg-[#F4F4F9] p-4">
-          <div className="text-base font-medium">Net P&L</div>
-          <div className="text-xl font-medium text-green-500">
+          <div className="text-base text-[#6B7280] font-medium">Net P&L</div>
+          <div className="text-xl font-medium text-[#22A06B]">
             {formatCurrency(summaryData.netPL.value)} {formatPercentage(summaryData.netPL.percentage)}
           </div>
         </div>
@@ -186,7 +186,7 @@ const Positions: React.FC = () => {
                 <td className="px-4 py-3 whitespace-nowrap text-[#6B7280] text-sm">{position.security}</td>
                 <td className="px-1 py-3 whitespace-nowrap">
                   <div className={`text-xs px-2 py-1 rounded-sm ${position.action === 'BUY' 
-                    ? 'bg-green-100 text-green-500' 
+                    ? 'bg-[#D5FFC6] text-[#34A853]' 
                     : 'bg-red-100 text-red-500'}`}>
                     {position.action}
                   </div>
@@ -194,20 +194,20 @@ const Positions: React.FC = () => {
                 <td className="px-4 py-3 whitespace-nowrap text-[#6B7280] text-right text-sm">{position.quantity}</td>
                 <td className="px-4 py-3 whitespace-nowrap text-[#6B7280] text-right text-sm">{formatCurrency(position.avgPrice)}</td>
                 <td className="px-4 py-3 whitespace-nowrap text-[#6B7280] text-right text-sm">{formatCurrency(position.ltp)}</td>
-                <td className={`px-4 py-3 whitespace-nowrap text-right text-sm ${position.netPL.value < 0 ? 'text-red-500' : 'text-green-500'}`}>
+                <td className={`px-4 py-3 whitespace-nowrap text-right text-sm ${position.netPL.value < 0 ? 'text-red-500' : 'text-[#22A06B]'}`}>
                   {formatCurrency(position.netPL.value)} {formatPercentage(position.netPL.percentage)}
                 </td>
-                <td className={`px-4 py-3 whitespace-nowrap text-right text-sm ${position.dailyPL.value < 0 ? 'text-red-500' : 'text-green-500'}`}>
+                <td className={`px-4 py-3 whitespace-nowrap text-right text-sm ${position.dailyPL.value < 0 ? 'text-red-500' : 'text-[#22A06B]'}`}>
                   {formatCurrency(position.dailyPL.value)} {formatPercentage(position.dailyPL.percentage)}
                 </td>
               </tr>
             ))}
             <tr className="bg-gray-50 font-medium">
               <td colSpan={6} className="px-4 py-3 whitespace-nowrap text-sm">Total</td>
-              <td className="px-4 py-3 whitespace-nowrap text-right text-sm text-green-500">
+              <td className="px-4 py-3 whitespace-nowrap text-right text-sm text-[#22A06B]">
                 {formatCurrency(totalNetPL.value)} {formatPercentage(totalNetPL.percentage)}
               </td>
-              <td className="px-4 py-3 whitespace-nowrap text-right text-sm text-green-500">
+              <td className="px-4 py-3 whitespace-nowrap text-right text-sm text-[#22A06B]">
                 {formatCurrency(totalDailyPL.value)} {formatPercentage(totalDailyPL.percentage)}
               </td>
             </tr>

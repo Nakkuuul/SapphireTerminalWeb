@@ -170,7 +170,7 @@ const PortfolioDashboard = () => {
         </div>
         <div className="p-3">
           <div className="text-base text-gray-600">Daily P&L</div>
-          <div className="font-semibold text-xl text-green-500">
+          <div className="font-semibold text-xl text-[#22A06B]">
             {formatCurrency(portfolioSummary.dailyPL.value)} {formatPercentage(portfolioSummary.dailyPL.percentage)}
           </div>
         </div>
@@ -264,12 +264,12 @@ const PortfolioDashboard = () => {
                   <td className="px-4 py-2 text-[#6B7280] whitespace-nowrap border-r" style={{ fontSize: '14px' }}>{formatCurrency(holding.ltp)}</td>
                   <td className="px-4 py-2 text-[#6B7280] whitespace-nowrap border-r" style={{ fontSize: '14px' }}>{formatCurrency(holding.investmentValue)}</td>
                   <td className="px-4 py-2 whitespace-nowrap border-r" style={{ fontSize: '14px' }}>
-                    <span className={holding.netPL.percentage < 0 ? "text-red-500" : "text-green-500"}>
+                    <span className={holding.netPL.percentage < 0 ? "text-red-500" : "text-[#22A06B]"}>
                       {formatCurrency(holding.netPL.value)} {formatPercentage(holding.netPL.percentage)}
                     </span>
                   </td>
                   <td className="px-4 py-2 whitespace-nowrap" style={{ fontSize: '14px' }}>
-                    <span className="text-green-500">
+                    <span className="text-[#22A06B]">
                       {formatCurrency(holding.dailyPL.value)} {formatPercentage(holding.dailyPL.percentage)}
                     </span>
                   </td>
@@ -287,7 +287,7 @@ const PortfolioDashboard = () => {
                   </span>
                 </td>
                 <td className="px-4 py-2 whitespace-nowrap" style={{ fontSize: '14px' }}>
-                  <span className="text-green-500">
+                  <span className="text-[#22A06B]">
                     {formatCurrency(totalDailyPL.value)} {formatPercentage(totalDailyPL.percentage)}
                   </span>
                 </td>

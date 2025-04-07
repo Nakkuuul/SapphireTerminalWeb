@@ -48,36 +48,36 @@ export const fundsSummary = {
       id: '#562677788389',
       amount: 2042.63,
       date: '31 JAN 2025',
-      status: 'success',
-      statusText: 'Success/Credited'
+      status: 'completed',
+      statusText: 'completed'
     },
     {
       id: '#562677788390',
       amount: 2042.63,
       date: '31 JAN 2025',
       status: 'processing',
-      statusText: 'Being Processed'
+      statusText: 'processing'
     },
     {
       id: '#562677788391',
       amount: 2042.63,
       date: '31 JAN 2025',
       status: 'failed',
-      statusText: 'Rejected'
+      statusText: 'failed'
     },
     {
       id: '#562677788392',
       amount: 2042.63,
       date: '31 JAN 2025',
-      status: 'success',
-      statusText: 'Success/Credited'
+      status: 'completed',
+      statusText: 'completed'
     },
     {
       id: '#562677788393',
       amount: 2042.63,
       date: '31 JAN 2025',
       status: 'processing',
-      statusText: 'Being Processed'
+      statusText: 'processing'
     }
   ];
   

@@ -27,9 +27,9 @@ const RecentTransactions: React.FC<RecentTransactionsProps> = ({ transactions })
     <div className="border border-gray-200 rounded-lg p-4 bg-white">
       <div className="mb-4 text-gray-800 font-medium">Recent Transactions</div>
       
-      <div className="space-y-3">
+      <div className="">
         {transactions.map((transaction) => (
-          <div key={transaction.id} className="bg-gray-50 rounded-md p-3">
+          <div key={transaction.id} className="bg-gray-50 border-b border-[#D1D5DB] p-3">
             <div className="flex justify-between mb-1">
               <div className="text-xs text-gray-500">#{transaction.id}</div>
               <div className="text-sm font-medium text-gray-800">
@@ -38,8 +38,12 @@ const RecentTransactions: React.FC<RecentTransactionsProps> = ({ transactions })
             </div>
             
             <div className="flex justify-between items-center">
-              <div className="text-xs text-gray-500">{transaction.date}</div>
-              <TransactionStatusBadge status={transaction.status} />
+              <div className="flex items-center">
+                <div className="text-xs text-gray-500">{transaction.date}</div>
+                <div className="mx-1 text-gray-500">•</div>
+                <TransactionStatusBadge status={transaction.status} />
+              </div>
+              
               <div className="flex items-center space-x-2">
                 <TransactionStatusIcon status={transaction.status} />
                 <div className="text-xs text-gray-500">***** {transaction.cardLastDigits}</div>

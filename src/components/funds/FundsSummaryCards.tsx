@@ -19,11 +19,11 @@ const FundsSummaryCards: React.FC<FundsSummaryCardsProps> = ({ data }) => {
   };
 
   return (
-    <div className="bg-[#F4F4F9] rounded-md mb-6 px-6 py-4 flex justify-between items-center">
+    <div className="bg-[#F4F4F9] rounded-md mb-6 py-6 px-20 flex justify-between items-center">
       {/* Available Margin */}
       <div className="flex flex-col items-center">
-        <div className="text-xs text-[#6B7280] flex items-center">
-          Available Margin <Info size={14} className="ml-1 text-gray-400" />
+        <div className="text-base text-[#6B7280] flex items-center">
+          Available Margin
         </div>
         <div className="text-xl font-semibold text-[#1A1A1A] mt-1">
           ₹{formatCurrency(data.availableMargin)}
@@ -35,7 +35,7 @@ const FundsSummaryCards: React.FC<FundsSummaryCardsProps> = ({ data }) => {
 
       {/* Cash Balance */}
       <div className="flex flex-col items-center">
-        <div className="text-xs text-[#6B7280] flex items-center">
+        <div className="text-base text-[#6B7280] flex items-center">
           Cash Balance <Info size={14} className="ml-1 text-gray-400" />
         </div>
         <div className="text-xl font-semibold text-[#1A1A1A] mt-1">
@@ -48,7 +48,7 @@ const FundsSummaryCards: React.FC<FundsSummaryCardsProps> = ({ data }) => {
 
       {/* Margin from Pledge */}
       <div className="flex flex-col items-center">
-        <div className="text-xs text-[#6B7280] flex items-center">
+        <div className="text-base text-[#6B7280] flex items-center">
           Margin from Pledge <Info size={14} className="ml-1 text-gray-400" />
         </div>
         <div className="text-xl font-semibold text-[#1A1A1A] mt-1">

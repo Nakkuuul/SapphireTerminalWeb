@@ -159,10 +159,10 @@ const MutualFundsTable = () => {
                 <td className="px-4 py-2 whitespace-nowrap text-[#6B7280] text-sm text-right">{holding.units}</td>
                 <td className="px-4 py-2 whitespace-nowrap text-[#6B7280] text-sm text-right">{formatCurrency(holding.avgNav)}</td>
                 <td className="px-4 py-2 whitespace-nowrap text-[#6B7280] text-sm text-right">{formatCurrency(holding.marketNav)}</td>
-                <td className={`px-4 py-2 whitespace-nowrap text-sm text-right ${holding.netPL.value < 0 ? 'text-red-500' : 'text-green-500'}`}>
+                <td className={`px-4 py-2 whitespace-nowrap text-sm text-right ${holding.netPL.value < 0 ? 'text-red-500' : 'text-[#22A06B]'}`}>
                   {formatCurrency(holding.netPL.value)} {formatPercentage(holding.netPL.percentage)}
                 </td>
-                <td className="px-4 py-2 whitespace-nowrap text-sm text-right text-green-500">
+                <td className="px-4 py-2 whitespace-nowrap text-sm text-right text-[#22A06B]">
                   {formatCurrency(holding.dailyPL.value)} {formatPercentage(holding.dailyPL.percentage)}
                 </td>
               </tr>
@@ -170,10 +170,10 @@ const MutualFundsTable = () => {
             <tr className="bg-gray-50 font-medium">
               <td colSpan={5} className="px-4 py-2 whitespace-nowrap text-sm">Total</td>
               <td className="px-4 py-2 whitespace-nowrap text-[#6B7280] text-sm text-right">{formatCurrency(totalInvestmentValue)}</td>
-              <td className="px-4 py-2 whitespace-nowrap text-sm text-right text-green-500">
+              <td className="px-4 py-2 whitespace-nowrap text-sm text-right text-[#22A06B]">
                 {formatCurrency(totalNetPL.value)} {formatPercentage(totalNetPL.percentage)}
               </td>
-              <td className="px-4 py-2 whitespace-nowrap text-sm text-right text-green-500">
+              <td className="px-4 py-2 whitespace-nowrap text-sm text-right text-[#22A06B]">
                 {formatCurrency(totalDailyPL.value)} {formatPercentage(totalDailyPL.percentage)}
               </td>
             </tr>
