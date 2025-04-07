@@ -90,8 +90,10 @@ const DepositPage: React.FC<DepositPageProps> = ({ onBack }) => {
         Deposit
       </button>
       
+
       {/* Deposit Form */}
       <div className="bg-white border border-gray-200 rounded-md p-6 mb-6">
+        <div className='flex gap-x-5'>
         {/* Amount Input */}
         <div className="mb-6">
           <label className="block text-[#6B7280] text-sm mb-2">Enter Amount</label>
@@ -117,14 +119,15 @@ const DepositPage: React.FC<DepositPageProps> = ({ onBack }) => {
             <ChevronDown size={16} className="text-gray-400" />
           </div>
         </div>
-        
+        </div>
+
         {/* Quick Amount Selection */}
         <div className="flex space-x-3 mb-6">
           {depositAmountOptions.map((amount: any) => (
             <div 
               key={amount}
               className={`border rounded-md px-3 py-1 text-sm cursor-pointer ${
-                selectedAmount === amount ? 'border-[#1DB954] text-[#1DB954]' : 'border-gray-300'
+                selectedAmount === amount ? 'border-[#1DB954] text-[#1DB954]' : 'bg-[#F4F4F9]'
               }`}
               onClick={() => handleAmountSelect(amount)}
             >
@@ -214,13 +217,16 @@ const DepositPage: React.FC<DepositPageProps> = ({ onBack }) => {
         </div>
         
         {/* Submit Button */}
-        <button 
-          className="w-full bg-[#1DB954] text-white py-2 rounded-md font-medium"
-          onClick={handlePaymentClick}
-          disabled={!selectedAmount}
-        >
-          Add {selectedAmount ? `₹${selectedAmount.toLocaleString()}` : 'amount'}
-        </button>
+        <div className="flex justify-end">
+          <button 
+            className="bg-[#1DB954] text-white py-2 px-20 rounded-sm font-medium"
+            onClick={handlePaymentClick}
+            disabled={!selectedAmount}
+          >
+            Add {selectedAmount ? `₹${selectedAmount.toLocaleString()}` : 'amount'}
+          </button>
+        </div>
+
       </div>
       
       {/* Deposit History */}

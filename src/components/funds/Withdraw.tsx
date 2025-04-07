@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { ChevronLeft, ChevronDown } from 'lucide-react';
+import { ChevronLeft, ChevronDown, HelpCircle, ArrowUpDown } from 'lucide-react';
 
 // Import sample data - replace with API calls in production
 import { banks, withdrawHistory, withdrawableBalance } from '@/constants/funds-data';
@@ -33,8 +33,10 @@ const WithdrawPage: React.FC<WithdrawPageProps> = ({ onBack }) => {
   // State management
   const [withdrawAmount, setWithdrawAmount] = useState<number | null>(5000);
   const [selectedBank, setSelectedBank] = useState(banks[0]?.id || '');
-  const [history, setHistory] = useState<WithdrawalRecord[]>([] as WithdrawalRecord[]);
+  const [history, setHistory] = useState<WithdrawalRecord[]>(withdrawHistory as WithdrawalRecord[]);
   const [availableBalance, setAvailableBalance] = useState(withdrawableBalance);
+  const [withdrawType, setWithdrawType] = useState('normal');
+  const [withdrawAll, setWithdrawAll] = useState(false);
   
   // Pre-defined withdrawal amounts
   const withdrawAmounts = [5000, 10000, 25000];
@@ -68,7 +70,7 @@ const WithdrawPage: React.FC<WithdrawPageProps> = ({ onBack }) => {
   };
 
   return (
-    <div className=" mx-auto">
+    <div className="mx-auto">
       {/* Back button */}
       <button onClick={onBack} className="flex items-center text-[#6B7280] mb-4">
         <ChevronLeft size={20} className="mr-1" />
@@ -77,121 +79,164 @@ const WithdrawPage: React.FC<WithdrawPageProps> = ({ onBack }) => {
       
       {/* Withdraw Form */}
       <div className="bg-white border border-gray-200 rounded-md p-6 mb-6">
-        {/* Amount Input */}
-        <div className="mb-6">
-          <div className="flex justify-between items-center mb-2">
-            <label className="block text-[#6B7280] text-sm">Enter Amount</label>
-            <div className="text-sm text-[#6B7280]">
-              Available: <span className="text-[#1DB954] font-medium">₹{formatCurrency(availableBalance)}</span>
+        <div className="flex flex-wrap -mx-2">
+          {/* Amount Input Section */}
+          <div className="w-full md:w-1/2 px-2 mb-4">
+            <div className="mb-1">
+              <span className="text-sm text-gray-700">Enter Amount</span>
+              <span className="float-right text-xs text-gray-500">Available withdrawable balance : ₹{formatCurrency(availableBalance)}</span>
             </div>
-          </div>
-          <input 
-            type="text" 
-            placeholder="₹5,000"
-            className="w-full border border-gray-300 rounded-md px-3 py-2"
-            value={withdrawAmount ? `₹${withdrawAmount.toLocaleString()}` : ''}
-            onChange={handleAmountChange}
-          />
-        </div>
-        
-        {/* Bank Selection */}
-        <div className="mb-6">
-          <label className="block text-[#6B7280] text-sm mb-2">Select Bank Account</label>
-          <div className="flex items-center justify-between w-full border border-gray-300 rounded-md px-3 py-2">
-            <div className="flex items-center">
-              <div className="w-6 h-6 bg-orange-500 rounded-md flex items-center justify-center text-white text-xs mr-2">
-                {banks[0]?.icon || 'B'}
+            <input 
+              type="text" 
+              placeholder="₹20,000"
+              className="w-full border border-gray-300 rounded px-3 py-2"
+              value={withdrawAmount ? `₹${withdrawAmount.toLocaleString()}` : ''}
+              onChange={handleAmountChange}
+            />
+            <div className="mt-2 text-xs text-gray-500">
+              Amount is Expected to credit by (next settlement cycle)
+            </div>
+            
+            {/* Withdrawal Type Selection */}
+            <div className="mt-2 flex items-center">
+              <label className="inline-flex items-center mr-4">
+                <input 
+                  type="radio" 
+                  name="withdrawType" 
+                  checked={withdrawType === 'normal'} 
+                  onChange={() => setWithdrawType('normal')} 
+                  className="mr-1"
+                />
+                <span className="text-sm">Normal Withdraw</span>
+              </label>
+              <label className="inline-flex items-center">
+                <input 
+                  type="radio" 
+                  name="withdrawType" 
+                  checked={withdrawType === 'instant'} 
+                  onChange={() => setWithdrawType('instant')} 
+                  className="mr-1"
+                />
+                <span className="text-sm">Instant Withdraw</span>
+              </label>
+              <div className="ml-1 inline-flex items-center">
+                <HelpCircle size={16} className="text-blue-500" />
               </div>
-              <span>{banks[0]?.name} - {banks[0]?.maskedAccount}</span>
             </div>
-            <ChevronDown size={16} className="text-gray-400" />
+            
+            {/* Withdraw All Checkbox */}
+            <div className="mt-4">
+              <label className="inline-flex items-center">
+                <input 
+                  type="checkbox" 
+                  checked={withdrawAll} 
+                  onChange={() => setWithdrawAll(!withdrawAll)} 
+                  className="mr-2"
+                />
+                <span className="text-sm">Withdraw all</span>
+              </label>
+            </div>
           </div>
-        </div>
-        
-        {/* Quick Amount Selection */}
-        <div className="flex space-x-3 mb-6">
-          {withdrawAmounts.map((amount) => (
-            <div 
-              key={amount}
-              className={`border rounded-md px-3 py-1 text-sm cursor-pointer ${
-                withdrawAmount === amount ? 'border-[#1DB954] text-[#1DB954]' : 'border-gray-300'
-              }`}
-              onClick={() => handleAmountSelect(amount)}
-            >
-              ₹{amount.toLocaleString()}
+          
+          {/* Bank Selection Section */}
+          <div className="w-full md:w-1/2 px-2 mb-4">
+            <div className="mb-1">
+              <span className="text-sm text-gray-700">Select Bank</span>
             </div>
-          ))}
-        </div>
-        
-        {/* Withdrawal Notes */}
-        <div className="mb-6">
-          <p className="text-sm text-[#6B7280] mb-2">Withdrawal Notes:</p>
-          <ul className="text-xs text-[#6B7280] space-y-1 pl-5 list-disc">
-            <li>A withdrawal request placed before 9 AM IST will be processed the same day.</li>
-            <li>Requests after 9 AM IST will be processed the next business day.</li>
-            <li>Bank holidays may result in delayed processing.</li>
-            <li>Maximum withdrawal amount per day is ₹1,00,000.</li>
-          </ul>
+            <div className="relative">
+              <div className="flex items-center justify-between w-full border border-gray-300 rounded px-3 py-2">
+                <div className="flex items-center">
+                  <div className="w-6 h-6 bg-orange-500 rounded-full flex items-center justify-center text-white text-xs mr-2">
+                    B
+                  </div>
+                  <span>BOB - ******* 8829</span>
+                </div>
+                <ChevronDown size={16} className="text-gray-400" />
+              </div>
+            </div>
+          </div>
         </div>
         
         {/* Submit Button */}
-        <button 
-          className={`w-full py-2 rounded-md font-medium ${
-            withdrawAmount && withdrawAmount <= availableBalance
-              ? 'bg-[#1DB954] text-white'
-              : 'bg-gray-300 text-gray-500 cursor-not-allowed'
-          }`}
-          onClick={handleSubmit}
-          disabled={!withdrawAmount || withdrawAmount > availableBalance}
-        >
-          Withdraw {withdrawAmount ? `₹${withdrawAmount.toLocaleString()}` : 'amount'}
-        </button>
+        <div className="mt-4 text-right">
+          <button 
+            className="bg-green-500 text-white px-8 py-2 rounded"
+            onClick={handleSubmit}
+          >
+            Add {withdrawAmount ? `₹${withdrawAmount.toLocaleString()}` : '{amount}'}
+          </button>
+        </div>
       </div>
       
       {/* Withdrawal History */}
       <div>
-        <h2 className="text-lg font-medium mb-4">Withdrawal History</h2>
-        
-        <div className="overflow-x-auto border rounded-md">
-          <table className="min-w-full divide-y divide-gray-200">
-            <thead className="bg-gray-50">
-              <tr>
-                <th className="px-4 py-3 text-left text-xs font-medium text-[#6B7280] uppercase tracking-wider">Account</th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-[#6B7280] uppercase tracking-wider">Bank</th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-[#6B7280] uppercase tracking-wider">Date & Time</th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-[#6B7280] uppercase tracking-wider">Amount</th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-[#6B7280] uppercase tracking-wider">Status</th>
+      <h2 className="text-lg font-medium mb-4">Fund Withdraw History</h2>
+      
+      <div className="overflow-x-auto border rounded-md">
+        <table className="min-w-full divide-y divide-gray-200">
+          <thead className="bg-gray-50">
+            <tr>
+              <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider border-r">
+                <div className="flex items-center justify-between w-full">
+                  <span> Account </span>
+                  <ArrowUpDown className="\ w-4 h-4" />
+                </div>
+              </th>
+              <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider border-r">
+                <div className="flex items-center justify-between w-full">
+                  <span> Bank</span>
+                  <ArrowUpDown className="ml-1 w-4 h-4" />
+                </div>
+              </th>
+              <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider border-r">
+                <div className="flex items-center justify-between w-full">
+                  <span> Date & Time </span>
+                  <ArrowUpDown className="ml-1 w-4 h-4" />
+                </div>
+              </th>
+              <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider border-r">
+                <div className="flex items-center justify-between w-full">
+                  <span> Amount </span>
+                  <ArrowUpDown className="ml-1 w-4 h-4" />
+                </div>
+              </th>
+              <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider">
+                <div className="flex items-center justify-between w-full">
+                  <span> Status </span>
+                  <ArrowUpDown className="ml-1 w-4 h-4" />
+                </div>
+              </th>
+            </tr>
+          </thead>
+          <tbody className="bg-white divide-y divide-gray-200">
+            {history.map((item, index) => (
+              <tr key={index}>
+                <td className="px-4 py-4 whitespace-nowrap text-sm text-[#6B7280] border-r">{item.account}</td>
+                <td className="px-4 py-4 whitespace-nowrap text-sm text-[#6B7280] border-r">{item.bank}</td>
+                <td className="px-4 py-4 whitespace-nowrap text-sm text-[#6B7280] border-r">{item.date} {item.time}</td>
+                <td className="px-4 py-4 whitespace-nowrap text-sm text-[#6B7280] border-r">₹{formatCurrency(item.amount)}</td>
+                <td className="px-4 py-4 whitespace-nowrap">
+                  <span className={`inline-flex px-2 py-1 text-xs rounded-sm ${
+                    item.status === 'pending' 
+                      ? 'bg-[#FFF6DC] text-[#FFBF00]' 
+                      : item.status === 'success' 
+                        ? 'bg-green-100 text-[#1DB954]' 
+                        : 'bg-red-100 text-red-500'
+                  }`}>
+                    {item.status === 'pending' 
+                      ? 'Pending' 
+                      : item.status === 'success' 
+                        ? 'Success' 
+                        : 'Failed'
+                    }
+                  </span>
+                </td>
               </tr>
-            </thead>
-            <tbody className="bg-white divide-y divide-gray-200">
-              {history.map((item, index) => (
-                <tr key={index}>
-                  <td className="px-4 py-4 whitespace-nowrap text-sm text-[#6B7280]">{item.account}</td>
-                  <td className="px-4 py-4 whitespace-nowrap text-sm text-[#6B7280]">{item.bank}</td>
-                  <td className="px-4 py-4 whitespace-nowrap text-sm text-[#6B7280]">{item.date} {item.time}</td>
-                  <td className="px-4 py-4 whitespace-nowrap text-sm font-medium">₹{formatCurrency(item.amount)}</td>
-                  <td className="px-4 py-4 whitespace-nowrap">
-                    <span className={`inline-flex px-2 py-1 text-xs rounded-sm ${
-                      item.status === 'pending' 
-                        ? 'bg-[#FFF6DC] text-[#FFBF00]' 
-                        : item.status === 'success' 
-                          ? 'bg-green-100 text-[#1DB954]' 
-                          : 'bg-red-100 text-red-500'
-                    }`}>
-                      {item.status === 'pending' 
-                        ? 'Processing' 
-                        : item.status === 'success' 
-                          ? 'Completed' 
-                          : 'Failed'
-                      }
-                    </span>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+            ))}
+          </tbody>
+        </table>
       </div>
+    </div>
     </div>
   );
 };
