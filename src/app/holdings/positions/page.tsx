@@ -1,5 +1,7 @@
 'use client';
 
+import DownloadButton from '@/components/gen-components/DownloadButton';
+import SearchButton from '@/components/gen-components/SearchButton';
 import React from 'react';
 
 // TypeScript interfaces
@@ -139,13 +141,13 @@ const Positions: React.FC = () => {
     <div className="w-full py-8 px-2">
       {/* Header Summary */}
       <div className="flex w-full mb-4">
-        <div className="w-1/2 bg-gray-50 p-4">
+        <div className="w-1/2 border-r border-[#D1D5DB] text-center bg-[#F4F4F9] p-4">
           <div className="text-base font-medium">Daily P&L</div>
           <div className="text-xl font-medium text-red-500">
             {formatCurrency(summaryData.dailyPL.value)} {formatPercentage(summaryData.dailyPL.percentage)}
           </div>
         </div>
-        <div className="w-1/2 bg-gray-50 p-4">
+        <div className="w-1/2 text-center bg-[#F4F4F9] p-4">
           <div className="text-base font-medium">Net P&L</div>
           <div className="text-xl font-medium text-green-500">
             {formatCurrency(summaryData.netPL.value)} {formatPercentage(summaryData.netPL.percentage)}
@@ -157,20 +159,8 @@ const Positions: React.FC = () => {
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-base font-medium">Positions (5)</h2>
         <div className="flex items-center gap-2">
-          <button className="flex items-center px-3 py-1 border rounded-md text-sm">
-            <svg className="w-4 h-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-            </svg>
-            Download
-          </button>
-          <div className="relative">
-            <input type="text" placeholder="Search everything..." className="border rounded-md px-3 py-1 text-sm pr-8 w-48" />
-            <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
-              <svg className="w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-              </svg>
-            </div>
-          </div>
+          <DownloadButton />
+          <SearchButton />
         </div>
       </div>
 
