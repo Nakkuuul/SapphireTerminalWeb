@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { ChevronLeft, ChevronDown } from 'lucide-react';
+import { ChevronLeft, ChevronDown, ArrowUpDown } from 'lucide-react';
 import UpiPaymentModal from '@/components/funds/pop-ups/UpiPaymentModal';
 import QrPaymentModal from '@/components/funds/pop-ups/QrPaymentModal';
 import BankTransferModal from '@/components/funds/pop-ups/BankTransferModal';
@@ -83,7 +83,7 @@ const DepositPage: React.FC<DepositPageProps> = ({ onBack }) => {
   };
 
   return (
-    <div className="max-w-2xl mx-auto">
+    <div className=" mx-auto">
       {/* Back button */}
       <button onClick={onBack} className="flex items-center text-[#6B7280] mb-4">
         <ChevronLeft size={20} className="mr-1" />
@@ -225,48 +225,73 @@ const DepositPage: React.FC<DepositPageProps> = ({ onBack }) => {
       
       {/* Deposit History */}
       <div>
-        <h2 className="text-lg font-medium mb-4">Fund Deposit History</h2>
-        
-        <div className="overflow-x-auto border rounded-md">
-          <table className="min-w-full divide-y divide-gray-200">
-            <thead className="bg-gray-50">
-              <tr>
-                <th className="px-4 py-3 text-left text-xs font-medium text-[#6B7280] uppercase tracking-wider">Account</th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-[#6B7280] uppercase tracking-wider">Bank</th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-[#6B7280] uppercase tracking-wider">Date & Time</th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-[#6B7280] uppercase tracking-wider">Amount</th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-[#6B7280] uppercase tracking-wider">Status</th>
+      <h2 className="text-lg font-medium mb-4">Fund Deposit History</h2>
+      
+      <div className="overflow-x-auto border rounded-md">
+        <table className="min-w-full divide-y divide-gray-200">
+          <thead className="bg-gray-50">
+            <tr>
+              <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider border-r">
+                <div className="flex items-center justify-between w-full">
+                  <span> Account </span>
+                  <ArrowUpDown className="\ w-4 h-4" />
+                </div>
+              </th>
+              <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider border-r">
+                <div className="flex items-center justify-between w-full">
+                  <span> Bank</span>
+                  <ArrowUpDown className="ml-1 w-4 h-4" />
+                </div>
+              </th>
+              <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider border-r">
+                <div className="flex items-center justify-between w-full">
+                  <span> Date & Time </span>
+                  <ArrowUpDown className="ml-1 w-4 h-4" />
+                </div>
+              </th>
+              <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider border-r">
+                <div className="flex items-center justify-between w-full">
+                  <span> Amount </span>
+                  <ArrowUpDown className="ml-1 w-4 h-4" />
+                </div>
+              </th>
+              <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider">
+                <div className="flex items-center justify-between w-full">
+                  <span> Status </span>
+                  <ArrowUpDown className="ml-1 w-4 h-4" />
+                </div>
+              </th>
+            </tr>
+          </thead>
+          <tbody className="bg-white divide-y divide-gray-200">
+            {history.map((item, index) => (
+              <tr key={index}>
+                <td className="px-4 py-4 whitespace-nowrap text-sm text-[#6B7280] border-r">{item.account}</td>
+                <td className="px-4 py-4 whitespace-nowrap text-sm text-[#6B7280] border-r">{item.bank}</td>
+                <td className="px-4 py-4 whitespace-nowrap text-sm text-[#6B7280] border-r">{item.date} {item.time}</td>
+                <td className="px-4 py-4 whitespace-nowrap text-sm text-[#6B7280] border-r">₹{formatCurrency(item.amount)}</td>
+                <td className="px-4 py-4 whitespace-nowrap">
+                  <span className={`inline-flex px-2 py-1 text-xs rounded-sm ${
+                    item.status === 'pending' 
+                      ? 'bg-[#FFF6DC] text-[#FFBF00]' 
+                      : item.status === 'success' 
+                        ? 'bg-green-100 text-[#1DB954]' 
+                        : 'bg-red-100 text-red-500'
+                  }`}>
+                    {item.status === 'pending' 
+                      ? 'Pending' 
+                      : item.status === 'success' 
+                        ? 'Success' 
+                        : 'Failed'
+                    }
+                  </span>
+                </td>
               </tr>
-            </thead>
-            <tbody className="bg-white divide-y divide-gray-200">
-              {history.map((item: { account: string, bank: string, date: string, time: string, amount: number, status: string }, index: number) => (
-                <tr key={index}>
-                  <td className="px-4 py-4 whitespace-nowrap text-sm text-[#6B7280]">{item.account}</td>
-                  <td className="px-4 py-4 whitespace-nowrap text-sm text-[#6B7280]">{item.bank}</td>
-                  <td className="px-4 py-4 whitespace-nowrap text-sm text-[#6B7280]">{item.date} {item.time}</td>
-                  <td className="px-4 py-4 whitespace-nowrap text-sm font-medium">₹{formatCurrency(item.amount)}</td>
-                  <td className="px-4 py-4 whitespace-nowrap">
-                    <span className={`inline-flex px-2 py-1 text-xs rounded-sm ${
-                      item.status === 'pending' 
-                        ? 'bg-[#FFF6DC] text-[#FFBF00]' 
-                        : item.status === 'success' 
-                          ? 'bg-green-100 text-[#1DB954]' 
-                          : 'bg-red-100 text-red-500'
-                    }`}>
-                      {item.status === 'pending' 
-                        ? 'Pending' 
-                        : item.status === 'success' 
-                          ? 'Success' 
-                          : 'Failed'
-                      }
-                    </span>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+            ))}
+          </tbody>
+        </table>
       </div>
+    </div>
 
       {/* Payment Modals */}
       <UpiPaymentModal 

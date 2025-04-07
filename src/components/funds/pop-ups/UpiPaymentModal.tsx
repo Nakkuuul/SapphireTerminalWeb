@@ -1,12 +1,5 @@
 import React, { useState } from 'react';
-import { X, ChevronLeft, ChevronDown } from 'lucide-react';
-
-// Profile icon for UPI verification
-const ProfileIcon = () => (
-  <div className="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center text-white">
-    <span className="text-xs">S</span>
-  </div>
-);
+import { X, ChevronLeft, ChevronDown, Smartphone, CreditCard, ShoppingBag, ShoppingCart, Wallet } from 'lucide-react';
 
 // UPI Payment Modal Component
 const UpiPaymentModal = ({ isOpen, onClose, onSuccess }: { isOpen: boolean, onClose: () => void, onSuccess?: () => void }) => {
@@ -48,7 +41,7 @@ const UpiPaymentModal = ({ isOpen, onClose, onSuccess }: { isOpen: boolean, onCl
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
       <div 
         className="bg-white rounded-lg shadow-lg w-full max-w-md overflow-hidden"
-        style={{ position: 'relative', cursor: 'move' }}
+        style={{ position: 'relative' }}
       >
         {/* Step 1: Select UPI App */}
         {step === 1 && (
@@ -72,7 +65,7 @@ const UpiPaymentModal = ({ isOpen, onClose, onSuccess }: { isOpen: boolean, onCl
                   />
                   <div className="flex items-center space-x-2">
                     <div className="w-8 h-8 bg-purple-700 rounded-md flex items-center justify-center text-white">
-                      <span className="font-bold text-xs">P</span>
+                      <Smartphone size={16} />
                     </div>
                     <span>PhonePe</span>
                   </div>
@@ -89,10 +82,7 @@ const UpiPaymentModal = ({ isOpen, onClose, onSuccess }: { isOpen: boolean, onCl
                   />
                   <div className="flex items-center space-x-2">
                     <div className="w-8 h-8 bg-white rounded-full border flex items-center justify-center">
-                      <div className="flex">
-                        <span className="text-blue-500 text-xs font-bold">G</span>
-                        <span className="text-red-500 text-xs font-bold">p</span>
-                      </div>
+                      <CreditCard size={16} className="text-blue-500" />
                     </div>
                     <span>Google pay</span>
                   </div>
@@ -109,7 +99,7 @@ const UpiPaymentModal = ({ isOpen, onClose, onSuccess }: { isOpen: boolean, onCl
                   />
                   <div className="flex items-center space-x-2">
                     <div className="w-8 h-8 bg-blue-100 rounded-md flex items-center justify-center">
-                      <span className="text-blue-700 text-xs font-bold">P</span>
+                      <ShoppingBag size={16} className="text-blue-700" />
                     </div>
                     <span>Paytm UPI</span>
                   </div>
@@ -126,7 +116,7 @@ const UpiPaymentModal = ({ isOpen, onClose, onSuccess }: { isOpen: boolean, onCl
                   />
                   <div className="flex items-center space-x-2">
                     <div className="w-8 h-8 bg-gray-100 rounded-md flex items-center justify-center">
-                      <span className="text-orange-500 text-xs font-bold">A</span>
+                      <ShoppingCart size={16} className="text-orange-500" />
                     </div>
                     <span>Amazon pay</span>
                   </div>
@@ -143,7 +133,7 @@ const UpiPaymentModal = ({ isOpen, onClose, onSuccess }: { isOpen: boolean, onCl
                   />
                   <div className="flex items-center space-x-2">
                     <div className="w-8 h-8 bg-green-100 rounded-md flex items-center justify-center">
-                      <span className="text-green-700 text-xs font-bold">U</span>
+                      <Wallet size={16} className="text-green-700" />
                     </div>
                     <span>Other UPI</span>
                   </div>
@@ -173,14 +163,14 @@ const UpiPaymentModal = ({ isOpen, onClose, onSuccess }: { isOpen: boolean, onCl
                   <input
                     type="text"
                     placeholder="Enter UPI ID"
-                    className="flex-1 border rounded-l-md p-2 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                    className="flex-1 border rounded-l-md p-2"
                     value={upiId}
                     onChange={(e) => setUpiId(e.target.value)}
                   />
                   <span className="flex items-center px-2 bg-gray-100 border-t border-b">@</span>
                   <div className="relative">
                     <select
-                      className="appearance-none border rounded-r-md p-2 pr-8 bg-white focus:outline-none focus:ring-1 focus:ring-blue-500"
+                      className="appearance-none text-[#6B7280] border rounded-r-md p-2 pr-8 bg-white "
                       value={upiDomain}
                       onChange={(e) => setUpiDomain(e.target.value)}
                     >
@@ -197,13 +187,12 @@ const UpiPaymentModal = ({ isOpen, onClose, onSuccess }: { isOpen: boolean, onCl
               </div>
               
               {/* UPI Guidelines Section */}
-              <div className="bg-gray-50 p-4 rounded-md mb-6">
+              <div className="border border-[#D1D5DB] p-4 rounded-md mb-6">
                 <h3 className="text-sm font-medium mb-2">UPI Guidelines</h3>
                 <ul className="text-xs text-gray-600 space-y-2">
                   <li className="flex items-center">
                     <span className="mr-1">•</span>
                     <span>As per SEBI guidelines, you must use a bank <span className="font-medium">registered with Angel One</span>.</span>
-                    <ProfileIcon />
                   </li>
                   <li className="flex">
                     <span className="mr-1">•</span>

@@ -68,7 +68,7 @@ const WithdrawPage: React.FC<WithdrawPageProps> = ({ onBack }) => {
   };
 
   return (
-    <div className="max-w-2xl mx-auto">
+    <div className=" mx-auto">
       {/* Back button */}
       <button onClick={onBack} className="flex items-center text-[#6B7280] mb-4">
         <ChevronLeft size={20} className="mr-1" />
