@@ -32,9 +32,9 @@ const PersonalInformation = ({ userData = {} }: { userData?: UserData }) => {
 
   return (
     <>
-      <div className="bg-[#F4F4F9] border border-[#D1D5DB] p-3 mb-6">
+      <div className="bg-[#F4F4F9] dark:bg-[#121413] border border-[#D1D5DB] dark:border-[#2F2F2F] p-3 mb-6">
         <div className="flex items-center">
-          <div className="bg-gray-100 rounded-lg p-3 mr-4">
+          <div className="bg-gray-100 dark:bg-[#2F2F2F] rounded-lg p-3 mr-4">
             {profilePic ? (
               <img
                 src={profilePic}
@@ -42,34 +42,36 @@ const PersonalInformation = ({ userData = {} }: { userData?: UserData }) => {
                 className="rounded-full w-12 h-12 object-cover"
               />
             ) : (
-              <div className="w-12 h-12 bg-gray-300 rounded-full animate-pulse" />
+              <div className="w-12 h-12 bg-gray-300 dark:bg-[#2F2F2F] rounded-full animate-pulse" />
             )}
           </div>
           <div>
-            <h2 className="text-lg text-[#1A1A1A] font-medium">{name}</h2>
-            <p className="text-gray-500 text-sm">{accountId}</p>
+            <h2 className="text-lg text-[#1A1A1A] dark:text-[#EBEEF5] font-medium">{name}</h2>
+            <p className="text-gray-500 dark:text-[#C9CACC] text-sm">{accountId}</p>
           </div>
         </div>
       </div>
-      <div className='mb-6 border border-[#D1D5DB]'>
-        <h3 className="font-normal text-lg text-[#1A1A1A] px-6 py-3 bg-[#F4F4F9] border-b ">Personal Information</h3>
+      <div className="mb-6 border border-[#D1D5DB] dark:border-[#2F2F2F]">
+        <h3 className="font-normal text-lg text-[#1A1A1A] dark:text-[#EBEEF5] px-6 py-3 bg-[#F4F4F9] dark:bg-[#121413] border-b dark:border-[#2F2F2F]">
+          Personal Information
+        </h3>
 
         <div className="grid grid-cols-2 px-6 py-3 gap-4">
           <div>
-            <p className="text-sm text-gray-500">PAN</p>
-            <p>{pan}</p>
+            <p className="text-sm text-gray-500 dark:text-[#C9CACC]">PAN</p>
+            <p className="dark:text-[#EBEEF5]">{pan}</p>
           </div>
           <div>
-            <p className="text-sm text-gray-500">Phone</p>
-            <p>{phone}</p>
+            <p className="text-sm text-gray-500 dark:text-[#C9CACC]">Phone</p>
+            <p className="dark:text-[#EBEEF5]">{phone}</p>
           </div>
           <div>
-            <p className="text-sm text-gray-500">Location</p>
-            <p>{location}</p>
+            <p className="text-sm text-gray-500 dark:text-[#C9CACC]">Location</p>
+            <p className="dark:text-[#EBEEF5]">{location}</p>
           </div>
           <div>
-            <p className="text-sm text-gray-500">Email</p>
-            <p>{email}</p>
+            <p className="text-sm text-gray-500 dark:text-[#C9CACC]">Email</p>
+            <p className="dark:text-[#EBEEF5]">{email}</p>
           </div>
         </div>
       </div>

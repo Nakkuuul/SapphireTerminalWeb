@@ -73,26 +73,32 @@ const Navbar = () => {
           {/* Main single-row layout */}
           <div className="w-full flex items-center justify-between">
             {/* Left section with stock information - exactly 25% width */}
-            <div className="w-1/4 h-full border-r border-gray-200">
+            <div className="w-[30%] h-full ">
               {/* Stock Information - Improved layout with 36px padding */}
               <div className="px-9 h-full flex items-center">
                 <div className="flex items-center space-x-4">
-                  <div className="flex flex-col">
+                  <div className="flex pr-3 border-r  flex-col">
                     <div className="flex items-center">
-                      <span className="text-xs font-medium">Nifty 50</span>
-                      <span className="ml-2 text-[10px] text-rose-500">Sunny Day</span>
+                      <span className="text-base font-medium">Nifty 50</span>
+                      <span className="ml-2 bg-red-100 p-1 rounded-sm text-xs text-red-500">
+                        Expiry Today
+                      </span>
                     </div>
                     <div className="flex items-center mt-0.5">
-                      <span className="text-xs font-medium">21,754.29</span>
-                      <span className="ml-1 text-[10px] text-green-500">+37.02 (+0.17%)</span>
+                      <span className="text-xs font-semibold">21,754.29</span>
+                      <span className="ml-1 text-xs font-semibold text-[#22F07D]">
+                        +37.02 (+0.17%)
+                      </span>
                     </div>
                   </div>
-                  
-                  <div className="flex flex-col">
-                    <span className="text-xs font-medium">Sensex</span>
+
+                  <div className="flex pr-3 border-r flex-col">
+                    <span className="text-base font-medium">Sensex</span>
                     <div className="flex items-center mt-0.5">
                       <span className="text-xs font-medium">71,715.96</span>
-                      <span className="ml-1 text-[10px] text-red-500">-27.43 (-0.38%)</span>
+                      <span className="ml-1 text-xs text-red-500">
+                        -27.43 (-0.38%)
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -105,7 +111,7 @@ const Navbar = () => {
                 {navLinks.map((link) => {
                   // Check if this is the active route or its child route
                   const isActive = isRouteActive(link.href);
-                  
+
                   return (
                     <div key={link.href} className="relative group">
                       <Link
@@ -114,7 +120,7 @@ const Navbar = () => {
                         onClick={() => setActiveLink(link.href)}
                       >
                         {link.label}
-                        
+
                         {/* Green underline animation (for both hover & active states) */}
                         <span
                           className={`absolute -bottom-5 left-0 h-[3px] bg-[#1DB954] transition-all duration-300 ${
@@ -132,36 +138,46 @@ const Navbar = () => {
             <div className="hidden md:flex pr-9 items-center space-x-4">
               {/* Notifications Bell Icon */}
               <button className="text-gray-700">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-5 w-5"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                >
                   <path d="M10 2a6 6 0 00-6 6v3.586l-.707.707A1 1 0 004 14h12a1 1 0 00.707-1.707L16 11.586V8a6 6 0 00-6-6zM10 18a3 3 0 01-3-3h6a3 3 0 01-3 3z" />
                 </svg>
               </button>
 
               {/* User Profile Avatar with Dropdown Arrow */}
               <div className="flex items-center">
-                <div 
+                <div
                   className="h-8 w-8 cursor-pointer rounded-full overflow-hidden border border-gray-300"
-                  onClick={() => router.push('/profile')}
+                  onClick={() => router.push("/profile")}
                 >
-                  <Image 
-                    src="/globe.svg" 
-                    alt="Profile" 
-                    width={32} 
-                    height={32} 
+                  <Image
+                    src="/globe.svg"
+                    alt="Profile"
+                    width={32}
+                    height={32}
                     className="object-cover"
                     onError={(e) => {
                       e.currentTarget.src = "https://via.placeholder.com/32";
                     }}
                   />
                 </div>
-                <svg 
-                  xmlns="http://www.w3.org/2000/svg" 
-                  className="h-4 w-4 ml-1 text-gray-500" 
-                  fill="none" 
-                  viewBox="0 0 24 24" 
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-4 w-4 ml-1 text-gray-500"
+                  fill="none"
+                  viewBox="0 0 24 24"
                   stroke="currentColor"
                 >
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M19 9l-7 7-7-7"
+                  />
                 </svg>
               </div>
             </div>
@@ -247,15 +263,21 @@ const Navbar = () => {
               <div className="flex flex-col">
                 <span className="font-bold text-sm">Nifty 50</span>
                 <div className="flex items-center mt-1">
-                  <span className="text-xs text-white bg-red-500 px-1 py-0.5 rounded-sm">Expiry Today</span>
-                  <span className="ml-1 text-green-500 text-xs">+87.10 (0.10%)</span>
+                  <span className="text-xs text-white bg-red-500 px-1 py-0.5 rounded-sm">
+                    Expiry Today
+                  </span>
+                  <span className="ml-1 text-green-500 text-xs">
+                    +87.10 (0.10%)
+                  </span>
                 </div>
               </div>
 
               {/* Sensex */}
               <div className="flex flex-col">
                 <span className="font-bold text-sm">Sensex</span>
-                <span className="text-red-500 text-xs mt-1">-87.10 (-0.10%)</span>
+                <span className="text-red-500 text-xs mt-1">
+                  -87.10 (-0.10%)
+                </span>
               </div>
             </div>
           </div>
@@ -284,11 +306,11 @@ const Navbar = () => {
           {/* Mobile Profile Section */}
           <div className="mt-auto border-t border-gray-200 pt-6 flex items-center">
             <div className="h-10 w-10 rounded-full overflow-hidden border border-gray-300">
-              <Image 
-                src="/globe.svg" 
-                alt="Profile" 
-                width={40} 
-                height={40} 
+              <Image
+                src="/globe.svg"
+                alt="Profile"
+                width={40}
+                height={40}
                 className="object-cover"
                 onError={(e) => {
                   e.currentTarget.src = "https://via.placeholder.com/40";

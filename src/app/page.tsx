@@ -5,8 +5,8 @@ const Home = () => {
   return (
     <div className=''>
       <Login/>
+      {/* .s */}
     </div>
   )
 }
-
 export default Home

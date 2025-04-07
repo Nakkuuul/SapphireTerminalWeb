@@ -14,7 +14,6 @@ type BrokeragePlanProps = {
 };
 
 const BrokeragePlan = ({ brokerageData = [] }: BrokeragePlanProps) => {
-  // Default data if no props provided
   const defaultBrokerageData = [
     {
       security: 'Equity Delivery',
@@ -74,41 +73,45 @@ const BrokeragePlan = ({ brokerageData = [] }: BrokeragePlanProps) => {
     }
   ];
 
-  // Use provided data or default
   const brokerageRows = brokerageData.length > 0 ? brokerageData : defaultBrokerageData;
 
   return (
-    <div className="border border-[#D1D5DB] mb-6">
-      <div className="bg-[#F4F4F9] border-b-[#D1D5DB] px-6 py-3">
-        <h3 className="text-lg font-normal text-[#1A1A1A]">Brokerage Plan</h3>
+    <div className="border border-[#D1D5DB] dark:border-[#2F2F2F] mb-6">
+      <div className="bg-[#F4F4F9] dark:bg-[#121413] border-b border-[#D1D5DB] dark:border-[#2F2F2F] px-6 py-3">
+        <h3 className="text-lg font-normal text-[#1A1A1A] dark:text-[#EBEEF5]">Brokerage Plan</h3>
       </div>
-      
+
       <div className="overflow-x-auto p-6">
         <table className="w-full border-collapse">
           <thead>
             <tr>
-              <th className="p-3 text-left text-base font-medium text-gray-900 border bg-[#B8DBD94D]">Security</th>
-              <th className="p-3 text-left text-base font-medium text-gray-900 border bg-[#B8DBD94D]">Plan type</th>
-              <th className="p-3 text-left text-base font-medium text-gray-900 border bg-[#B8DBD94D]">Brokerage</th>
-              <th className="p-3 text-left text-base font-medium text-gray-900 border bg-[#B8DBD94D]">Minimum Brokerage</th>
-              <th className="p-3 text-left text-base font-medium text-gray-900 border bg-[#B8DBD94D]">
-                <div className="flex items-center">
-                  Additional Charges
-                  <Info size={16} className="ml-1 text-gray-400" />
-                </div>
-              </th>
+              {["Security", "Plan type", "Brokerage", "Minimum Brokerage", "Additional Charges"].map((heading, i) => (
+                <th
+                  key={i}
+                  className="p-3 text-left text-base font-medium text-gray-900 dark:text-[#EBEEF5] border bg-[#B8DBD94D] dark:bg-[#121413] border-[#D1D5DB] dark:border-[#2F2F2F]"
+                >
+                  {heading === "Additional Charges" ? (
+                    <div className="flex items-center">
+                      {heading}
+                      <Info size={16} className="ml-1 text-gray-400 dark:text-[#C9CACC]" />
+                    </div>
+                  ) : (
+                    heading
+                  )}
+                </th>
+              ))}
             </tr>
           </thead>
           <tbody>
             {brokerageRows.map((row, index) => (
               <tr key={index}>
-                <td className="p-3 text-sm font-medium text-gray-500 border">{row.security}</td>
-                <td className="p-3 text-sm font-medium text-gray-500 border">{row.planType}</td>
-                <td className="p-3 text-sm font-medium text-gray-500 border">{row.brokerage}</td>
-                <td className="p-3 text-sm font-medium text-gray-500 border">{row.minimumBrokerage}</td>
-                <td className="p-3 text-sm font-medium text-gray-500 border flex items-center">
+                <td className="p-3 text-sm font-medium text-gray-500 dark:text-[#C9CACC] border border-[#D1D5DB] dark:border-[#2F2F2F]">{row.security}</td>
+                <td className="p-3 text-sm font-medium text-gray-500 dark:text-[#C9CACC] border border-[#D1D5DB] dark:border-[#2F2F2F]">{row.planType}</td>
+                <td className="p-3 text-sm font-medium text-gray-500 dark:text-[#C9CACC] border border-[#D1D5DB] dark:border-[#2F2F2F]">{row.brokerage}</td>
+                <td className="p-3 text-sm font-medium text-gray-500 dark:text-[#C9CACC] border border-[#D1D5DB] dark:border-[#2F2F2F]">{row.minimumBrokerage}</td>
+                <td className="p-3 text-sm font-medium text-gray-500 dark:text-[#C9CACC] border border-[#D1D5DB] dark:border-[#2F2F2F] flex items-center">
                   {row.additionalCharges}
-                  <Info size={16} className="ml-1 text-gray-400" />
+                  <Info size={16} className="ml-1 text-gray-400 dark:text-[#C9CACC]" />
                 </td>
               </tr>
             ))}

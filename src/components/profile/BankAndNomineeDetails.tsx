@@ -42,9 +42,9 @@ const BankAndNomineeDetails = ({ bankData = [], nomineeData = [] }) => {
   return (
     <>
       {/* Bank Details Section */}
-      <div className="border border-[#D1D5DB] mb-6">
-        <div className="bg-gray-100 px-6 py-3">
-          <h3 className="text-lg font-normal text-gray-900">Bank Details</h3>
+      <div className="border ]  dark:border-[#2F2F2F] mb-6">
+        <div className="bg-gray-100 dark:bg-[#121413]  dark:border-[#2F2F2F] px-6 py-3">
+          <h3 className="text-lg font-normal text-gray-900 dark:text-[#EBEEF5]">Bank Details</h3>
         </div>
         
         <div className="p-6">
@@ -94,35 +94,35 @@ const BankAndNomineeDetails = ({ bankData = [], nomineeData = [] }) => {
       </div>
       
       {/* Nominee Details Section */}
-      <div className="border border-[#D1D5DB] mb-6">
-        <div className="bg-gray-100 px-6 py-3">
-          <h3 className="text-lg font-normal text-[#1A1A1A]">Nominee details</h3>
+      <div className="border border-[#D1D5DB] dark:border-[#2F2F2F] mb-6">
+        <div className="bg-gray-100  dark:bg-[#121413]    px-6 py-3">
+          <h3 className="text-lg font-normal text-[#1A1A1A] dark:text-[#EBEEF5]">Nominee details</h3>
         </div>
         
         <div className="p-6">
           {nominees.map((nominee, index) => (
             <div key={index}>
-              <h4 className="text-lg font-normal text-[#1A1A1A] mb-2">Nominee details {index + 1}</h4>
+              <h4 className="text-lg font-normal  text-[#1A1A1A] dark:text-[#EBEEF5] mb-2">Nominee details {index + 1}</h4>
               <div className="grid grid-cols-2 gap-x-4">
                 <div className="mb-3">
                   <p className="text-base text-[#7D7D7D]">Nominee Name</p>
-                  <p className="text-base  ">{nominee.name}</p>
+                  <p className="text-base  dark:text-[#EBEEF5] ">{nominee.name}</p>
                 </div>
                 <div className="mb-3">
                   <p className="text-base text-gray-500">Document ID</p>
-                  <p className="text-base">{nominee.documentId}</p>
+                  <p className="text-base dark:text-[#EBEEF5]">{nominee.documentId}</p>
                 </div>
                 <div className="mb-3">
                   <p className="text-base text-gray-500">Relation</p>
-                  <p className="text-base">{nominee.relation}</p>
+                  <p className="text- dark:text-[#EBEEF5]">{nominee.relation}</p>
                 </div>
                 <div className="mb-3">
                   <p className="text-base text-gray-500">% Share</p>
-                  <p className="text-base">{nominee.sharePercentage}%</p>
+                  <p className="text- dark:text-[#EBEEF5]">{nominee.sharePercentage}%</p>
                 </div>
               </div>
               {index < nominees.length - 1 && (
-                <div className="border-t my-4"></div>
+                <div className="border-b my-4 dark:border-[#6B7280] "></div>
               )}
             </div>
           ))}

@@ -29,9 +29,9 @@ const TradingSegments = ({ segmentsData = [] }: SegmentsProps) => {
   const segments = segmentsData.length > 0 ? segmentsData : defaultSegments;
 
   return (
-    <div className="border border-[#D1D5DB] mb-6">
-      <div className="bg-[#F4F4F9] border-b-[#D1D5DB] px-6 py-3">
-        <h3 className="text-lg font-normal text-gray-900">Segments</h3>
+    <div className="border border-[#D1D5DB] dark:border-[#2F2F2F] mb-6">
+      <div className="bg-[#F4F4F9] dark:bg-[#121413] border-b-[#D1D5DB] dark:border-b-[#2F2F2F] px-6 py-3">
+        <h3 className="text-lg font-normal text-gray-900 dark:text-[#EBEEF5]">Segments</h3>
       </div>
       
       <div className="p-6">
@@ -41,8 +41,8 @@ const TradingSegments = ({ segmentsData = [] }: SegmentsProps) => {
               key={index} 
               className={`px-3 py-2 text-center text-base rounded border ${
                 segment.active 
-                  ? 'bg-[#D1FADF99] border-[#22A06B] text-[#1DB954]' 
-                  : 'bg-gray-50 border-gray-200 text-[#6B7280] font-medium'
+                  ? 'bg-[#D1FADF99] dark:bg-[#D1FADF66] border-[#22A06B] text-[#1DB954] dark:text-[#EBEEF5]' 
+                  : 'bg-gray-50 dark:bg-transparent border-gray-200 dark:border-[#2F2F2F] text-[#6B7280] font-medium'
               }`}
             >
               {segment.name}
