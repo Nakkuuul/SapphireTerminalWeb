@@ -54,10 +54,10 @@ function TradeSelector({ activeComponent, closedComponent }: TradeSelectorProps)
   return (
     <div className="flex flex-col w-full">
       {/* Toggle Buttons */}
-      <div className="flex border-[1px] border-[#D1D5DB] rounded-full p-1 w-full relative" ref={containerRef}>
+      <div className="flex border-[1px] border-[#D1D5DB] dark:order-[#2F2F2F] rounded-full p-1 w-full relative" ref={containerRef}>
         {/* Animated Indicator */}
         <div 
-          className="absolute bg-green-100 rounded-full transition-all duration-300 ease-in-out"
+          className="absolute bg-green-100 dark:bg-[#121413] rounded-full transition-all duration-300 ease-in-out"
           style={indicatorStyle}
         />
         
