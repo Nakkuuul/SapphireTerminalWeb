@@ -39,9 +39,9 @@ const TradingSegments = ({ segmentsData = [] }: SegmentsProps) => {
           {segments.map((segment, index) => (
             <div 
               key={index} 
-              className={`px-3 py-2 text-center text-sm rounded border ${
+              className={`px-3 py-2 text-center text-base rounded border ${
                 segment.active 
-                  ? 'bg-green-100 border-green-200 text-green-800' 
+                  ? 'bg-[#D1FADF99] border-[#22A06B] text-[#1DB954]' 
                   : 'bg-gray-50 border-gray-200 text-[#6B7280] font-medium'
               }`}
             >

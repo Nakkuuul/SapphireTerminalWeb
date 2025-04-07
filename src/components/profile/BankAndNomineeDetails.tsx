@@ -48,10 +48,10 @@ const BankAndNomineeDetails = ({ bankData = [], nomineeData = [] }) => {
         </div>
         
         <div className="p-6">
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-2 ">
             {banks.map((bank, index) => (
-              <div key={index} className="border rounded p-4">
-                <div className="flex items-center justify-between mb-3">
+              <div key={index} className=" rounded border-[0.5px] w-[309px] h-[160px] p-0" style={{ borderRadius: '2px' }}>
+                <div className="flex items-center justify-between pt-[18px] px-[21px]">
                   {bank.bank === 'ICICI BANK' && (
                     <div className="flex items-center text-orange-500">
                       <div className="w-6 h-6 bg-orange-100 rounded-full flex items-center justify-center mr-2">
@@ -73,20 +73,18 @@ const BankAndNomineeDetails = ({ bankData = [], nomineeData = [] }) => {
                   )}
                 </div>
                 
-                <div>
-                  <div className="flex mb-2">
-                    <div className="w-1/2">
-                      <p className="text-xs text-gray-500">A/c Number</p>
-                      <p className="text-sm font-medium">{bank.accountNumber}</p>
-                    </div>
-                    <div className="w-1/2">
-                      <p className="text-xs text-gray-500">IFSC Code</p>
-                      <p className="text-sm font-medium">{bank.ifscCode}</p>
-                    </div>
+                <div className="px-[21px] pb-[18px] pt-[12px]">
+                  <div className="mb-2">
+                    <p className="text-xs text-gray-500 inline">A/c Number: </p>
+                    <p className="text-sm font-medium inline">{bank.accountNumber}</p>
+                  </div>
+                  <div className="mb-2">
+                    <p className="text-xs text-gray-500 inline">IFSC Code: </p>
+                    <p className="text-sm font-medium inline">{bank.ifscCode}</p>
                   </div>
                   <div>
-                    <p className="text-xs text-gray-500">Branch</p>
-                    <p className="text-sm font-medium">{bank.branch}</p>
+                    <p className="text-xs text-gray-500 inline">Branch: </p>
+                    <p className="text-sm font-medium inline">{bank.branch}</p>
                   </div>
                 </div>
               </div>
