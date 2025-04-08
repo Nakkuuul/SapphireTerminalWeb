@@ -12,8 +12,8 @@ function HoldingSelector() {
   const tabs = [
     { name: "Equity", path: "/holdings/equity" },
     { name: "Positions", path: "/holdings/positions" },
-    { name: "Mutual Funds", path: "/holdings/mutual-funds" },
-    // { name: "Cancelled", path: "/holdings/cancelled" },
+    { name: "Mutual Funds", path: "/holdings/mutualfunds" },
+
   ];
 
   // Find the active tab
