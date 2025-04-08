@@ -15,13 +15,13 @@ interface ClosedTrade {
   quantity: string;
   duration: string;
   net: string;
-  status:string;
-  postedBy:string;
-  marginReq:string;
+  status: string;
+  postedBy: string;
+  marginReq: string;
 }
 
 export default function ClosedTradesList() {
-  const [viewMode, setViewMode] = React.useState<'grid' | 'list'>('list');
+  const [viewMode, setViewMode] = React.useState<'grid' | 'list'>('grid'); // Default to 'grid'
   const [searchQuery, setSearchQuery] = useState('');
   const [filteredTrades, setFilteredTrades] = useState<ClosedTrade[]>([]);
   const [showFilters, setShowFilters] = useState(false);

@@ -27,7 +27,7 @@ const Filter: React.FC<FilterProps> = ({
   return (
     <div className="relative">
       <button 
-        className={`flex items-center gap-1 px-4 h-14 rounded-lg border ${
+        className={`flex items-center gap-1 px-4 h-10 rounded-lg border ${
           getActiveFiltersCount() > 0 ? 'bg-blue-50 text-blue-600 border-blue-300' : 'bg-gray-100 text-gray-700 border-gray-300'
         }`}
         onClick={() => setShowFilters(!showFilters)}
