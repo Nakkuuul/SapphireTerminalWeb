@@ -43,12 +43,12 @@ const TradeCard: React.FC<TradeCardProps> = ({
   const [showGainInfo, setShowGainInfo] = React.useState(false);
 
   return (
-    <div className="border rounded-lg p-3 sm:p-4 bg-[#F4F4F9]">
+    <div className="border rounded-lg p-4 sm:p-6 bg-[#F4F4F9]">
       {/* Header Section */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 mb-4">
         <div className="flex items-center gap-2 w-full sm:w-auto">
           <Image src="/globe.svg" alt="Stock" width={24} height={24} />
-          <div className="text-base sm:text-xl font-medium truncate">{`${symbol} ${date} FUT`}</div>
+          <div className="text-base sm:text-xl font-normal truncate">{`${symbol} ${date} FUT`}</div>
           <div className={`text-xs sm:text-sm font-semibold px-2 py-0.5 rounded ${type === 'BUY' ? 'bg-[#E5FFDC] text-[#34A853]' : 'bg-red-100 text-red-700'}`}>{type}</div>
         </div>
         <div className="flex items-center mt-2 sm:mt-0 sm:ml-auto w-full sm:w-auto justify-between sm:justify-end">
@@ -60,28 +60,28 @@ const TradeCard: React.FC<TradeCardProps> = ({
       {/* Trade Details Grid */}
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3 sm:gap-4 text-xs sm:text-sm mb-4">
         <div>
-          <span className="text-gray-500">Entry Price</span>
-          <div className='mt-1'>{entryPrice.toFixed(2)}</div>
+          <span className="text-base text-[#495057]">Entry Price</span>
+          <div className='mt-1 text-base font-medium'>{entryPrice.toFixed(2)}</div>
         </div>
         <div>
-          <span className="text-gray-500">Entry Range</span>
-          <div className='mt-1'>{entryRange}</div>
+          <span className="text-base text-[#495057]">Entry Range</span>
+          <div className='mt-1 text-base font-medium'>{entryRange}</div>
         </div>
         <div>
-          <span className="text-gray-500">Stoploss</span>
-          <div className='mt-1'>{stoploss}</div>
+          <span className="text-base text-[#495057]">Stoploss</span>
+          <div className='mt-1 text-base font-medium'>{stoploss}</div>
         </div>
         <div>
-          <span className="text-gray-500">Target</span>
-          <div className='mt-1'>{target.toLocaleString('en-IN')}</div>
+          <span className="text-base text-[#495057]">Target</span>
+          <div className='mt-1 text-base font-medium'>{target.toLocaleString('en-IN')}</div>
         </div>
         <div>
-          <span className="text-gray-500">Quantity</span>
-          <div className='mt-1'>{quantity}</div>
+          <span className="text-base text-[#495057]">Quantity</span>
+          <div className='mt-1 text-base font-medium'>{quantity}</div>
         </div>
         <div>
-          <span className="text-gray-500">Risk/Reward Ratio</span>
-          <div className='mt-1'>{riskRewardRatio}</div>
+          <span className="text-base text-[#495057]">Risk/Reward Ratio</span>
+          <div className='mt-1 text-base font-medium'>{riskRewardRatio}</div>
         </div>
       </div>
 
