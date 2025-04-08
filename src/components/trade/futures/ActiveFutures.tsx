@@ -4,8 +4,7 @@ import React, { useState, useEffect } from 'react';
 import TradeCard from '../stocks/TradeCard';
 import { Search, X } from 'lucide-react';
 import { HiOutlineAdjustments } from "react-icons/hi";
-// import Image from 'next/image';
-import { FaWhatsapp } from 'react-icons/fa';
+import Whatsapp from '@/components/gen-components/Whatsapp';
 
 // Define the Trade interface
 interface Trade {
@@ -125,12 +124,7 @@ export default function TradesList() {
     <div className="space-y-6">
       <div className='flex items-center justify-between flex-wrap gap-2'>
         {/* WhatsApp Alerts Button on the left */}
-        <div className='flex items-center'>
-          <button className="flex items-center gap-2 rounded-md bg-[#F4F4F9] px-5 py-2.5 text-lg font-medium text-[#333333] border border-[#D1D5DB] h-[42px]">
-            <FaWhatsapp size={24} className="text-green-500" />
-            <span>Get alerts on WhatsApp</span>
-          </button>
-        </div>
+        <Whatsapp />
         
         <div className='flex items-center gap-2'>
           {/* Filter Button */}

@@ -20,7 +20,7 @@ interface ClosedTrade {
   marginReq: string;
 }
 
-export default function ClosedFuture() {
+export default function ClosedTradesList() {
   const [viewMode, setViewMode] = React.useState<'grid' | 'list'>('grid'); // Default to 'grid'
   const [searchQuery, setSearchQuery] = useState('');
   const [filteredTrades, setFilteredTrades] = useState<ClosedTrade[]>([]);
