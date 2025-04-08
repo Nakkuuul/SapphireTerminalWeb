@@ -30,7 +30,7 @@ const GridViewTable: React.FC<GridViewTableProps> = ({ trades }) => {
           className="border border-[#8F8F8FCC] dark:border-[#2F2F2F] rounded-lg overflow-hidden bg-white dark:bg-[#121413]"
         >
           {/* Header with logo, title, buy/sell chip and status label */}
-          <div className="p-4">
+          <div className="p-6">
             <div className="flex items-center justify-between">
               {/* Logo and Title */}
               <div className="flex items-center">
@@ -97,7 +97,7 @@ const GridViewTable: React.FC<GridViewTableProps> = ({ trades }) => {
           </div>
 
           {/* Trade details grid */}
-          <div className="grid grid-cols-4 px-4 py-2">
+          <div className="grid grid-cols-4 px-6 py-2">
             <div className="flex flex-col">
               <span className="text-sm text-[#495057] dark:text-[#C9CACC]">
                 Entry Price
@@ -133,7 +133,7 @@ const GridViewTable: React.FC<GridViewTableProps> = ({ trades }) => {
           </div>
 
           {/* Posted by section */}
-          <div className="px-3 py-2">
+          <div className="px-5 py-2">
             <div className="py-3 px-2 rounded bg-[#E7F4F3] dark:bg-[#1E2928] text-gray-500 dark:text-gray-400 text-sm">
               Posted by:{' '}
               <span className="text-black dark:text-[#EBEEF5]">
@@ -146,7 +146,7 @@ const GridViewTable: React.FC<GridViewTableProps> = ({ trades }) => {
           <div className="border-t border-gray-200 dark:border-gray-700 mx-3"></div>
 
           {/* Margin requirement with info icon */}
-          <div className="px-4 py-2 flex items-center justify-center">
+          <div className="px-6 py-2 flex items-center justify-center">
             <span className="text-gray-500 dark:text-gray-400 text-sm">
               Margin req.:
             </span>
@@ -170,7 +170,7 @@ const GridViewTable: React.FC<GridViewTableProps> = ({ trades }) => {
           </div>
 
           {/* Action button */}
-          <div className="p-3">
+          <div className="p-6">
             <button className="flex items-center justify-center w-full p-3 rounded bg-[#00C853] text-white hover:bg-green-500 transition-colors">
               About Trade
               <ArrowRight size={20} className="ml-2" />
