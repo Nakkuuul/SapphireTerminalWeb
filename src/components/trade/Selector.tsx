@@ -32,7 +32,7 @@ function Selector() {
           <Link
             key={tab.name}
             href={tab.path}
-            className={`min-w-[100px] lg:min-w-[170px] px-3 lg:px-6 py-[10px] font-medium text-xs lg:text-xl text-center flex items-center justify-center rounded-[4px] border transition-all duration-300 ${
+            className={`min-w-[100px] lg:min-w-[160px] px-3 lg:px-6 py-[8px] font-medium text-xs lg:text-xl text-center flex items-center justify-center rounded-[4px] border transition-all duration-300 ${
               pathname === tab.path
                 ? "bg-[#D1FADF99] dark:bg-[#121413] text-[#1DB954] border-[1px] border-[#22A06B] "
                 : "bg-[#F6F6F6] dark:bg-[#121413] text-gray-600 dark:text-[#C9CACC] border-[#D1D5DB] dark:border-[#2F2F2F]"

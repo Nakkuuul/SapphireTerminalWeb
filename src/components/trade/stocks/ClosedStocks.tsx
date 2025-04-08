@@ -40,7 +40,7 @@ export default function ClosedTradesList() {
       quantity: '₹2,042.63',
       duration: '1 month',
       net: '+1',
-      status: "closed",        // Dynamic status
+      status: "Target Miss",        // Dynamic status
       postedBy: "Nakul",       // Dynamic postedBy
       marginReq: "₹1,34,099"   // Dynamic marginReq
     },
@@ -54,7 +54,7 @@ export default function ClosedTradesList() {
       quantity: '₹8223.60',
       duration: '2 months',
       net: '-1',
-      status: "closed",        // Dynamic status
+      status: "Target Miss",        // Dynamic status
       postedBy: "Nakul",       // Dynamic postedBy
       marginReq: "₹1,34,099"   // Dynamic marginReq
     },
@@ -68,7 +68,7 @@ export default function ClosedTradesList() {
       quantity: '₹92,467.00',
       duration: '1 year',
       net: '+8',
-      status: "closed",        // Dynamic status
+      status: "Target Miss",        // Dynamic status
       postedBy: "Nakul",       // Dynamic postedBy
       marginReq: "₹1,34,099"   // Dynamic marginReq
     },
