@@ -58,7 +58,7 @@ const TradeCard: React.FC<TradeCardProps> = ({
       </div>
 
       {/* Trade Details Grid */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3 sm:gap-4 text-xs sm:text-sm mb-4">
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6  text-xs sm:text-sm mb-4">
         <div>
           <span className="text-base text-[#495057]">Entry Price</span>
           <div className='mt-1 text-base font-medium'>{entryPrice.toFixed(2)}</div>

@@ -42,7 +42,7 @@ const SearchFilterControls: React.FC<SearchFilterControlsProps> = ({
       <div className="flex justify-between items-center mb-4">
         <div className="flex items-center">
           {/* Search Component */}
-          <div className="w-[300px]">
+          <div className="w-[225px]">
             <SearchInput 
               searchQuery={searchQuery} 
               setSearchQuery={setSearchQuery}

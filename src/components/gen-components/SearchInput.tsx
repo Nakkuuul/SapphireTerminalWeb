@@ -13,11 +13,11 @@ const SearchInput: React.FC<SearchInputProps> = ({
   handleSearchChange
 }) => {
   return (
-    <div className="relative w-full max-w-sm">
+    <div className="relative w-full ">
       <input
         type="text"
         placeholder="Search everything..."
-        className="w-full h-14 pl-4 pr-10 py-2 border rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-500"
+        className="w-full h-14 pl-4 pr-8 py-2 border rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-500"
         value={searchQuery}
         onChange={handleSearchChange}
       />

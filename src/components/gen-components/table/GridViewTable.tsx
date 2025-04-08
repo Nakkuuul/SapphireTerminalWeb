@@ -90,7 +90,7 @@ const GridViewTable: React.FC<GridViewTableProps> = ({ trades }) => {
                 </svg>
                 {trade.date} {trade.time}
               </div>
-              <div className="text-[#FFBF00] bg-[#FFF6DC] rounded p-1 text-xs font-medium">
+              <div className="text-[#FFBF00] bg-[#FFF6DC] rounded p-1 text-[10px] font-medium">
                 {trade.status}
               </div>
             </div>
@@ -167,13 +167,6 @@ const GridViewTable: React.FC<GridViewTableProps> = ({ trades }) => {
                 d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
               />
             </svg>
-          </div>
-
-          {/* Filter pop-up */}
-          <div
-            className="absolute top-0 left-0 w-full h-full bg-white dark:bg-[#121413] z-50"
-          >
-            {/* Filter pop-up content */}
           </div>
 
           {/* Action button */}

@@ -1,19 +1,19 @@
 import Selector from "@/components/trade/Selector";
 import TradeSelector from "@/components/trade/TradeSelector";
-import ActiveOption from "@/components/trade/options/ActiveOption";
-import ClosedOption from "@/components/trade/options/ClosedOption";
+import ActiveCommodity from "@/components/trade/commodity/ActiveCommodity";
+import ClosedCommodityList from "@/components/trade/commodity/ClosedCommodity";
 import React from "react";
 
-function option() {
+function commodity() {
   return (
     <>
       <Selector />
       <TradeSelector
-        activeComponent={<ActiveOption />}
-        closedComponent={<ClosedOption />}
+        activeComponent={<ActiveCommodity />}
+        closedComponent={<ClosedCommodityList />}
       />
     </>
   );
 }
 
-export default option;
+export default commodity;
