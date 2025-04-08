@@ -11,6 +11,7 @@ const Navbar = () => {
   const pathname = usePathname();
   const [activeLink, setActiveLink] = useState(pathname);
   const [isSidebarOpen, setSidebarOpen] = useState(false);
+  const [windowWidth, setWindowWidth] = useState(0);
 
   // Social media icons - filtered to only Twitter, LinkedIn, and Instagram
   const FILTERED_SOCIAL_ICONS = [
@@ -22,11 +23,11 @@ const Navbar = () => {
   // Main navigation links without sub-routes for Trade section
   const navLinks = [
     { href: "/", label: "Home" },
-    { href: "/trade", label: "Trade" },
+    { href: "/trades/stocks", label: "Trades" },
     { href: "/news", label: "News" },
     { href: "/watchlist", label: "Watchlist" },
     { href: "/orders", label: "Orders" },
-    { href: "/holdings", label: "Holdings" },
+    { href: "/holdings/equity", label: "Holdings" },
     { href: "/funds", label: "Funds" },
   ];
 
@@ -54,6 +55,23 @@ const Navbar = () => {
     };
   }, [isSidebarOpen]);
 
+  // Handle window resize
+  useEffect(() => {
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth);
+      // Auto close mobile menu on larger screens
+      if (window.innerWidth >= 1024) {
+        setSidebarOpen(false);
+      }
+    };
+
+    // Set initial width
+    handleResize();
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   const toggleSidebar = () => {
     setSidebarOpen(!isSidebarOpen);
   };
@@ -72,42 +90,28 @@ const Navbar = () => {
         <div className="w-full mx-auto flex items-center justify-between h-[70px]">
           {/* Main single-row layout */}
           <div className="w-full flex items-center justify-between">
-            {/* Left section with stock information - exactly 25% width */}
-            <div className="w-[30%] h-full ">
-              {/* Stock Information - Improved layout with 36px padding */}
-              <div className="px-9 h-full flex items-center">
-                <div className="flex items-center space-x-4">
-                  <div className="flex pr-3 border-r  flex-col">
-                    <div className="flex items-center">
-                      <span className="text-base font-medium">Nifty 50</span>
-                      <span className="ml-2 bg-red-100 p-1 rounded-sm text-xs text-red-500">
-                        Expiry Today
-                      </span>
-                    </div>
-                    <div className="flex items-center mt-0.5">
-                      <span className="text-xs font-semibold">21,754.29</span>
-                      <span className="ml-1 text-xs font-semibold text-[#22F07D]">
-                        +37.02 (+0.17%)
-                      </span>
-                    </div>
-                  </div>
-
-                  <div className="flex pr-3 border-r flex-col">
-                    <span className="text-base font-medium">Sensex</span>
-                    <div className="flex items-center mt-0.5">
-                      <span className="text-xs font-medium">71,715.96</span>
-                      <span className="ml-1 text-xs text-red-500">
-                        -27.43 (-0.38%)
-                      </span>
-                    </div>
-                  </div>
+            {/* Stock Info & Logo Section - adjusted for all screen sizes */}
+            <div className="h-full flex items-center">
+              {/* Logo for small screens */}
+              <div className="px-4 md:px-9 h-full flex items-center">
+                <div className="md:hidden flex items-center">
+                  <Image
+                    src="/globe.svg"
+                    alt="Sapphire Logo"
+                    width={32}
+                    height={32}
+                    className="w-8 h-8"
+                  />
+                  <p className="font-semibold text-lg text-black ml-2">
+                    Sapphire
+                  </p>
                 </div>
               </div>
             </div>
 
-            {/* Navigation Links - Centered in the same row with Green Underline Animation */}
+            {/* Central Navigation Links - Hidden on small/medium screens */}
             <div className="hidden lg:flex flex-1 justify-center items-center">
-              <div className="flex items-center space-x-8">
+              <div className="flex items-center space-x-4 xl:space-x-8">
                 {navLinks.map((link) => {
                   // Check if this is the active route or its child route
                   const isActive = isRouteActive(link.href);
@@ -116,7 +120,7 @@ const Navbar = () => {
                     <div key={link.href} className="relative group">
                       <Link
                         href={link.href}
-                        className="relative group text-lg font-medium py-2 transition-all duration-300"
+                        className="relative group text-base xl:text-lg font-medium py-2 transition-all duration-300"
                         onClick={() => setActiveLink(link.href)}
                       >
                         {link.label}
@@ -134,76 +138,83 @@ const Navbar = () => {
               </div>
             </div>
 
-            {/* Desktop Right Side Elements */}
-            <div className="hidden md:flex pr-9 items-center space-x-4">
-              {/* Notifications Bell Icon */}
-              <button className="text-gray-700">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-5 w-5"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                >
-                  <path d="M10 2a6 6 0 00-6 6v3.586l-.707.707A1 1 0 004 14h12a1 1 0 00.707-1.707L16 11.586V8a6 6 0 00-6-6zM10 18a3 3 0 01-3-3h6a3 3 0 01-3 3z" />
-                </svg>
-              </button>
+            {/* Right Section with Profile/Notification - adjusted for responsive */}
+            <div className="flex items-center">
+              {/* Desktop Right Side Elements */}
+              <div className="hidden md:flex pr-4 md:pr-9 items-center space-x-4">
+                {/* Notifications Bell Icon */}
+                <button className="text-gray-700">
+                  <svg
+                    width="32"
+                    height="32"
+                    viewBox="0 0 32 32"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M15.9997 30.6663C15.2925 30.6663 14.6142 30.3854 14.1141 29.8853C13.614 29.3852 13.333 28.7069 13.333 27.9997H18.6664C18.6664 28.7069 18.3854 29.3852 17.8853 29.8853C17.3852 30.3854 16.707 30.6663 15.9997 30.6663ZM26.6664 7.99967C26.6664 7.47226 26.51 6.95668 26.217 6.51815C25.924 6.07962 25.5075 5.73783 25.0202 5.536C24.5329 5.33416 23.9968 5.28135 23.4795 5.38425C22.9622 5.48714 22.487 5.74112 22.1141 6.11406C21.7412 6.487 21.4872 6.96215 21.3843 7.47943C21.2814 7.99672 21.3342 8.53289 21.536 9.02016C21.7379 9.50743 22.0797 9.92391 22.5182 10.2169C22.9567 10.5099 23.4723 10.6663 23.9997 10.6663C24.707 10.6663 25.3852 10.3854 25.8853 9.88529C26.3854 9.38519 26.6664 8.70692 26.6664 7.99967ZM27.609 23.057L25.333 20.781V13.333H22.6664V21.333C22.6665 21.6866 22.807 22.0257 23.057 22.2757L23.4477 22.6663H8.55172L8.94238 22.2757C9.19245 22.0257 9.33297 21.6866 9.33305 21.333V13.333C9.32912 12.3535 9.54195 11.3852 9.9563 10.4976C10.3706 9.61003 10.9762 8.82511 11.7297 8.19913C12.4831 7.57315 13.3657 7.12161 14.3141 6.8769C15.2626 6.63218 16.2535 6.60035 17.2157 6.78367L19.333 4.66634C19.2634 4.61401 19.1883 4.56931 19.109 4.53301C18.5322 4.33487 17.9374 4.19375 17.333 4.11167V2.66634C17.333 2.31272 17.1926 1.97358 16.9425 1.72353C16.6925 1.47348 16.3533 1.33301 15.9997 1.33301C15.6461 1.33301 15.307 1.47348 15.0569 1.72353C14.8069 1.97358 14.6664 2.31272 14.6664 2.66634V4.10634C12.4469 4.42669 10.417 5.53543 8.94796 7.22971C7.47893 8.92399 6.66901 11.0905 6.66638 13.333V20.781L4.39038 23.057C4.20397 23.2435 4.07703 23.481 4.0256 23.7396C3.97418 23.9982 4.00059 24.2663 4.10148 24.5099C4.20237 24.7535 4.37322 24.9617 4.59244 25.1082C4.81165 25.2547 5.06938 25.3329 5.33305 25.333H26.6664C26.93 25.3329 27.1878 25.2547 27.407 25.1082C27.6262 24.9617 27.7971 24.7535 27.898 24.5099C27.9988 24.2663 28.0252 23.9982 27.9738 23.7396C27.9224 23.481 27.7955 23.2435 27.609 23.057Z"
+                      fill="#212529"
+                    />
+                  </svg>
+                </button>
 
-              {/* User Profile Avatar with Dropdown Arrow */}
-              <div className="flex items-center">
-                <div
-                  className="h-8 w-8 cursor-pointer rounded-full overflow-hidden border border-gray-300"
-                  onClick={() => router.push("/profile")}
-                >
-                  <Image
-                    src="/globe.svg"
-                    alt="Profile"
-                    width={32}
-                    height={32}
-                    className="object-cover"
-                    onError={(e) => {
-                      e.currentTarget.src = "https://via.placeholder.com/32";
-                    }}
-                  />
+                {/* User Profile Avatar with Dropdown Arrow */}
+                <div className="flex items-center">
+                  <div
+                    className="h-8 w-8 cursor-pointer rounded-full overflow-hidden border border-gray-300"
+                    onClick={() => router.push("/profile")}
+                  >
+                    <Image
+                      src="/globe.svg"
+                      alt="Profile"
+                      width={32}
+                      height={32}
+                      className="object-cover"
+                      onError={(e) => {
+                        e.currentTarget.src = "https://via.placeholder.com/32";
+                      }}
+                    />
+                  </div>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-4 w-4 ml-1 text-gray-500"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M19 9l-7 7-7-7"
+                    />
+                  </svg>
                 </div>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-4 w-4 ml-1 text-gray-500"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M19 9l-7 7-7-7"
-                  />
-                </svg>
               </div>
-            </div>
 
-            {/* Mobile Menu Toggle */}
-            <button
-              className="lg:hidden flex flex-col space-y-1.5 cursor-pointer z-50"
-              onClick={toggleSidebar}
-              aria-label="Toggle mobile menu"
-            >
-              <span
-                className={`block h-0.5 w-6 bg-black transition-transform duration-300 ease-in-out ${
-                  isSidebarOpen ? "rotate-45 translate-y-2" : ""
-                }`}
-              ></span>
-              <span
-                className={`block h-0.5 w-6 bg-black transition-opacity duration-300 ease-in-out ${
-                  isSidebarOpen ? "opacity-0" : "opacity-100"
-                }`}
-              ></span>
-              <span
-                className={`block h-0.5 w-6 bg-black transition-transform duration-300 ease-in-out ${
-                  isSidebarOpen ? "-rotate-45 -translate-y-2" : ""
-                }`}
-              ></span>
-            </button>
+              {/* Mobile Menu Toggle */}
+              <button
+                className="lg:hidden flex flex-col space-y-1.5 cursor-pointer z-50 mr-4"
+                onClick={toggleSidebar}
+                aria-label="Toggle mobile menu"
+              >
+                <span
+                  className={`block h-0.5 w-6 bg-black transition-transform duration-300 ease-in-out ${
+                    isSidebarOpen ? "rotate-45 translate-y-2" : ""
+                  }`}
+                ></span>
+                <span
+                  className={`block h-0.5 w-6 bg-black transition-opacity duration-300 ease-in-out ${
+                    isSidebarOpen ? "opacity-0" : "opacity-100"
+                  }`}
+                ></span>
+                <span
+                  className={`block h-0.5 w-6 bg-black transition-transform duration-300 ease-in-out ${
+                    isSidebarOpen ? "-rotate-45 -translate-y-2" : ""
+                  }`}
+                ></span>
+              </button>
+            </div>
           </div>
         </div>
       </nav>
@@ -216,9 +227,9 @@ const Navbar = () => {
         onClick={toggleSidebar}
       ></div>
 
-      {/* Mobile Sidebar */}
+      {/* Mobile Sidebar - adjusted for better small screen experience */}
       <aside
-        className={`fixed top-0 right-0 h-full w-full bg-gradient-to-br from-white to-gray-50 z-50 shadow-xl transform transition-transform duration-300 ease-in-out lg:hidden ${
+        className={`fixed top-0 right-0 h-full w-full sm:w-80 bg-gradient-to-br from-white to-gray-50 z-50 shadow-xl transform transition-transform duration-300 ease-in-out lg:hidden ${
           isSidebarOpen ? "translate-x-0" : "translate-x-full"
         }`}
       >
@@ -256,34 +267,8 @@ const Navbar = () => {
             </button>
           </div>
 
-          {/* Stock Information for mobile */}
-          <div className="mt-4 border-b border-gray-200 pb-4">
-            <div className="flex justify-between">
-              {/* Nifty 50 */}
-              <div className="flex flex-col">
-                <span className="font-bold text-sm">Nifty 50</span>
-                <div className="flex items-center mt-1">
-                  <span className="text-xs text-white bg-red-500 px-1 py-0.5 rounded-sm">
-                    Expiry Today
-                  </span>
-                  <span className="ml-1 text-green-500 text-xs">
-                    +87.10 (0.10%)
-                  </span>
-                </div>
-              </div>
-
-              {/* Sensex */}
-              <div className="flex flex-col">
-                <span className="font-bold text-sm">Sensex</span>
-                <span className="text-red-500 text-xs mt-1">
-                  -87.10 (-0.10%)
-                </span>
-              </div>
-            </div>
-          </div>
-
           {/* Navigation Links - simplified without Sub-Routes */}
-          <div className="flex flex-col space-y-6 mt-6">
+          <div className="flex flex-col space-y-4 mt-6">
             {navLinks.map((link) => (
               <Link
                 key={link.href}

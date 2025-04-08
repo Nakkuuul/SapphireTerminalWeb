@@ -10,10 +10,10 @@ function Selector() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const tabs = [
-    { name: "Stocks", path: "/trade/stocks" },
-    { name: "Future", path: "/trade/futures" },
-    { name: "Option", path: "/trade/option" },
-    { name: "Commodity", path: "/trade/commodity" },
+    { name: "Stocks", path: "/trades/stocks" },
+    { name: "Futures", path: "/trades/futures" },
+    { name: "Options", path: "/trades/options" },
+    { name: "Commodity", path: "/trades/commodity" },
   ];
 
   // Find the active tab
