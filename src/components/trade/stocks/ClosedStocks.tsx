@@ -1,10 +1,9 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
-import {  List, X, LayoutGrid } from 'lucide-react';
-import { HiOutlineAdjustments } from "react-icons/hi";
 import FixedColumnTable from '@/components/gen-components/table/FixedColumnTable';
 import GridViewTable from '@/components/gen-components/table/GridViewTable';
+import SearchFilterControls from '@/components/gen-components/SearchFilterControl';
 
 interface ClosedTrade {
   date: string;
@@ -40,9 +39,9 @@ export default function ClosedTradesList() {
       quantity: '₹2,042.63',
       duration: '1 month',
       net: '+1',
-      status: "Target Miss",        // Dynamic status
-      postedBy: "Nakul",       // Dynamic postedBy
-      marginReq: "₹1,34,099"   // Dynamic marginReq
+      status: "Target Miss",
+      postedBy: "Nakul",
+      marginReq: "₹1,34,099"
     },
     {
       date: '24 Jan 2025',
@@ -54,9 +53,9 @@ export default function ClosedTradesList() {
       quantity: '₹8223.60',
       duration: '2 months',
       net: '-1',
-      status: "Target Miss",        // Dynamic status
-      postedBy: "Nakul",       // Dynamic postedBy
-      marginReq: "₹1,34,099"   // Dynamic marginReq
+      status: "Target Miss",
+      postedBy: "Nakul",
+      marginReq: "₹1,34,099"
     },
     {
       date: '24 Jan 2025',
@@ -68,9 +67,9 @@ export default function ClosedTradesList() {
       quantity: '₹92,467.00',
       duration: '1 year',
       net: '+8',
-      status: "Target Miss",        // Dynamic status
-      postedBy: "Nakul",       // Dynamic postedBy
-      marginReq: "₹1,34,099"   // Dynamic marginReq
+      status: "Target Miss",
+      postedBy: "Nakul",
+      marginReq: "₹1,34,099"
     },
     {
       date: '24 Jan 2025',
@@ -82,9 +81,9 @@ export default function ClosedTradesList() {
       quantity: '₹88.50',
       duration: '6 months',
       net: '-1',
-      status: "closed",        // Dynamic status
-      postedBy: "Nakul",       // Dynamic postedBy
-      marginReq: "₹1,34,099"   // Dynamic marginReq
+      status: "closed",
+      postedBy: "Nakul",
+      marginReq: "₹1,34,099"
     },
     {
       date: '24 Jan 2025',
@@ -96,8 +95,8 @@ export default function ClosedTradesList() {
       quantity: '₹924.5',
       duration: '4 year',
       net: '-1',
-      status: "closed",        // Dynamic status
-      postedBy: "Nakul",       // Dynamic postedBy
+      status: "closed",
+      postedBy: "Nakul",
       marginReq: "₹1,34,099"   
     }
   ];
@@ -162,141 +161,23 @@ export default function ClosedTradesList() {
 
   return (
     <div className="w-full">
-      <div className="flex justify-between items-center mb-4">
-        <div className="relative w-full max-w-sm">
-          <input
-            type="text"
-            placeholder="Search everything..."
-            className="w-full h-10 pl-4 pr-10 py-2 border rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-500"
-            value={searchQuery}
-            onChange={handleSearchChange}
-          />
-          <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
-            {searchQuery ? (
-              <button 
-                onClick={() => setSearchQuery('')}
-                className="h-full w-5 text-gray-400 hover:text-gray-600"
-              >
-                <X size={16} />
-              </button>
-            ) : (
-              <svg className="h-full w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-              </svg>
-            )}
-          </div>
-        </div>
-        
-        <div className="flex items-center ml-4 gap-4">
-          {/* Filter Button - Same height as search */}
-          <div className="relative">
-            <button 
-              className={`flex items-center gap-1 px-3 h-10 rounded-lg border ${
-                getActiveFiltersCount() > 0 ? 'bg-blue-50 text-blue-600 border-blue-300' : 'bg-gray-100 text-gray-700 border-gray-300'
-              }`}
-              onClick={() => setShowFilters(!showFilters)}
-            >
-              <HiOutlineAdjustments size={16} />
-              <span className="text-sm">Filter</span>
-              {getActiveFiltersCount() > 0 && (
-                <div className="ml-1 flex h-5 w-5 items-center justify-center rounded-full bg-blue-500 text-xs text-white">
-                  {getActiveFiltersCount()}
-                </div>
-              )}
-            </button>
-            
-            {/* Filter Dropdown */}
-            {showFilters && (
-              <div className="absolute z-10 mt-1 w-56 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5">
-                <div className="py-1">
-                  <div className="px-4 py-2 text-sm font-medium text-gray-700">Trade Type</div>
-                  <button
-                    className={`w-full px-4 py-2 text-left text-sm ${filterType === 'BUY' ? 'bg-blue-50 text-blue-600' : 'text-gray-700 hover:bg-gray-100'}`}
-                    onClick={() => setFilterType(filterType === 'BUY' ? '' : 'BUY')}
-                  >
-                    Buy
-                  </button>
-                  <button
-                    className={`w-full px-4 py-2 text-left text-sm ${filterType === 'SELL' ? 'bg-blue-50 text-blue-600' : 'text-gray-700 hover:bg-gray-100'}`}
-                    onClick={() => setFilterType(filterType === 'SELL' ? '' : 'SELL')}
-                  >
-                    Sell
-                  </button>
-                  
-                  <div className="border-t border-gray-100 mt-2 pt-2">
-                    <div className="px-4 py-2 text-sm font-medium text-gray-700">Duration</div>
-                    {uniqueDurations.map((duration) => (
-                      <button
-                        key={duration}
-                        className={`w-full px-4 py-2 text-left text-sm ${filterDuration === duration ? 'bg-blue-50 text-blue-600' : 'text-gray-700 hover:bg-gray-100'}`}
-                        onClick={() => setFilterDuration(filterDuration === duration ? '' : duration)}
-                      >
-                        {duration}
-                      </button>
-                    ))}
-                  </div>
-                  
-                  {getActiveFiltersCount() > 0 && (
-                    <div className="border-t border-gray-100 px-4 py-2">
-                      <button
-                        className="text-sm text-red-500 hover:text-red-700"
-                        onClick={resetFilters}
-                      >
-                        Clear All Filters
-                      </button>
-                    </div>
-                  )}
-                </div>
-              </div>
-            )}
-          </div>
-          
-          {/* View Mode Toggle - Same height as search */}
-          <div className="flex border rounded-lg overflow-hidden">
-            <button 
-              className={`p-3 h-full ${viewMode === 'grid' ? 'bg-[#F6F6F6] text-[#28A745]' : 'text-[#212529]'}`}
-              onClick={() => setViewMode('grid')}
-            >
-              <LayoutGrid size={20} />
-            </button>
-            <button 
-              className={`p-3 h-full ${viewMode === 'list' ? 'bg-[#F6F6F6] text-[#28A745]' : 'text-[#212529]'}`}
-              onClick={() => setViewMode('list')}
-            >
-              <List size={20} />
-            </button>
-          </div>
-        </div>
-      </div>
-      
-      {/* Active Filters Display */}
-      {getActiveFiltersCount() > 0 && (
-        <div className="flex items-center bg-blue-50 px-4 py-2 rounded-md mb-4">
-          <span className="text-sm text-gray-700">Filtered by: </span>
-          {filterType && (
-            <span className="ml-2 inline-flex items-center rounded-full bg-blue-100 px-2.5 py-0.5 text-xs font-medium text-blue-800">
-              {filterType}
-              <button onClick={() => setFilterType('')} className="ml-1 text-blue-500 hover:text-blue-700">
-                <X size={14} />
-              </button>
-            </span>
-          )}
-          {filterDuration && (
-            <span className="ml-2 inline-flex items-center rounded-full bg-blue-100 px-2.5 py-0.5 text-xs font-medium text-blue-800">
-              {filterDuration}
-              <button onClick={() => setFilterDuration('')} className="ml-1 text-blue-500 hover:text-blue-700">
-                <X size={14} />
-              </button>
-            </span>
-          )}
-          <button 
-            onClick={resetFilters}
-            className="ml-auto text-xs text-blue-600 hover:text-blue-800"
-          >
-            Clear All
-          </button>
-        </div>
-      )}
+      {/* Search Filter Controls with repositioned filter button */}
+      <SearchFilterControls
+        searchQuery={searchQuery}
+        setSearchQuery={setSearchQuery}
+        handleSearchChange={handleSearchChange}
+        showFilters={showFilters}
+        setShowFilters={setShowFilters}
+        filterType={filterType}
+        setFilterType={setFilterType}
+        filterDuration={filterDuration}
+        setFilterDuration={setFilterDuration}
+        uniqueDurations={uniqueDurations}
+        resetFilters={resetFilters}
+        getActiveFiltersCount={getActiveFiltersCount}
+        viewMode={viewMode}
+        setViewMode={setViewMode}
+      />
       
       {filteredTrades.length === 0 ? (
         <div className="bg-white p-6 text-center rounded-lg border">
@@ -319,8 +200,8 @@ export default function ClosedTradesList() {
           </div>
         </div>
       ) : viewMode === 'list' ? (
-        /* List View - Scrollable Table with updated styles */
-          <FixedColumnTable filteredTrades={closedTradesData} />
+        /* List View - Scrollable Table */
+          <FixedColumnTable filteredTrades={filteredTrades} />
       ) : (
         /* Grid View */
         <GridViewTable trades={filteredTrades.map(trade => ({

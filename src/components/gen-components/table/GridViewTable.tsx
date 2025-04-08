@@ -27,10 +27,10 @@ const GridViewTable: React.FC<GridViewTableProps> = ({ trades }) => {
       {trades.map((trade, index) => (
         <div
           key={index}
-          className="border border-[#8F8F8FCC] dark:border-[#2F2F2F] rounded-lg overflow-hidden bg-white dark:bg-[#121413]"
+          className="border border-[#8F8F8FCC] dark:border-[#2F2F2F] bg-[#F4F4F9] rounded-lg overflow-hidden dark:bg-[#121413]"
         >
           {/* Header with logo, title, buy/sell chip and status label */}
-          <div className="p-6">
+          <div className="p-[18px] ">
             <div className="flex items-center justify-between">
               {/* Logo and Title */}
               <div className="flex items-center">
@@ -167,6 +167,13 @@ const GridViewTable: React.FC<GridViewTableProps> = ({ trades }) => {
                 d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
               />
             </svg>
+          </div>
+
+          {/* Filter pop-up */}
+          <div
+            className="absolute top-0 left-0 w-full h-full bg-white dark:bg-[#121413] z-50"
+          >
+            {/* Filter pop-up content */}
           </div>
 
           {/* Action button */}
