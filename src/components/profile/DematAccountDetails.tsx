@@ -24,19 +24,19 @@ const DematAccountDetails = ({ dematData = {} }: { dematData?: DematData }) => {
       <div className="p-6">
         <div className="grid grid-cols-2 gap-4 gap-y-6">
           <div>
-            <p className="text-sm text-gray-500 dark:text-[#C9CACC]">Demat Account (BO) ID</p>
+            <p className="text-base text-[#7D7D7D] dark:text-[#C9CACC]">Demat Account (BO) ID</p>
             <p>{boId}</p>
           </div>
           <div>
-            <p className="text-sm text-gray-500 dark:text-[#C9CACC]">DP ID</p>
+            <p className="text-base text-[#7D7D7D] dark:text-[#C9CACC]">DP ID</p>
             <p>{dpId}</p>
           </div>
           <div>
-            <p className="text-sm text-gray-500 dark:text-[#C9CACC]">Depository Participant (DP)</p>
+            <p className="text-base text-[#7D7D7D] dark:text-[#C9CACC]">Depository Participant (DP)</p>
             <p>{participantName}</p>
           </div>
           <div>
-            <p className="text-sm text-gray-500 dark:text-[#C9CACC]">Depository</p>
+            <p className="text-base text-[#7D7D7D] dark:text-[#C9CACC]">Depository</p>
             <p>{depository}</p>
           </div>
         </div>

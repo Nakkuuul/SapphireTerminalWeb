@@ -2,7 +2,7 @@ import React from 'react';
 import Navbar from '@/components/gen-components/Navbar';
 import Sidebar from '@/components/gen-components/Sidebar';
 import { Inter } from 'next/font/google';
-import '../globals.css';
+
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -19,9 +19,11 @@ export default function RootLayout({
   return (
     <div className={inter.className}>
       <Navbar />
-      <div className="flex pt-[74px]">
-        <Sidebar />
-        <main className=" sm:ml-[25%] w-3/4 py-6 px-9">
+      <div className="flex w-full pt-[74px]">
+        <div className="w-[30%]">
+          <Sidebar />
+        </div>
+        <main className="w-[70%] py-6 px-9">
           {children}
         </main>
       </div>
