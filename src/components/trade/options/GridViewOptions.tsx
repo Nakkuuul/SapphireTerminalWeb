@@ -149,12 +149,27 @@ const GridViewOptions: React.FC<GridViewTableProps> = ({ trades }) => {
                   <div className="grid grid-cols-2">
                     <div>
                       <div className="text-gray-500 dark:text-gray-400">Entry</div>
-                      <div className="text-black dark:text-[#EBEEF5]">₹40.35</div>
+                      <div className="text-black dark:text-[#EBEEF5]">
+                        {/* Extract numeric value from price strings for calculations */}
+                        {`₹${parseFloat(trade.entryPrice.replace(/[^\d.-]/g, '')).toFixed(2)}`}
+                      </div>
+                      <div className="text-black dark:text-[#EBEEF5]">
+                        {/* Extract numeric value from price strings for calculations */}
+                        {`₹${parseFloat(trade.entryPrice.replace(/[^\d.-]/g, '')).toFixed(2)}`}
+                      </div>
+
                     </div>
                     <div>
                       <div className="text-gray-500 dark:text-gray-400">Exit</div>
                       <div className="text-black dark:text-[#EBEEF5]">
-                        {trade.type === 'BUY' ? '₹40.35' : '₹9.35'}
+                        {trade.type === 'BUY' 
+                          ? `₹${(parseFloat(trade.entryPrice.replace(/[^\d.-]/g, '')) * 0.8).toFixed(2)}` 
+                          : `₹${(parseFloat(trade.entryPrice.replace(/[^\d.-]/g, '')) * 0.3).toFixed(2)}`}
+                      </div>
+                      <div className="text-black dark:text-[#EBEEF5]">
+                        {trade.type === 'BUY' 
+                          ? `₹${(parseFloat(trade.entryPrice.replace(/[^\d.-]/g, '')) * 0.8).toFixed(2)}` 
+                          : `₹${(parseFloat(trade.entryPrice.replace(/[^\d.-]/g, '')) * 0.3).toFixed(2)}`}
                       </div>
                     </div>
                   </div>
@@ -212,5 +227,4 @@ const GridViewOptions: React.FC<GridViewTableProps> = ({ trades }) => {
     </div>
   );
 };
-
 export default GridViewOptions;
