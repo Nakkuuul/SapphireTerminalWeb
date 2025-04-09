@@ -31,7 +31,7 @@ const FixedColumnTable = ({ filteredTrades }: any) => {
                 </td>
                 <td className="p-4 whitespace-nowrap border-r bg-[#FAFAFA]">
                   <div className="flex items-center justify-between">
-                    <span className=" text-[#6B7280]">{trade.security}</span>
+                    <span className="text-sm text-[#6B7280]">{trade.security}</span>
                     <span className={`ml-2 px-2 py-0.5 text-xs rounded ${
                       trade.type === 'BUY' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
                     }`}>
@@ -50,13 +50,13 @@ const FixedColumnTable = ({ filteredTrades }: any) => {
         <table className="border-collapse">
           <thead>
             <tr className="bg-[#F4F4F9]">
-              <th className="p-4 text-left font-medium text-black text-base whitespace-nowrap border-r w-40">
+              <th className="px-4 text-left font-medium text-black text-base whitespace-nowrap border-r w-40">
                 <div className="flex items-center justify-between">
                   <span>Entry Price</span>
                   <ArrowUpDown size={16} className="text-gray-500 ml-2" />
                 </div>
               </th>
-              <th className="p-4 text-left font-medium text-black text-base whitespace-nowrap border-r w-40">
+              <th className="px-4 text-left font-medium text-black text-base whitespace-nowrap border-r w-40">
                 <div className="flex items-center justify-between">
                   <span>Exit Price</span>
                   <ArrowUpDown size={16} className="text-gray-500 ml-2" />
@@ -68,7 +68,7 @@ const FixedColumnTable = ({ filteredTrades }: any) => {
                   <ArrowUpDown size={16} className="text-gray-500 ml-2" />
                 </div>
               </th>
-              <th className="p-4 text-left font-medium text-black text-base whitespace-nowrap border-r w-40">
+              <th className="px-4 text-left font-medium text-black text-base whitespace-nowrap border-r w-40">
                 <div className="flex items-center justify-between">
                   <span>Duration</span>
                   <ArrowUpDown size={16} className="text-gray-500 ml-2" />
@@ -80,19 +80,19 @@ const FixedColumnTable = ({ filteredTrades }: any) => {
                   <ArrowUpDown size={16} className="text-gray-500 ml-2" />
                 </div>
               </th>
-              <th className="p-4 text-left font-medium text-black text-base whitespace-nowrap border-r w-40">
+              <th className="px-4 text-left font-medium text-black text-base whitespace-nowrap border-r w-40">
                 <div className="flex items-center justify-between">
                   <span>Margin</span>
                   <ArrowUpDown size={16} className="text-gray-500 ml-2" />
                 </div>
               </th>
-              <th className="p-4 text-left font-medium text-black text-base whitespace-nowrap border-r w-40">
+              <th className="px-4 text-left font-medium text-black text-base whitespace-nowrap border-r w-40">
                 <div className="flex items-center justify-between">
                   <span>Posted by</span>
                   <ArrowUpDown size={16} className="text-gray-500 ml-2" />
                 </div>
               </th>
-              <th className="p-4 text-left font-medium text-black text-base whitespace-nowrap border-r w-40">
+              <th className="px-4 text-left font-medium text-black text-base whitespace-nowrap border-r w-40">
                 <div className="flex items-center justify-between">
                   <span>Status</span>
                   <ArrowUpDown size={16} className="text-gray-500 ml-2" />

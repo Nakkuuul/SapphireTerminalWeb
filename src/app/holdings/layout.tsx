@@ -3,7 +3,6 @@ import Navbar from '@/components/gen-components/Navbar';
 import Sidebar from '@/components/gen-components/Sidebar';
 import { Inter } from 'next/font/google';
 import '../globals.css';
-import HoldingSelector from '@/components/holdings/HoldingSelector';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -20,10 +19,11 @@ export default function RootLayout({
   return (
     <div className={inter.className}>
       <Navbar />
-      <div className="flex pt-16">
-        <Sidebar />
-        <main className="sm:ml-[25%] w-3/4 p-6">
-        <HoldingSelector />
+      <div className="flex w-full pt-[74px]">
+        <div className="w-[30%]">
+          <Sidebar />
+        </div>
+        <main className="w-[70%] py-6 px-9">
           {children}
         </main>
       </div>
