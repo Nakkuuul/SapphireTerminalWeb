@@ -2,8 +2,8 @@
 
 import React, { useState, useEffect } from 'react';
 import FixedColumnTable from '@/components/gen-components/table/FixedColumnTable';
-import GridViewTable from '@/components/gen-components/table/GridViewTable';
 import SearchFilterControls from '@/components/gen-components/SearchFilterControl';
+import GridViewOptions from '@/components/trade/options/GridViewOptions';
 
 interface ClosedTrade {
   date: string;
@@ -20,7 +20,7 @@ interface ClosedTrade {
   marginReq: string;
 }
 
-export default function ClosedTradesList() {
+function ClosedTradesList() {
   const [viewMode, setViewMode] = React.useState<'grid' | 'list'>('grid'); // Default to 'grid'
   const [searchQuery, setSearchQuery] = useState('');
   const [filteredTrades, setFilteredTrades] = useState<ClosedTrade[]>([]);
@@ -36,9 +36,9 @@ export default function ClosedTradesList() {
       type: 'BUY',
       entryPrice: '₹2,042.63',
       exitPrice: '₹2,042.63',
-      quantity: '₹2,042.63',
+      quantity: '100',
       duration: '1 month',
-      net: '+1',
+      net: '+₹1,200',
       status: "Target Miss",
       postedBy: "Nakul",
       marginReq: "₹1,34,099"
@@ -48,11 +48,11 @@ export default function ClosedTradesList() {
       time: '12:30',
       security: 'TATASTEEL',
       type: 'SELL',
-      entryPrice: '₹8223.60',
-      exitPrice: '₹8223.60',
-      quantity: '₹8223.60',
+      entryPrice: '₹823.60',
+      exitPrice: '₹788.40',
+      quantity: '50',
       duration: '2 months',
-      net: '-1',
+      net: '-₹1,760',
       status: "Target Miss",
       postedBy: "Nakul",
       marginReq: "₹1,34,099"
@@ -62,11 +62,11 @@ export default function ClosedTradesList() {
       time: '12:30',
       security: 'ITC',
       type: 'BUY',
-      entryPrice: '₹92,467.00',
-      exitPrice: '₹92,467.00',
-      quantity: '₹92,467.00',
+      entryPrice: '₹467.00',
+      exitPrice: '₹492.50',
+      quantity: '200',
       duration: '1 year',
-      net: '+8',
+      net: '+₹5,100',
       status: "Target Miss",
       postedBy: "Nakul",
       marginReq: "₹1,34,099"
@@ -76,12 +76,12 @@ export default function ClosedTradesList() {
       time: '12:30',
       security: 'MOTILALOSWL',
       type: 'SELL',
-      entryPrice: '₹88.50',
-      exitPrice: '₹88.50',
-      quantity: '₹88.50',
+      entryPrice: '₹988.50',
+      exitPrice: '₹930.25',
+      quantity: '75',
       duration: '6 months',
-      net: '-1',
-      status: "closed",
+      net: '+₹4,368',
+      status: "Closed",
       postedBy: "Nakul",
       marginReq: "₹1,34,099"
     },
@@ -90,17 +90,17 @@ export default function ClosedTradesList() {
       time: '12:30',
       security: 'WIPRO',
       type: 'BUY',
-      entryPrice: '₹924.5',
-      exitPrice: '₹924.5',
-      quantity: '₹924.5',
-      duration: '4 year',
-      net: '-1',
-      status: "closed",
+      entryPrice: '₹924.50',
+      exitPrice: '₹880.30',
+      quantity: '120',
+      duration: '4 months',
+      net: '-₹5,304',
+      status: "Closed",
       postedBy: "Nakul",
       marginReq: "₹1,34,099"   
     }
   ];
-
+  
   // Filter trades whenever search query or filters change
   useEffect(() => {
     let filtered = [...closedTradesData];
@@ -204,7 +204,7 @@ export default function ClosedTradesList() {
           <FixedColumnTable filteredTrades={filteredTrades} />
       ) : (
         /* Grid View */
-        <GridViewTable trades={filteredTrades.map(trade => ({
+        <GridViewOptions trades={filteredTrades.map(trade => ({
           ...trade,
           status: trade.status,
           postedBy: trade.postedBy,
@@ -214,3 +214,5 @@ export default function ClosedTradesList() {
     </div>
   );
 }
+
+export default ClosedTradesList;

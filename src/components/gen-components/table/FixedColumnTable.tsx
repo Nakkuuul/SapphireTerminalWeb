@@ -27,11 +27,11 @@ const FixedColumnTable = ({ filteredTrades }: any) => {
             {filteredTrades.map((trade: any, index: number) => (
               <tr key={`fixed-${index}`} className={`border-t ${index === filteredTrades.length - 1 ? '' : 'border-b'}`}>
                 <td className="p-4 whitespace-nowrap border-r bg-[#FAFAFA]">
-                  <div className="text-sm text-gray-900">{trade.date}, {trade.time}</div>
+                  <div className="text-sm font-medium text-[#6B7280]">{trade.date} <span className='font-normal'> {trade.time} </span></div>
                 </td>
                 <td className="p-4 whitespace-nowrap border-r bg-[#FAFAFA]">
                   <div className="flex items-center justify-between">
-                    <span className="font-medium text-gray-900">{trade.security}</span>
+                    <span className=" text-[#6B7280]">{trade.security}</span>
                     <span className={`ml-2 px-2 py-0.5 text-xs rounded ${
                       trade.type === 'BUY' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
                     }`}>
@@ -74,13 +74,31 @@ const FixedColumnTable = ({ filteredTrades }: any) => {
                   <ArrowUpDown size={16} className="text-gray-500 ml-2" />
                 </div>
               </th>
-              <th className="p-4 text-left font-medium text-black text-base whitespace-nowrap w-24">
+              <th className="p-4 text-left font-medium text-black text-base whitespace-nowrap border-r w-40">
                 <div className="flex items-center justify-between">
-                  <span>Net</span>
+                  <span>Net G/L</span>
                   <ArrowUpDown size={16} className="text-gray-500 ml-2" />
                 </div>
               </th>
-              <th className="p-4 w-16"></th>
+              <th className="p-4 text-left font-medium text-black text-base whitespace-nowrap border-r w-40">
+                <div className="flex items-center justify-between">
+                  <span>Margin</span>
+                  <ArrowUpDown size={16} className="text-gray-500 ml-2" />
+                </div>
+              </th>
+              <th className="p-4 text-left font-medium text-black text-base whitespace-nowrap border-r w-40">
+                <div className="flex items-center justify-between">
+                  <span>Posted by</span>
+                  <ArrowUpDown size={16} className="text-gray-500 ml-2" />
+                </div>
+              </th>
+              <th className="p-4 text-left font-medium text-black text-base whitespace-nowrap border-r w-40">
+                <div className="flex items-center justify-between">
+                  <span>Status</span>
+                  <ArrowUpDown size={16} className="text-gray-500 ml-2" />
+                </div>
+              </th>
+              
             </tr>
           </thead>
           <tbody>
@@ -90,16 +108,24 @@ const FixedColumnTable = ({ filteredTrades }: any) => {
                 <td className="p-4 whitespace-nowrap text-sm text-[#6B7280] border-r">{trade.exitPrice}</td>
                 <td className="p-4 whitespace-nowrap text-sm text-[#6B7280] border-r">{trade.quantity}</td>
                 <td className="p-4 whitespace-nowrap text-sm text-[#6B7280] border-r">{trade.duration}</td>
-                <td className="p-4 whitespace-nowrap">
-                  <div className={`text-sm font-medium ${trade.net.startsWith('+') ? 'text-green-600' : 'text-red-600'}`}>
-                    {trade.net}
+                <td className="p-4 whitespace-nowrap text-sm border-r">
+                  <div className={`text-sm font-medium ${trade.netGL?.startsWith('-') ? 'text-red-600' : 'text-green-600'}`}>
+                    {trade.net || '—'}
                   </div>
                 </td>
-                <td className="p-4 whitespace-nowrap text-center">
-                  <button className="text-gray-400 hover:text-gray-600">
-                    <MoreVertical size={16} />
-                  </button>
+                <td className="p-4 whitespace-nowrap text-sm text-[#6B7280] border-r">{trade.marginReq || '—'}</td>
+                <td className="p-4 whitespace-nowrap text-sm text-[#6B7280] border-r">{trade.postedBy || '[posted.by]'}</td>
+                <td className="p-4 whitespace-nowrap text-sm border-r">
+                  <div className={`inline-block px-2 py-1 text-xs rounded ${
+                    trade.status === 'Target Hit' ? 'bg-green-100 text-green-800' : 
+                    trade.status === 'Stoploss Hit' ? 'bg-red-100 text-red-800' : 
+                    trade.status === 'Target Miss' ? 'bg-yellow-100 text-yellow-800' : 
+                    'bg-gray-100 text-gray-800'
+                  }`}>
+                    {trade.status || '—'}
+                  </div>
                 </td>
+
               </tr>
             ))}
           </tbody>

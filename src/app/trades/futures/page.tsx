@@ -1,19 +1,18 @@
+import ClosedFutures from "@/components/trade/futures/ClosedFutures";
+import ActiveFutures from "@/components/trade/futures/ActiveFutures";
 import Selector from "@/components/trade/Selector";
 import TradeSelector from "@/components/trade/TradeSelector";
-import ActiveOption from "@/components/trade/options/ActiveOption";
-import ClosedOption from "@/components/trade/options/ClosedOption";
-import React from "react";
 
-function option() {
+function futures() {
   return (
     <>
       <Selector />
       <TradeSelector
-        activeComponent={<ActiveOption />}
-        closedComponent={<ClosedOption />}
+        activeComponent={<ActiveFutures />}
+        closedComponent={<ClosedFutures  />}
       />
     </>
   );
 }
 
-export default option;
+export default futures;
