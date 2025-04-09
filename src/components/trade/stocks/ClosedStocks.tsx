@@ -27,7 +27,7 @@ export default function ClosedTradesList() {
   const [showFilters, setShowFilters] = useState(false);
   const [filterType, setFilterType] = useState<'BUY' | 'SELL' | ''>('');
   const [filterDuration, setFilterDuration] = useState<string>('');
-  
+
   const closedTradesData: ClosedTrade[] = [
     {
       date: '24 Jan 2025',
