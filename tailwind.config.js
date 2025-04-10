@@ -22,9 +22,11 @@ module.exports = {
           primary: '#34D399',
           secondary: '#9CA3AF',
           background: '#020202',
+          cardbg:'#121413',
           surface: '#374151',
-          text: '#C9CACC',
-          border: '#4B5563',
+          graytext: '#C9CACC',
+          lighttext:'#EBEEF5',
+          border: '#2F2F2F',
         }
       },
     },

@@ -1003,7 +1003,7 @@ const Sidebar = () => {
 
   // The main sidebar content component that needs DnD context
   const SidebarContent = () => (
-    <div className="hidden md:flex fixed top-16 left-0 bottom-0 w-[30%] bg-white dark:bg-dark-background border-r border-gray-200 dark:border-dark-border flex-col">
+    <div className="hidden md:flex fixed top-14 left-0 bottom-0 w-[30%] bg-white dark:bg-[#121212] border-r border-gray-200 dark:border-dark-border flex-col">
       {/* Search and filter - Fixed section */}
       <div className="p-5 border-b border-gray-200 dark:border-dark-border flex-shrink-0">
         <div className="flex justify-between items-center">

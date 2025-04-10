@@ -57,7 +57,7 @@ function TradeSelector({ activeComponent, closedComponent }: TradeSelectorProps)
       <div className="flex border-[1px] border-[#D1D5DB] dark:order-[#2F2F2F] rounded-full p-1 w-full relative" ref={containerRef}>
         {/* Animated Indicator */}
         <div 
-          className="absolute bg-green-100 dark:bg-[#121413] rounded-full transition-all duration-300 ease-in-out"
+          className="absolute bg-green-100 dark:bg-[#23232399] rounded-full transition-all duration-300 ease-in-out"
           style={indicatorStyle}
         />
         
