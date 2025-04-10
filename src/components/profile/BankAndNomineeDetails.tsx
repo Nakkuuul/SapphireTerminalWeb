@@ -74,17 +74,17 @@ const BankAndNomineeDetails = ({ bankData = [], nomineeData = [] }) => {
                 </div>
                 
                 <div className="px-[21px] pb-[18px] pt-[12px]">
-                  <div className="mb-2">
-                    <p className="text-xs text-gray-500 inline">A/c Number: </p>
-                    <p className="text-sm font-medium inline">{bank.accountNumber}</p>
+                  <div className="mb-2 w-full justify-between flex">
+                    <p className="text-base text-[#6B7280] inline">A/c Number: </p>
+                    <p className="text-base text-[#1A1A1A] font-medium inline">{bank.accountNumber}</p>
                   </div>
-                  <div className="mb-2">
-                    <p className="text-xs text-gray-500 inline">IFSC Code: </p>
-                    <p className="text-sm font-medium inline">{bank.ifscCode}</p>
+                  <div className="mb-2 w-full justify-between flex">
+                    <p className="text-base text-[#6B7280] inline">IFSC Code: </p>
+                    <p className="text-base text-[#1A1A1A] font-medium inline">{bank.ifscCode}</p>
                   </div>
-                  <div>
-                    <p className="text-xs text-gray-500 inline">Branch: </p>
-                    <p className="text-sm font-medium inline">{bank.branch}</p>
+                  <div className="w-full justify-between flex">
+                    <p className="text-base text-[#6B7280] inline">Branch: </p>
+                    <p className="text-base text-[#1A1A1A] font-medium inline">{bank.branch}</p>
                   </div>
                 </div>
               </div>
@@ -102,22 +102,22 @@ const BankAndNomineeDetails = ({ bankData = [], nomineeData = [] }) => {
         <div className="p-6">
           {nominees.map((nominee, index) => (
             <div key={index}>
-              <h4 className="text-lg font-normal  text-[#1A1A1A] dark:text-[#EBEEF5] mb-2">Nominee details {index + 1}</h4>
+              <h4 className="text-lg font-normal mb-3 text-[#1A1A1A] dark:text-[#EBEEF5] ">Nominee details {index + 1}</h4>
               <div className="grid grid-cols-2 gap-x-4">
                 <div className="mb-3">
                   <p className="text-base text-[#7D7D7D]">Nominee Name</p>
                   <p className="text-base  dark:text-[#EBEEF5] ">{nominee.name}</p>
                 </div>
                 <div className="mb-3">
-                  <p className="text-base text-gray-500">Document ID</p>
+                  <p className="text-base text-[#7D7D7D]">Document ID</p>
                   <p className="text-base dark:text-[#EBEEF5]">{nominee.documentId}</p>
                 </div>
                 <div className="mb-3">
-                  <p className="text-base text-gray-500">Relation</p>
+                  <p className="text-base text-[#7D7D7D]">Relation</p>
                   <p className="text- dark:text-[#EBEEF5]">{nominee.relation}</p>
                 </div>
                 <div className="mb-3">
-                  <p className="text-base text-gray-500">% Share</p>
+                  <p className="text-base text-[#7D7D7D]">% Share</p>
                   <p className="text- dark:text-[#EBEEF5]">{nominee.sharePercentage}%</p>
                 </div>
               </div>
@@ -130,7 +130,7 @@ const BankAndNomineeDetails = ({ bankData = [], nomineeData = [] }) => {
       </div>
       
       {/* Footer Section */}
-      <div className="text-base text-gray-500 text-center pb-4">
+      <div className="text-base text-[#6B7280] text-center pb-4">
         <p>© 2025 Sapphire Broking. All rights reserved.</p>
         <p className="">SEBI Registered Stock Broker | Member: NSE, BSE, MCX, NCDEX</p>
         <p className="">Registered Office: [Address], Nagpur, Maharashtra, India</p>

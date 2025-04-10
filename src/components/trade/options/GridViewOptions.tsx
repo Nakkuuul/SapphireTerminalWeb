@@ -31,67 +31,69 @@ const GridViewOptions: React.FC<GridViewTableProps> = ({ trades }) => {
         >
           {/* Header with logo, title, buy/sell chip and status label */}
           <div className="p-[18px] ">
-            <div className="flex items-center justify-between">
-              {/* Logo and Title */}
-              <div className="flex items-center">
-                <div className="w-8 h-8 bg-indigo-100 dark:bg-indigo-900 rounded-md flex items-center justify-center mr-3">
-                  <svg
-                    className="w-4 h-4 text-indigo-600 dark:text-indigo-400"
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 20 20"
-                    fill="currentColor"
-                  >
-                    <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
-                    <path
-                      fillRule="evenodd"
-                      d="M10 18a8 8 0 100-16 8 8 0 000 16zm0-2a6 6 0 100-12 6 6 0 000 12z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                </div>
-                <div className="font-medium text-lg text-black dark:text-[#EBEEF5]">
-                  {trade.security} 
-                  <span
-                  className={`px-1.5 py-0.5 text-xs ml-3 rounded ${
-                    trade.type === 'BUY'
-                      ? 'bg-[#E5FFDC] text-[#34A853] dark:bg-green-900 dark:text-green-300'
-                      : 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300'
-                  }`}
-                >
-                  {trade.type}
-                </span>
+            <div className="flex items-start justify-between">
+              {/* Logo and Title - Restructured to be stacked vertically */}
+              <div className="flex flex-col">
+                <div className="flex items-center mb-2">
+                  {/* Enlarged logo */}
+                  <div className="w-12 h-12 bg-indigo-100 dark:bg-indigo-900 rounded-md flex items-center justify-center mr-3">
+                    <svg
+                      className="w-6 h-6 text-indigo-600 dark:text-indigo-400"
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                    >
+                      <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
+                      <path
+                        fillRule="evenodd"
+                        d="M10 18a8 8 0 100-16 8 8 0 000 16zm0-2a6 6 0 100-12 6 6 0 000 12z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                  </div>
+                  <div>
+                    <div className="font-medium text-lg text-black dark:text-[#EBEEF5]">
+                      {trade.security} 
+                      <span
+                      className={`px-1.5 py-0.5 text-xs ml-3 rounded ${
+                        trade.type === 'BUY'
+                          ? 'bg-[#E5FFDC] text-[#34A853] dark:bg-green-900 dark:text-green-300'
+                          : 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300'
+                      }`}
+                      >
+                      {trade.type}
+                      </span>
+                    </div>
+                    {/* Date and time moved below security name */}
+                    <div className="flex items-center text-gray-500 dark:text-gray-400 text-xs mt-1">
+                      <svg
+                        className="w-4 h-4 mr-1"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                        />
+                      </svg>
+                      {trade.date} {trade.time}
+                    </div>
+                  </div>
                 </div>
               </div>
 
-              {/* Buy/Sell Tag and Status Label */}
-              <div className="flex items-center">
-                <span className="text-[#495057] dark:text-[#C9CACC] text-sm">
+              {/* Status section */}
+              <div className="flex flex-col items-end">
+                <span className="text-[#495057] dark:text-[#C9CACC] text-sm mb-1">
                   Status
                 </span>
-              </div>
-            </div>
-
-            {/* Second row with date/time and status value */}
-            <div className="flex justify-between mt-1">
-              <div className="flex items-center text-gray-500 dark:text-gray-400 text-xs">
-                <svg
-                  className="w-4 h-4 mr-1"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-                  />
-                </svg>
-                {trade.date} {trade.time}
-              </div>
-              <div className="text-[#FFBF00] bg-[#FFF6DC] rounded p-1 text-[10px] font-medium">
-                {trade.status}
+                <div className="text-[#FFBF00] bg-[#FFF6DC] rounded p-1 text-[10px] font-medium">
+                  {trade.status}
+                </div>
               </div>
             </div>
           </div>

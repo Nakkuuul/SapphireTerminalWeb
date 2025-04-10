@@ -45,7 +45,7 @@ const DraggableStock = ({ stock, subheadingId, index, moveStock }) => {
   const [isHovering, setIsHovering] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
   const popupRef = useRef(null);
-  
+
   // Close popup when clicking outside
   useEffect(() => {
     function handleClickOutside(event) {
@@ -53,23 +53,23 @@ const DraggableStock = ({ stock, subheadingId, index, moveStock }) => {
         setShowPopup(false);
       }
     }
-    
+
     // Add event listener when popup is shown
     if (showPopup) {
       document.addEventListener("mousedown", handleClickOutside);
     }
-    
+
     // Cleanup
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [showPopup]);
-  
+
   // Set up drag
   const [{ isDragging }, drag] = useDrag({
     type: ItemTypes.STOCK,
-    item: { 
-      type: ItemTypes.STOCK, 
+    item: {
+      type: ItemTypes.STOCK,
       id: stock.id,
       fromSubheadingId: subheadingId,
       index // Add index for reordering
@@ -78,7 +78,7 @@ const DraggableStock = ({ stock, subheadingId, index, moveStock }) => {
       isDragging: monitor.isDragging(),
     }),
   });
-  
+
   // Set up drop for reordering within the same subheading
   const [, drop] = useDrop({
     accept: ItemTypes.STOCK,
@@ -86,97 +86,96 @@ const DraggableStock = ({ stock, subheadingId, index, moveStock }) => {
       if (!ref.current) {
         return;
       }
-      
+
       const dragIndex = item.index;
       const hoverIndex = index;
-      
+
       // Don't replace items with themselves
       if (dragIndex === hoverIndex && item.fromSubheadingId === subheadingId) {
         return;
       }
-      
+
       // Only handle reordering within the same subheading here
       if (item.fromSubheadingId === subheadingId) {
         // Call moveStock to reorder within the subheading
         moveStock(item.fromSubheadingId, dragIndex, hoverIndex);
-        
+
         // Update the index for the dragged item
         item.index = hoverIndex;
       }
     },
   });
-  
+
   // Connect drag and drop refs
   drag(drop(ref));
-  
+
   // Action handlers
   const handleBuy = (e) => {
     e.stopPropagation();
     console.log(`Placing buy order for ${stock.symbol}`);
   };
-  
+
   const handleSell = (e) => {
     e.stopPropagation();
     console.log(`Placing sell order for ${stock.symbol}`);
   };
-  
+
   const handleEye = (e) => {
     e.stopPropagation();
     console.log(`Add ${stock.symbol} to watchlist`);
   };
-  
+
   const handleLink = (e) => {
     e.stopPropagation();
     console.log(`Copy link to ${stock.symbol}`);
   };
-  
+
   const handleChart = (e) => {
     e.stopPropagation();
     console.log(`View chart for ${stock.symbol}`);
   };
-  
+
   const handleDelete = (e) => {
     e.stopPropagation();
     console.log(`Remove ${stock.symbol} from watchlist`);
   };
-  
+
   const handleMore = (e) => {
     e.stopPropagation();
     setShowPopup(true);
   };
-  
+
   // Popup menu item handlers
   const handleAddSectionAbove = () => {
     console.log(`Add section above ${stock.symbol}`);
     setShowPopup(false);
   };
-  
+
   const handleOpenChart = () => {
     console.log(`Open chart for ${stock.symbol}`);
     setShowPopup(false);
   };
-  
+
   const handleAddAlert = () => {
     console.log(`Add alert for ${stock.symbol}`);
     setShowPopup(false);
   };
-  
+
   const handleCreateGTT = () => {
     console.log(`Create GTT for ${stock.symbol}`);
     setShowPopup(false);
   };
-  
+
   const handleOptionChain = () => {
     console.log(`View option chain for ${stock.symbol}`);
     setShowPopup(false);
   };
-  
+
   return (
     <div
       ref={ref}
-      className={`py-3 border-b border-gray-100 flex items-center cursor-move ${
-        isDragging ? 'opacity-50' : 'opacity-100'
-      } relative`}
+      className={`py-3 border-b border-gray-100 flex items-center cursor-move ${isDragging ? 'opacity-50' : 'opacity-100'
+        } relative`}
       onMouseEnter={() => setIsHovering(true)}
       onMouseLeave={() => setIsHovering(false)}
     >
@@ -196,31 +195,31 @@ const DraggableStock = ({ stock, subheadingId, index, moveStock }) => {
           </span>
         </div>
       </div>
-      
+
       {/* Conditionally show either price info or action buttons */}
       <div className="min-w-[170px] flex justify-end items-center">
         {isHovering && !isDragging ? (
           <div className="flex space-x-1">
             {/* Buy button */}
-            <button 
+            <button
               onClick={handleBuy}
               className="w-7 h-7 flex items-center justify-center rounded-full bg-green-500 text-white hover:bg-green-600 transition-colors shadow-sm"
               title="Buy"
             >
               <span className="font-bold text-xs">B</span>
             </button>
-            
+
             {/* Sell button */}
-            <button 
+            <button
               onClick={handleSell}
               className="w-7 h-7 flex items-center justify-center rounded-full bg-red-500 text-white hover:bg-red-600 transition-colors shadow-sm"
               title="Sell"
             >
               <span className="font-bold text-xs">S</span>
             </button>
-            
+
             {/* Eye/Watch button */}
-            <button 
+            <button
               onClick={handleEye}
               className="w-7 h-7 flex items-center justify-center rounded-full bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors shadow-sm"
               title="Watch"
@@ -230,9 +229,9 @@ const DraggableStock = ({ stock, subheadingId, index, moveStock }) => {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
               </svg>
             </button>
-            
+
             {/* Link button */}
-            <button 
+            <button
               onClick={handleLink}
               className="w-7 h-7 flex items-center justify-center rounded-full bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors shadow-sm"
               title="Copy Link"
@@ -241,9 +240,9 @@ const DraggableStock = ({ stock, subheadingId, index, moveStock }) => {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
               </svg>
             </button>
-            
+
             {/* Chart button */}
-            <button 
+            <button
               onClick={handleChart}
               className="w-7 h-7 flex items-center justify-center rounded-full bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors shadow-sm"
               title="Chart"
@@ -252,9 +251,9 @@ const DraggableStock = ({ stock, subheadingId, index, moveStock }) => {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 12l3-3 3 3 4-4m0 10v-6m0 0H7m0 0v6m6-6v6" />
               </svg>
             </button>
-            
+
             {/* Delete button */}
-            <button 
+            <button
               onClick={handleDelete}
               className="w-7 h-7 flex items-center justify-center rounded-full bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors shadow-sm"
               title="Delete"
@@ -263,10 +262,10 @@ const DraggableStock = ({ stock, subheadingId, index, moveStock }) => {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
               </svg>
             </button>
-            
+
             {/* More button - now opens popup */}
             <div className="relative">
-              <button 
+              <button
                 onClick={handleMore}
                 className="w-7 h-7 flex items-center justify-center rounded-full bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors shadow-sm relative"
                 title="More"
@@ -275,10 +274,10 @@ const DraggableStock = ({ stock, subheadingId, index, moveStock }) => {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                 </svg>
               </button>
-              
+
               {/* Popup Menu */}
               {showPopup && (
-                <div 
+                <div
                   ref={popupRef}
                   className="absolute z-50 right-0 top-8 bg-white shadow-lg rounded-md border border-gray-200 w-60"
                 >
@@ -290,10 +289,10 @@ const DraggableStock = ({ stock, subheadingId, index, moveStock }) => {
                       <button className="w-8 h-6 bg-green-100 rounded-md text-xs text-gray-700 hover:bg-green-200">2</button>
                     </div>
                   </div>
-                  
+
                   {/* Menu items */}
                   <div className="py-1">
-                    <button 
+                    <button
                       className="flex items-center w-full px-4 py-2 text-sm text-left hover:bg-gray-100"
                       onClick={handleAddSectionAbove}
                     >
@@ -302,8 +301,8 @@ const DraggableStock = ({ stock, subheadingId, index, moveStock }) => {
                       </svg>
                       Add section above
                     </button>
-                    
-                    <button 
+
+                    <button
                       className="flex items-center w-full px-4 py-2 text-sm text-left bg-blue-50 hover:bg-blue-100"
                       onClick={handleOpenChart}
                     >
@@ -312,8 +311,8 @@ const DraggableStock = ({ stock, subheadingId, index, moveStock }) => {
                       </svg>
                       Open Chart
                     </button>
-                    
-                    <button 
+
+                    <button
                       className="flex items-center w-full px-4 py-2 text-sm text-left hover:bg-gray-100"
                       onClick={handleAddAlert}
                     >
@@ -322,8 +321,8 @@ const DraggableStock = ({ stock, subheadingId, index, moveStock }) => {
                       </svg>
                       Add alert
                     </button>
-                    
-                    <button 
+
+                    <button
                       className="flex items-center w-full px-4 py-2 text-sm text-left hover:bg-gray-100"
                       onClick={handleCreateGTT}
                     >
@@ -333,10 +332,10 @@ const DraggableStock = ({ stock, subheadingId, index, moveStock }) => {
                       Create GTT
                     </button>
                   </div>
-                  
+
                   {/* Bottom menu item with border */}
                   <div className="border-t border-gray-100">
-                    <button 
+                    <button
                       className="flex items-center w-full px-4 py-2 text-sm text-left hover:bg-gray-100"
                       onClick={handleOptionChain}
                     >
@@ -354,9 +353,8 @@ const DraggableStock = ({ stock, subheadingId, index, moveStock }) => {
           <div className="text-right">
             <div className="text-[12px] font-medium">{stock.value}</div>
             <div
-              className={`text-[11px] ${
-                stock.isPositive ? "text-green-500" : "text-red-500"
-              }`}
+              className={`text-[11px] ${stock.isPositive ? "text-green-500" : "text-red-500"
+                }`}
             >
               {stock.change}
             </div>
@@ -369,7 +367,7 @@ const DraggableStock = ({ stock, subheadingId, index, moveStock }) => {
 // Draggable Subheading component
 const DraggableSubheading = ({ subheading, index, moveSubheading, updateSubheading, removeSubheading, moveStockToSubheading, moveStockWithinSubheading }) => {
   const ref = useRef(null);
-  
+
   const [{ isDragging }, drag] = useDrag({
     type: ItemTypes.SUBHEADING,
     item: { type: ItemTypes.SUBHEADING, id: subheading.id, index },
@@ -377,7 +375,7 @@ const DraggableSubheading = ({ subheading, index, moveSubheading, updateSubheadi
       isDragging: monitor.isDragging(),
     }),
   });
-  
+
   const [, drop] = useDrop({
     accept: ItemTypes.SUBHEADING,
     hover(item, monitor) {
@@ -386,20 +384,20 @@ const DraggableSubheading = ({ subheading, index, moveSubheading, updateSubheadi
       }
       const dragIndex = item.index;
       const hoverIndex = index;
-      
+
       // Don't replace items with themselves
       if (dragIndex === hoverIndex) {
         return;
       }
-      
+
       // Move the subheading in the list
       moveSubheading(dragIndex, hoverIndex);
-      
+
       // Update the index for the dragged item
       item.index = hoverIndex;
     },
   });
-  
+
   const [, stockDrop] = useDrop({
     accept: ItemTypes.STOCK,
     drop: (item) => {
@@ -409,20 +407,20 @@ const DraggableSubheading = ({ subheading, index, moveSubheading, updateSubheadi
       }
     },
   });
-  
+
   // Connect drag and drop refs
   drag(drop(stockDrop(ref)));
 
   const [isEditing, setIsEditing] = useState(false);
   const [editTitle, setEditTitle] = useState(subheading.title);
-  
+
   const toggleExpanded = () => {
     updateSubheading(subheading.id, {
       ...subheading,
       isExpanded: !subheading.isExpanded
     });
   };
-  
+
   const handleEditSave = () => {
     if (editTitle.trim()) {
       updateSubheading(subheading.id, {
@@ -432,9 +430,9 @@ const DraggableSubheading = ({ subheading, index, moveSubheading, updateSubheadi
       setIsEditing(false);
     }
   };
-  
+
   return (
-    <div 
+    <div
       ref={ref}
       className={`mb-4 rounded-md border border-gray-200 ${isDragging ? 'opacity-50' : 'opacity-100'}`}
     >
@@ -442,9 +440,9 @@ const DraggableSubheading = ({ subheading, index, moveSubheading, updateSubheadi
         <div className="cursor-move mr-2 text-gray-400">
           <GripVertical size={16} />
         </div>
-        
+
         <div className="flex-1 flex items-center">
-          <button 
+          <button
             onClick={toggleExpanded}
             className="mr-2 text-gray-500"
           >
@@ -454,7 +452,7 @@ const DraggableSubheading = ({ subheading, index, moveSubheading, updateSubheadi
               <ChevronRight size={16} />
             )}
           </button>
-          
+
           {isEditing ? (
             <div className="flex items-center">
               <input
@@ -464,13 +462,13 @@ const DraggableSubheading = ({ subheading, index, moveSubheading, updateSubheadi
                 className="border border-gray-300 rounded px-2 py-1 text-sm w-48"
                 autoFocus
               />
-              <button 
+              <button
                 onClick={handleEditSave}
                 className="ml-2 text-green-500"
               >
                 <Check size={14} />
               </button>
-              <button 
+              <button
                 onClick={() => setIsEditing(false)}
                 className="ml-1 text-red-500"
               >
@@ -481,7 +479,7 @@ const DraggableSubheading = ({ subheading, index, moveSubheading, updateSubheadi
             <div className="font-medium text-sm flex-1">{subheading.title}</div>
           )}
         </div>
-        
+
         <div className="flex items-center">
           <button
             onClick={() => setIsEditing(true)}
@@ -497,14 +495,14 @@ const DraggableSubheading = ({ subheading, index, moveSubheading, updateSubheadi
           </button>
         </div>
       </div>
-      
+
       {subheading.isExpanded && (
         <div className="p-2">
           {subheading.stocks.length > 0 ? (
             subheading.stocks.map((stock, stockIndex) => (
-              <DraggableStock 
-                key={stock.id} 
-                stock={stock} 
+              <DraggableStock
+                key={stock.id}
+                stock={stock}
                 subheadingId={subheading.id}
                 index={stockIndex}
                 moveStock={moveStockWithinSubheading}
@@ -531,25 +529,25 @@ const UnassignedStocksArea = ({ stocks, moveStockToSubheading, searchTerm, moveS
       }
     },
   });
-  
+
   const filteredStocks = searchTerm
-    ? stocks.filter(stock => 
-        stock.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
-        stock.symbol.toLowerCase().includes(searchTerm.toLowerCase())
-      )
+    ? stocks.filter(stock =>
+      stock.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      stock.symbol.toLowerCase().includes(searchTerm.toLowerCase())
+    )
     : stocks;
-  
+
   return (
     <div ref={drop} className="mt-4">
       <h4 className="text-xs font-medium text-gray-500 mb-2">
         Unassigned Stocks ({filteredStocks.length})
       </h4>
-      
+
       {filteredStocks.length > 0 ? (
         filteredStocks.map((stock, index) => (
-          <DraggableStock 
-            key={stock.id} 
-            stock={stock} 
+          <DraggableStock
+            key={stock.id}
+            stock={stock}
             subheadingId={null}
             index={index}
             moveStock={moveStockWithinSubheading}
@@ -557,8 +555,8 @@ const UnassignedStocksArea = ({ stocks, moveStockToSubheading, searchTerm, moveS
         ))
       ) : (
         <div className="py-4 text-center text-gray-500 text-sm">
-          {searchTerm 
-            ? "No stocks matching your search" 
+          {searchTerm
+            ? "No stocks matching your search"
             : "All stocks have been assigned to groups"}
         </div>
       )}
@@ -724,10 +722,10 @@ const Sidebar = () => {
   // Filter stocks based on search term
   const filteredStocks = searchTerm
     ? getAllStocks().filter(
-        (stock) =>
-          stock.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          stock.symbol.toLowerCase().includes(searchTerm.toLowerCase())
-      )
+      (stock) =>
+        stock.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        stock.symbol.toLowerCase().includes(searchTerm.toLowerCase())
+    )
     : getAllStocks();
 
   // Handle adding a new watchlist
@@ -749,11 +747,11 @@ const Sidebar = () => {
           change:
             Math.random() > 0.5
               ? `+${(Math.random() * 10).toFixed(2)} (+${(
-                  Math.random() * 2
-                ).toFixed(2)}%)`
+                Math.random() * 2
+              ).toFixed(2)}%)`
               : `-${(Math.random() * 10).toFixed(2)} (-${(
-                  Math.random() * 2
-                ).toFixed(2)}%)`,
+                Math.random() * 2
+              ).toFixed(2)}%)`,
           isPositive: Math.random() > 0.5,
           icon: ["🏭", "💻", "🏦", "📱", "🌐"][Math.floor(Math.random() * 5)],
         }));
@@ -819,9 +817,9 @@ const Sidebar = () => {
         watchlists.map((wl) =>
           wl.id === activeTab
             ? {
-                ...wl,
-                subheadings: [...wl.subheadings, newSubheading],
-              }
+              ...wl,
+              subheadings: [...wl.subheadings, newSubheading],
+            }
             : wl
         )
       );
@@ -837,11 +835,11 @@ const Sidebar = () => {
       watchlists.map((wl) =>
         wl.id === activeTab
           ? {
-              ...wl,
-              subheadings: wl.subheadings.map((sh) =>
-                sh.id === subheadingId ? updatedSubheading : sh
-              ),
-            }
+            ...wl,
+            subheadings: wl.subheadings.map((sh) =>
+              sh.id === subheadingId ? updatedSubheading : sh
+            ),
+          }
           : wl
       )
     );
@@ -860,15 +858,15 @@ const Sidebar = () => {
         watchlists.map((wl) =>
           wl.id === activeTab
             ? {
-                ...wl,
-                subheadings: wl.subheadings.filter(
-                  (sh) => sh.id !== subheadingId
-                ),
-                unassignedStocks: [
-                  ...wl.unassignedStocks,
-                  ...subheadingToRemove.stocks,
-                ],
-              }
+              ...wl,
+              subheadings: wl.subheadings.filter(
+                (sh) => sh.id !== subheadingId
+              ),
+              unassignedStocks: [
+                ...wl.unassignedStocks,
+                ...subheadingToRemove.stocks,
+              ],
+            }
             : wl
         )
       );
@@ -1005,9 +1003,9 @@ const Sidebar = () => {
 
   // The main sidebar content component that needs DnD context
   const SidebarContent = () => (
-    <div className="hidden md:flex fixed top-16 left-0 bottom-0 w-[30%] bg-white border-r border-gray-200 flex-col">
+    <div className="hidden md:flex fixed top-16 left-0 bottom-0 w-[30%] bg-white dark:bg-dark-background border-r border-gray-200 dark:border-dark-border flex-col">
       {/* Search and filter - Fixed section */}
-      <div className="p-5 border-b border-gray-200 flex-shrink-0">
+      <div className="p-5 border-b border-gray-200 dark:border-dark-border flex-shrink-0">
         <div className="flex justify-between items-center">
           <div className="relative flex-1 mr-2">
             <input
@@ -1015,12 +1013,12 @@ const Sidebar = () => {
               placeholder="Search stocks..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full py-3 pl-8 pr-3 border border-gray-300 rounded-md text-sm"
+              className="w-full py-3 pl-8 pr-3 border border-gray-300 dark:border-dark-border rounded-md text-sm bg-white dark:bg-dark-surface text-gray-900 dark:text-dark-text placeholder-gray-500 dark:placeholder-dark-secondary"
             />
             <div className="absolute left-2 top-1/2 transform -translate-y-1/2">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                className="h-4 w-4 text-gray-400"
+                className="h-4 w-4 text-gray-400 dark:text-dark-secondary"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -1034,9 +1032,9 @@ const Sidebar = () => {
               </svg>
             </div>
           </div>
-          <button className="flex items-center justify-center px-3 py-3 bg-[#F4F4F9] rounded-md">
-            <Filter size={16} />
-            <span className="ml-1 text-xs">Filter</span>
+          <button className="flex items-center justify-center px-3 py-3 bg-[#F4F4F9] dark:bg-dark-surface rounded-md">
+            <Filter size={16} className="text-gray-600 dark:text-dark-secondary" />
+            <span className="ml-1 text-xs text-gray-600 dark:text-dark-secondary">Filter</span>
           </button>
         </div>
 
@@ -1046,11 +1044,10 @@ const Sidebar = () => {
             <button
               key={watchlist.id}
               onClick={() => setActiveTab(watchlist.id)}
-              className={`h-9 flex items-center justify-center rounded-md px-3 min-w-min whitespace-nowrap mr-2 ${
-                activeTab === watchlist.id
-                  ? "bg-[#EEFFF2] border border-[#28A745] text-[#28A745]"
-                  : "bg-[#F4F4F9] border border-[#D1D5DB] text-[#495057]"
-              }`}
+              className={`h-9 flex items-center justify-center rounded-md px-3 min-w-min whitespace-nowrap mr-2 ${activeTab === watchlist.id
+                ? "bg-[#EEFFF2] border border-[#28A745] text-[#28A745]"
+                : "bg-[#F4F4F9] border border-[#D1D5DB] text-[#495057]"
+                }`}
             >
               {editingWatchlist === watchlist.id ? (
                 <div className="flex items-center">
@@ -1151,9 +1148,8 @@ const Sidebar = () => {
                   <div className="text-xs font-medium">{index.name}</div>
                   <div className="text-sm font-bold">{index.value}</div>
                   <div
-                    className={`text-xs ${
-                      index.isPositive ? "text-green-500" : "text-red-500"
-                    }`}
+                    className={`text-xs ${index.isPositive ? "text-green-500" : "text-red-500"
+                      }`}
                   >
                     {index.change}
                   </div>

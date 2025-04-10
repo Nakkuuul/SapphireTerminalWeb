@@ -48,7 +48,7 @@ const TradeCard: React.FC<TradeCardProps> = ({
       <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 mb-4">
         <div className="flex items-center gap-2 w-full sm:w-auto">
           <Image src="/globe.svg" alt="Stock" width={24} height={24} />
-          <div className="text-base sm:text-xl font-normal truncate">{`${symbol} ${date} FUT`}</div>
+          <div className="text-base sm:text-xl font-normal  truncate">{`${symbol} ${date} FUT`}</div>
           <div className={`text-xs sm:text-sm font-semibold px-2 py-0.5 rounded ${type === 'BUY' ? 'bg-[#E5FFDC] text-[#34A853]' : 'bg-red-100 text-red-700'}`}>{type}</div>
         </div>
         <div className="flex items-center mt-2 sm:mt-0 sm:ml-auto w-full sm:w-auto justify-between sm:justify-end">

@@ -2,7 +2,7 @@ import React from 'react';
 import Navbar from '@/components/gen-components/Navbar';
 import Sidebar from '@/components/gen-components/Sidebar';
 import { Inter } from 'next/font/google';
-import '../globals.css';
+
 
 const inter = Inter({ subsets: ['latin'] });
 

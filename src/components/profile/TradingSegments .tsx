@@ -41,8 +41,8 @@ const TradingSegments = ({ segmentsData = [] }: SegmentsProps) => {
               key={index} 
               className={`px-3 py-2 text-center text-base rounded border ${
                 segment.active 
-                  ? 'bg-[#D1FADF99] dark:bg-[#D1FADF66] border-[#22A06B] text-[#1DB954] dark:text-[#EBEEF5]' 
-                  : 'bg-gray-50 dark:bg-transparent border-gray-200 dark:border-[#2F2F2F] text-[#6B7280] font-medium'
+                  ? 'bg-[#D1FADF99] dark:bg-[#D1FADF66] border-primary text-primary dark:text-dark-text' 
+                  : 'bg-gray-50 dark:bg-transparent border-gray-200 dark:border-dark-border text-secondary font-medium'
               }`}
             >
               {segment.name}

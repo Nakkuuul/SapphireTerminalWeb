@@ -32,22 +32,22 @@ const PersonalInformation = ({ userData = {} }: { userData?: UserData }) => {
 
   return (
     <>
-      <div className="bg-[#F4F4F9] dark:bg-[#121413] border border-[#D1D5DB] dark:border-[#2F2F2F] p-3 mb-6">
+      <div className="bg-[#F4F4F9] dark:bg-[#121413] border border-[#D1D5DB] dark:border-[#2F2F2F] p-3 px-5 mb-6">
         <div className="flex items-center">
           <div className="bg-gray-100 dark:bg-[#2F2F2F] rounded-lg p-3 mr-4">
             {profilePic ? (
               <img
                 src={profilePic}
                 alt="User Avatar"
-                className="rounded-full w-12 h-12 object-cover"
+                className="rounded-full w-[89px] h-[89px] object-cover"
               />
             ) : (
               <div className="w-12 h-12 bg-gray-300 dark:bg-[#2F2F2F] rounded-full animate-pulse" />
             )}
           </div>
           <div>
-            <h2 className="text-lg text-[#1A1A1A] dark:text-[#EBEEF5] font-medium">{name}</h2>
-            <p className="text-gray-500 dark:text-[#C9CACC] text-sm">{accountId}</p>
+            <h2 className="text-xl mb-1 text-[#1A1A1A] dark:text-[#EBEEF5] font-medium">{name}</h2>
+            <p className="text-gray-500 dark:text-[#C9CACC] text-lg">{accountId}</p>
           </div>
         </div>
       </div>
@@ -58,20 +58,20 @@ const PersonalInformation = ({ userData = {} }: { userData?: UserData }) => {
 
         <div className="grid grid-cols-2 px-6 py-3 gap-4">
           <div>
-            <p className="text-sm text-gray-500 dark:text-[#C9CACC]">PAN</p>
-            <p className="dark:text-[#EBEEF5]">{pan}</p>
+            <p className="text-base text-[#7D7D7D] dark:text-[#C9CACC]">PAN</p>
+            <p className="text-base dark:text-[#EBEEF5]">{pan}</p>
           </div>
           <div>
-            <p className="text-sm text-gray-500 dark:text-[#C9CACC]">Phone</p>
-            <p className="dark:text-[#EBEEF5]">{phone}</p>
+            <p className="text-base text-[#7D7D7D] dark:text-[#C9CACC]">Phone</p>
+            <p className="text-base dark:text-[#EBEEF5]">{phone}</p>
           </div>
           <div>
-            <p className="text-sm text-gray-500 dark:text-[#C9CACC]">Location</p>
-            <p className="dark:text-[#EBEEF5]">{location}</p>
+            <p className="text-base text-[#7D7D7D] dark:text-[#C9CACC]">Location</p>
+            <p className="text-base dark:text-[#EBEEF5]">{location}</p>
           </div>
           <div>
-            <p className="text-sm text-gray-500 dark:text-[#C9CACC]">Email</p>
-            <p className="dark:text-[#EBEEF5]">{email}</p>
+            <p className="text-base text-[#7D7D7D] dark:text-[#C9CACC]">Email</p>
+            <p className="text-base dark:text-[#EBEEF5]">{email}</p>
           </div>
         </div>
       </div>
