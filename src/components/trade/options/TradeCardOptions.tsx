@@ -54,29 +54,29 @@ const TradeCardOptions: React.FC<TradeCardProps> = ({
 
       {/* Strategy and Details Section */}
       <div className="bg-[#e6f3f0] rounded mt-4">
-        <div className="grid grid-cols-5 text-sm">
+        <div className="grid grid-cols-5 text-lg">
           <div className="p-3">
-            <div className="text-gray-600">Strategy</div>
+            <div className="text-text text-base">Strategy</div>
             <div className="font-medium mt-1">{strategy}</div>
             <div className="font-medium">{strategy}</div>
           </div>
           <div className="p-3">
-            <div className="text-gray-600">Entry</div>
+            <div className="text-text text-base">Entry</div>
             <div className="font-medium mt-1">₹{entryPrice.toFixed(2)}</div>
             <div className="font-medium">₹{entryPrice.toFixed(2)}</div>
           </div>
           <div className="p-3">
-            <div className="text-gray-600">Exit</div>
+            <div className="text-text text-base">Exit</div>
             <div className="font-medium mt-1">₹{exitPrice.toFixed(2)}</div>
             <div className="font-medium">₹{exitPrice.toFixed(2)}</div>
           </div>
           <div className="p-3">
-            <div className="text-gray-600">Lot size</div>
+            <div className="text-text text-base">Lot size</div>
             <div className="font-medium mt-1">{lotSize}</div>
             <div className="font-medium">{lotSize}</div>
           </div>
           <div className="p-3">
-            <div className="text-gray-600">LTP</div>
+            <div className="text-text text-base">LTP</div>
             <div className="font-medium mt-1">₹{ltp.toFixed(2)}</div>
             <div className="font-medium">₹{ltp.toFixed(2)}</div>
           </div>
@@ -84,19 +84,19 @@ const TradeCardOptions: React.FC<TradeCardProps> = ({
       </div>
 
       {/* Stoploss and Target Section */}
-      <div className="flex justify-center gap-x-5 text-sm">
+      <div className="flex justify-center gap-x-5 text-base">
         <div className="p-3 text-center">
           <div className="text-gray-600">Stoploss amount</div>
-          <div className="font-medium mt-1">-₹{stoplossAmount.toLocaleString('en-IN')}</div>
+          <div className="font-medium mt-1 text-lg">-₹{stoplossAmount.toLocaleString('en-IN')}</div>
         </div>
         <div className="p-3 text-center">
           <div className="text-gray-600">Target amount</div>
-          <div className="font-medium mt-1">-₹{targetAmount.toLocaleString('en-IN')}</div>
+          <div className="font-medium mt-1 text-lg">-₹{targetAmount.toLocaleString('en-IN')}</div>
         </div>
       </div>
 
       {/* Margin Information */}
-      <div className="flex justify-center gap-6 text-sm border-t pt-3 text-[#6B7280]">
+      <div className="flex justify-center gap-6 text-base border-t pt-3 text-[#6B7280]">
         <div className="flex items-center">
           <span>Margin required :</span>
           <span className="ml-1 text-[#1A1A1A] font-medium">₹{marginRequired.toLocaleString('en-IN')}</span>
@@ -110,7 +110,7 @@ const TradeCardOptions: React.FC<TradeCardProps> = ({
       </div>
 
       {/* Button Section */}
-      <div className="flex mt-4 gap-4">
+      <div className="flex text-xl font-medium mt-4 gap-4">
         <button 
           className="bg-white text-center border border-gray-200 text-gray-600 py-3 px-4 rounded flex-1" 
           onClick={() => setIsExpanded(!isExpanded)}
