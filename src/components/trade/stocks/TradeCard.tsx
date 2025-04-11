@@ -43,7 +43,7 @@ const TradeCard: React.FC<TradeCardProps> = ({
   const [showGainInfo, setShowGainInfo] = React.useState(false);
 
   return (
-    <div className="border rounded-lg p-4 sm:p-6 bg-surface dark:bg-dark-cardbg">
+    <div className="border border-border dark:border-dark-border rounded-lg p-4 sm:p-6 bg-surface dark:bg-dark-cardbg">
       {/* Header Section */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 mb-4">
         <div className="flex items-center gap-2 w-full sm:w-auto">
@@ -52,7 +52,7 @@ const TradeCard: React.FC<TradeCardProps> = ({
           <div className={`text-xs sm:text-sm font-semibold px-2 py-0.5 rounded ${type === 'BUY' ? 'bg-[#E5FFDC] text-[#34A853]' : 'bg-red-100 text-red-700'}`}>{type}</div>
         </div>
         <div className="flex items-center mt-2 sm:mt-0 sm:ml-auto w-full sm:w-auto justify-between sm:justify-end">
-          <span className="text-lg sm:text-xl font-bold">₹{price.toLocaleString('en-IN')}</span>
+          <span className="text-lg sm:text-xl font-normal">₹{price.toLocaleString('en-IN')}</span>
           <span className={`text-xs sm:text-sm ml-2 ${percentChange >= 0 ? 'text-green-500' : 'text-red-500'}`}>{percentChange >= 0 ? '+' : ''}{percentChange.toFixed(2)}%</span>
         </div>
       </div>
@@ -86,7 +86,7 @@ const TradeCard: React.FC<TradeCardProps> = ({
       </div>
 
       {/* Margin Required Section */}
-      <div className="flex items-center justify-center border-t-[0.5px] text-xs sm:text-base">
+      <div className="flex items-center justify-center border-t-[0.5px] dark:border-t-dark-border text-xs sm:text-base">
         <span className="text-text dark:text-dark-graytext mt-2">Margin required: </span>
         <span className="font-medium mt-2 ml-1 dark:text-dark-lighttext">₹{marginRequired.toLocaleString('en-IN')}</span>
         <Info size={14} className="ml-1 mt-2 text-gray-400" />
@@ -109,7 +109,7 @@ const TradeCard: React.FC<TradeCardProps> = ({
           className="text-gray-400 p-2"
           onClick={() => setShowGainInfo(!showGainInfo)}
         >
-          {showGainInfo ? <ChevronRight size={20} className="transform -rotate-90" /> : <ChevronDown size={20} />}
+          {showGainInfo ? <ChevronRight size={20} className="transform -rotate-90 dark:text-[#D1D5DB]" /> : <ChevronDown size={20} className='dark:text-[#D1D5DB]'/>}
         </button>
       </div>
 
@@ -127,7 +127,7 @@ const TradeCard: React.FC<TradeCardProps> = ({
         )}
         
         {/* Posted Information */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-4 text-gray-500  dark:text-dark-graytext mt-2 text-xs sm:text-base">
+        <div className="flex gap-x-6 sm:gap-4 text-gray-500  dark:text-dark-graytext mt-2 text-xs sm:text-base">
           {postedOn && <div>Posted on: <span className='text-[#1A1A1A] dark:text-dark-lighttext font-medium'>{postedOn}</span></div>}
           {postedBy && <div>Posted by: <span className='text-[#1A1A1A] dark:text-dark-lighttext font-medium'>{postedBy}</span></div>}
           {adviceId && <div>Advice ID: <span className='text-[#1A1A1A] dark:text-dark-lighttext font-medium'>{adviceId}</span></div>}

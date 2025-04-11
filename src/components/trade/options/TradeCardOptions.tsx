@@ -40,45 +40,45 @@ const TradeCardOptions: React.FC<TradeCardProps> = ({
   const [showGainInfo, setShowGainInfo] = React.useState(false);
 
   return (
-    <div className="border rounded-lg bg-[#F4F4F9] shadow-sm p-6">
+    <div className="border rounded-lg bg-[#F4F4F9] dark:bg-dark-cardbg shadow-sm p-6">
       {/* Header Section */}
       <div className="flex items-center gap-2">
         <div className="w-8 h-8 rounded-md bg-orange-500 flex items-center justify-center text-white">
           <span className="text-xs font-bold">{symbol.substring(0, 3)}</span>
         </div>
-        <div className="text-base font-medium">{symbol}</div>
+        <div className="text-base font-medium dark:text-dark-lighttext">{symbol}</div>
         <div className={`ml-1 px-2 py-0.5 rounded text-xs font-semibold ${type === 'BUY' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
           {type}
         </div>
       </div>
 
       {/* Strategy and Details Section */}
-      <div className="bg-[#e6f3f0] rounded mt-4">
+      <div className="bg-[#e6f3f0] dark:bg-dark-insidecard rounded mt-4">
         <div className="grid grid-cols-5 text-lg">
           <div className="p-3">
-            <div className="text-text text-base">Strategy</div>
-            <div className="font-medium mt-1">{strategy}</div>
-            <div className="font-medium">{strategy}</div>
+            <div className="text-text text-base dark:text-dark-graytext">Strategy</div>
+            <div className="font-medium mt-1  dark:text-dark-lighttext" >{strategy}</div>
+            <div className="font-medium   dark:text-dark-lighttext">{strategy}</div>
           </div>
           <div className="p-3">
-            <div className="text-text text-base">Entry</div>
-            <div className="font-medium mt-1">₹{entryPrice.toFixed(2)}</div>
-            <div className="font-medium">₹{entryPrice.toFixed(2)}</div>
+            <div className="text-text text-base dark:text-dark-graytext">Entry</div>
+            <div className="font-medium mt-1  dark:text-dark-lighttext" >₹{entryPrice.toFixed(2)}</div>
+            <div className="font-medium  dark:text-dark-lighttext" >₹{entryPrice.toFixed(2)}</div>
           </div>
           <div className="p-3">
-            <div className="text-text text-base">Exit</div>
-            <div className="font-medium mt-1">₹{exitPrice.toFixed(2)}</div>
-            <div className="font-medium">₹{exitPrice.toFixed(2)}</div>
+            <div className="text-text text-base dark:text-dark-graytext">Exit</div>
+            <div className="font-medium mt-1  dark:text-dark-lighttext" >₹{exitPrice.toFixed(2)}</div>
+            <div className="font-medium  dark:text-dark-lighttext" >₹{exitPrice.toFixed(2)}</div>
           </div>
           <div className="p-3">
-            <div className="text-text text-base">Lot size</div>
-            <div className="font-medium mt-1">{lotSize}</div>
-            <div className="font-medium">{lotSize}</div>
+            <div className="text-text text-base dark:text-dark-graytext">Lot size</div>
+            <div className="font-medium mt-1 dark:text-dark-lighttext">{lotSize}</div>
+            <div className="font-medium dark:text-dark-lighttext">{lotSize}</div>
           </div>
           <div className="p-3">
-            <div className="text-text text-base">LTP</div>
-            <div className="font-medium mt-1">₹{ltp.toFixed(2)}</div>
-            <div className="font-medium">₹{ltp.toFixed(2)}</div>
+            <div className="text-text text-base dark:text-dark-graytext">LTP</div>
+            <div className="font-medium mt-1 dark:text-dark-lighttext">₹{ltp.toFixed(2)}</div>
+            <div className="font-medium dark:text-dark-lighttext">₹{ltp.toFixed(2)}</div>
           </div>
         </div>
       </div>
@@ -86,25 +86,25 @@ const TradeCardOptions: React.FC<TradeCardProps> = ({
       {/* Stoploss and Target Section */}
       <div className="flex justify-center gap-x-5 text-base">
         <div className="p-3 text-center">
-          <div className="text-gray-600">Stoploss amount</div>
-          <div className="font-medium mt-1 text-lg">-₹{stoplossAmount.toLocaleString('en-IN')}</div>
+          <div className="text-gray-600  dark:text-dark-graytext">Stoploss amount</div>
+          <div className="font-medium mt-1 text-lg dark:text-dark-lighttext">-₹{stoplossAmount.toLocaleString('en-IN')}</div>
         </div>
         <div className="p-3 text-center">
-          <div className="text-gray-600">Target amount</div>
-          <div className="font-medium mt-1 text-lg">-₹{targetAmount.toLocaleString('en-IN')}</div>
+          <div className="text-gray-600 dark:text-dark-graytext">Target amount</div>
+          <div className="font-medium mt-1 text-lg dark:text-dark-lighttext">-₹{targetAmount.toLocaleString('en-IN')}</div>
         </div>
       </div>
 
       {/* Margin Information */}
-      <div className="flex justify-center gap-6 text-base border-t pt-3 text-[#6B7280]">
+      <div className="flex justify-center gap-6 text-base border-t dark:border-t-dark-border pt-3 text-[#6B7280] dark:text-dark-graytext">
         <div className="flex items-center">
-          <span>Margin required :</span>
-          <span className="ml-1 text-[#1A1A1A] font-medium">₹{marginRequired.toLocaleString('en-IN')}</span>
+          <span >Margin required :</span>
+          <span className="ml-1 text-[#1A1A1A] font-normal dark:text-dark-lighttext">₹{marginRequired.toLocaleString('en-IN')}</span>
           <Info size={16} className="ml-1 " />
         </div>
         <div className="flex items-center">
-          <span>Final Margin :</span>
-          <span className="ml-1 text-[#1A1A1A] font-medium">₹{finalMargin.toLocaleString('en-IN')}</span>
+          <span >Final Margin :</span>
+          <span className="ml-1 text-[#1A1A1A] font-normal dark:text-dark-lighttext">₹{finalMargin.toLocaleString('en-IN')}</span>
           <Info size={16} className="ml-1" />
         </div>
       </div>
@@ -145,9 +145,9 @@ const TradeCardOptions: React.FC<TradeCardProps> = ({
         
         {/* Posted Information */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-4 text-gray-500 mt-2 text-sm">
-          {postedOn && <div>Posted on: <span className='text-[#1A1A1A] font-medium'>{postedOn}</span></div>}
-          {postedBy && <div>Posted by: <span className='text-[#1A1A1A] font-medium'>{postedBy}</span></div>}
-          {adviceId && <div>Advice ID: <span className='text-[#1A1A1A] font-medium'>{adviceId}</span></div>}
+          {postedOn && <div>Posted on: <span className='text-[#1A1A1A] dark:text-dark-lighttext font-medium'>{postedOn}</span></div>}
+          {postedBy && <div>Posted by: <span className='text-[#1A1A1A] dark:text-dark-lighttext font-medium'>{postedBy}</span></div>}
+          {adviceId && <div>Advice ID: <span className='text-[#1A1A1A] dark:text-dark-lighttext font-medium'>{adviceId}</span></div>}
         </div>
       </div>
     </div>

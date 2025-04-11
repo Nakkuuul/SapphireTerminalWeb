@@ -29,6 +29,7 @@ module.exports = {
           graytext: '#C9CACC',
           lighttext:'#EBEEF5',
           border: '#2F2F2F',
+          insidecard:'#23232399',
         }
       },
     },

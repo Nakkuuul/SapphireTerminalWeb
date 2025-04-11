@@ -160,7 +160,7 @@ const Positions: React.FC = () => {
 
       {/* Positions Section Header */}
       <div className="flex justify-between items-center mb-4">
-        <h2 className="text-xl font-medium">Positions (5)</h2>
+        <h2 className="text-xl font-normal">Positions (5)</h2>
         <div className="flex items-center gap-2">
           <DownloadButton />
           <SearchButton />

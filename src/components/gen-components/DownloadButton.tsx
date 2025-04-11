@@ -5,9 +5,9 @@ function DownloadButton() {
   return (
     <>
         <button
-            className="flex items-center text-[#686868] border rounded-md px-4 py-3 text-sm"
+            className="flex items-center h-12 text-[#686868] border rounded-md px-4 text-sm"
             >
-            <Download className="text-black w-4 h-4 mr-1" />
+            <Download strokeWidth={1.5} className="text-[#686868] w-4 h-4 mr-2" />
             Download
         </button>
     </>

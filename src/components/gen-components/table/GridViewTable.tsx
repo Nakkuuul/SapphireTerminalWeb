@@ -27,7 +27,7 @@ const GridViewTable: React.FC<GridViewTableProps> = ({ trades }) => {
       {trades.map((trade, index) => (
         <div
           key={index}
-          className="border border-[#8F8F8FCC] dark:border-[#2F2F2F] bg-background rounded-lg overflow-hidden dark:bg-darkbackground"
+          className="border border-[#8F8F8FCC] dark:border-[#2F2F2F] bg-background dark:bg-dark-cardbg rounded-lg overflow-hidden dark:bg-darkbackground"
         >
           {/* Header with logo, title, buy/sell chip and status label */}
           <div className="p-[18px]">

@@ -131,10 +131,10 @@ export default function TradesList() {
           <div className='relative'>
             <button 
               onClick={() => setShowFilters(!showFilters)} 
-              className={`flex items-center gap-2 px-5 py-2.5 bg-[#F4F4F9] rounded-md border h-[42px] ${showFilters || filterType ? 'border-blue-500 bg-blue-50 text-blue-600' : 'border-[#D1D5DB] text-gray-700'}`}
+              className={`flex items-center gap-2 px-5 py-2.5 bg-[#F4F4F9] dark:bg-dark-insidecard rounded-md border dark:border-none h-[42px] ${showFilters || filterType ? 'border-blue-500 bg-blue-50 text-blue-600' : 'border-[#D1D5DB] text-gray-700'}`}
             >
-              <HiOutlineAdjustments size={16} />
-              <span>Filter</span>
+              <HiOutlineAdjustments size={16} className='dark:text-white'/>
+              <span className='dark:text-white'>Filter</span>
               {filterType && (
                 <div className="ml-1 flex h-5 w-5 items-center justify-center rounded-full bg-blue-500 text-xs text-white">
                   1
@@ -182,7 +182,7 @@ export default function TradesList() {
             <input
               type="text"
               placeholder="Search everything..."
-              className="w-full pl-3 pr-10 py-2.5 border border-[#D1D5DB] rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-blue-500 h-[42px]"
+              className="w-full pl-3 pr-10 py-2.5 border border-[#D1D5DB] dark:border-dark-border dark:bg-[#121212] rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-blue-500 h-[42px]"
               value={searchQuery}
               onChange={handleSearchChange}
             />
@@ -211,7 +211,7 @@ export default function TradesList() {
       )}
 
       {filteredTrades.length === 0 ? (
-        <div className="bg-white p-6 text-center rounded-lg border">
+        <div className="bg-white h-[50vh] dark:bg-[#121212] p-6 text-center rounded-lg border">
           <svg className="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
           </svg>

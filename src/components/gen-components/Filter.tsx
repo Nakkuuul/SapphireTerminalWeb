@@ -25,15 +25,15 @@ const Filter: React.FC<FilterProps> = ({
   getActiveFiltersCount
 }) => {
   return (
-    <div className="relative w-[100px] flex justify-center">
+    <div className="relative w-[100px]  flex justify-center">
       <button 
-        className={`flex items-center justify-center w-full gap-1 px-4 h-[42px] rounded-lg border ${
+        className={`flex items-center justify-center dark:bg-dark-insidecard w-full gap-1 px-4 h-[42px] rounded-lg border-border  ${
           getActiveFiltersCount() > 0 ? 'bg-blue-50 text-blue-600 border-blue-300' : 'bg-gray-100 text-gray-700 border-gray-300'
         }`}
         onClick={() => setShowFilters(!showFilters)}
       >
-        <HiOutlineAdjustments size={16} />
-        <span className="text-sm">Filter</span>
+        <HiOutlineAdjustments className='dark:text-white' size={16} />
+        <span className="text-sm dark:text-white">Filter</span>
         {getActiveFiltersCount() > 0 && (
           <div className="ml-1 flex h-5 w-5 items-center justify-center rounded-full bg-blue-500 text-xs text-white">
             {getActiveFiltersCount()}

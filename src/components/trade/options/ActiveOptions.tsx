@@ -119,10 +119,9 @@ export default function TradesList() {
           <div className='relative'>
             <button 
               onClick={() => setShowFilters(!showFilters)} 
-              className={`flex items-center gap-2 px-5 py-2.5 bg-[#F4F4F9] rounded-md border h-[42px] ${showFilters || filterType ? 'border-blue-500 bg-blue-50 text-blue-600' : 'border-[#D1D5DB] text-gray-700'}`}
-            >
-              <HiOutlineAdjustments size={16} />
-              <span>Filter</span>
+              className={`flex items-center gap-2 px-5 py-2.5 bg-[#F4F4F9] dark:bg-dark-insidecard rounded-md border dark:border-none h-[42px] ${showFilters || filterType ? 'border-blue-500 bg-blue-50 text-blue-600' : 'border-[#D1D5DB] text-gray-700'}`}           >
+              <HiOutlineAdjustments className='dark:text-white' size={16} />
+              <span className='dark:text-white'>Filter</span>
               {filterType && (
                 <div className="ml-1 flex h-5 w-5 items-center justify-center rounded-full bg-blue-500 text-xs text-white">
                   1
@@ -132,7 +131,7 @@ export default function TradesList() {
             
             {/* Filter Dropdown */}
             {showFilters && (
-              <div className="absolute z-10 mt-1 w-48 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5">
+              <div className="absolute z-10 mt-1 w-48 rounded-md bg-white  shadow-lg ring-1 ring-black ring-opacity-5">
                 <div className="py-1">
                   <div className="px-4 py-2 text-sm font-medium text-gray-700">Trade Type</div>
                   <button
@@ -170,7 +169,7 @@ export default function TradesList() {
             <input
               type="text"
               placeholder="Search everything..."
-              className="w-full pl-3 pr-10 py-2.5 border border-[#D1D5DB] rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-blue-500 h-[42px]"
+              className="w-full pl-3 pr-10 py-2.5 border border-[#D1D5DB] dark:border-dark-border dark:bg-[#121212] rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-blue-500 h-[42px]"
               value={searchQuery}
               onChange={handleSearchChange}
             />
