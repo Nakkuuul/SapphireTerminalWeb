@@ -1,5 +1,6 @@
 import DownloadButton from '@/components/gen-components/DownloadButton';
 import SearchButton from '@/components/gen-components/SearchButton';
+import HoldingSelector from '@/components/holdings/HoldingSelector';
 import React from 'react';
 
 const MutualFundsTable = () => {
@@ -86,9 +87,10 @@ const MutualFundsTable = () => {
   };
 
   return (
-    <div className="w-full py-8 px-2">
+    <div className="w-full ">
+      <HoldingSelector />
       {/* Header Summary */}
-      <div className="grid grid-cols-5 bg-[#F4F4F9] mb-4">
+      <div className="grid grid-cols-5 bg-[#F4F4F9] h-24 mb-4">
         <div className="p-4">
           <div className="text-base text-gray-500">Invested Value</div>
           <div className="text-base font-medium">

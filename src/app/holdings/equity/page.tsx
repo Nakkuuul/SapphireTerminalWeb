@@ -161,7 +161,7 @@ const PortfolioDashboard = () => {
     <div className=" max-w-6xl mx-auto">
       <HoldingSelector />
       {/* Summary Section */}
-      <div className="grid grid-cols-4 bg-[#F4F4F9] mb-4 h-20 overflow-hidden">
+      <div className="grid grid-cols-4 bg-[#F4F4F9] mb-4 h-24 overflow-hidden">
         <div className="flex flex-col justify-center h-full px-3 relative text-center">
           <div className="text-base text-gray-600 text-center">Investment Value</div>
           <div className="font-medium text-xl text-center">{formatCurrency(portfolioSummary.investmentValue)}</div>

@@ -2,6 +2,7 @@
 
 import DownloadButton from '@/components/gen-components/DownloadButton';
 import SearchButton from '@/components/gen-components/SearchButton';
+import HoldingSelector from '@/components/holdings/HoldingSelector';
 import { ArrowUpDown } from 'lucide-react';
 import React from 'react';
 
@@ -140,8 +141,9 @@ const Positions: React.FC = () => {
 
   return (
     <div className="w-full">
+      <HoldingSelector />
       {/* Header Summary */}
-      <div className="flex w-full mb-4">
+      <div className="flex w-full h-24 mb-4">
         <div className="w-1/2 border-r border-[#D1D5DB] text-center bg-[#F4F4F9] p-4">
           <div className="text-base text-[#6B7280] font-medium">Daily P&L</div>
           <div className="text-xl font-medium text-loss">
