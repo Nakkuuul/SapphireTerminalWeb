@@ -16,7 +16,9 @@ module.exports = {
         surface: '#F4F4F9',
         text: '#495057',
         border: '#D1D5DB',
-        
+        loss:'#E53935',
+        profit:'#22A06B',
+                
         // Dark mode colors
         dark: {
           primary: '#34D399',
