@@ -65,7 +65,7 @@ const GridViewTable: React.FC<GridViewTableProps> = ({ trades }) => {
                       </span>
                     </div>
                     {/* Date and time moved below security name */}
-                    <div className="flex items-center text-[#6B7280] text-base mt-1">
+                    <div className="flex items-center text-[#6B7280] text-base">
                       <svg
                         className="w-4 h-4 mr-1"
                         fill="none"
@@ -88,7 +88,7 @@ const GridViewTable: React.FC<GridViewTableProps> = ({ trades }) => {
 
               {/* Status section */}
               <div className="flex flex-col items-end">
-                <span className="text-[#495057] dark:text-[#C9CACC] text-sm mb-1">
+                <span className="text-[#495057] dark:text-[#C9CACC] text-sm mb-[6px] ">
                   Status
                 </span>
                 <div className="text-[#FFBF00] bg-[#FFF6DC] rounded p-1 text-[10px] font-medium">
@@ -99,36 +99,36 @@ const GridViewTable: React.FC<GridViewTableProps> = ({ trades }) => {
           </div>
 
           {/* Trade details grid */}
-          <div className="grid grid-cols-4 px-6 py-2">
+          <div className="grid grid-cols-4 gap-x-6 px-6 py-2">
             <div className="flex flex-col">
-              <span className="text-sm text-[#495057] dark:text-[#C9CACC]">
+              <span className="text-sm text-center text-[#495057] dark:text-[#C9CACC]">
                 Entry Price
               </span>
-              <span className="text-base font-medium text-black dark:text-[#EBEEF5]">
+              <span className="text-base font-medium  text-center text-black dark:text-[#EBEEF5]">
                 {trade.entryPrice}
               </span>
             </div>
             <div className="flex flex-col">
-              <span className="text-sm text-[#495057] dark:text-[#C9CACC]">
+              <span className="text-sm text-center text-[#495057] dark:text-[#C9CACC]">
                 Exit Price
               </span>
-              <span className="text-base font-medium text-black dark:text-[#EBEEF5]">
+              <span className="text-base font-medium text-center text-black dark:text-[#EBEEF5]">
                 {trade.exitPrice}
               </span>
             </div>
             <div className="flex flex-col">
-              <span className="text-sm text-[#495057] dark:text-[#C9CACC]">
+              <span className="text-sm text-center text-[#495057] dark:text-[#C9CACC]">
                 Quantity
               </span>
-              <span className="text-base font-medium text-black dark:text-[#EBEEF5]">
+              <span className="text-base font-medium text-center text-black dark:text-[#EBEEF5]">
                 {trade.quantity}
               </span>
             </div>
             <div className="flex flex-col">
-              <span className="text-sm text-gray-500 dark:text-gray-400">
+              <span className="text-sm text-center text-gray-500 dark:text-gray-400">
                 Net G/L
               </span>
-              <span className="text-base font-medium text-black dark:text-[#EBEEF5]">
+              <span className="text-base font-medium text-center text-black dark:text-[#EBEEF5]">
                 {trade.net}
               </span>
             </div>
@@ -150,11 +150,11 @@ const GridViewTable: React.FC<GridViewTableProps> = ({ trades }) => {
           {/* Margin requirement with info icon */}
           <div className="px-6 py-2 flex items-center justify-center">
             <span className="text-gray-500 dark:text-gray-400 text-sm">
-              Margin req.:
+              Margin req :
             </span>
-            <span className="text-black dark:text-[#EBEEF5] text-sm ml-1">
-              {trade.marginReq || '₹1,34,099'}
-            </span>
+            
+            <span className="text-black dark:text-[#EBEEF5] text-sm ml-1">  {trade.marginReq || '₹1,34,099'}</span>
+             
             <svg
               className="w-4 h-4 ml-1 text-gray-500 dark:text-gray-400"
               fill="none"

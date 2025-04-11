@@ -88,7 +88,7 @@ const GridViewOptions: React.FC<GridViewTableProps> = ({ trades }) => {
 
               {/* Status section */}
               <div className="flex flex-col items-end">
-                <span className="text-[#495057] dark:text-[#C9CACC] text-sm mb-1">
+                <span className="text-[#495057] dark:text-[#C9CACC] text-sm mb-[6px]">
                   Status
                 </span>
                 <div className="text-[#FFBF00] bg-[#FFF6DC] rounded p-1 text-[10px] font-medium">
