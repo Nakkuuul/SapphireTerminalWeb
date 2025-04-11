@@ -7,7 +7,7 @@ function SearchButton() {
     <input
       type="text"
       placeholder="Search everything..."
-      className="border rounded-md pl-3  py-3 text-sm w-44"
+      className="border rounded-md pl-3 text-[#686868]  py-3 text-sm w-44"
     />
     <button
       className="absolute right-1 top-1/2 transform -translate-y-1/2"

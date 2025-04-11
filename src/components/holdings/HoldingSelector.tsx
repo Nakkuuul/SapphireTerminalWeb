@@ -25,9 +25,9 @@ function HoldingSelector() {
   };
 
   return (
-    <div className="w-full border-b-2 border-gray-200 relative">
+    <div className="w-full border-b-2 mb-6 border-gray-200 relative">
       {/* Desktop Version - Horizontal Tabs */}
-      <div className="flex mt-3 w-full gap-x-24 justify-center">
+      <div className="flex w-full gap-x-24 justify-center">
         {tabs.map((tab) => (
           <Link
             key={tab.name}

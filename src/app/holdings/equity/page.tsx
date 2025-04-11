@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { Download, Search, MoreVertical, ArrowUpDown, MoreHorizontal } from 'lucide-react';
 import DownloadButton from '@/components/gen-components/DownloadButton';
 import SearchButton from '@/components/gen-components/SearchButton';
+import HoldingSelector from '@/components/holdings/HoldingSelector';
 
 // TypeScript interfaces
 interface PortfolioSummary {
@@ -49,7 +50,7 @@ const PortfolioDashboard = () => {
       percentage: 8.79,
     },
     netPL: {
-      value: -24780.90,
+      value: -2478.8,
       percentage: -3.67,
     },
   });
@@ -157,27 +158,31 @@ const PortfolioDashboard = () => {
   };
 
   return (
-    <div className=" max-w-6xl mx-auto py-8 px-2">
+    <div className=" max-w-6xl mx-auto">
+      <HoldingSelector />
       {/* Summary Section */}
-      <div className="grid grid-cols-4 p-2 bg-[#F4F4F9] mb-4">
-        <div className="p-3">
-          <div className="text-base text-gray-600">Investment Value</div>
-          <div className="font-semibold text-xl">{formatCurrency(portfolioSummary.investmentValue)}</div>
+      <div className="grid grid-cols-4 bg-[#F4F4F9] mb-4 h-20 overflow-hidden">
+        <div className="flex flex-col justify-center h-full px-3 relative text-center">
+          <div className="text-base text-gray-600 text-center">Investment Value</div>
+          <div className="font-medium text-xl text-center">{formatCurrency(portfolioSummary.investmentValue)}</div>
+          <div className="absolute right-0 top-2 h-4/5 w-px bg-[#D1D5DB]"></div>
         </div>
-        <div className="p-3">
-          <div className="text-base text-gray-600">Current Value</div>
-          <div className="font-semibold text-xl">{formatCurrency(portfolioSummary.currentValue)}</div>
+        <div className="flex flex-col justify-center h-full px-3 relative text-center">
+          <div className="text-base text-gray-600 text-center">Current Value</div>
+          <div className="font-medium text-xl text-center">{formatCurrency(portfolioSummary.currentValue)}</div>
+          <div className="absolute right-0 top-2 h-4/5 w-px bg-[#D1D5DB]"></div>
         </div>
-        <div className="p-3">
-          <div className="text-base text-gray-600">Daily P&L</div>
-          <div className="font-semibold text-xl text-[#22A06B]">
-            {formatCurrency(portfolioSummary.dailyPL.value)} {formatPercentage(portfolioSummary.dailyPL.percentage)}
+        <div className="flex flex-col justify-center h-full px-3 relative text-center">
+          <div className="text-base text-gray-600 text-center">Daily P&L</div>
+          <div className="font-medium text-xl text-center text-[#22A06B]">
+            {formatCurrency(portfolioSummary.dailyPL.value)} <span className="text-[#22A06B] text-sm">{formatPercentage(portfolioSummary.dailyPL.percentage)}</span>
           </div>
+          <div className="absolute right-0 top-2 h-4/5 w-px bg-[#D1D5DB]"></div>
         </div>
-        <div className="p-3">
-          <div className="text-base text-gray-600">Net P&L</div>
-          <div className="font-semibold text-xl text-red-500">
-            {formatCurrency(portfolioSummary.netPL.value)} {formatPercentage(portfolioSummary.netPL.percentage)}
+        <div className="flex flex-col justify-center h-full px-3 text-center">
+          <div className="text-base text-gray-600 text-center">Net P&L</div>
+          <div className="font-medium text-xl text-center text-[#E53935]">
+            {formatCurrency(portfolioSummary.netPL.value)} <span className="text-[#E53935] text-sm">{formatPercentage(portfolioSummary.netPL.percentage)}</span>
           </div>
         </div>
       </div>
@@ -187,14 +192,12 @@ const PortfolioDashboard = () => {
         <div
           className="flex justify-between items-center mb-3"
           style={{
-            width: '968px',
             height: '43px',
-            padding: '0 16px',
             alignItems: 'center',
             justifyContent: 'space-between',
           }}
         >
-          <h2 className="text-base font-medium" style={{ fontSize: '16px' }}>Equity (5)</h2>
+          <h2 className="text-xl font-medium ">Equity (5)</h2>
           <div className="flex mr-2 gap-2">
             <DownloadButton />
             <SearchButton />
