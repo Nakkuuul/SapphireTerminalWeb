@@ -1,10 +1,19 @@
 //@ts-nocheck
-"use client"
+"use client";
 
-import { Filter, Plus, X, Edit, Check, GripVertical, ChevronDown, ChevronRight } from 'lucide-react';
-import React, { useState, useEffect, useRef } from 'react';
-import { DndProvider, useDrag, useDrop } from 'react-dnd';
-import { HTML5Backend } from 'react-dnd-html5-backend';
+import {
+  Filter,
+  Plus,
+  X,
+  Edit,
+  Check,
+  GripVertical,
+  ChevronDown,
+  ChevronRight,
+} from "lucide-react";
+import React, { useState, useEffect, useRef } from "react";
+import { DndProvider, useDrag, useDrop } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
 
 interface Stock {
   id: string;
@@ -33,10 +42,9 @@ interface Watchlist {
 
 // Drag item types
 const ItemTypes = {
-  SUBHEADING: 'subheading',
-  STOCK: 'stock'
+  SUBHEADING: "subheading",
+  STOCK: "stock",
 };
-
 
 // Draggable Stock component with hover actions that replace price info
 // Draggable Stock component with hover actions and popup menu
@@ -72,7 +80,7 @@ const DraggableStock = ({ stock, subheadingId, index, moveStock }) => {
       type: ItemTypes.STOCK,
       id: stock.id,
       fromSubheadingId: subheadingId,
-      index // Add index for reordering
+      index, // Add index for reordering
     },
     collect: (monitor) => ({
       isDragging: monitor.isDragging(),
@@ -174,8 +182,9 @@ const DraggableStock = ({ stock, subheadingId, index, moveStock }) => {
   return (
     <div
       ref={ref}
-      className={`py-3 border-b border-gray-100 flex items-center cursor-move ${isDragging ? 'opacity-50' : 'opacity-100'
-        } relative`}
+      className={`py-3 border-b border-gray-100 flex items-center cursor-move ${
+        isDragging ? "opacity-50" : "opacity-100"
+      } relative`}
       onMouseEnter={() => setIsHovering(true)}
       onMouseLeave={() => setIsHovering(false)}
     >
@@ -184,9 +193,7 @@ const DraggableStock = ({ stock, subheadingId, index, moveStock }) => {
         <span className="text-sm">{stock.icon}</span>
       </div>
       <div className="flex-grow pr-2">
-        <div className="text-base font-medium truncate">
-          {stock.name}
-        </div>
+        <div className="text-base font-medium truncate">{stock.name}</div>
         <div className="text-xs flex items-center font-medium text-gray-500 ">
           <span>{stock.symbol}</span>
           <span className="mx-1">•</span>
@@ -224,9 +231,25 @@ const DraggableStock = ({ stock, subheadingId, index, moveStock }) => {
               className="w-7 h-7 flex items-center justify-center rounded-full bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors shadow-sm"
               title="Watch"
             >
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-3.5 w-3.5"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                />
               </svg>
             </button>
 
@@ -236,8 +259,19 @@ const DraggableStock = ({ stock, subheadingId, index, moveStock }) => {
               className="w-7 h-7 flex items-center justify-center rounded-full bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors shadow-sm"
               title="Copy Link"
             >
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-3.5 w-3.5"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"
+                />
               </svg>
             </button>
 
@@ -247,8 +281,19 @@ const DraggableStock = ({ stock, subheadingId, index, moveStock }) => {
               className="w-7 h-7 flex items-center justify-center rounded-full bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors shadow-sm"
               title="Chart"
             >
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 12l3-3 3 3 4-4m0 10v-6m0 0H7m0 0v6m6-6v6" />
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-3.5 w-3.5"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M7 12l3-3 3 3 4-4m0 10v-6m0 0H7m0 0v6m6-6v6"
+                />
               </svg>
             </button>
 
@@ -258,8 +303,19 @@ const DraggableStock = ({ stock, subheadingId, index, moveStock }) => {
               className="w-7 h-7 flex items-center justify-center rounded-full bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors shadow-sm"
               title="Delete"
             >
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-3.5 w-3.5"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                />
               </svg>
             </button>
 
@@ -270,8 +326,19 @@ const DraggableStock = ({ stock, subheadingId, index, moveStock }) => {
                 className="w-7 h-7 flex items-center justify-center rounded-full bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors shadow-sm relative"
                 title="More"
               >
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-3.5 w-3.5"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M9 5l7 7-7 7"
+                  />
                 </svg>
               </button>
 
@@ -285,8 +352,12 @@ const DraggableStock = ({ stock, subheadingId, index, moveStock }) => {
                   <div className="px-4 py-2 border-b border-gray-100">
                     <div className="text-sm font-medium mb-1">Locate</div>
                     <div className="flex gap-2">
-                      <button className="w-8 h-6 bg-green-100 rounded-md text-xs text-gray-700 hover:bg-green-200">1</button>
-                      <button className="w-8 h-6 bg-green-100 rounded-md text-xs text-gray-700 hover:bg-green-200">2</button>
+                      <button className="w-8 h-6 bg-green-100 rounded-md text-xs text-gray-700 hover:bg-green-200">
+                        1
+                      </button>
+                      <button className="w-8 h-6 bg-green-100 rounded-md text-xs text-gray-700 hover:bg-green-200">
+                        2
+                      </button>
                     </div>
                   </div>
 
@@ -296,8 +367,19 @@ const DraggableStock = ({ stock, subheadingId, index, moveStock }) => {
                       className="flex items-center w-full px-4 py-2 text-sm text-left hover:bg-gray-100"
                       onClick={handleAddSectionAbove}
                     >
-                      <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 13h6m-3-3v6m-9 1V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z" />
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-4 w-4 mr-3"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M9 13h6m-3-3v6m-9 1V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z"
+                        />
                       </svg>
                       Add section above
                     </button>
@@ -306,8 +388,19 @@ const DraggableStock = ({ stock, subheadingId, index, moveStock }) => {
                       className="flex items-center w-full px-4 py-2 text-sm text-left bg-blue-50 hover:bg-blue-100"
                       onClick={handleOpenChart}
                     >
-                      <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 12l3-3 3 3 4-4m0 10v-6m0 0H7m0 0v6m6-6v6" />
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-4 w-4 mr-3"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M7 12l3-3 3 3 4-4m0 10v-6m0 0H7m0 0v6m6-6v6"
+                        />
                       </svg>
                       Open Chart
                     </button>
@@ -316,8 +409,19 @@ const DraggableStock = ({ stock, subheadingId, index, moveStock }) => {
                       className="flex items-center w-full px-4 py-2 text-sm text-left hover:bg-gray-100"
                       onClick={handleAddAlert}
                     >
-                      <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-4 w-4 mr-3"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"
+                        />
                       </svg>
                       Add alert
                     </button>
@@ -326,8 +430,19 @@ const DraggableStock = ({ stock, subheadingId, index, moveStock }) => {
                       className="flex items-center w-full px-4 py-2 text-sm text-left hover:bg-gray-100"
                       onClick={handleCreateGTT}
                     >
-                      <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-4 w-4 mr-3"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+                        />
                       </svg>
                       Create GTT
                     </button>
@@ -339,8 +454,19 @@ const DraggableStock = ({ stock, subheadingId, index, moveStock }) => {
                       className="flex items-center w-full px-4 py-2 text-sm text-left hover:bg-gray-100"
                       onClick={handleOptionChain}
                     >
-                      <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-4 w-4 mr-3"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"
+                        />
                       </svg>
                       Option chain
                     </button>
@@ -353,8 +479,9 @@ const DraggableStock = ({ stock, subheadingId, index, moveStock }) => {
           <div className="text-right">
             <div className="text-[12px] font-medium">{stock.value}</div>
             <div
-              className={`text-[11px] ${stock.isPositive ? "text-green-500" : "text-red-500"
-                }`}
+              className={`text-[11px] ${
+                stock.isPositive ? "text-green-500" : "text-red-500"
+              }`}
             >
               {stock.change}
             </div>
@@ -365,7 +492,15 @@ const DraggableStock = ({ stock, subheadingId, index, moveStock }) => {
   );
 };
 // Draggable Subheading component
-const DraggableSubheading = ({ subheading, index, moveSubheading, updateSubheading, removeSubheading, moveStockToSubheading, moveStockWithinSubheading }) => {
+const DraggableSubheading = ({
+  subheading,
+  index,
+  moveSubheading,
+  updateSubheading,
+  removeSubheading,
+  moveStockToSubheading,
+  moveStockWithinSubheading,
+}) => {
   const ref = useRef(null);
 
   const [{ isDragging }, drag] = useDrag({
@@ -417,7 +552,7 @@ const DraggableSubheading = ({ subheading, index, moveSubheading, updateSubheadi
   const toggleExpanded = () => {
     updateSubheading(subheading.id, {
       ...subheading,
-      isExpanded: !subheading.isExpanded
+      isExpanded: !subheading.isExpanded,
     });
   };
 
@@ -425,7 +560,7 @@ const DraggableSubheading = ({ subheading, index, moveSubheading, updateSubheadi
     if (editTitle.trim()) {
       updateSubheading(subheading.id, {
         ...subheading,
-        title: editTitle.trim()
+        title: editTitle.trim(),
       });
       setIsEditing(false);
     }
@@ -434,7 +569,9 @@ const DraggableSubheading = ({ subheading, index, moveSubheading, updateSubheadi
   return (
     <div
       ref={ref}
-      className={`mb-4 rounded-md border border-gray-200 ${isDragging ? 'opacity-50' : 'opacity-100'}`}
+      className={`mb-4 rounded-md border border-gray-200 ${
+        isDragging ? "opacity-50" : "opacity-100"
+      }`}
     >
       <div className="bg-gray-50 p-3 rounded-t-md flex items-center">
         <div className="cursor-move mr-2 text-gray-400">
@@ -442,10 +579,7 @@ const DraggableSubheading = ({ subheading, index, moveSubheading, updateSubheadi
         </div>
 
         <div className="flex-1 flex items-center">
-          <button
-            onClick={toggleExpanded}
-            className="mr-2 text-gray-500"
-          >
+          <button onClick={toggleExpanded} className="mr-2 text-gray-500">
             {subheading.isExpanded ? (
               <ChevronDown size={16} />
             ) : (
@@ -462,10 +596,7 @@ const DraggableSubheading = ({ subheading, index, moveSubheading, updateSubheadi
                 className="border border-gray-300 rounded px-2 py-1 text-sm w-48"
                 autoFocus
               />
-              <button
-                onClick={handleEditSave}
-                className="ml-2 text-green-500"
-              >
+              <button onClick={handleEditSave} className="ml-2 text-green-500">
                 <Check size={14} />
               </button>
               <button
@@ -520,7 +651,12 @@ const DraggableSubheading = ({ subheading, index, moveSubheading, updateSubheadi
 };
 
 // Unassigned Stocks Drop Area component
-const UnassignedStocksArea = ({ stocks, moveStockToSubheading, searchTerm, moveStockWithinSubheading }) => {
+const UnassignedStocksArea = ({
+  stocks,
+  moveStockToSubheading,
+  searchTerm,
+  moveStockWithinSubheading,
+}) => {
   const [, drop] = useDrop({
     accept: ItemTypes.STOCK,
     drop: (item) => {
@@ -531,10 +667,11 @@ const UnassignedStocksArea = ({ stocks, moveStockToSubheading, searchTerm, moveS
   });
 
   const filteredStocks = searchTerm
-    ? stocks.filter(stock =>
-      stock.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      stock.symbol.toLowerCase().includes(searchTerm.toLowerCase())
-    )
+    ? stocks.filter(
+        (stock) =>
+          stock.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          stock.symbol.toLowerCase().includes(searchTerm.toLowerCase())
+      )
     : stocks;
 
   return (
@@ -722,10 +859,10 @@ const Sidebar = () => {
   // Filter stocks based on search term
   const filteredStocks = searchTerm
     ? getAllStocks().filter(
-      (stock) =>
-        stock.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        stock.symbol.toLowerCase().includes(searchTerm.toLowerCase())
-    )
+        (stock) =>
+          stock.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          stock.symbol.toLowerCase().includes(searchTerm.toLowerCase())
+      )
     : getAllStocks();
 
   // Handle adding a new watchlist
@@ -747,11 +884,11 @@ const Sidebar = () => {
           change:
             Math.random() > 0.5
               ? `+${(Math.random() * 10).toFixed(2)} (+${(
-                Math.random() * 2
-              ).toFixed(2)}%)`
+                  Math.random() * 2
+                ).toFixed(2)}%)`
               : `-${(Math.random() * 10).toFixed(2)} (-${(
-                Math.random() * 2
-              ).toFixed(2)}%)`,
+                  Math.random() * 2
+                ).toFixed(2)}%)`,
           isPositive: Math.random() > 0.5,
           icon: ["🏭", "💻", "🏦", "📱", "🌐"][Math.floor(Math.random() * 5)],
         }));
@@ -817,9 +954,9 @@ const Sidebar = () => {
         watchlists.map((wl) =>
           wl.id === activeTab
             ? {
-              ...wl,
-              subheadings: [...wl.subheadings, newSubheading],
-            }
+                ...wl,
+                subheadings: [...wl.subheadings, newSubheading],
+              }
             : wl
         )
       );
@@ -835,11 +972,11 @@ const Sidebar = () => {
       watchlists.map((wl) =>
         wl.id === activeTab
           ? {
-            ...wl,
-            subheadings: wl.subheadings.map((sh) =>
-              sh.id === subheadingId ? updatedSubheading : sh
-            ),
-          }
+              ...wl,
+              subheadings: wl.subheadings.map((sh) =>
+                sh.id === subheadingId ? updatedSubheading : sh
+              ),
+            }
           : wl
       )
     );
@@ -858,15 +995,15 @@ const Sidebar = () => {
         watchlists.map((wl) =>
           wl.id === activeTab
             ? {
-              ...wl,
-              subheadings: wl.subheadings.filter(
-                (sh) => sh.id !== subheadingId
-              ),
-              unassignedStocks: [
-                ...wl.unassignedStocks,
-                ...subheadingToRemove.stocks,
-              ],
-            }
+                ...wl,
+                subheadings: wl.subheadings.filter(
+                  (sh) => sh.id !== subheadingId
+                ),
+                unassignedStocks: [
+                  ...wl.unassignedStocks,
+                  ...subheadingToRemove.stocks,
+                ],
+              }
             : wl
         )
       );
@@ -1033,8 +1170,13 @@ const Sidebar = () => {
             </div>
           </div>
           <button className="flex items-center justify-center px-3 py-3 bg-[#F4F4F9] dark:bg-dark-surface rounded-md">
-            <Filter size={16} className="text-gray-600 dark:text-dark-secondary" />
-            <span className="ml-1 text-xs text-gray-600 dark:text-dark-secondary">Filter</span>
+            <Filter
+              size={16}
+              className="text-gray-600 dark:text-dark-secondary"
+            />
+            <span className="ml-1 text-xs text-gray-600 dark:text-dark-secondary">
+              Filter
+            </span>
           </button>
         </div>
 
@@ -1044,10 +1186,11 @@ const Sidebar = () => {
             <button
               key={watchlist.id}
               onClick={() => setActiveTab(watchlist.id)}
-              className={`h-9 flex items-center justify-center rounded-md px-3 min-w-min whitespace-nowrap mr-2 ${activeTab === watchlist.id
-                ? "bg-[#EEFFF2] border border-[#28A745] text-[#28A745]"
-                : "bg-[#F4F4F9] border border-[#D1D5DB] text-[#495057]"
-                }`}
+              className={`h-9 flex items-center justify-center rounded-md px-3 min-w-min whitespace-nowrap mr-2 ${
+                activeTab === watchlist.id
+                  ? "bg-[#EEFFF2] border border-[#28A745] text-[#28A745]"
+                  : "bg-[#F4F4F9] border border-[#D1D5DB] text-[#495057]"
+              }`}
             >
               {editingWatchlist === watchlist.id ? (
                 <div className="flex items-center">
@@ -1148,8 +1291,9 @@ const Sidebar = () => {
                   <div className="text-xs font-medium">{index.name}</div>
                   <div className="text-sm font-bold">{index.value}</div>
                   <div
-                    className={`text-xs ${index.isPositive ? "text-green-500" : "text-red-500"
-                      }`}
+                    className={`text-xs ${
+                      index.isPositive ? "text-green-500" : "text-red-500"
+                    }`}
                   >
                     {index.change}
                   </div>
