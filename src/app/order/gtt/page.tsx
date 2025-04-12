@@ -1,9 +1,11 @@
-import React from 'react'
+import { GttOrderPopup } from "@/components/order/gtt-order-popup";
 
-const Home = () => {
+export default function GttPage() {
   return (
-    <div>Home</div>
-  )
+    <div className="container mx-auto p-4">
+      <h1 className="text-2xl font-bold mb-4">GTT Orders</h1>
+      
+      <GttOrderPopup />
+    </div>
+  );
 }
-
-export default Home
