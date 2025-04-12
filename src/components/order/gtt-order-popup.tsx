@@ -25,11 +25,11 @@ export function GttOrderPopup() {
         <Button variant="outline">Place GTT Order</Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[600px] p-0 rounded-lg">
-        <DialogHeader className="flex flex-row items-start justify-between p-3">
+        <DialogHeader className="flex bg-[#F4F4F9] flex-row items-start justify-between p-3">
           <div className="flex-1">
             <DialogTitle className="text-base font-medium flex items-center gap-1.5">
               Reliance Industries Ltd.
-              <span className="text-[11px] font-normal text-muted-foreground bg-[#F4F4F9] px-1 py-0.5 rounded">
+              <span className="text-[11px] font-normal text-muted-foreground bg-[#B8D8D9]/30 px-1 rounded">
                 NSE
               </span>
             </DialogTitle>
@@ -47,7 +47,7 @@ export function GttOrderPopup() {
               className={`h-7 px-3 rounded-md ${
                 !isSell
                   ? "bg-[#00C853] hover:bg-[#00B84D] text-white"
-                  : "text-[#00C853] hover:text-[#00B84D] bg-[#00B84D]/20 hover:bg-[#00B84D]/30"
+                  : "text-[#00C853]/40 hover:text-[#00B84D] bg-[#00B84D]/10 hover:bg-[#00B84D]/30"
               }`}
             >
               BUY
@@ -55,14 +55,14 @@ export function GttOrderPopup() {
             <Switch
               checked={isSell}
               onCheckedChange={setIsSell}
-              className="data-[state=checked]:bg-[#FF3B30] data-[state=unchecked]:bg-[#00C853]"
+              className="data-[state=checked]:bg-[#FF3B30] mx-1 data-[state=unchecked]:bg-[#00C853]"
             />
             <Button
               onClick={() => setIsSell(true)}
               className={`h-7 px-3 rounded-md ${
                 isSell
                   ? "bg-[#FF3B30] hover:bg-[#E63529] text-white"
-                  : "text-[#FF3B30] hover:text-[#E63529] bg-[#FF3B30]/20 hover:bg-[#FF3B30]/30"
+                  : "text-[#FF3B30]/40 hover:text-[#E63529] bg-[#FF3B30]/10 hover:bg-[#FF3B30]/30"
               }`}
             >
               SELL
@@ -72,7 +72,7 @@ export function GttOrderPopup() {
 
         <div className="px-3 pt-2 pb-3">
           {/* Trigger Type */}
-          <div className="flex items-center gap-3 mb-4">
+          <div className="flex items-center gap-3 mb-[18px]">
             <Label className="text-sm text-gray-600">Trigger Type :</Label>
             <RadioGroup
               defaultValue="single"
@@ -151,12 +151,12 @@ export function GttOrderPopup() {
                   defaultValue="0"
                   className="pl-5 h-9 border-gray-200"
                 />
-                <div className="absolute -bottom-6 right-30 flex items-center gap-1">
+                <div className="absolute -bottom-8 right-30 flex items-center gap-1">
                   <input
                     type="text"
                     value="5"
-                    className="w-5 h-5 text-center text-xs border border-gray-200 rounded"
-                    readOnly
+                    className="w-8 h-6 text-center text-xs border border-gray-200 rounded"
+                    
                   />
                   <span className="text-xs text-gray-500">% of LTP</span>
                 </div>
@@ -165,10 +165,10 @@ export function GttOrderPopup() {
           </div>
         </div>
 
-        <DialogFooter className="flex !justify-start gap-2 border-t p-3">
+        <DialogFooter className="flex !justify-start gap-2 border-t p-3 mt-4">
           <Button
             variant="secondary"
-            className="h-8 px-6 bg-[#F8F9FA] hover:bg-gray-100 border-none text-gray-700"
+            className="h-8 px-6 hover:bg-gray-100 border-none text-gray-700"
           >
             Cancel
           </Button>
