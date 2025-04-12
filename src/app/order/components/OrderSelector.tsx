@@ -27,20 +27,33 @@ function OrderSelector() {
   return (
     <>
       {/* Desktop Version - Horizontal Tabs */}
-      <div className="hidden md:flex w-full justify-center items-center pb-6 gap-x-4 lg:gap-x-12">
-        {tabs.map((tab) => (
-          <Link
-            key={tab.name}
-            href={tab.path}
-            className={`min-w-[100px] lg:min-w-[170px] px-3 lg:px-6 py-[10px] font-medium text-xs lg:text-xl text-center flex items-center justify-center rounded-[4px] border transition-all duration-300 ${
-              pathname === tab.path
-                ? "bg-[#D1FADF99] text-[#1DB954] border-[1px] border-[#22A06B]"
-                : "bg-[#F6F6F6] text-gray-600 border-[#D1D5DB] hover:bg-gray-100"
-            }`}
-          >
-            {tab.name}
-          </Link>
-        ))}
+      <div className="hidden border-b-2 border-gray-200 md:flex w-full justify-center items-center  gap-x-4 lg:gap-x-12">
+        {tabs.map((tab) => {
+          const isActive = pathname === tab.path;
+          return (
+            <div
+              key={tab.name}
+              className="relative group h-[60px] flex items-center"
+            >
+              <Link
+                href={tab.path}
+                className={`relative group text-sm xl:text-base font-medium py-2 transition-all duration-300 ${
+                  isActive
+                    ? "text-[#28A745]"
+                    : "text-gray-600 hover:text-[#28A745]"
+                }`}
+              >
+                {tab.name}
+                {/* Green underline animation */}
+                <span
+                  className={`absolute -bottom-3 -left-[12px] h-[3px] bg-[#28A745] transition-all duration-300 ${
+                    isActive ? "w-[150%]" : "w-0"
+                  } group-hover:w-[150%]`}
+                ></span>
+              </Link>
+            </div>
+          );
+        })}
       </div>
 
       {/* Mobile Version - Dropdown */}
@@ -48,7 +61,11 @@ function OrderSelector() {
         <div className="relative">
           <button
             onClick={toggleDropdown}
-            className={`w-full px-4 py-2 font-semibold text-sm flex items-center justify-between rounded-sm border transition-all duration-300 ${"bg-green-100 text-[#1DB954] border-[1px] border-[#22A06B]"}`}
+            className={`w-full px-4 py-2 font-medium text-sm flex items-center justify-between rounded-sm border transition-all duration-300 ${
+              pathname === activeTab.path
+                ? "text-[#28A745] border-[#28A745]"
+                : "text-gray-600 border-gray-300"
+            }`}
           >
             <span>{activeTab.name}</span>
             <ChevronDown
@@ -62,20 +79,23 @@ function OrderSelector() {
           {/* Dropdown Menu */}
           {isDropdownOpen && (
             <div className="absolute mt-1 w-full rounded-md shadow-lg bg-white z-10 border border-gray-200">
-              {tabs.map((tab) => (
-                <Link
-                  key={tab.name}
-                  href={tab.path}
-                  onClick={() => setIsDropdownOpen(false)}
-                  className={`block px-4 py-3 text-sm hover:bg-gray-50 ${
-                    pathname === tab.path
-                      ? "bg-green-50 text-[#1DB954]"
-                      : "text-gray-600"
-                  }`}
-                >
-                  {tab.name}
-                </Link>
-              ))}
+              {tabs.map((tab) => {
+                const isActive = pathname === tab.path;
+                return (
+                  <Link
+                    key={tab.name}
+                    href={tab.path}
+                    onClick={() => setIsDropdownOpen(false)}
+                    className={`block px-4 py-3 text-sm transition-colors duration-200 ${
+                      isActive
+                        ? "text-[#28A745] bg-green-50"
+                        : "text-gray-600 hover:text-[#28A745] hover:bg-gray-50"
+                    }`}
+                  >
+                    {tab.name}
+                  </Link>
+                );
+              })}
             </div>
           )}
         </div>
