@@ -26,7 +26,7 @@ const Navbar = () => {
     { href: "/trades/stocks", label: "Trades" },
     { href: "/news", label: "News" },
     { href: "/watchlist", label: "Watchlist" },
-    { href: "/orders", label: "Orders" },
+    { href: "/order/queued", label: "Orders" },
     { href: "/holdings/equity", label: "Holdings" },
     { href: "/funds", label: "Funds" },
   ];
