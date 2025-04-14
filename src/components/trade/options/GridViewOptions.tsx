@@ -136,8 +136,8 @@ const GridViewOptions: React.FC<GridViewTableProps> = ({ trades }) => {
 
           {/* Strategy section (replacing the todo section) */}
           <div className="px-5 py-2">
-            <div className="py-3 px-2 rounded bg-[#E7F4F3] dark:bg-[#1E2928] text-gray-500 dark:text-gray-400 text-sm">
-              <div className="grid grid-cols-2 gap-4">
+            <div className="py-3 px-3 rounded bg-[#E7F4F3] dark:bg-[#1E2928] text-gray-500 dark:text-gray-400 text-sm">
+              <div className="grid grid-cols-3  gap-8 lg:gap-10 ">
                 <div>
                   <div className="text-gray-500 dark:text-gray-400">Strategy</div>
                   <div className="text-black dark:text-[#EBEEF5]">
@@ -147,8 +147,6 @@ const GridViewOptions: React.FC<GridViewTableProps> = ({ trades }) => {
                     {trade.date.split(' ')[1]} {trade.date.split(' ')[0]} {trade.type === 'BUY' ? 'CE' : 'PE'}
                   </div>
                 </div>
-                <div>
-                  <div className="grid grid-cols-2">
                     <div>
                       <div className="text-gray-500 dark:text-gray-400">Entry</div>
                       <div className="text-black dark:text-[#EBEEF5]">
@@ -174,8 +172,6 @@ const GridViewOptions: React.FC<GridViewTableProps> = ({ trades }) => {
                           : `₹${(parseFloat(trade.entryPrice.replace(/[^\d.-]/g, '')) * 0.3).toFixed(2)}`}
                       </div>
                     </div>
-                  </div>
-                </div>
               </div>
             </div>
           </div>

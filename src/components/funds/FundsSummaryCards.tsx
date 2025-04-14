@@ -25,33 +25,33 @@ const FundsSummaryCards: React.FC<FundsSummaryCardsProps> = ({ data }) => {
         <div className="text-base text-[#6B7280] flex items-center">
           Available Margin
         </div>
-        <div className="text-xl font-semibold text-[#1A1A1A] mt-1">
+        <div className="text-xl font-normal text-[#1A1A1A] mt-1">
           ₹{formatCurrency(data.availableMargin)}
         </div>
       </div>
 
       {/* Equals Symbol */}
-      <Equal className='text-[#6B7280]' />
+      <Equal size={18} className='text-[#6B7280]' />
 
       {/* Cash Balance */}
       <div className="flex flex-col items-center">
         <div className="text-base text-[#6B7280] flex items-center">
           Cash Balance <Info size={14} className="ml-1 text-gray-400" />
         </div>
-        <div className="text-xl font-semibold text-[#1A1A1A] mt-1">
+        <div className="text-xl font-normal text-[#1A1A1A] mt-1">
           ₹{formatCurrency(data.cashBalance)}
         </div>
       </div>
 
       {/* Plus Symbol */}
-      <Plus className='text-[#6B7280]'/>
+      <Plus size={18} className='text-[#6B7280]'/>
 
       {/* Margin from Pledge */}
       <div className="flex flex-col items-center">
         <div className="text-base text-[#6B7280] flex items-center">
           Margin from Pledge <Info size={14} className="ml-1 text-gray-400" />
         </div>
-        <div className="text-xl font-semibold text-[#1A1A1A] mt-1">
+        <div className="text-xl font-normal text-[#1A1A1A] mt-1">
           ₹{formatCurrency(data.marginFromPledge)}
         </div>
       </div>

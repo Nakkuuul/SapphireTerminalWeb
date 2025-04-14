@@ -181,8 +181,8 @@ const EquityHoldings = () => {
         </div>
         <div className="flex flex-col justify-center h-full px-3 text-center">
           <div className="text-base text-gray-600 text-center">Net P&L</div>
-          <div className="font-normal text-xl text-center text-[#E53935]">
-            {formatCurrency(portfolioSummary.netPL.value)} <span className="text-[#E53935] text-sm">{formatPercentage(portfolioSummary.netPL.percentage)}</span>
+          <div className="font-normal text-xl text-center text-loss">
+            {formatCurrency(portfolioSummary.netPL.value)} <span className="text-loss text-sm">{formatPercentage(portfolioSummary.netPL.percentage)}</span>
           </div>
         </div>
       </div>

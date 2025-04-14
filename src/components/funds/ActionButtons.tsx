@@ -1,5 +1,6 @@
 import React from 'react';
 import { ChevronRight, Plus, ArrowRightLeft} from 'lucide-react';
+import Image from 'next/image';
 
 interface ActionButtonsProps {
   onDeposit: () => void;
@@ -22,13 +23,13 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({ onDeposit, onWithdraw }: 
         className="flex items-center text-[#6B7280] border border-gray-300 px-4 py-2 rounded-md hover:bg-gray-50"
       >
         Withdraw
-       //TODO : Add withdraw icon
+       <Image src="/funds/withdraw.svg" alt="Withdraw" width={20} height={20} className="ml-7" />
       </button>
       
       <div className="flex-grow"></div>
       
       <button className="flex items-center border border-[#D1D5DB] text-[#6B7280] px-4 py-2 rounded-md hover:bg-gray-50">
-        <ArrowRightLeft size={20} className='mr-2' />
+        <Image src="/funds/transaction.svg" alt="Transaction History" width={20} height={20} className="mr-2" />
         <span className="mr-6">View All Transaction History</span>
         <ChevronRight size={20} />
       </button>

@@ -144,19 +144,25 @@ const Positions: React.FC = () => {
       <HoldingSelector />
       {/* Header Summary */}
       <div className="flex w-full h-24 mb-4">
-        <div className="w-1/2 border-r border-[#D1D5DB] text-center bg-[#F4F4F9] p-4">
-          <div className="text-base text-[#6B7280] font-medium">Daily P&L</div>
-          <div className="text-xl font-medium text-loss">
-            {formatCurrency(summaryData.dailyPL.value)} {formatPercentage(summaryData.dailyPL.percentage)}
-          </div>
-        </div>
-        <div className="w-1/2 text-center bg-[#F4F4F9] p-4">
-          <div className="text-base text-[#6B7280] font-medium">Net P&L</div>
-          <div className="text-xl font-medium text-profit">
-            {formatCurrency(summaryData.netPL.value)} {formatPercentage(summaryData.netPL.percentage)}
-          </div>
+      <div className="w-1/2 text-center bg-[#F4F4F9] p-4">
+        <div className="text-base text-[#6B7280] font-medium">Daily P&L</div>
+        <div className={`text-xl font-normal ${summaryData.dailyPL.value < 0 ? 'text-red-500' : 'text-green-500'}`}>
+          {formatCurrency(summaryData.dailyPL.value)} <span className='text-sm'>{formatPercentage(summaryData.dailyPL.percentage)}</span>
         </div>
       </div>
+      
+      {/* Vertical divider with gap on top and bottom */}
+      <div className="relative h-full flex items-center">
+        <div className="absolute h-[90%] w-px bg-[#D1D5DB] my-auto"></div>
+      </div>
+      
+      <div className="w-1/2 text-center bg-[#F4F4F9] p-4">
+        <div className="text-base text-[#6B7280] font-medium">Net P&L</div>
+        <div className={`text-xl font-normal ${summaryData.netPL.value < 0 ? 'text-loss' : 'text-profit'}`}>
+          {formatCurrency(summaryData.netPL.value)} <span className='text-sm'> {formatPercentage(summaryData.netPL.percentage)}</span>
+        </div>
+      </div>
+    </div>
 
       {/* Positions Section Header */}
       <div className="flex justify-between items-center mb-4">
@@ -168,47 +174,47 @@ const Positions: React.FC = () => {
       </div>
 
       {/* Positions Table */}
-      <div className="overflow-x-auto border rounded-md">
+    <div className="overflow-x-auto border rounded-md">
       <table className="min-w-full divide-y divide-gray-200">
         <thead>
           <tr className="bg-gray-50">
-            <th className="px-4 py-3 text-left text-base font-medium border-r border-[#D1D5DB] whitespace-nowrap">
+            <th className="px-4 py-3 text-left text-base font-normal border-r border-[#D1D5DB] whitespace-nowrap h-[54px]">
               <div className="flex items-center justify-between">
                 <span>Action</span>
                 <ArrowUpDown className="h-4 w-4" />
               </div>
             </th>
-            <th className="px-4 py-3 text-left text-base font-medium border-r border-[#D1D5DB] whitespace-nowrap">
+            <th className="px-4 py-3 text-left text-base font-normal border-r border-[#D1D5DB] whitespace-nowrap h-[54px]">
               <div className="flex items-center justify-between">
                 <span>Security</span>
                 <ArrowUpDown className="h-4 w-4" />
               </div>
             </th>
-            <th className="px-4 py-3 text-right text-base font-medium border-r border-[#D1D5DB] whitespace-nowrap">
+            <th className="px-4 py-3 text-left text-base font-normal border-r border-[#D1D5DB] whitespace-nowrap h-[54px]">
               <div className="flex items-center justify-between">
                 <span>Qty.</span>
                 <ArrowUpDown className="h-4 w-4" />
               </div>
             </th>
-            <th className="px-4 py-3 text-right text-base font-medium whitespace-nowrap">
+            <th className="px-4 py-3 text-left text-base font-normal whitespace-nowrap h-[54px]">
               <div className="flex items-center justify-between">
                 <span>Avg. Price</span>
-                <ArrowUpDown className="h-4 w-4" />
+                <ArrowUpDown className="h-4 w-4 ml-4" />
               </div>
             </th>
-            <th className="px-4 py-3 text-right text-base font-medium border-l border-[#D1D5DB] whitespace-nowrap">
+            <th className="px-4 py-3 text-left text-base font-normal whitespace-nowrap h-[54px]">
               <div className="flex items-center justify-between">
                 <span>LTP</span>
                 <ArrowUpDown className="h-4 w-4" />
               </div>
             </th>
-            <th className="px-4 py-3 text-right text-base font-medium border-l border-[#D1D5DB] whitespace-nowrap">
+            <th className="px-4 py-3 text-left text-base font-normal border-l border-[#D1D5DB] whitespace-nowrap h-[54px]">
               <div className="flex items-center justify-between">
                 <span>Net P&L</span>
                 <ArrowUpDown className="h-4 w-4" />
               </div>
             </th>
-            <th className="px-4 py-3 text-right text-base font-medium border-l border-[#D1D5DB] whitespace-nowrap">
+            <th className="px-4 py-3 text-left text-base font-normal whitespace-nowrap h-[54px]">
               <div className="flex items-center justify-between">
                 <span>Daily P&L</span>
                 <ArrowUpDown className="h-4 w-4" />
@@ -218,25 +224,25 @@ const Positions: React.FC = () => {
         </thead>
         <tbody className="bg-white divide-y divide-gray-200">
           {positions.map((position, index) => (
-            <tr key={index}>
-              <td className="px-4 py-3 whitespace-nowrap text-[#6B7280] text-sm border-r border-[#D1D5DB]">{position.type}</td>
+            <tr key={index} className="h-[50px]">
+              <td className="px-4 py-3 whitespace-nowrap text-center text-[#6B7280] text-sm border-r border-[#D1D5DB]">{position.type}</td>
               <td className="px-4 py-3 border-r border-[#D1D5DB]">
                 <div className="flex items-center justify-between">
                   <span className="text-[#6B7280] text-sm">{position.security}</span>
-                  <div className={`text-xs ml-8 px-2 py-1 rounded-sm ${position.action === 'BUY' 
-                    ? 'bg-[#D5FFC6] text-[#34A853]' 
-                    : 'bg-red-100 text-[#E53935]'}`}>
+                  <div className={`text-xs ml-8 py-1 rounded-sm w-12 text-center ${position.action === 'BUY' 
+                    ? 'bg-[#D5FFC6] text-profit' 
+                    : 'bg-red-100 text-loss'}`}>
                     {position.action}
                   </div>
                 </div>
               </td>
-              <td className="px-4 py-3 whitespace-nowrap text-[#6B7280] text-right text-sm border-r border-[#D1D5DB]">{position.quantity}</td>
-              <td className="px-4 py-3 whitespace-nowrap text-[#6B7280] text-right text-sm">{formatCurrency(position.avgPrice)}</td>
-              <td className="px-4 py-3 whitespace-nowrap text-[#6B7280] text-right text-sm border-l border-[#D1D5DB]">{formatCurrency(position.ltp)}</td>
-              <td className={`px-4 py-3 whitespace-nowrap text-right text-sm border-l border-[#D1D5DB] ${position.netPL.value < 0 ? 'text-[#E53935]' : 'text-[#22A06B]'}`}>
+              <td className="px-4 py-3 whitespace-nowrap text-[#6B7280] text-center text-sm border-r border-[#D1D5DB]">{position.quantity}</td>
+              <td className="px-4 py-3 whitespace-nowrap text-[#6B7280] text-center text-sm">{formatCurrency(position.avgPrice)}</td>
+              <td className="px-4 py-3 whitespace-nowrap text-[#6B7280] text-center text-sm">{formatCurrency(position.ltp)}</td>
+              <td className={`px-4 py-3 whitespace-nowrap text-center text-sm border-l border-[#D1D5DB] ${position.netPL.value < 0 ? 'text-[#E53935]' : 'text-[#22A06B]'}`}>
                 {formatCurrency(position.netPL.value)} {formatPercentage(position.netPL.percentage)}
               </td>
-              <td className={`px-4 py-3 whitespace-nowrap text-right text-sm border-l border-[#D1D5DB] ${position.dailyPL.value < 0 ? 'text-[#E53935]' : 'text-[#22A06B]'}`}>
+              <td className={`px-4 py-3 whitespace-nowrap text-center text-sm ${position.dailyPL.value < 0 ? 'text-[#E53935]' : 'text-[#22A06B]'}`}>
                 {formatCurrency(position.dailyPL.value)} {formatPercentage(position.dailyPL.percentage)}
               </td>
             </tr>
@@ -253,7 +259,7 @@ const Positions: React.FC = () => {
         </tbody>
       </table>
       </div>
-    </div>
+</div>
   );
 };
 
