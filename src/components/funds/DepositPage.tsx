@@ -250,10 +250,10 @@ const DepositPage: React.FC<DepositPageProps> = ({ onBack }) => {
           <tbody className="bg-white divide-y divide-gray-200">
             {history.map((item, index) => (
               <tr key={index}>
-                <td className="px-4 py-4 whitespace-nowrap text-sm text-[#6B7280] border-r">{item.account}</td>
-                <td className="px-4 py-4 whitespace-nowrap text-sm text-[#6B7280] border-r">{item.bank}</td>
-                <td className="px-4 py-4 whitespace-nowrap text-sm text-[#6B7280] border-r">{item.date} {item.time}</td>
-                <td className="px-4 py-4 whitespace-nowrap text-sm text-[#6B7280] border-r">₹{formatCurrency(item.amount)}</td>
+                <td className="px-4 py-4 whitespace-nowrap text-sm text-[#6B7280] text-center border-r">{item.account}</td>
+                <td className="px-4 py-4 whitespace-nowrap text-sm text-[#6B7280] text-center border-r">{item.bank}</td>
+                <td className="px-4 py-4 whitespace-nowrap text-sm text-[#6B7280] text-center border-r">{item.date} {item.time}</td>
+                <td className="px-4 py-4 whitespace-nowrap text-sm text-[#6B7280] text-center border-r">₹{formatCurrency(item.amount)}</td>
                 <td className="px-4 py-4 whitespace-nowrap">
                   <span className={`inline-flex px-2 py-1 text-xs rounded-sm ${
                     item.status === 'pending' 

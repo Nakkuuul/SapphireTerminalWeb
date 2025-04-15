@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ChevronLeft, ChevronDown, HelpCircle, ArrowUpDown } from 'lucide-react';
 
 // Import sample data - replace with API calls in production
@@ -31,7 +31,7 @@ interface WithdrawalRecord {
 // Main Withdraw Page Component
 const WithdrawPage: React.FC<WithdrawPageProps> = ({ onBack }) => {
   // State management
-  const [withdrawAmount, setWithdrawAmount] = useState<number | null>(5000);
+  const [withdrawAmount, setWithdrawAmount] = useState<number | null>(null);
   const [selectedBank, setSelectedBank] = useState(banks[0]?.id || '');
   const [history, setHistory] = useState<WithdrawalRecord[]>(withdrawHistory as WithdrawalRecord[]);
   const [availableBalance, setAvailableBalance] = useState(withdrawableBalance);
@@ -48,9 +48,22 @@ const WithdrawPage: React.FC<WithdrawPageProps> = ({ onBack }) => {
 
   // Handle amount input change
   const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value.replace(/[^0-9]/g, '');
-    setWithdrawAmount(value ? parseInt(value) : null);
+    // Get the raw input value and remove all non-numeric characters
+    const inputValue = e.target.value.replace(/[^0-9]/g, '');
+    
+    // Convert to number or null if empty
+    const numericValue = inputValue ? parseInt(inputValue) : null;
+    
+    // Update state with the raw numeric value (no auto-formatting)
+    setWithdrawAmount(numericValue);
   };
+
+  // Effect to set withdraw all amount
+  useEffect(() => {
+    if (withdrawAll) {
+      setWithdrawAmount(availableBalance);
+    }
+  }, [withdrawAll, availableBalance]);
 
   // Handle bank selection
   const handleBankSelect = (bankId: string) => {
@@ -83,15 +96,15 @@ const WithdrawPage: React.FC<WithdrawPageProps> = ({ onBack }) => {
         <div className="flex flex-wrap -mx-2">
           {/* Amount Input Section */}
           <div className="w-full md:w-1/2 px-2 mb-4">
-            <div className="mb-1">
+            <div className="mb-1 flex justify-between items-center">
               <span className="text-sm text-gray-700">Enter Amount</span>
-              <span className="float-right text-xs text-gray-500">Available withdrawable balance : ₹{formatCurrency(availableBalance)}</span>
+              <span className="text-xs text-gray-500">Available withdrawable balance : ₹{formatCurrency(availableBalance)}</span>
             </div>
             <input 
               type="text" 
               placeholder="₹20,000"
               className="w-full border border-gray-300 rounded px-3 py-2"
-              value={`₹${formatCurrency(withdrawAmount ?? 0)}`}
+              value={withdrawAmount !== null ? `₹${withdrawAmount}` : ''}
               onChange={handleAmountChange}
             />
             <div className="mt-2 text-xs text-gray-500">
@@ -162,19 +175,19 @@ const WithdrawPage: React.FC<WithdrawPageProps> = ({ onBack }) => {
       </div>
       
       {/* Submit Button - Full width, no padding */}
-      <div className='flex bg-[#F4F4F9] p-4'>
+      <div className='flex justify-end bg-[#F4F4F9] p-4'>
         <button 
-          className="flex justify-end bg-green-500 text-white font-medium px-10 py-3 rounded text-center"
+          className="bg-green-500 text-white font-medium px-10 py-3 rounded text-center"
           onClick={handleSubmit}
         >
-          Add {'{amount}'}
+          Add {withdrawAmount ? `₹${formatCurrency(withdrawAmount)}` : 'Amount'}
         </button>
       </div>
     </div>
       
       {/* Withdrawal History */}
       <div>
-      <h2 className="text-lg font-medium mb-4">Fund Withdraw History</h2>
+      <h2 className="text-lg font-medium my-4">Fund Withdraw History</h2>
       
       <div className="overflow-x-auto border rounded-md">
         <table className="min-w-full divide-y divide-gray-200">
@@ -215,10 +228,10 @@ const WithdrawPage: React.FC<WithdrawPageProps> = ({ onBack }) => {
           <tbody className="bg-white divide-y divide-gray-200">
             {history.map((item, index) => (
               <tr key={index}>
-                <td className="px-4 py-4 whitespace-nowrap text-sm text-[#6B7280] border-r">{item.account}</td>
-                <td className="px-4 py-4 whitespace-nowrap text-sm text-[#6B7280] border-r">{item.bank}</td>
-                <td className="px-4 py-4 whitespace-nowrap text-sm text-[#6B7280] border-r">{item.date} {item.time}</td>
-                <td className="px-4 py-4 whitespace-nowrap text-sm text-[#6B7280] border-r">₹{formatCurrency(item.amount)}</td>
+                <td className="px-4 py-4 whitespace-nowrap text-sm text-[#6B7280] text-center border-r">{item.account}</td>
+                <td className="px-4 py-4 whitespace-nowrap text-sm text-[#6B7280] text-center border-r">{item.bank}</td>
+                <td className="px-4 py-4 whitespace-nowrap text-sm text-[#6B7280] text-center border-r">{item.date} {item.time}</td>
+                <td className="px-4 py-4 whitespace-nowrap text-sm text-[#6B7280] text-center border-r">₹{formatCurrency(item.amount)}</td>
                 <td className="px-4 py-4 whitespace-nowrap">
                   <span className={`inline-flex px-2 py-1 text-xs rounded-sm ${
                     item.status === 'pending' 
