@@ -78,7 +78,8 @@ const WithdrawPage: React.FC<WithdrawPageProps> = ({ onBack }) => {
       </button>
       
       {/* Withdraw Form */}
-      <div className="bg-white border border-gray-200 rounded-md p-6 mb-6">
+      <div className="bg-white border border-gray-200 rounded-md">
+      <div className="p-6 pb-0">
         <div className="flex flex-wrap -mx-2">
           {/* Amount Input Section */}
           <div className="w-full md:w-1/2 px-2 mb-4">
@@ -90,7 +91,7 @@ const WithdrawPage: React.FC<WithdrawPageProps> = ({ onBack }) => {
               type="text" 
               placeholder="₹20,000"
               className="w-full border border-gray-300 rounded px-3 py-2"
-              value={withdrawAmount ? `₹${withdrawAmount.toLocaleString()}` : ''}
+              value={`₹${formatCurrency(withdrawAmount ?? 0)}`}
               onChange={handleAmountChange}
             />
             <div className="mt-2 text-xs text-gray-500">
@@ -120,7 +121,9 @@ const WithdrawPage: React.FC<WithdrawPageProps> = ({ onBack }) => {
                 <span className="text-sm">Instant Withdraw</span>
               </label>
               <div className="ml-1 inline-flex items-center">
-                <HelpCircle size={16} className="text-blue-500" />
+                <div className="w-5 h-5 rounded-full bg-blue-500 flex items-center justify-center text-white text-xs">
+                  i
+                </div>
               </div>
             </div>
             
@@ -156,17 +159,18 @@ const WithdrawPage: React.FC<WithdrawPageProps> = ({ onBack }) => {
             </div>
           </div>
         </div>
-        
-        {/* Submit Button */}
-        <div className="mt-4 text-right">
-          <button 
-            className="bg-green-500 text-white px-8 py-2 rounded"
-            onClick={handleSubmit}
-          >
-            Add {withdrawAmount ? `₹${withdrawAmount.toLocaleString()}` : '{amount}'}
-          </button>
-        </div>
       </div>
+      
+      {/* Submit Button - Full width, no padding */}
+      <div className='flex bg-[#F4F4F9] p-4'>
+        <button 
+          className="flex justify-end bg-green-500 text-white font-medium px-10 py-3 rounded text-center"
+          onClick={handleSubmit}
+        >
+          Add {'{amount}'}
+        </button>
+      </div>
+    </div>
       
       {/* Withdrawal History */}
       <div>
@@ -174,7 +178,7 @@ const WithdrawPage: React.FC<WithdrawPageProps> = ({ onBack }) => {
       
       <div className="overflow-x-auto border rounded-md">
         <table className="min-w-full divide-y divide-gray-200">
-          <thead className="bg-gray-50">
+          <thead className="bg-[#F4F4F9]">
             <tr>
               <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider border-r">
                 <div className="flex items-center justify-between w-full">
