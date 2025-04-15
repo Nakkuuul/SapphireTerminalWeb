@@ -1281,7 +1281,7 @@ const Sidebar = () => {
       <div className="flex-1 overflow-y-auto">
         <div className="p-5">
           {/* Market indices */}
-          <div className="mb-4">
+          {/* <div className="mb-4">
             <h3 className="text-sm font-semibold text-gray-700 mb-2">
               Market Indices
             </h3>
@@ -1300,7 +1300,7 @@ const Sidebar = () => {
                 </div>
               ))}
             </div>
-          </div>
+          </div> */}
 
           {/* Watchlist header with add subheading button */}
           <div className="flex justify-between items-center mb-4">

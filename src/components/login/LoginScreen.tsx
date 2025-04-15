@@ -52,7 +52,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
 
   return (
     <div className="flex-1 flex flex-col justify-center space-y-4 px-6">
-      <div className="text-center space-y-2">
+      <div className="text-center mb-7 mt-10 space-y-2">
         <h1
           className={`text-xl -mt-20 sm:text-3xl font-normal ${
             isDarkMode ? "text-white" : "text-black"
@@ -99,7 +99,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
                   ? "border-gray-600 focus:border-blue-400 focus:ring-blue-400"
                   : "border-gray-300 focus:border-blue-500 focus:ring-blue-400"
               } border focus:ring-1 focus:ring-opacity-50`}
-            placeholder="Enter your code"
+            placeholder="Enter your client code"
           />
         </div>
 
@@ -156,7 +156,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
           </button>
         </div>
 
-        <div className="pt-3 flex flex-col items-center">
+        <div className="pt-6 flex flex-col items-center">
           {error && (
             <p className="text-red-500 mb-3 text-sm text-center">
               ⚠️ Invalid username or password

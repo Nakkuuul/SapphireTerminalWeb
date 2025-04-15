@@ -57,7 +57,7 @@ function TradeSelector({ activeComponent, closedComponent }: TradeSelectorProps)
       <div className="flex border-[1px] border-[#D1D5DB] dark:order-[#2F2F2F] rounded-full p-1 w-full relative" ref={containerRef}>
         {/* Animated Indicator */}
         <div 
-          className="absolute bg-green-100 dark:bg-[#23232399] rounded-full transition-all duration-300 ease-in-out"
+          className="absolute bg-[#B8DBD94D] dark:bg-[#23232399] rounded-full transition-all duration-300 ease-in-out"
           style={indicatorStyle}
         />
         
@@ -65,7 +65,7 @@ function TradeSelector({ activeComponent, closedComponent }: TradeSelectorProps)
           ref={activeButtonRef}
           className={`flex-1 px-3 sm:px-6 py-2 sm:py-3 rounded-full text-xs sm:text-xl font-medium transition-colors duration-300 z-10 ${
             selected === "active"
-              ? "text-green-600"
+              ? "text-[#1DB954]"
               : "text-gray-500 hover:text-gray-700"
           }`}
           onClick={() => setSelected("active")}
@@ -76,7 +76,7 @@ function TradeSelector({ activeComponent, closedComponent }: TradeSelectorProps)
           ref={closedButtonRef}
           className={`flex-1 px-3 sm:px-6 py-2 sm:py-3 rounded-full text-xs sm:text-xl font-medium transition-colors duration-300 z-10 ${
             selected === "closed"
-              ? "text-green-600"
+              ? "text-[#1DB954]"
               : "text-gray-500 hover:text-gray-700"
           }`}
           onClick={() => setSelected("closed")}

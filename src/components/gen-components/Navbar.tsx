@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { FaTwitter, FaLinkedin, FaInstagram } from "react-icons/fa";
+import { BellDot, ChevronDown } from "lucide-react";
 
 const Navbar = () => {
   const router = useRouter();
@@ -22,11 +23,11 @@ const Navbar = () => {
   // Main navigation links without sub-routes for Trade section
   const navLinks = [
     { href: "/", label: "Home" },
-    { href: "/trade", label: "Trade" },
+    { href: "/trades", label: "Trade" },
     { href: "/news", label: "News" },
     { href: "/watchlist", label: "Watchlist" },
     { href: "/orders", label: "Orders" },
-    { href: "/holdings", label: "Holdings" },
+    { href: "/holdings/equity", label: "Holdings" },
     { href: "/funds", label: "Funds" },
   ];
 
@@ -59,11 +60,21 @@ const Navbar = () => {
   };
 
   // Function to check if a route is active, including child routes
-  const isRouteActive = (href: String) => {
+  interface NavLink {
+    href: string;
+    label: string;
+  }
+  const isRouteActive = (href: string): boolean => {
     if (href === "/") {
       return pathname === "/";
     }
-    return pathname === href || pathname.startsWith(`${href}/`);
+    
+    // Modified to properly handle the trades routes
+    // Check if the current path starts with the href (parent route) OR
+    // specially handle the "/trades" route to be active for any trade subpath
+    return pathname === href || 
+           pathname.startsWith(`${href}/`) || 
+           (href === "/trades" && pathname.startsWith("/trades/"));
   };
 
   return (
@@ -105,9 +116,9 @@ const Navbar = () => {
               </div>
             </div>
 
-            {/* Navigation Links - Centered in the same row with Green Underline Animation */}
-            <div className="hidden lg:flex flex-1 justify-center items-center">
-              <div className="flex items-center space-x-8">
+            {/* Navigation Links - Left aligned with 36px padding from divider */}
+            <div className="hidden lg:flex flex-1 justify-start items-center pl-9">
+              <div className="flex items-center space-x-7">
                 {navLinks.map((link) => {
                   // Check if this is the active route or its child route
                   const isActive = isRouteActive(link.href);
@@ -116,16 +127,18 @@ const Navbar = () => {
                     <div key={link.href} className="relative group">
                       <Link
                         href={link.href}
-                        className="relative group text-lg font-medium py-2 transition-all duration-300"
+                        className={`relative group text-lg font-normal py-2 transition-all duration-300 ${
+                          isActive ? "text-[#1DB954]" : ""
+                        } group-hover:text-[#1DB954]`}
                         onClick={() => setActiveLink(link.href)}
                       >
                         {link.label}
 
                         {/* Green underline animation (for both hover & active states) */}
                         <span
-                          className={`absolute -bottom-5 left-0 h-[3px] bg-[#1DB954] transition-all duration-300 ${
-                            isActive ? "w-[100%]" : "w-0"
-                          } group-hover:w-full`}
+                          className={`absolute -bottom-5 left-0 right-0 h-[3px] bg-[#1DB954] transition-all duration-300 ${
+                            isActive ? "w-[140%] -left-[20%]" : "w-0"
+                          } group-hover:w-[140%] group-hover:-left-[20%]`}
                         ></span>
                       </Link>
                     </div>
@@ -138,14 +151,7 @@ const Navbar = () => {
             <div className="hidden md:flex pr-9 items-center space-x-4">
               {/* Notifications Bell Icon */}
               <button className="text-gray-700">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-5 w-5"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                >
-                  <path d="M10 2a6 6 0 00-6 6v3.586l-.707.707A1 1 0 004 14h12a1 1 0 00.707-1.707L16 11.586V8a6 6 0 00-6-6zM10 18a3 3 0 01-3-3h6a3 3 0 01-3 3z" />
-                </svg>
+                <BellDot color="black" />
               </button>
 
               {/* User Profile Avatar with Dropdown Arrow */}
@@ -155,7 +161,7 @@ const Navbar = () => {
                   onClick={() => router.push("/profile")}
                 >
                   <Image
-                    src="/globe.svg"
+                    src="/profile.svg"
                     alt="Profile"
                     width={32}
                     height={32}
@@ -165,20 +171,7 @@ const Navbar = () => {
                     }}
                   />
                 </div>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-4 w-4 ml-1 text-gray-500"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M19 9l-7 7-7-7"
-                  />
-                </svg>
+                <ChevronDown color="black" className="ml-1" />
               </div>
             </div>
 
@@ -290,8 +283,8 @@ const Navbar = () => {
                 href={link.href}
                 className={`text-lg font-medium py-2 border-l-4 pl-4 transition-colors duration-200 ${
                   isRouteActive(link.href)
-                    ? "border-[#064D51] text-[#064D51]"
-                    : "border-transparent hover:border-gray-300 hover:text-gray-700"
+                    ? "border-[#1DB954] text-[#1DB954]"
+                    : "border-transparent hover:border-gray-300 hover:text-[#1DB954]"
                 }`}
                 onClick={() => {
                   setActiveLink(link.href);
@@ -307,7 +300,7 @@ const Navbar = () => {
           <div className="mt-auto border-t border-gray-200 pt-6 flex items-center">
             <div className="h-10 w-10 rounded-full overflow-hidden border border-gray-300">
               <Image
-                src="/globe.svg"
+                src="/profile.svg"
                 alt="Profile"
                 width={40}
                 height={40}
@@ -331,7 +324,7 @@ const Navbar = () => {
                 href={href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-gray-500 hover:text-[#064D51] transition-colors duration-300"
+                className="text-gray-500 hover:text-[#1DB954] transition-colors duration-300"
                 aria-label={`Visit our ${Icon.name.replace("Fa", "")}`}
               >
                 <Icon className="w-6 h-6" />
@@ -344,4 +337,4 @@ const Navbar = () => {
   );
 };
 
-export default Navbar;
+export default Navbar;``

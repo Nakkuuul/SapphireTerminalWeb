@@ -65,7 +65,7 @@ const PanVerification: React.FC<PanVerificationProps> = ({
   };
 
   return (
-    <div className="flex-1 flex flex-col space-y-4 px-2">
+    <div className="flex-1 flex flex-col space-y-8 px-3">
       <div className="flex items-center mb-2">
         <button 
           onClick={onCancel}
@@ -78,14 +78,14 @@ const PanVerification: React.FC<PanVerificationProps> = ({
         </h2>
       </div>
 
-      <p className={`text-xs ${isDarkMode ? "text-gray-300" : "text-gray-600"}`}>
+      <p className={`text-sm ${isDarkMode ? "text-gray-300" : "text-gray-600"}`}>
         Please verify your PAN number to recover your account access.
       </p>
 
-      <form onSubmit={handleSubmit} className="space-y-4">
+      <form onSubmit={handleSubmit} className="space-y-8">
         <div>
           <label 
-            className={`block text-sm font-medium mb-1 ${isDarkMode ? "text-gray-200" : "text-gray-700"}`}
+            className={`block text-sm font-medium mb-2 ${isDarkMode ? "text-gray-200" : "text-gray-700"}`}
           >
             PAN Number
           </label>
@@ -108,12 +108,12 @@ const PanVerification: React.FC<PanVerificationProps> = ({
 
         <div>
           <label 
-            className={`block text-sm font-medium mb-1 ${isDarkMode ? "text-gray-200" : "text-gray-700"}`}
+            className={`block text-sm font-medium mb-2 ${isDarkMode ? "text-gray-200" : "text-gray-700"}`}
           >
             Captcha Verification
           </label>
           
-          <div className="flex items-center space-x-2 mb-2">
+          <div className="flex items-center space-x-2 mb-3">
             <div 
               className={`flex-1 p-2 text-center font-mono text-lg ${
                 isDarkMode ? "bg-gray-700 text-gray-200" : "bg-gray-100 text-gray-800"
@@ -149,14 +149,14 @@ const PanVerification: React.FC<PanVerificationProps> = ({
         </div>
 
         {error && (
-          <p className="text-red-500 text-xs">
+          <p className="text-red-500 text-xs mt-3">
             {error}
           </p>
         )}
 
         <button
           type="submit"
-          className={`w-full p-2 text-white font-semibold text-sm rounded-lg transition-all duration-200 ${
+          className={`w-full py-3 text-white font-semibold text-sm rounded-lg transition-all duration-200 mt-4 ${
             !panNumber || !captchaInput
               ? "bg-[#00A645] cursor-not-allowed opacity-70"
               : "bg-[#00C853] hover:bg-[#00B649]"

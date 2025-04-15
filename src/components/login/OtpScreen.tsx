@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, KeyboardEvent, ChangeEvent } from 'react';
 import { useRouter } from 'next/navigation';
 import { useTheme } from '@/context/ThemeContext';
 
@@ -54,6 +54,19 @@ const OtpScreen: React.FC<OtpScreenProps> = ({ username, greeting }) => {
     }
   };
 
+  const handleKeyDown = (index: number, e: KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Backspace" && !otp[index]) {
+      e.preventDefault();
+      const newOtp = [...otp];
+      const prevIndex = index - 1;
+      if (prevIndex >= 0) {
+        newOtp[prevIndex] = "";
+        setOtp(newOtp);
+        document.querySelector<HTMLInputElement>(`input[name="otp-${prevIndex}"]`)?.focus();
+      }
+    }
+  };
+
   const demon = () => {
     if (!isF) {
       setIsF(true);
@@ -77,36 +90,24 @@ const OtpScreen: React.FC<OtpScreenProps> = ({ username, greeting }) => {
         </p>
       </div>
 
-      <div className="flex justify-start gap-1 sm:gap-2 py-2">
+      <div className="flex justify-start gap-4">
         {otp.map((digit, index) => (
           <input
             key={index}
             type="text"
-            maxLength={1}
+            name={`otp-${index}`}
             value={digit}
+            maxLength={1}
             autoComplete="off"
             inputMode="numeric"
             pattern="\d*"
-            onChange={(e) => handleOtpChange(index, e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === "Backspace" && !digit) {
-                e.preventDefault();
-                const newOtp = [...otp];
-                const prevIndex = index - 1;
-                if (prevIndex >= 0) {
-                  newOtp[prevIndex] = "";
-                  setOtp(newOtp);
-                  document.querySelector<HTMLInputElement>(`input[name="otp-${prevIndex}"]`)?.focus();
-                }
-              }
-            }}
-            name={`otp-${index}`}
-            className={`w-7 h-10 text-center border-t-0 border-l-0 border-r-0 border-b-2 
-                     text-lg font-bold outline-none transition-all duration-200 ${
-                       isDarkMode
-                         ? "bg-[#1E1E1E] border-gray-400 text-white focus:border-white"
-                         : "bg-white border-gray-300 text-gray-900 focus:border-black"
-                     }`}
+            onChange={(e: ChangeEvent<HTMLInputElement>) => handleOtpChange(index, e.target.value)}
+            onKeyDown={(e: KeyboardEvent<HTMLInputElement>) => handleKeyDown(index, e)}
+            className={`w-[42px] h-[42px] text-center text-lg rounded-md border ${
+              isDarkMode 
+                ? "bg-[#1E1E1E] text-white border-gray-600 focus:border-blue-400" 
+                : "bg-white text-gray-900 border-gray-300 focus:border-blue-500"
+            } focus:ring-1 focus:ring-opacity-50 focus:outline-none`}
             autoFocus={index === 0}
             disabled={isRedirecting}
           />

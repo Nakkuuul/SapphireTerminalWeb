@@ -107,7 +107,7 @@ const OtpVerification: React.FC<OtpVerificationProps> = ({
         </h2>
       </div>
 
-      <p className={`text-xs ${isDarkMode ? "text-gray-300" : "text-gray-600"}`}>
+      <p className={`text-sm ${isDarkMode ? "text-gray-300" : "text-gray-600"}`}>
         We have sent a 6-digit OTP to your registered email and phone number.
       </p>
 
@@ -119,7 +119,7 @@ const OtpVerification: React.FC<OtpVerificationProps> = ({
             Enter OTP
           </label>
           
-          <div className="flex justify-between gap-2">
+          <div className="flex justify-start gap-4">
             {otp.map((digit, index) => (
               <input
                 key={index}
@@ -130,7 +130,7 @@ const OtpVerification: React.FC<OtpVerificationProps> = ({
                 onChange={(e) => handleOtpChange(index, e.target.value)}
                 onKeyDown={(e) => handleKeyDown(index, e)}
                 autoComplete="off"
-                className={`w-9 h-10 text-center text-lg rounded-md border ${
+                className={`w-[42px] h-[42px] text-center text-lg rounded-md border ${
                   isDarkMode 
                     ? "bg-[#1E1E1E] text-white border-gray-600 focus:border-blue-400" 
                     : "bg-white text-gray-900 border-gray-300 focus:border-blue-500"
@@ -164,7 +164,10 @@ const OtpVerification: React.FC<OtpVerificationProps> = ({
             }
           </button>
           
-          <button
+
+        </div>
+      </form>
+      <button
             type="submit"
             className={`px-4 py-2 text-white font-semibold text-sm rounded-lg transition-all duration-200 ${
               otp.join("").length !== 6
@@ -175,8 +178,6 @@ const OtpVerification: React.FC<OtpVerificationProps> = ({
           >
             Verify
           </button>
-        </div>
-      </form>
     </div>
   );
 };

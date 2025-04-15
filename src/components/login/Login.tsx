@@ -1,7 +1,6 @@
 'use client';
 
 import React, { useState, useEffect } from "react";
-import { Sun, Moon } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTheme } from '@/context/ThemeContext';
 import LoginScreen from '../login/LoginScreen';
@@ -10,7 +9,7 @@ import OtpScreen from '../login/OtpScreen';
 import ProgressBar from "../login/ProgressBar";
 
 const Login = () => {
-  const { isDarkMode, toggleTheme } = useTheme();
+  const { isDarkMode } = useTheme();
   const [currentStep, setCurrentStep] = useState<number>(0);
   const [username, setUsername] = useState<string>("");
   const [greeting, setGreeting] = useState<string>("");
@@ -65,11 +64,11 @@ const Login = () => {
 
   return (
     <div className={`fixed inset-0 flex flex-col items-center justify-center p-3 transition-colors duration-300 ${
-      isDarkMode ? "bg-[#121212]" : "bg-gradient-to-br from-gray-100 to-white"
+      isDarkMode ? "bg-[#121212]" : "bg-white"
     }`}>
       <div className="container max-w-md flex flex-col items-center justify-center gap-3">
-        <div className={`w-full h-[500px] sm:h-[520px] md:h-[550px] shadow-2xl transition-colors duration-300 flex flex-col overflow-hidden rounded-md ${
-          isDarkMode ? "bg-[#1E1E1E]" : "bg-white"
+        <div className={`w-full h-[500px] sm:h-[520px] md:h-[550px] shadow-xl transition-colors duration-300 flex flex-col overflow-hidden rounded-md ${
+          isDarkMode ? "bg-[#1E1E1E]" : "bg-[#FAFAFA]"
         }`}>
           {/* Progress bar positioned at the top of the black box, conditionally shown */}
           {showProgressBar && (
@@ -130,15 +129,6 @@ const Login = () => {
           </div>
         </div>
       </div>
-
-      <button
-        onClick={toggleTheme}
-        className={`fixed right-4 bottom-4 p-2 rounded-full transition-all duration-300 ${
-          isDarkMode ? "text-yellow-400 hover:bg-gray-800" : "text-gray-900 hover:bg-gray-100"
-        }`}
-      >
-        {isDarkMode ? <Sun size={20} /> : <Moon size={20} />}
-      </button>
     </div>
   );
 };

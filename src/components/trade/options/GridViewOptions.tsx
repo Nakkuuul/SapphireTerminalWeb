@@ -1,5 +1,6 @@
 import React from 'react';
 import { ArrowRight } from 'lucide-react';
+import Image from 'next/image';
 
 // Trade interface with properties matching the provided data
 interface Trade {
@@ -104,31 +105,31 @@ const GridViewOptions: React.FC<GridViewTableProps> = ({ trades }) => {
               <span className="text-sm text-[#495057] dark:text-[#C9CACC]">
                 Entry Price
               </span>
-              <span className="text-base font-medium text-black dark:text-[#EBEEF5]">
+              <span className="text-base font-normal text-black dark:text-[#EBEEF5]">
                 {trade.entryPrice}
               </span>
             </div>
-            <div className="flex flex-col">
+            <div className="flex flex-col ml-5">
               <span className="text-sm text-[#495057] dark:text-[#C9CACC]">
                 Exit Price
               </span>
-              <span className="text-base font-medium text-black dark:text-[#EBEEF5]">
+              <span className="text-base font-normal text-black dark:text-[#EBEEF5]">
                 {trade.exitPrice}
               </span>
             </div>
-            <div className="flex flex-col">
+            <div className="flex flex-col ml-5">
               <span className="text-sm text-[#495057] dark:text-[#C9CACC]">
                 Quantity
               </span>
-              <span className="text-base font-medium text-black dark:text-[#EBEEF5]">
+              <span className="text-base font-normal text-black dark:text-[#EBEEF5]">
                 {trade.quantity}
               </span>
             </div>
-            <div className="flex flex-col">
+            <div className="flex flex-col ml-5">
               <span className="text-sm text-gray-500 dark:text-gray-400">
                 Net G/L
               </span>
-              <span className="text-base font-medium text-black dark:text-[#EBEEF5]">
+              <span className="text-base font-normal text-black dark:text-[#EBEEF5]">
                 {trade.net}
               </span>
             </div>
@@ -197,20 +198,7 @@ const GridViewOptions: React.FC<GridViewTableProps> = ({ trades }) => {
             <span className="text-black dark:text-[#EBEEF5] text-sm ml-1">
               {trade.marginReq}
             </span>
-            <svg
-              className="w-4 h-4 ml-1 text-gray-500 dark:text-gray-400"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-              />
-            </svg>
+            <Image src='/info.svg' alt='info' width={16} height={16} className="ml-1 text-[#6B7280]" />
           </div>
 
           {/* Action button */}

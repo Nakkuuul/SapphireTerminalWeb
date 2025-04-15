@@ -180,7 +180,7 @@ const NewsPage = () => {
   }
 
   return (
-    <div className="mx-auto px-4 pb-8">
+    <div className="mx-auto pb-8">
       <div className="flex flex-col md:flex-row">
         {/* Left Sidebar - Previous News */}
         <div className="w-full mr-6 md:w-1/4 pr-0 md:pr-4 mb-4 md:mb-0">

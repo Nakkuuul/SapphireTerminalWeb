@@ -77,9 +77,9 @@ const VerifyScreen: React.FC<VerifyScreenProps> = ({ username, setCurrentStep, g
         <Image 
           src="/login/clock.png" 
           alt="Time" 
-          width={48} 
-          height={48} 
-          className="w-10"
+          width={56} 
+          height={56} 
+          className="w-14"
           priority
         />
       </div>

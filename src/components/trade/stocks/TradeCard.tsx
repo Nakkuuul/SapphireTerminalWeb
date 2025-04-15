@@ -45,7 +45,7 @@ const TradeCard: React.FC<TradeCardProps> = ({
   return (
     <div className="border border-border dark:border-dark-border rounded-lg p-4 sm:p-6 bg-surface dark:bg-dark-cardbg">
       {/* Header Section */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 mb-4">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 mb-[26px]">
         <div className="flex items-center gap-2 w-full sm:w-auto">
           <Image src="/globe.svg" alt="Stock" width={24} height={24} />
           <div className="text-base sm:text-xl font-normal truncate dark:text-dark-lighttext">{`${symbol} ${date} FUT`}</div>
@@ -61,35 +61,36 @@ const TradeCard: React.FC<TradeCardProps> = ({
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6  text-xs sm:text-sm mb-4">
         <div>
           <span className="text-base text-text dark:text-dark-graytext">Entry Price</span>
-          <div className='mt-1 text-base font-medium dark:text-dark-lighttext'>{entryPrice.toFixed(2)}</div>
+          <div className='mt-1 text-lg font-normal dark:text-dark-lighttext'>{entryPrice.toFixed(2)}</div>
         </div>
         <div>
           <span className="text-base text-text dark:text-dark-graytext">Entry Range</span>
-          <div className='mt-1 text-base font-medium dark:text-dark-lighttext'>{entryRange}</div>
+          <div className='mt-1 text-lg font-normal dark:text-dark-lighttext'>{entryRange}</div>
         </div>
         <div>
           <span className="text-base text-text dark:text-dark-graytext">Stoploss</span>
-          <div className='mt-1 text-base font-medium dark:text-dark-lighttext'>{stoploss}</div>
+          <div className='mt-1 text-lg font-normal dark:text-dark-lighttext'>{stoploss}</div>
         </div>
         <div>
           <span className="text-base text-text dark:text-dark-graytext">Target</span>
-          <div className='mt-1 text-base font-medium dark:text-dark-lighttext'>{target.toLocaleString('en-IN')}</div>
+          <div className='mt-1 text-lg font-normal dark:text-dark-lighttext'>{target.toLocaleString('en-IN')}</div>
         </div>
         <div>
           <span className="text-base text-text dark:text-dark-graytext">Quantity</span>
-          <div className='mt-1 text-base font-medium dark:text-dark-lighttext'>{quantity}</div>
+          <div className='mt-1 text-lg font-normal dark:text-dark-lighttext'>{quantity}</div>
         </div>
         <div>
           <span className="text-base text-text dark:text-dark-graytext">Risk/Reward Ratio</span>
-          <div className='mt-1 text-base font-medium dark:text-dark-lighttext'>{riskRewardRatio}</div>
+          <div className='mt-1 text-lg font-normal dark:text-dark-lighttext'>{riskRewardRatio}</div>
         </div>
       </div>
 
       {/* Margin Required Section */}
-      <div className="flex items-center justify-center border-t-[0.5px] dark:border-t-dark-border text-xs sm:text-base">
+      <div className="flex items-center justify-center border-t-[0.5px] py-2 dark:border-t-dark-border text-xs sm:text-base">
         <span className="text-text dark:text-dark-graytext mt-2">Margin required: </span>
-        <span className="font-medium mt-2 ml-1 dark:text-dark-lighttext">₹{marginRequired.toLocaleString('en-IN')}</span>
-        <Info size={14} className="ml-1 mt-2 text-gray-400" />
+        <span className="font-normal mt-2 ml-2 dark:text-dark-lighttext">₹{marginRequired.toLocaleString('en-IN')}</span>
+        {/* <Info size={14} className="ml-1 mt-2 text-gray-400" /> */}
+        <Image src="/info.svg" alt="Info" width={16} height={16} className="ml-1 mt-2 text-gray-400" />
       </div>
 
       {/* Button Section */}

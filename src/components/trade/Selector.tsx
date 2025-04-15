@@ -25,41 +25,48 @@ function Selector() {
   };
 
   return (
-    <>
+    <div className="w-full border-b-2 mb-6 border-gray-200 relative">
       {/* Desktop Version - Horizontal Tabs */}
-      <div className="hidden md:flex w-full justify-center items-center pb-6 gap-x-4 lg:gap-x-12">
+      <div className="hidden md:flex w-full gap-x-24 justify-center">
         {tabs.map((tab) => (
           <Link
             key={tab.name}
             href={tab.path}
-            className={`min-w-[100px] lg:min-w-[160px] px-3 lg:px-6 py-[8px] font-medium text-xs lg:text-xl text-center flex items-center justify-center rounded-[4px] border transition-all duration-300 ${
-              pathname === tab.path
-                ? "bg-[#D1FADF99] dark:bg-[#23232399] text-[#1DB954] border-[1px] border-[#22A06B] "
-                : "bg-[#F6F6F6] dark:bg-[#121413] text-gray-600 dark:text-[#C9CACC] border-[#D1D5DB] dark:border-[#2F2F2F]"
-            }`}
+            className="py-2 text-xl font-medium text-center flex justify-center"
           >
-            {tab.name}
+            <span 
+              className={`relative ${
+                pathname === tab.path
+                  ? "text-[#1DB954] font-semibold"
+                  : "text-gray-600"
+              }`}
+            >
+              {tab.name}
+              {pathname === tab.path && (
+                <span className="absolute top-9 left-0 w-full h-0.5 bg-[#1DB954]" 
+                      style={{ bottom: '-8px' }}></span>
+              )}
+            </span>
           </Link>
         ))}
       </div>
 
       {/* Mobile Version - Dropdown */}
-      <div className="md:hidden w-full px-4">
+      <div className="md:hidden w-full px-4 py-2">
         <div className="relative">
           <button
             onClick={toggleDropdown}
-            className={`w-full px-4 py-2 font-semibold text-sm flex items-center justify-between rounded-sm border transition-all duration-300 ${
-              "bg-green-100 text-[#1DB954] border-[1px] border-[#22A06B]"
-            }`}
+            className="w-full py-2 font-medium text-sm flex items-center justify-between"
           >
-            <span>{activeTab.name}</span>
+            <span className={pathname.includes(activeTab.path) ? 'text-[#1DB954]' : 'text-gray-800'}>
+              {activeTab.name}
+            </span>
             <ChevronDown 
               size={16} 
               className={`transition-transform duration-300 ${isDropdownOpen ? 'rotate-180' : ''}`} 
             />
           </button>
 
-          {/* Dropdown Menu */}
           {isDropdownOpen && (
             <div className="absolute mt-1 w-full rounded-md shadow-lg bg-white z-10 border border-gray-200">
               {tabs.map((tab) => (
@@ -69,7 +76,7 @@ function Selector() {
                   onClick={() => setIsDropdownOpen(false)}
                   className={`block px-4 py-3 text-sm hover:bg-gray-50 ${
                     pathname === tab.path
-                      ? "bg-green-50 text-[#1DB954]"
+                      ? "text-[#1DB954]"
                       : "text-gray-600"
                   }`}
                 >
@@ -80,7 +87,7 @@ function Selector() {
           )}
         </div>
       </div>
-    </>
+    </div>
   );
 }
 

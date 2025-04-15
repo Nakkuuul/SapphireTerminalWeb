@@ -13,9 +13,9 @@ const ProgressBar: React.FC<ProgressBarProps> = ({ currentStep, isRedirecting })
   const { isDarkMode } = useTheme();
   const progressValue = React.useMemo(() => {
     if (isRedirecting) return 100;
-    if (currentStep === 0) return 33.33;
-    if (currentStep === 1) return 66.66;
-    return currentStep * 33.33;
+    if (currentStep === 0) return 0;
+    if (currentStep === 1) return 50;
+    return currentStep * 50;
   }, [currentStep, isRedirecting]);
 
   return (

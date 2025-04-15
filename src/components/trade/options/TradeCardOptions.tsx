@@ -1,5 +1,6 @@
 import React from 'react';
 import { Info, ArrowRight, ChevronDown, ChevronRight } from 'lucide-react';
+import Image from 'next/image';
 
 interface TradeCardProps {
   symbol: string;
@@ -53,32 +54,32 @@ const TradeCardOptions: React.FC<TradeCardProps> = ({
       </div>
 
       {/* Strategy and Details Section */}
-      <div className="bg-[#e6f3f0] dark:bg-dark-insidecard rounded mt-4">
+      <div className="bg-[#B8DBD94D] dark:bg-dark-insidecard rounded mt-3">
         <div className="grid grid-cols-5 text-lg">
           <div className="p-3">
             <div className="text-text text-base dark:text-dark-graytext">Strategy</div>
-            <div className="font-medium mt-1  dark:text-dark-lighttext" >{strategy}</div>
-            <div className="font-medium   dark:text-dark-lighttext">{strategy}</div>
+            <div className="font-normal mt-1  dark:text-dark-lighttext" >{strategy}</div>
+            <div className="font-normal   dark:text-dark-lighttext">{strategy}</div>
           </div>
           <div className="p-3">
             <div className="text-text text-base dark:text-dark-graytext">Entry</div>
-            <div className="font-medium mt-1  dark:text-dark-lighttext" >₹{entryPrice.toFixed(2)}</div>
-            <div className="font-medium  dark:text-dark-lighttext" >₹{entryPrice.toFixed(2)}</div>
+            <div className="font-normal mt-1  dark:text-dark-lighttext" >₹{entryPrice.toFixed(2)}</div>
+            <div className="font-normal  dark:text-dark-lighttext" >₹{entryPrice.toFixed(2)}</div>
           </div>
           <div className="p-3">
             <div className="text-text text-base dark:text-dark-graytext">Exit</div>
-            <div className="font-medium mt-1  dark:text-dark-lighttext" >₹{exitPrice.toFixed(2)}</div>
-            <div className="font-medium  dark:text-dark-lighttext" >₹{exitPrice.toFixed(2)}</div>
+            <div className="font-normal mt-1  dark:text-dark-lighttext" >₹{exitPrice.toFixed(2)}</div>
+            <div className="font-normal  dark:text-dark-lighttext" >₹{exitPrice.toFixed(2)}</div>
           </div>
           <div className="p-3">
             <div className="text-text text-base dark:text-dark-graytext">Lot size</div>
-            <div className="font-medium mt-1 dark:text-dark-lighttext">{lotSize}</div>
-            <div className="font-medium dark:text-dark-lighttext">{lotSize}</div>
+            <div className="font-normal mt-1 dark:text-dark-lighttext">{lotSize}</div>
+            <div className="font-normal dark:text-dark-lighttext">{lotSize}</div>
           </div>
           <div className="p-3">
             <div className="text-text text-base dark:text-dark-graytext">LTP</div>
-            <div className="font-medium mt-1 dark:text-dark-lighttext">₹{ltp.toFixed(2)}</div>
-            <div className="font-medium dark:text-dark-lighttext">₹{ltp.toFixed(2)}</div>
+            <div className="font-normal mt-1 dark:text-dark-lighttext">₹{ltp.toFixed(2)}</div>
+            <div className="font-normal dark:text-dark-lighttext">₹{ltp.toFixed(2)}</div>
           </div>
         </div>
       </div>
@@ -87,11 +88,11 @@ const TradeCardOptions: React.FC<TradeCardProps> = ({
       <div className="flex justify-center gap-x-5 text-base">
         <div className="p-3 text-center">
           <div className="text-gray-600  dark:text-dark-graytext">Stoploss amount</div>
-          <div className="font-medium mt-1 text-lg dark:text-dark-lighttext">-₹{stoplossAmount.toLocaleString('en-IN')}</div>
+          <div className="font-normal mt-1 text-lg dark:text-dark-lighttext">-₹{stoplossAmount.toLocaleString('en-IN')}</div>
         </div>
         <div className="p-3 text-center">
           <div className="text-gray-600 dark:text-dark-graytext">Target amount</div>
-          <div className="font-medium mt-1 text-lg dark:text-dark-lighttext">-₹{targetAmount.toLocaleString('en-IN')}</div>
+          <div className="font-normal mt-1 text-lg dark:text-dark-lighttext">-₹{targetAmount.toLocaleString('en-IN')}</div>
         </div>
       </div>
 
@@ -100,12 +101,12 @@ const TradeCardOptions: React.FC<TradeCardProps> = ({
         <div className="flex items-center">
           <span >Margin required :</span>
           <span className="ml-1 text-[#1A1A1A] font-normal dark:text-dark-lighttext">₹{marginRequired.toLocaleString('en-IN')}</span>
-          <Info size={16} className="ml-1 " />
+          <Image src="/info.svg" alt="Info" width={16} height={16} className="ml-1 text-gray-400" />
         </div>
         <div className="flex items-center">
           <span >Final Margin :</span>
           <span className="ml-1 text-[#1A1A1A] font-normal dark:text-dark-lighttext">₹{finalMargin.toLocaleString('en-IN')}</span>
-          <Info size={16} className="ml-1" />
+          <Image src="/info.svg" alt="Info" width={16} height={16} className="ml-1 text-gray-400" />
         </div>
       </div>
 
