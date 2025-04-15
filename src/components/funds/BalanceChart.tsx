@@ -1,4 +1,3 @@
-// components/BalanceChart.tsx
 import React from 'react';
 
 interface BalanceChartProps {
@@ -25,29 +24,42 @@ const BalanceChart: React.FC<BalanceChartProps> = ({ data }) => {
 
   return (
     <div className='border border-[#D1D5DB] mt-4 rounded-md'>
-      <h2 className="text-lg border-b border-b-[#D1D5DB] font-medium p-3 ">Total Balance Breakup</h2>
+      <h2 className="text-lg border-b border-b-[#D1D5DB] font-medium p-3">Total Balance Breakup</h2>
       
-      <div className="relative rounded-md p-6 flex flex-col items-center">
-        <div className="w-24 h-24 overflow-hidden relative">
-          <div 
-            className="w-48 h-48 border-[16px] border-transparent border-t-[#FBBC05] rounded-full absolute -bottom-24"
-            style={{ transform: `rotate(${rotationDegree}deg)` }}
-          ></div>
-        </div>
-        
-        <div className="mt-4 text-center">
-          <div className="text-sm text-[#6B7280]">Margin Utilized</div>
-          <div className="text-xl font-semibold">₹{formatCurrency(data.marginUtilized)}</div>
-        </div>
-        
-        <div className="mt-4 w-full">
-          <div className="flex justify-between text-sm">
-            <div>• Total Balance</div>
-            <div className="font-medium">₹{formatCurrency(data.totalBalance)}</div>
+      <div className="p-4">
+        <div className="flex">
+          {/* Left side - Semi-circular gauge */}
+          <div className="flex-1">
+            <div className="relative">
+              {/* Semi-circular gauge */}
+              <div className="w-36 h-20 mx-auto relative overflow-hidden">
+                <div className="w-36 h-20 absolute top-0 left-0">
+                  <div className="w-36 h-36 border-[24px] border-[#FBBC05] rounded-full"></div>
+                </div>
+                <div className="w-[88px] h-[88px] bg-white rounded-full absolute top-[24px] left-[24px]"></div>
+                <div className="w-36 h-18 bg-white absolute bottom-0"></div>
+              </div>
+              
+              {/* Margin Utilised text below gauge */}
+              <div className="text-center mt-4">
+                <div className="text-[#6B7280] text-sm">Margin Utilised</div>
+                <div className="text-lg">₹0.00</div>
+              </div>
+            </div>
           </div>
-          <div className="flex justify-between text-sm mt-1">
-            <div>• Margin Utilized</div>
-            <div className="font-medium">₹{formatCurrency(data.marginUtilized)}</div>
+          
+          {/* Right side - Legend */}
+          <div className="flex-1">
+            <div className="pt-3 ml-12">
+              <div className="flex items-center mb-1">
+                <div className="w-2 h-2 bg-[#FBBC05] rounded-full mr-2"></div>
+                <span className="text-sm">Total Balance</span>
+              </div>
+              <div className="flex items-center">
+                <div className="w-2 h-2 bg-[#0F4C3A] rounded-full mr-2"></div>
+                <span className="text-sm">Margin Utilised</span>
+              </div>
+            </div>
           </div>
         </div>
       </div>

@@ -24,15 +24,15 @@ const formatCurrency = (value: number): string => {
 
 const RecentTransactions: React.FC<RecentTransactionsProps> = ({ transactions }) => {
   return (
-    <div className="border border-gray-200 rounded-lg p-4 bg-white">
-      <div className="mb-4 text-gray-800 font-medium">Recent Transactions</div>
+    <div className="border border-gray-200 rounded-lg  p-4 ">
+      <div className="mb-4 text-gray-800 font-medium ">Recent Transactions</div>
       
       <div className="">
         {transactions.map((transaction) => (
-          <div key={transaction.id} className="bg-gray-50 border-b border-[#D1D5DB] p-3">
+          <div key={transaction.id} className=" border-b border-[#D1D5DB] p-3">
             <div className="flex justify-between mb-1">
-              <div className="text-xs text-gray-500">#{transaction.id}</div>
-              <div className="text-sm font-medium text-gray-800">
+              <div className="text-sm text-gray-500">{transaction.id}</div>
+              <div className="text-sm font-normal text-gray-800">
                 {transaction.amount < 0 ? '-' : ''}₹{formatCurrency(transaction.amount)}
               </div>
             </div>
