@@ -23,10 +23,10 @@ const Navbar = () => {
   // Main navigation links without sub-routes for Trade section
   const navLinks = [
     { href: "/", label: "Home" },
-    { href: "/trades", label: "Trade" },
+    { href: "/trades/stocks", label: "Trade" },
     { href: "/news", label: "News" },
     { href: "/watchlist", label: "Watchlist" },
-    { href: "/orders", label: "Orders" },
+    { href: "/order/queued", label: "Orders" },
     { href: "/holdings/equity", label: "Holdings" },
     { href: "/funds", label: "Funds" },
   ];
@@ -74,7 +74,7 @@ const Navbar = () => {
     // specially handle the "/trades" route to be active for any trade subpath
     return pathname === href || 
            pathname.startsWith(`${href}/`) || 
-           (href === "/trades" && pathname.startsWith("/trades/"));
+           (href === "/trades/stocks" && pathname.startsWith("/trades/"));
   };
 
   return (
@@ -134,11 +134,11 @@ const Navbar = () => {
                       >
                         {link.label}
 
-                        {/* Green underline animation (for both hover & active states) */}
+                        {/* Green underline animation - consistent for both hover & active states */}
                         <span
-                          className={`absolute -bottom-5 left-0 right-0 h-[3px] bg-[#1DB954] transition-all duration-300 ${
-                            isActive ? "w-[140%] -left-[20%]" : "w-0"
-                          } group-hover:w-[140%] group-hover:-left-[20%]`}
+                          className={`absolute -bottom-5 left-0 right-0 h-[3px] bg-[#1DB954] transition-all duration-300 w-0 
+                          ${isActive ? "w-[140%] -left-[20%]" : ""} 
+                          group-hover:w-[140%] group-hover:-left-[20%]`}
                         ></span>
                       </Link>
                     </div>
@@ -337,4 +337,4 @@ const Navbar = () => {
   );
 };
 
-export default Navbar;``
+export default Navbar;
