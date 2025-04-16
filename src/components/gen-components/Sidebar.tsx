@@ -1142,8 +1142,8 @@ const Sidebar = () => {
   const SidebarContent = () => (
     <div className="hidden md:flex fixed top-14 left-0 bottom-0 w-[30%] bg-white dark:bg-[#121212] border-r border-gray-200 dark:border-dark-border flex-col">
       {/* Search and filter - Fixed section */}
-      <div className="p-5 border-b border-gray-200 dark:border-dark-border flex-shrink-0">
-        <div className="flex justify-between items-center">
+      <div className="p-5  border-b border-gray-200 dark:border-dark-border flex-shrink-0">
+        <div className="flex pt-6 justify-between items-center">
           <div className="relative flex-1 mr-2">
             <input
               type="text"
@@ -1169,7 +1169,7 @@ const Sidebar = () => {
               </svg>
             </div>
           </div>
-          <button className="flex items-center justify-center px-3 py-3 bg-[#F4F4F9] dark:bg-dark-surface rounded-md">
+          <button className="flex items-center justify-center px-3 py-4 bg-[#F4F4F9] dark:bg-dark-surface rounded-md">
             <Filter
               size={16}
               className="text-gray-600 dark:text-dark-secondary"

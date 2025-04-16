@@ -61,7 +61,7 @@ export default function FundsPage() {
   
   // Main view
   return (
-    <div className=" mx-auto">
+    <div className="pb-10 mx-auto">
       {/* Balance Summary Cards */}
       <FundsSummaryCards data={summaryData} />
       

@@ -78,7 +78,21 @@ export const fundsSummary = {
       date: '31 JAN 2025',
       status: 'processing',
       statusText: 'processing'
-    }
+    },
+    {
+      id: '#562677788391',
+      amount: 2042.63,
+      date: '31 JAN 2025',
+      status: 'failed',
+      statusText: 'failed'
+    },
+    {
+      id: '#562677788392',
+      amount: 2042.63,
+      date: '31 JAN 2025',
+      status: 'completed',
+      statusText: 'completed'
+    },
   ];
   
   // Chart data

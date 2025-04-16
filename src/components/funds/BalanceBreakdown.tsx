@@ -1,6 +1,6 @@
 // components/BalanceBreakdown.tsx
-import React from 'react';
-import { Info } from 'lucide-react';
+import React from "react";
+import { Info } from "lucide-react";
 
 interface BalanceBreakdownProps {
   balanceData: {
@@ -32,124 +32,117 @@ interface BalanceBreakdownProps {
 }
 
 const formatCurrency = (value: number): string => {
-  return new Intl.NumberFormat('en-IN').format(value);
+  return new Intl.NumberFormat("en-IN").format(value);
 };
 
-const BalanceBreakdown: React.FC<BalanceBreakdownProps> = ({ 
-  balanceData, 
-  profitLossData, 
-  margins, 
-  premiums, 
+const BalanceBreakdown: React.FC<BalanceBreakdownProps> = ({
+  balanceData,
+  profitLossData,
+  margins,
+  premiums,
   withdrawable,
-  totalBalance
+  totalBalance,
 }) => {
+  // Convert data to arrays for easier rendering
+  const balanceItems = [
+    { label: "Cash Balance", value: balanceData.cashBalance },
+    { label: "Collateral Balance", value: balanceData.collateralBalance },
+    {
+      label: "Collateral (Liquid Funds)",
+      value: balanceData.collateralLiquidFunds,
+    },
+  ];
+
+  const profitLossItems = [
+    { label: "Realized P&L", value: profitLossData.realizedPL },
+    { label: "Unrealized P&L", value: profitLossData.unrealizedPL },
+  ];
+
+  const marginItems = [
+    { label: "Span Margin", value: margins.spanMargin },
+    { label: "Exposure Margin", value: margins.exposureMargin },
+    { label: "CNC Amount", value: margins.cncAmount },
+    {
+      label: "Commodity Additional Margin",
+      value: margins.commodityAdditionalMargin,
+    },
+    {
+      label: "Cash Intraday / MTF Margin",
+      value: margins.cashIntradayMTFMargin,
+    },
+    { label: "CORO Margin", value: margins.coroMargin },
+  ];
+
+  const premiumItems = [
+    { label: "FNO Premium", value: premiums.fnoOptionPremium },
+    { label: "Currency Premium", value: premiums.currencyPremium },
+    { label: "Commodity Premium", value: premiums.commodityPremium },
+    { label: "Total Premium", value: premiums.totalPremium },
+  ];
+
+  // Reusable table component
+  const renderTable = (items: { label: string; value: number }[]) => (
+    <table className="w-full text-sm">
+      <tbody>
+        {items.map((item, index) => (
+          <tr
+            key={item.label}
+            className={index % 2 === 0 ? "bg-[#F4F4F9]" : ""}
+          >
+            <td className="py-2 pl-2 text-[#6B7280] text-[14px]">
+              {item.label}
+            </td>
+            <td className="py-2 pr-2 text-[#6B7280] text-right text-[14px]">
+              ₹{formatCurrency(item.value)}
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  );
+
+  // Reusable section header with amount
+  const renderSectionHeader = (
+    title: string,
+    amount: number,
+    isFirst: boolean = false
+  ) => (
+    <div
+      className={`flex items-center mb-4 ${!isFirst ? "border-t pt-4" : ""}`}
+    >
+      <h2 className="text-base font-medium text-[#1DB954]">
+        {title} <Info size={16} className="inline ml-1 text-gray-400" />
+      </h2>
+      <div className="ml-auto text-base font-medium text-[#1DB954]">
+        ₹{formatCurrency(amount)}
+      </div>
+    </div>
+  );
+
   return (
     <div className="border border-gray-200 rounded-md p-4">
-      <div className="flex items-center mb-4">
-        <h2 className="text-base font-medium text-[#1DB954]">Total Balance <Info size={16} className="inline ml-1 text-gray-400" /></h2>
-        <div className="ml-auto text-base font-medium text-[#1DB954]">₹{formatCurrency(totalBalance)}</div>
+      {renderSectionHeader("Total Balance", totalBalance, true)}
+
+      <div className="mb-4 pt-2">{renderTable(balanceItems)}</div>
+
+      {renderSectionHeader("Margin Utilised", balanceData.marginUtilised)}
+
+      <div className="mb-4 pt-2">
+        <h3 className="text-sm font-normal mb-2">P&L (Profit & Loss)</h3>
+        {renderTable(profitLossItems)}
       </div>
-      
-      <div className="mb-4">
-        <table className="w-full text-sm">
-          <tbody>
-            <tr className="bg-[#F4F4F9]">
-              <td className="py-2 pl-2 text-[#6B7280] text-sm">Cash Balance</td>
-              <td className="py-2 pr-2  text-[#6B7280] text-right text-sm">₹{formatCurrency(balanceData.cashBalance)}</td>
-            </tr>
-            <tr>
-              <td className="py-2 pl-2 text-[#6B7280] text-sm">Collateral Balance</td>
-              <td className="py-2 pr-2  text-[#6B7280] text-right text-sm">₹{formatCurrency(balanceData.collateralBalance)}</td>
-            </tr>
-            <tr className="bg-[#F4F4F9]">
-              <td className="py-2 pl-2 text-[#6B7280] text-[14px]">Collateral (Liquid Funds)</td>
-              <td className="py-2 pr-2  text-[#6B7280] text-right text-[14px]">₹{formatCurrency(balanceData.collateralLiquidFunds)}</td>
-            </tr>
-          </tbody>
-        </table>
+
+      <div className="mb-4 pt-2">
+        <h3 className="text-sm font-normal mb-2">Margin</h3>
+        {renderTable(marginItems)}
       </div>
-      
-      <div className="flex items-center mb-4">
-        <h2 className="text-base font-medium text-[#1DB954]">Margin Utilised <Info size={16} className="inline ml-1 text-gray-400" /></h2>
-        <div className="ml-auto text-base font-medium text-[#1DB954]">₹{formatCurrency(balanceData.marginUtilised)}</div>
+
+      <div className="mb-4 pt-2">
+        <h3 className="text-sm font-normal mb-2">Premiums</h3>
+        {renderTable(premiumItems)}
       </div>
-      
-      <div className="mb-4">
-        <h3 className="text-base font-normal mb-2">P&L (Profit & Loss)</h3>
-        <table className="w-full text-sm">
-          <tbody>
-            <tr className="bg-[#F4F4F9]">
-              <td className="py-2 pl-2 text-[#6B7280] text-[14px]">Realized P&L</td>
-              <td className="py-2 pr-2  text-[#6B7280] text-right text-[14px]">₹{formatCurrency(profitLossData.realizedPL)}</td>
-            </tr>
-            <tr>
-              <td className="py-2 pl-2 text-[#6B7280] text-[14px]">Unrealized P&L</td>
-              <td className="py-2 pr-2  text-[#6B7280] text-right text-[14px]">₹{formatCurrency(profitLossData.unrealizedPL)}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      
-      <div className="mb-4">
-        <h3 className="text-base font-normal mb-2">Margin</h3>
-        <table className="w-full text-sm">
-          <tbody>
-            <tr className="bg-[#F4F4F9]">
-              <td className="py-2 pl-2 text-[#6B7280] text-[14px]">Span Margin</td>
-              <td className="py-2 pr-2  text-[#6B7280] text-right text-[14px]">₹{formatCurrency(margins.spanMargin)}</td>
-            </tr>
-            <tr>
-              <td className="py-2 pl-2 text-[#6B7280] text-[14px]">Exposure Margin</td>
-              <td className="py-2 pr-2  text-[#6B7280] text-right text-[14px]">₹{formatCurrency(margins.exposureMargin)}</td>
-            </tr>
-            <tr className="bg-[#F4F4F9]">
-              <td className="py-2 pl-2 text-[#6B7280] text-[14px]">CNC Amount</td>
-              <td className="py-2 pr-2  text-[#6B7280] text-right text-[14px]">₹{formatCurrency(margins.cncAmount)}</td>
-            </tr>
-            <tr>
-              <td className="py-2 pl-2 text-[#6B7280] text-[14px]">Commodity Additional Margin</td>
-              <td className="py-2 pr-2  text-[#6B7280] text-right text-[14px]">₹{formatCurrency(margins.commodityAdditionalMargin)}</td>
-            </tr>
-            <tr className="bg-[#F4F4F9]">
-              <td className="py-2 pl-2 text-[#6B7280] text-[14px]">Cash Intraday / MTF Margin</td>
-              <td className="py-2 pr-2  text-[#6B7280] text-right text-[14px]">₹{formatCurrency(margins.cashIntradayMTFMargin)}</td>
-            </tr>
-            <tr>
-              <td className="py-2 pl-2 text-[#6B7280] text-[14px]">CORO Margin</td>
-              <td className="py-2 pr-2  text-[#6B7280] text-right text-[14px]">₹{formatCurrency(margins.coroMargin)}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      
-      <div className="mb-4">
-        <h3 className="text-base font-normal mb-2">Premiums</h3>
-        <table className="w-full text-sm">
-          <tbody>
-            <tr className="bg-[#F4F4F9]">
-              <td className="py-2 pl-2 text-[#6B7280] text-[14px]">FNO Premium</td>
-              <td className="py-2 pr-2  text-[#6B7280] text-right text-[14px]">₹{formatCurrency(premiums.fnoOptionPremium)}</td>
-            </tr>
-            <tr>
-              <td className="py-2 pl-2 text-[#6B7280] text-[14px]">Currency Premium</td>
-              <td className="py-2 pr-2  text-[#6B7280] text-right text-[14px]">₹{formatCurrency(premiums.currencyPremium)}</td>
-            </tr>
-            <tr className="bg-[#F4F4F9]">
-              <td className="py-2 pl-2 text-[#6B7280] text-[14px]">Commodity Premium</td>
-              <td className="py-2 pr-2  text-[#6B7280] text-right text-[14px]">₹{formatCurrency(premiums.commodityPremium)}</td>
-            </tr>
-            <tr>
-              <td className="py-2 pl-2 text-[#6B7280] text-[14px]">Total Premium</td>
-              <td className="py-2 pr-2  text-[#6B7280] text-right text-[14px]">₹{formatCurrency(premiums.totalPremium)}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      
-      <div className="flex items-center">
-        <h2 className="text-base font-medium text-[#1DB954]">Withdrawable Balance <Info size={16} className="inline ml-1 text-gray-400" /></h2>
-        <div className="ml-auto text-base font-medium text-[#1DB954]">₹{formatCurrency(withdrawable)}</div>
-      </div>
+
+      {renderSectionHeader("Withdrawable Balance", withdrawable)}
     </div>
   );
 };
