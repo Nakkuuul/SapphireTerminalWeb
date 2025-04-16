@@ -136,9 +136,9 @@ const Navbar = () => {
 
                         {/* Green underline animation - consistent for both hover & active states */}
                         <span
-                          className={`absolute -bottom-5 left-0 right-0 h-[3px] bg-[#1DB954] transition-all duration-300 w-0 
-                          ${isActive ? "w-[140%] -left-[20%]" : ""} 
-                          group-hover:w-[140%] group-hover:-left-[20%]`}
+                          className={`absolute -bottom-5 left-1/2 transform -translate-x-1/2 h-[3px] bg-[#1DB954] transition-all duration-300 w-0 
+                          ${isActive ? "w-[140%]" : ""} 
+                          group-hover:w-[140%]`}
                         ></span>
                       </Link>
                     </div>
