@@ -2,7 +2,6 @@
 
 import React, { useState } from "react";
 import { ChevronLeft, RefreshCw } from "lucide-react";
-import { useTheme } from "@/context/ThemeContext";
 
 interface PanVerificationProps {
   panNumber: string;
@@ -17,7 +16,6 @@ const PanVerification: React.FC<PanVerificationProps> = ({
   setCurrentStep, 
   onCancel 
 }) => {
-  const { isDarkMode } = useTheme();
   const [captchaInput, setCaptchaInput] = useState<string>("");
   const [captchaText, setCaptchaText] = useState<string>(generateCaptcha());
   const [error, setError] = useState<string>("");
@@ -69,24 +67,22 @@ const PanVerification: React.FC<PanVerificationProps> = ({
       <div className="flex items-center mb-2">
         <button 
           onClick={onCancel}
-          className={`p-1 rounded-full ${isDarkMode ? "hover:bg-gray-700" : "hover:bg-gray-200"}`}
+          className="p-1 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700"
         >
-          <ChevronLeft size={20} className={isDarkMode ? "text-white" : "text-gray-800"} />
+          <ChevronLeft size={20} className="text-gray-800 dark:text-white" />
         </button>
-        <h2 className={`text-lg font-medium ml-2 ${isDarkMode ? "text-white" : "text-gray-800"}`}>
+        <h2 className="text-lg font-medium ml-2 text-gray-800 dark:text-white">
           Account Recovery
         </h2>
       </div>
 
-      <p className={`text-sm ${isDarkMode ? "text-gray-300" : "text-gray-600"}`}>
+      <p className="text-sm text-gray-600 dark:text-gray-300">
         Please verify your PAN number to recover your account access.
       </p>
 
       <form onSubmit={handleSubmit} className="space-y-8">
         <div>
-          <label 
-            className={`block text-sm font-medium mb-2 ${isDarkMode ? "text-gray-200" : "text-gray-700"}`}
-          >
+          <label className="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-200">
             PAN Number
           </label>
           <input
@@ -98,37 +94,25 @@ const PanVerification: React.FC<PanVerificationProps> = ({
             }}
             maxLength={10}
             placeholder="Enter PAN Number"
-            className={`w-full p-2 rounded-lg border ${
-              isDarkMode 
-                ? "bg-[#1E1E1E] text-white border-gray-600 focus:border-blue-400" 
-                : "bg-white text-gray-900 border-gray-300 focus:border-blue-500"
-            } focus:ring-1 focus:ring-opacity-50`}
+            className="w-full p-2 rounded-lg border bg-white dark:bg-[#1E1E1E] text-gray-900 dark:text-white border-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-400 focus:ring-1 focus:ring-opacity-50"
           />
         </div>
 
         <div>
-          <label 
-            className={`block text-sm font-medium mb-2 ${isDarkMode ? "text-gray-200" : "text-gray-700"}`}
-          >
+          <label className="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-200">
             Captcha Verification
           </label>
           
           <div className="flex items-center space-x-2 mb-3">
-            <div 
-              className={`flex-1 p-2 text-center font-mono text-lg ${
-                isDarkMode ? "bg-gray-700 text-gray-200" : "bg-gray-100 text-gray-800"
-              } rounded select-none`}
-            >
+            <div className="flex-1 p-2 text-center font-mono text-lg bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded select-none">
               {captchaText}
             </div>
             <button
               type="button"
               onClick={refreshCaptcha}
-              className={`p-2 rounded ${
-                isDarkMode ? "bg-gray-700 hover:bg-gray-600" : "bg-gray-200 hover:bg-gray-300"
-              }`}
+              className="p-2 rounded bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600"
             >
-              <RefreshCw size={18} className={isDarkMode ? "text-white" : "text-gray-800"} />
+              <RefreshCw size={18} className="text-gray-800 dark:text-white" />
             </button>
           </div>
           
@@ -140,11 +124,7 @@ const PanVerification: React.FC<PanVerificationProps> = ({
               setError("");
             }}
             placeholder="Enter captcha code"
-            className={`w-full p-2 rounded-lg border ${
-              isDarkMode 
-                ? "bg-[#1E1E1E] text-white border-gray-600 focus:border-blue-400" 
-                : "bg-white text-gray-900 border-gray-300 focus:border-blue-500"
-            } focus:ring-1 focus:ring-opacity-50`}
+            className="w-full p-2 rounded-lg border bg-white dark:bg-[#1E1E1E] text-gray-900 dark:text-white border-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-400 focus:ring-1 focus:ring-opacity-50"
           />
         </div>
 

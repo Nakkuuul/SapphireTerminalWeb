@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect } from "react";
 import { ChevronLeft } from "lucide-react";
-import { useTheme } from "@/context/ThemeContext";
 
 interface OtpVerificationProps {
   setCurrentStep: (step: number) => void;
@@ -13,7 +12,6 @@ const OtpVerification: React.FC<OtpVerificationProps> = ({
   setCurrentStep, 
   onCancel 
 }) => {
-  const { isDarkMode } = useTheme();
   const [otp, setOtp] = useState<string[]>(["", "", "", "", "", ""]);
   const [timeLeft, setTimeLeft] = useState<number>(60);
   const [error, setError] = useState<string>("");
@@ -98,24 +96,22 @@ const OtpVerification: React.FC<OtpVerificationProps> = ({
       <div className="flex items-center mb-2">
         <button 
           onClick={() => setCurrentStep(0)}
-          className={`p-1 rounded-full ${isDarkMode ? "hover:bg-gray-700" : "hover:bg-gray-200"}`}
+          className="p-1 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700"
         >
-          <ChevronLeft size={20} className={isDarkMode ? "text-white" : "text-gray-800"} />
+          <ChevronLeft size={20} className="text-gray-800 dark:text-white" />
         </button>
-        <h2 className={`text-lg font-medium ml-2 ${isDarkMode ? "text-white" : "text-gray-800"}`}>
+        <h2 className="text-lg font-medium ml-2 text-gray-800 dark:text-white">
           OTP Verification
         </h2>
       </div>
 
-      <p className={`text-sm ${isDarkMode ? "text-gray-300" : "text-gray-600"}`}>
+      <p className="text-sm text-gray-600 dark:text-gray-300">
         We have sent a 6-digit OTP to your registered email and phone number.
       </p>
 
       <form onSubmit={handleSubmit} className="space-y-6">
         <div>
-          <label 
-            className={`block text-sm font-medium mb-2 ${isDarkMode ? "text-gray-200" : "text-gray-700"}`}
-          >
+          <label className="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-200">
             Enter OTP
           </label>
           
@@ -130,11 +126,7 @@ const OtpVerification: React.FC<OtpVerificationProps> = ({
                 onChange={(e) => handleOtpChange(index, e.target.value)}
                 onKeyDown={(e) => handleKeyDown(index, e)}
                 autoComplete="off"
-                className={`w-[42px] h-[42px] text-center text-lg rounded-md border ${
-                  isDarkMode 
-                    ? "bg-[#1E1E1E] text-white border-gray-600 focus:border-blue-400" 
-                    : "bg-white text-gray-900 border-gray-300 focus:border-blue-500"
-                } focus:ring-1 focus:ring-opacity-50 focus:outline-none`}
+                className="w-[42px] h-[42px] text-center text-lg rounded-md border bg-white dark:bg-[#1E1E1E] text-gray-900 dark:text-white border-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-400 focus:ring-1 focus:ring-opacity-50 focus:outline-none"
                 autoFocus={index === 0}
               />
             ))}
@@ -154,7 +146,7 @@ const OtpVerification: React.FC<OtpVerificationProps> = ({
             disabled={timeLeft > 0}
             className={`text-xs ${
               timeLeft > 0
-                ? isDarkMode ? "text-gray-500" : "text-gray-400"
+                ? "text-gray-400 dark:text-gray-500"
                 : "text-blue-500 hover:text-blue-600"
             }`}
           >
@@ -163,21 +155,21 @@ const OtpVerification: React.FC<OtpVerificationProps> = ({
               : "Resend OTP"
             }
           </button>
-          
-
         </div>
+        
+        <button
+          type="submit"
+          className={`px-4 py-2 text-white font-semibold text-sm rounded-lg transition-all duration-200 ${
+            otp.join("").length !== 6
+              ? "bg-[#00A645] cursor-not-allowed opacity-70"
+              : "bg-[#00C853] hover:bg-[#00B649]"
+          }`}
+          disabled={otp.join("").length !== 6}
+        >
+          Verify
+        </button>
       </form>
-      <button
-            type="submit"
-            className={`px-4 py-2 text-white font-semibold text-sm rounded-lg transition-all duration-200 ${
-              otp.join("").length !== 6
-                ? "bg-[#00A645] cursor-not-allowed opacity-70"
-                : "bg-[#00C853] hover:bg-[#00B649]"
-            }`}
-            disabled={otp.join("").length !== 6}
-          >
-            Verify
-          </button>
+      
     </div>
   );
 };

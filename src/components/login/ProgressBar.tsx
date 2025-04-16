@@ -2,28 +2,28 @@
 
 import React from "react";
 import { motion } from "framer-motion";
-import { useTheme } from '@/context/ThemeContext';
 
 interface ProgressBarProps {
   currentStep: number;
   isRedirecting: boolean;
+  otpCompleted?: boolean;
 }
 
-const ProgressBar: React.FC<ProgressBarProps> = ({ currentStep, isRedirecting }) => {
-  const { isDarkMode } = useTheme();
+const ProgressBar: React.FC<ProgressBarProps> = ({ 
+  currentStep, 
+  isRedirecting,
+  otpCompleted = false
+}) => {
   const progressValue = React.useMemo(() => {
-    if (isRedirecting) return 100;
+    if (isRedirecting || otpCompleted) return 100;
     if (currentStep === 0) return 0;
     if (currentStep === 1) return 50;
-    return currentStep * 50;
-  }, [currentStep, isRedirecting]);
-
+    if (currentStep === 2) return 75; // OTP screen but not completed
+    return currentStep * 33; // For any other steps
+  }, [currentStep, isRedirecting, otpCompleted]);
+  
   return (
-    <div
-      className={`w-full h-2 ${
-        isDarkMode ? "bg-[#121212]" : "bg-gray-200"
-      } overflow-hidden`}
-    >
+    <div className="w-full h-2 dark:bg-[#121212] overflow-hidden">
       <motion.div
         className="h-full bg-[#02B42D] origin-left"
         initial={{ scaleX: 0 }}

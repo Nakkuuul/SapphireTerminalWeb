@@ -3,7 +3,6 @@
 import React, { useState, useEffect } from 'react';
 import { RotateCw } from "lucide-react";
 import { motion } from "framer-motion";
-import { useTheme } from '@/context/ThemeContext';
 import Image from 'next/image';
 
 interface VerifyScreenProps {
@@ -13,7 +12,6 @@ interface VerifyScreenProps {
 }
 
 const VerifyScreen: React.FC<VerifyScreenProps> = ({ username, setCurrentStep, greeting }) => {
-  const { isDarkMode } = useTheme();
   const [timeLeft, setTimeLeft] = useState<number>(15);
   const [verificationCode, setVerificationCode] = useState<number>(Math.floor(Math.random() * 90 + 10));
   const [isExpired, setIsExpired] = useState<boolean>(false);
@@ -84,13 +82,13 @@ const VerifyScreen: React.FC<VerifyScreenProps> = ({ username, setCurrentStep, g
         />
       </div>
       <div className="space-y-2 text-center">
-        <h2 className={`text-xl font-normal ${isDarkMode ? "text-white" : "text-gray-900"}`}>
+        <h2 className="text-xl font-normal text-gray-900 dark:text-white">
           {greeting}, {username}!
         </h2>
-        <h3 className={`text-lg font-normal ${isDarkMode ? "text-white" : "text-gray-900"}`}>
+        <h3 className="text-lg font-normal text-gray-900 dark:text-white">
           Check your Mobile Phone
         </h3>
-        <p className={`text-xs ${isDarkMode ? "text-gray-200" : "text-gray-600"}`}>
+        <p className="text-xs text-gray-600 dark:text-gray-200">
           Check your notification bar and tap the displayed code to sign in to the terminal.
         </p>
       </div>
@@ -112,7 +110,7 @@ const VerifyScreen: React.FC<VerifyScreenProps> = ({ username, setCurrentStep, g
         )}
       </div>
 
-      <p className={`text-sm font-medium text-center ${isDarkMode ? "text-gray-300" : "text-gray-600"}`}>
+      <p className="text-sm font-medium text-center text-gray-600 dark:text-gray-300">
         {isExpired ? (
           "Click the retry button to generate a new code"
         ) : (

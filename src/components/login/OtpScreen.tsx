@@ -2,16 +2,19 @@
 
 import React, { useState, useEffect, KeyboardEvent, ChangeEvent } from 'react';
 import { useRouter } from 'next/navigation';
-import { useTheme } from '@/context/ThemeContext';
 
 interface OtpScreenProps {
   username: string;
   greeting: string;
+  setOtpCompleted?: (completed: boolean) => void;
 }
 
-const OtpScreen: React.FC<OtpScreenProps> = ({ username, greeting }) => {
+const OtpScreen: React.FC<OtpScreenProps> = ({ 
+  username, 
+  greeting,
+  setOtpCompleted = () => {} // Default no-op function
+}) => {
   const router = useRouter();
-  const { isDarkMode } = useTheme();
   const [otp, setOtp] = useState<string[]>(["", "", "", "", "", ""]);
   const [isRedirecting, setIsRedirecting] = useState<boolean>(false);
   const [isF, setIsF] = useState<boolean>(false);
@@ -32,6 +35,12 @@ const OtpScreen: React.FC<OtpScreenProps> = ({ username, greeting }) => {
       return () => clearInterval(timer);
     }
   }, [isF, iT]);
+
+  const handleRedirect = () => {
+    setTimeout(() => {
+      router.push('/trades/stocks');
+    }, 1500); // delay in milliseconds (1.5 seconds)
+  };  
 
   const handleOtpComplete = () => {
     setIsRedirecting(true);
@@ -78,14 +87,14 @@ const OtpScreen: React.FC<OtpScreenProps> = ({ username, greeting }) => {
 
   return (
     <div key="otp" className="flex-1 flex flex-col justify-center space-y-3 px-2">
-      <h2 className={`text-xl font-semibold ${isDarkMode ? "text-white" : "text-gray-900"}`}>
+      <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
         {greeting}, {username}!
       </h2>
       <div className="space-y-1">
-        <h3 className={`text-lg font-normal ${isDarkMode ? "text-white" : "text-gray-900"}`}>
+        <h3 className="text-lg font-normal text-gray-900 dark:text-white">
           Enter OTP
         </h3>
-        <p className={`text-xs ${isDarkMode ? "text-gray-300" : "text-gray-600"}`}>
+        <p className="text-xs text-gray-600 dark:text-gray-300">
           We have sent an OTP to registered email & phone
         </p>
       </div>
@@ -103,11 +112,7 @@ const OtpScreen: React.FC<OtpScreenProps> = ({ username, greeting }) => {
             pattern="\d*"
             onChange={(e: ChangeEvent<HTMLInputElement>) => handleOtpChange(index, e.target.value)}
             onKeyDown={(e: KeyboardEvent<HTMLInputElement>) => handleKeyDown(index, e)}
-            className={`w-[42px] h-[42px] text-center text-lg rounded-md border ${
-              isDarkMode 
-                ? "bg-[#1E1E1E] text-white border-gray-600 focus:border-blue-400" 
-                : "bg-white text-gray-900 border-gray-300 focus:border-blue-500"
-            } focus:ring-1 focus:ring-opacity-50 focus:outline-none`}
+            className="w-[42px] h-[42px] text-center text-lg rounded-md border bg-white dark:bg-[#1E1E1E] text-gray-900 dark:text-white border-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-400 focus:ring-1 focus:ring-opacity-50 focus:outline-none"
             autoFocus={index === 0}
             disabled={isRedirecting}
           />
@@ -136,6 +141,15 @@ const OtpScreen: React.FC<OtpScreenProps> = ({ username, greeting }) => {
             : "Looking for more ways to sign in?"}
         </button>
       </div>
+      <button
+        onClick={() => {
+          setOtpCompleted(true);
+          handleRedirect();
+        }}
+        className="mt-2 px-4 py-2 bg-gray-200 dark:bg-gray-700 rounded-md text-sm"
+      >
+        Test: Complete Progress
+      </button>
     </div>
   );
 };

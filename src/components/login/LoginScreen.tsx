@@ -2,7 +2,6 @@
 
 import React, { useState, FormEvent } from "react";
 import { Eye, EyeOff } from "lucide-react";
-import { useTheme } from "@/context/ThemeContext";
 import TroubleLogin from "./trouble/TroubleLogin";
 
 interface LoginScreenProps {
@@ -18,7 +17,6 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
   setUsername,
   setShowProgressBar = () => {} // Optional prop with default no-op function
 }) => {
-  const { isDarkMode } = useTheme();
   const [password, setPassword] = useState<string>("");
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [error, setError] = useState<boolean>(false);
@@ -53,29 +51,17 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
   return (
     <div className="flex-1 flex flex-col justify-center space-y-4 px-6">
       <div className="text-center mb-7 mt-10 space-y-2">
-        <h1
-          className={`text-xl -mt-20 sm:text-3xl font-normal ${
-            isDarkMode ? "text-white" : "text-black"
-          }`}
-        >
+        <h1 className="text-xl -mt-20 sm:text-3xl font-normal text-black dark:text-white">
           Sapphire Terminal
         </h1>
-        <p
-          className={`text-xs sm:text-sm   ${
-            isDarkMode ? "text-gray-300" : "text-gray-600"
-          }`}
-        >
+        <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-300">
           Sign in to manage your investments and trade efficiently
         </p>
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
-          <h3
-            className={`text-sm  font-medium mb-3 ${
-              isDarkMode ? "text-gray-200" : "text-gray-700"
-            }`}
-          >
+          <h3 className="text-sm font-medium mb-3 text-gray-700 dark:text-gray-200">
             Client Code
           </h3>
           <input
@@ -87,28 +73,18 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
             }}
             className={`w-full p-3 rounded-lg transition-all duration-200 
               ${shake ? "animate-[shake_0.5s_ease-in-out]" : ""} 
-              ${
-                isDarkMode
-                  ? "bg-[#1E1E1E] text-white"
-                  : "bg-white text-gray-900"
-              } 
+              bg-white dark:bg-[#1E1E1E] text-gray-900 dark:text-white
               ${
                 error
                   ? "border-red-500 focus:border-red-500 focus:ring-red-500"
-                  : isDarkMode
-                  ? "border-gray-600 focus:border-blue-400 focus:ring-blue-400"
-                  : "border-gray-300 focus:border-blue-500 focus:ring-blue-400"
+                  : "border-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-400 focus:ring-blue-400"
               } border focus:ring-1 focus:ring-opacity-50`}
             placeholder="Enter your client code"
           />
         </div>
 
         <div className="relative w-full">
-          <h3
-            className={`text-sm font-medium mb-3 ${
-              isDarkMode ? "text-gray-200" : "text-gray-700"
-            }`}
-          >
+          <h3 className="text-sm font-medium mb-3 text-gray-700 dark:text-gray-200">
             Password
           </h3>
           <div className="relative">
@@ -121,28 +97,18 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
               }}
               className={`w-full p-3 rounded-lg transition-all duration-200 
                 ${shake ? "animate-[shake_0.5s_ease-in-out]" : ""} 
-                ${
-                  isDarkMode
-                    ? "bg-[#1E1E1E] text-white"
-                    : "bg-white text-gray-900"
-                } 
+                bg-white dark:bg-[#1E1E1E] text-gray-900 dark:text-white
                 ${
                   error
                     ? "border-red-500 focus:border-red-500 focus:ring-red-500"
-                    : isDarkMode
-                    ? "border-gray-600 focus:border-blue-400 focus:ring-blue-400"
-                    : "border-gray-300 focus:border-blue-500 focus:ring-blue-400"
+                    : "border-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-400 focus:ring-blue-400"
                 } border focus:ring-1 focus:ring-opacity-50`}
               placeholder="Enter your password"
             />
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
-              className={`absolute inset-y-0 right-0 flex items-center px-3 ${
-                isDarkMode
-                  ? "text-gray-400 hover:text-white"
-                  : "text-gray-600 hover:text-gray-900"
-              } transition-colors duration-200`}
+              className="absolute inset-y-0 right-0 flex items-center px-3 text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white transition-colors duration-200"
             >
               {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
             </button>
@@ -177,9 +143,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
             href="https://www.sapphirebroking.com/signup"
             target="_blank"
             rel="noopener noreferrer"
-            className={`text-center  mt-2 text-xs hover:text-gray-500 transition-all duration-200 ${
-              isDarkMode ? "text-gray-400" : "text-gray-600"
-            }`}
+            className="text-center mt-2 text-xs hover:text-gray-500 transition-all duration-200 text-gray-600 dark:text-gray-400"
           >
             Don&apos;t have an account with us? Create one now!
           </a>

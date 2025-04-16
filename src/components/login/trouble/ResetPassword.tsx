@@ -2,7 +2,6 @@
 
 import React, { useState } from "react";
 import { ChevronLeft, Eye, EyeOff, Check } from "lucide-react";
-import { useTheme } from "@/context/ThemeContext";
 
 interface ResetPasswordProps {
   panNumber: string;
@@ -15,7 +14,6 @@ const ResetPassword: React.FC<ResetPasswordProps> = ({
   onComplete, 
   onCancel 
 }) => {
-  const { isDarkMode } = useTheme();
   const [newPassword, setNewPassword] = useState<string>("");
   const [confirmPassword, setConfirmPassword] = useState<string>("");
   const [showNewPassword, setShowNewPassword] = useState<boolean>(false);
@@ -113,24 +111,22 @@ const ResetPassword: React.FC<ResetPasswordProps> = ({
       <div className="flex items-center mb-2">
         <button 
           onClick={onCancel}
-          className={`p-1 rounded-full ${isDarkMode ? "hover:bg-gray-700" : "hover:bg-gray-200"}`}
+          className="p-1 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700"
         >
-          <ChevronLeft size={20} className={isDarkMode ? "text-white" : "text-gray-800"} />
+          <ChevronLeft size={20} className="text-gray-800 dark:text-white" />
         </button>
-        <h2 className={`text-lg font-medium ml-2 ${isDarkMode ? "text-white" : "text-gray-800"}`}>
+        <h2 className="text-lg font-medium ml-2 text-gray-800 dark:text-white">
           Reset Password
         </h2>
       </div>
 
-      <p className={`text-xs ${isDarkMode ? "text-gray-300" : "text-gray-600"}`}>
+      <p className="text-xs text-gray-600 dark:text-gray-300">
         Please create a new password for your account.
       </p>
 
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
-          <label 
-            className={`block text-sm font-medium mb-1 ${isDarkMode ? "text-gray-200" : "text-gray-700"}`}
-          >
+          <label className="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-200">
             New Password
           </label>
           <div className="relative">
@@ -138,11 +134,7 @@ const ResetPassword: React.FC<ResetPasswordProps> = ({
               type={showNewPassword ? "text" : "password"}
               value={newPassword}
               onChange={(e) => setNewPassword(e.target.value)}
-              className={`w-full p-2 pr-10 rounded-lg border ${
-                isDarkMode 
-                  ? "bg-[#1E1E1E] text-white border-gray-600 focus:border-blue-400" 
-                  : "bg-white text-gray-900 border-gray-300 focus:border-blue-500"
-              } focus:ring-1 focus:ring-opacity-50 ${
+              className={`w-full p-2 pr-10 rounded-lg border bg-white dark:bg-[#1E1E1E] text-gray-900 dark:text-white border-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-400 focus:ring-1 focus:ring-opacity-50 ${
                 errors.newPassword ? "border-red-500 focus:border-red-500" : ""
               }`}
               placeholder="Enter new password"
@@ -150,11 +142,7 @@ const ResetPassword: React.FC<ResetPasswordProps> = ({
             <button
               type="button"
               onClick={() => setShowNewPassword(!showNewPassword)}
-              className={`absolute inset-y-0 right-0 flex items-center px-3 ${
-                isDarkMode
-                  ? "text-gray-400 hover:text-white"
-                  : "text-gray-600 hover:text-gray-900"
-              }`}
+              className="absolute inset-y-0 right-0 flex items-center px-3 text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
             >
               {showNewPassword ? <EyeOff size={18} /> : <Eye size={18} />}
             </button>
@@ -165,9 +153,7 @@ const ResetPassword: React.FC<ResetPasswordProps> = ({
         </div>
 
         <div>
-          <label 
-            className={`block text-sm font-medium mb-1 ${isDarkMode ? "text-gray-200" : "text-gray-700"}`}
-          >
+          <label className="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-200">
             Confirm Password
           </label>
           <div className="relative">
@@ -175,11 +161,7 @@ const ResetPassword: React.FC<ResetPasswordProps> = ({
               type={showConfirmPassword ? "text" : "password"}
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
-              className={`w-full p-2 pr-10 rounded-lg border ${
-                isDarkMode 
-                  ? "bg-[#1E1E1E] text-white border-gray-600 focus:border-blue-400" 
-                  : "bg-white text-gray-900 border-gray-300 focus:border-blue-500"
-              } focus:ring-1 focus:ring-opacity-50 ${
+              className={`w-full p-2 pr-10 rounded-lg border bg-white dark:bg-[#1E1E1E] text-gray-900 dark:text-white border-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-400 focus:ring-1 focus:ring-opacity-50 ${
                 errors.confirmPassword ? "border-red-500 focus:border-red-500" : ""
               }`}
               placeholder="Confirm new password"
@@ -187,11 +169,7 @@ const ResetPassword: React.FC<ResetPasswordProps> = ({
             <button
               type="button"
               onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-              className={`absolute inset-y-0 right-0 flex items-center px-3 ${
-                isDarkMode
-                  ? "text-gray-400 hover:text-white"
-                  : "text-gray-600 hover:text-gray-900"
-              }`}
+              className="absolute inset-y-0 right-0 flex items-center px-3 text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
             >
               {showConfirmPassword ? <EyeOff size={18} /> : <Eye size={18} />}
             </button>
@@ -201,12 +179,12 @@ const ResetPassword: React.FC<ResetPasswordProps> = ({
           )}
         </div>
 
-        <div className={`text-xs space-y-1 ${isDarkMode ? "text-gray-300" : "text-gray-600"}`}>
+        <div className="text-xs space-y-1 text-gray-600 dark:text-gray-300">
           <p className="font-medium">Password requirements:</p>
           <ul className="space-y-1">
             {requirements.map((req) => (
               <li key={req.id} className="flex items-center">
-                <span className={`mr-1 ${req.met ? "text-green-500" : isDarkMode ? "text-gray-500" : "text-gray-400"}`}>
+                <span className={`mr-1 ${req.met ? "text-green-500" : "text-gray-400 dark:text-gray-500"}`}>
                   {req.met ? <Check size={12} /> : "•"}
                 </span>
                 <span className={req.met ? "font-medium" : ""}>{req.text}</span>

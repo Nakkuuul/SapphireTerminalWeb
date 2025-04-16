@@ -2,19 +2,18 @@
 
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { useTheme } from '@/context/ThemeContext';
 import LoginScreen from '../login/LoginScreen';
 import VerifyScreen from '../login/VerifyScreen';
 import OtpScreen from '../login/OtpScreen';
 import ProgressBar from "../login/ProgressBar";
 
 const Login = () => {
-  const { isDarkMode } = useTheme();
   const [currentStep, setCurrentStep] = useState<number>(0);
   const [username, setUsername] = useState<string>("");
   const [greeting, setGreeting] = useState<string>("");
   const [isRedirecting, setIsRedirecting] = useState<boolean>(false);
   const [showProgressBar, setShowProgressBar] = useState<boolean>(true);
+  const [otpCompleted, setOtpCompleted] = useState<boolean>(false);
 
   const slideVariants = {
     initial: (direction: number) => ({
@@ -59,20 +58,16 @@ const Login = () => {
       setShowProgressBar={setShowProgressBar}
     />,
     <VerifyScreen key="verify" username={username} setCurrentStep={setCurrentStep} greeting={greeting} />,
-    <OtpScreen key="otp" username={username} greeting={greeting} />,
+    <OtpScreen key="otp" username={username} greeting={greeting} setOtpCompleted={setOtpCompleted} />,
   ];
 
   return (
-    <div className={`fixed inset-0 flex flex-col items-center justify-center p-3 transition-colors duration-300 ${
-      isDarkMode ? "bg-[#121212]" : "bg-white"
-    }`}>
+    <div className="fixed inset-0 flex flex-col items-center justify-center p-3 transition-colors duration-300 bg-white dark:bg-[#121212]">
       <div className="container max-w-md flex flex-col items-center justify-center gap-3">
-        <div className={`w-full h-[500px] sm:h-[520px] md:h-[550px] shadow-xl transition-colors duration-300 flex flex-col overflow-hidden rounded-md ${
-          isDarkMode ? "bg-[#1E1E1E]" : "bg-[#FAFAFA]"
-        }`}>
+        <div className="w-full h-[500px] sm:h-[520px] md:h-[550px] shadow-xl transition-colors duration-300 flex flex-col overflow-hidden rounded-md bg-[#FAFAFA] dark:bg-[#1E1E1E]">
           {/* Progress bar positioned at the top of the black box, conditionally shown */}
           {showProgressBar && (
-            <ProgressBar currentStep={currentStep} isRedirecting={isRedirecting} />
+            <ProgressBar currentStep={currentStep} isRedirecting={isRedirecting} otpCompleted={otpCompleted} />
           )}
           
           <div className="p-4 sm:p-5 md:p-6 flex-1 flex flex-col overflow-hidden">
@@ -92,23 +87,21 @@ const Login = () => {
             </AnimatePresence>
 
             <div className="mt-auto pt-3 sm:pt-4">
-              <div className={`flex flex-wrap justify-center items-center gap-2 text-xs ${
-                isDarkMode ? "text-gray-300" : "text-gray-600"
-              }`}>
+              <div className="flex flex-wrap justify-center items-center gap-2 text-xs text-gray-600 dark:text-gray-300">
                 <a href="https://www.sapphirebroking.com/privacy-policy"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="hover:text-[#CDCDCD] transition-all duration-200 ease-in-out">
                   Privacy Policy
                 </a>
-                <span className={`${isDarkMode ? "text-[#FFEAEA]" : "text-black"} font-extrabold`}>•</span>
+                <span className="text-black dark:text-[#FFEAEA] font-extrabold">•</span>
                 <a href="https://www.sapphirebroking.com/terms-and-conditions"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="hover:text-[#CDCDCD] transition-all duration-200 ease-in-out">
                   Terms & Conditions
                 </a>
-                <span className={`${isDarkMode ? "text-[#FFEAEA]" : "text-black"} font-extrabold`}>•</span>
+                <span className="text-black dark:text-[#FFEAEA] font-extrabold">•</span>
                 <a href="https://www.sapphirebroking.com/contact"
                     target="_blank"
                     rel="noopener noreferrer"
@@ -121,10 +114,10 @@ const Login = () => {
         </div>
 
         <div className="w-full px-2 space-y-1">
-          <div className={`text-center text-xs ${isDarkMode ? "text-gray-500" : "text-gray-600"}`}>
+          <div className="text-center text-xs text-gray-600 dark:text-gray-500">
             NSE, BSE, MCX & NCDEX – SEBI Registration no.: excg.sebi.regn.number | CDSL – SEBI Registration no.: cdsl.sebi.regn.number
           </div>
-          <div className={`text-center text-xs ${isDarkMode ? "text-gray-500" : "text-gray-600"}`}>
+          <div className="text-center text-xs text-gray-600 dark:text-gray-500">
             © 2025 Sapphire Broking. All Rights Reserved.
           </div>
         </div>
