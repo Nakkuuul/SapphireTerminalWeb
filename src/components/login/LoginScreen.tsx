@@ -28,9 +28,16 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
     if (username.toLowerCase() === "user" && password === "user") {
       setCurrentStep(1);
     } else {
+      // Set error and trigger shake animation
       setError(true);
       setShake(true);
-      setTimeout(() => setShake(false), 300);
+      
+      // Clear the input fields
+      setUsername("");
+      setPassword("");
+      
+      // Remove shake animation after it completes
+      setTimeout(() => setShake(false), 500);
     }
   };
 
@@ -48,8 +55,32 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
     return <TroubleLogin onCancel={handleTroubleLoginCancel} />;
   }
 
+  // Inline animation styles
+  const shakeStyle = shake ? {
+    animation: 'shake 0.5s ease-in-out',
+  } : {};
+
+  const keyframes = `
+    @keyframes shake {
+      0% { transform: translateX(0); }
+      10% { transform: translateX(-5px); }
+ 
+      30% { transform: translateX(5px); }
+
+      50% { transform: translateX(-5px); }
+
+      70% { transform: translateX(5px); }
+
+      90% { transform: translateX(-5px); }
+      100% { transform: translateX(0); }
+    }
+  `;
+
   return (
     <div className="flex-1 flex flex-col justify-center space-y-4 px-6">
+      {/* Inject the keyframes for the shake animation */}
+      <style jsx>{keyframes}</style>
+      
       <div className="text-center mb-7 mt-10 space-y-2">
         <h1 className="text-xl -mt-20 sm:text-3xl font-normal text-black dark:text-white">
           Sapphire Terminal
@@ -71,8 +102,8 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
               setError(false);
               setUsername(e.target.value.toUpperCase());
             }}
+            style={shakeStyle}
             className={`w-full p-3 rounded-lg transition-all duration-200 
-              ${shake ? "animate-[shake_0.5s_ease-in-out]" : ""} 
               bg-white dark:bg-[#1E1E1E] text-gray-900 dark:text-white
               ${
                 error
@@ -95,8 +126,8 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
                 setError(false);
                 setPassword(e.target.value);
               }}
+              style={shakeStyle}
               className={`w-full p-3 rounded-lg transition-all duration-200 
-                ${shake ? "animate-[shake_0.5s_ease-in-out]" : ""} 
                 bg-white dark:bg-[#1E1E1E] text-gray-900 dark:text-white
                 ${
                   error
@@ -123,11 +154,6 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
         </div>
 
         <div className="pt-6 flex flex-col items-center">
-          {error && (
-            <p className="text-red-500 mb-3 text-sm text-center">
-              ⚠️ Invalid username or password
-            </p>
-          )}
           <button
             type="submit"
             disabled={!username || !password}

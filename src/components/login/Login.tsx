@@ -62,7 +62,7 @@ const Login = () => {
   ];
 
   return (
-    <div className="fixed inset-0 flex flex-col items-center justify-center p-3 transition-colors duration-300 bg-white dark:bg-[#121212]">
+    <div className="fixed inset-0 flex flex-col items-center justify-center p-3 transition-colors duration-300 bg-[#FFFFF] dark:bg-[#121212]">
       <div className="container max-w-md flex flex-col items-center justify-center gap-3">
         <div className="w-full h-[500px] sm:h-[520px] md:h-[550px] shadow-xl transition-colors duration-300 flex flex-col overflow-hidden rounded-md bg-[#FAFAFA] dark:bg-[#1E1E1E]">
           {/* Progress bar positioned at the top of the black box, conditionally shown */}
