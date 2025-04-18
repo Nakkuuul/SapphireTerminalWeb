@@ -100,14 +100,14 @@ const PanVerification: React.FC<PanVerificationProps> = ({
   return (
     <>
     <div className="flex-1 flex flex-col space-y-8 px-6">
-      <div className="flex items-center mb-2">
+      <div className="flex items-center -ml-9 -mt-2 ">
         <button 
           onClick={onCancel}
           className="p-1 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700"
         >
           <ChevronLeft size={20} className="text-gray-800 dark:text-white" />
         </button>
-        <h2 className="text-lg font-medium ml-2 text-gray-800 dark:text-white">
+        <h2 onClick={onCancel} className="text-lg  font-medium  hover:cursor-pointer text-gray-800 dark:text-white">
           Account Recovery
         </h2>
       </div>
