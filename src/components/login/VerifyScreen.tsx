@@ -70,8 +70,8 @@ const VerifyScreen: React.FC<VerifyScreenProps> = ({ username, setCurrentStep, g
   const circleStyle = "w-16 h-16 flex items-center justify-center text-2xl font-bold text-white bg-[#3B3B3B] rounded-full shadow-lg";
 
   return (
-    <div key="verify" className="flex-1 flex flex-col justify-center space-y-3 px-2">
-      <div className="flex justify-center">
+    <div key="verify" className="flex-1 flex flex-col justify-center space-y-3 px-6">
+      <div className="flex justify-center -mt-8">
         <Image 
           src="/login/clock.png" 
           alt="Time" 
@@ -88,7 +88,7 @@ const VerifyScreen: React.FC<VerifyScreenProps> = ({ username, setCurrentStep, g
         <h3 className="text-lg font-normal text-gray-900 dark:text-white">
           Check your Mobile Phone
         </h3>
-        <p className="text-xs text-gray-600 dark:text-gray-200">
+        <p className="text-sm mt-4 text-gray-600 dark:text-gray-200">
           Check your notification bar and tap the displayed code to sign in to the terminal.
         </p>
       </div>

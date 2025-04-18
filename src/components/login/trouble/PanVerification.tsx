@@ -39,6 +39,41 @@ const PanVerification: React.FC<PanVerificationProps> = ({
     return panRegex.test(pan);
   };
 
+  // New function to handle PAN input with format enforcement
+  const handlePanChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value.toUpperCase();
+    
+    // If deleting, just update the state
+    if (value.length < panNumber.length) {
+      setPanNumber(value);
+      setError("");
+      return;
+    }
+    
+    // If adding a new character
+    const newChar = value.charAt(value.length - 1);
+    
+    // PAN format is: AAAAA0000A (5 letters, 4 numbers, 1 letter)
+    if (value.length <= 5) {
+      // First 5 characters must be letters
+      if (/^[A-Z]$/.test(newChar)) {
+        setPanNumber(value);
+      }
+    } else if (value.length <= 9) {
+      // Next 4 characters must be numbers
+      if (/^[0-9]$/.test(newChar)) {
+        setPanNumber(value);
+      }
+    } else if (value.length === 10) {
+      // Last character must be a letter
+      if (/^[A-Z]$/.test(newChar)) {
+        setPanNumber(value);
+      }
+    }
+    
+    setError("");
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
@@ -63,7 +98,8 @@ const PanVerification: React.FC<PanVerificationProps> = ({
   };
 
   return (
-    <div className="flex-1 flex flex-col space-y-8 px-3">
+    <>
+    <div className="flex-1 flex flex-col space-y-8 px-6">
       <div className="flex items-center mb-2">
         <button 
           onClick={onCancel}
@@ -83,15 +119,12 @@ const PanVerification: React.FC<PanVerificationProps> = ({
       <form onSubmit={handleSubmit} className="space-y-8">
         <div>
           <label className="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-200">
-            PAN Number
+            PAN Number (Format: AAAAA0000A)
           </label>
           <input
             type="text"
             value={panNumber}
-            onChange={(e) => {
-              setPanNumber(e.target.value.toUpperCase());
-              setError("");
-            }}
+            onChange={handlePanChange}
             maxLength={10}
             placeholder="Enter PAN Number"
             className="w-full p-2 rounded-lg border bg-white dark:bg-[#1E1E1E] text-gray-900 dark:text-white border-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-400 focus:ring-1 focus:ring-opacity-50"
@@ -147,6 +180,7 @@ const PanVerification: React.FC<PanVerificationProps> = ({
         </button>
       </form>
     </div>
+    </>
   );
 };
 

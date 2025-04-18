@@ -39,7 +39,7 @@ const OtpScreen: React.FC<OtpScreenProps> = ({
   const handleRedirect = () => {
     setTimeout(() => {
       router.push('/trades/stocks');
-    }, 1500); // delay in milliseconds (1.5 seconds)
+    }, 700); // delay in milliseconds (1.5 seconds)
   };  
 
   const handleOtpComplete = () => {
@@ -86,7 +86,7 @@ const OtpScreen: React.FC<OtpScreenProps> = ({
   };
 
   return (
-    <div key="otp" className="flex-1 flex flex-col justify-center space-y-3 px-2">
+    <div key="otp" className="flex-1 flex flex-col justify-center space-y-3 px-6">
       <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
         {greeting}, {username}!
       </h2>
