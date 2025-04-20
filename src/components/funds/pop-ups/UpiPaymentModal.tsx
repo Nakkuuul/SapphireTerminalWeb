@@ -182,7 +182,7 @@ const UpiPaymentModal = ({
             </div>
             <div className="p-8">
               <div className="mb-8">
-                <div className="flex">
+                <div className="rounded-md flex">
                   <input
                     type="text"
                     placeholder="Enter UPI ID"
@@ -190,12 +190,12 @@ const UpiPaymentModal = ({
                     value={upiId}
                     onChange={(e) => setUpiId(e.target.value)}
                   />
-                  <span className="flex items-center px-3 bg-gray-100 border-t border-b">
+                  <span className="flex items-center px-3  ">
                     @
                   </span>
                   <div className="relative">
                     <select
-                      className="appearance-none text-[#6B7280] border rounded-r-md p-3 pr-10 bg-white text-lg"
+                      className="rounded-md appearance-none text-[#6B7280] border rounded-r-md p-3 pr-10 bg-white text-lg"
                       value={upiDomain}
                       onChange={(e) => setUpiDomain(e.target.value)}
                     >
@@ -214,7 +214,7 @@ const UpiPaymentModal = ({
               {/* UPI Guidelines Section */}
               <div className="border border-[#D1D5DB] p-6 rounded-md mb-8">
                 <h3 className="text-base font-medium mb-3">UPI Guidelines</h3>
-                <ul className="text-sm text-gray-600 space-y-3">
+                <ul className="text-sm text-gray-500 italic space-y-3">
                   <li className="flex items-center">
                     <span className="mr-2 text-lg">•</span>
                     <span>
@@ -229,9 +229,9 @@ const UpiPaymentModal = ({
                     <span className="mr-2 text-lg">•</span>
                     <span>
                       For successful payment, please use your{" "}
-                      <span className="font-medium">BANK OF BARODA</span> Bank
+                      <span className="font-bold">BANK OF BARODA</span> Bank
                       account ending in{" "}
-                      <span className="font-medium">xx6818</span> on the UPI app
+                      <span className="font-bold">xx6818</span> on the UPI app
                       or enter any UPI ID linked to the same bank account.
                     </span>
                   </li>

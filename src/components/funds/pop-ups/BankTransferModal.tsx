@@ -1,12 +1,7 @@
 import React from 'react';
 import { X } from 'lucide-react';
 
-// Profile icon for bank verification
-const ProfileIcon = () => (
-  <div className="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center text-white">
-    <span className="text-xs">S</span>
-  </div>
-);
+
 
 // Bank Transfer Modal Component
 const BankTransferModal = ({ isOpen, onClose, onSuccess }: { isOpen: boolean, onClose: () => void, onSuccess?: () => void }) => {
@@ -77,44 +72,43 @@ const BankTransferModal = ({ isOpen, onClose, onSuccess }: { isOpen: boolean, on
               </thead>
               <tbody>
                 <tr>
-                  <td className="border p-2 text-gray-600">Account Holder</td>
+                  <td className="border p-[15px] text-gray-600">Account Holder</td>
                   {bankDetails.map((bank, index) => (
-                    <td key={index} className="border p-2 text-center">
+                    <td key={index} className="border p-[15px] text-center">
                       <div className="flex items-center justify-center">
                         {bank.accountHolder}
-                        {index === 1 && <ProfileIcon />}
                       </div>
                     </td>
                   ))}
                 </tr>
                 <tr>
-                  <td className="border p-2 text-gray-600">Account Number</td>
+                  <td className="border p-[15px] text-gray-600">Account Number</td>
                   {bankDetails.map((bank, index) => (
-                    <td key={index} className="border p-2 text-center">
+                    <td key={index} className="border p-[15px] text-center">
                       {bank.accountNumber}
                     </td>
                   ))}
                 </tr>
                 <tr>
-                  <td className="border p-2 text-gray-600">Account Type</td>
+                  <td className="border p-[15px] text-gray-600">Account Type</td>
                   {bankDetails.map((bank, index) => (
-                    <td key={index} className="border p-2 text-center">
+                    <td key={index} className="border p-[15px] text-center">
                       {bank.accountType}
                     </td>
                   ))}
                 </tr>
                 <tr>
-                  <td className="border p-2 text-gray-600">Bank Branch</td>
+                  <td className="border p-[15px] text-gray-600">Bank Branch</td>
                   {bankDetails.map((bank, index) => (
-                    <td key={index} className="border p-2 text-center">
+                    <td key={index} className="border p-[15px] text-center">
                       {bank.bankBranch}
                     </td>
                   ))}
                 </tr>
                 <tr>
-                  <td className="border p-2 text-gray-600">IFCE Code</td>
+                  <td className="border p-[15px] text-gray-600">IFCE Code</td>
                   {bankDetails.map((bank, index) => (
-                    <td key={index} className="border p-2 text-center">
+                    <td key={index} className="border p-[15px] text-center">
                       {bank.ifscCode}
                     </td>
                   ))}
