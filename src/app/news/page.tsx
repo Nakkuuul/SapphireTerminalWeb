@@ -72,6 +72,8 @@ const NewsPage = () => {
   const imageContainerRef = useRef(null);
   const [progress, setProgress] = useState(100);
   const progressInterval = useRef<NodeJS.Timeout | null>(null);
+  const [slideDirection, setSlideDirection] = useState<'up' | 'down' | null>(null);
+  const [animatingIndex, setAnimatingIndex] = useState(0);
 
   useEffect(() => {
     // Simulating API fetch
@@ -126,21 +128,36 @@ const NewsPage = () => {
   }, [currentNewsIndex]);
 
   const handleNextNews = () => {
-    if (currentNewsIndex < news.length - 1) {
-      setCurrentNewsIndex(currentNewsIndex + 1);
-    } else {
-      // Loop back to the first news if at the end
-      setCurrentNewsIndex(0);
-    }
+    setSlideDirection('up');
+    const nextIndex = currentNewsIndex < news.length - 1 ? currentNewsIndex + 1 : 0;
+    setAnimatingIndex(nextIndex);
+    
+    setTimeout(() => {
+      setCurrentNewsIndex(nextIndex);
+      setSlideDirection(null);
+    }, 300);
   };
 
   const handlePreviousNews = () => {
-    if (currentNewsIndex > 0) {
-      setCurrentNewsIndex(currentNewsIndex - 1);
-    } else {
-      // Loop to the last news if at the beginning
-      setCurrentNewsIndex(news.length - 1);
-    }
+    setSlideDirection('down');
+    const prevIndex = currentNewsIndex > 0 ? currentNewsIndex - 1 : news.length - 1;
+    setAnimatingIndex(prevIndex);
+    
+    setTimeout(() => {
+      setCurrentNewsIndex(prevIndex);
+      setSlideDirection(null);
+    }, 300);
+  };
+
+  const handleNewsClick = (index: number) => {
+    if (index === currentNewsIndex) return;
+    setSlideDirection(index > currentNewsIndex ? 'up' : 'down');
+    setAnimatingIndex(index);
+    
+    setTimeout(() => {
+      setCurrentNewsIndex(index);
+      setSlideDirection(null);
+    }, 300);
   };
 
   const toggleEnlarged = () => {
@@ -182,6 +199,7 @@ const NewsPage = () => {
   };
 
   const currentNews = news[currentNewsIndex];
+  const nextNews = news[animatingIndex];
 
   if (loading) {
     return <div className="flex items-center justify-center h-screen">Loading news...</div>;
@@ -190,6 +208,64 @@ const NewsPage = () => {
   if (!news.length) {
     return <div className="flex items-center justify-center h-screen">No news available</div>;
   }
+
+  const renderNewsContent = (newsItem: typeof currentNews) => (
+    <>
+      {/* News Image with Progress Bar */}
+      <div className="relative bg-gray-100 rounded-t-lg overflow-hidden" style={{ aspectRatio: '16/9' }}>
+        <Image
+          src={newsItem.imageUrl}
+          alt={newsItem.title}
+          fill
+          className="object-cover"
+        />
+        {/* Progress Bar */}
+        {newsItem === currentNews && (
+          <div className="absolute bottom-0 left-0 w-full h-1 bg-gray-200">
+            <div
+              className="h-full bg-green-500 transition-all duration-150"
+              style={{ width: `${progress}%` }}
+            />
+          </div>
+        )}
+      </div>
+
+      {/* News Header - Date and Time */}
+      <div className="flex px-4 justify-between my-4">
+        <div className="text-sm text-gray-500">{newsItem.date}</div>
+        <div className="text-sm flex gap-1 items-center justify-between text-gray-500">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M6.00033 10.666C7.238 10.666 8.42499 10.1743 9.30016 9.29918C10.1753 8.42401 10.667 7.23703 10.667 5.99935C10.667 4.76167 10.1753 3.57469 9.30016 2.69952C8.42499 1.82435 7.238 1.33268 6.00033 1.33268C4.76265 1.33268 3.57566 1.82435 2.70049 2.69952C1.82532 3.57469 1.33366 4.76167 1.33366 5.99935C1.33366 7.23703 1.82532 8.42401 2.70049 9.29918C3.57566 10.1743 4.76265 10.666 6.00033 10.666ZM6.00033 0.166016C6.76637 0.166016 7.52491 0.316899 8.23265 0.610052C8.94038 0.903204 9.58344 1.33288 10.1251 1.87456C10.6668 2.41623 11.0965 3.0593 11.3896 3.76703C11.6828 4.47476 11.8337 5.2333 11.8337 5.99935C11.8337 7.54644 11.2191 9.03018 10.1251 10.1241C9.03115 11.2181 7.54742 11.8327 6.00033 11.8327C2.77449 11.8327 0.166992 9.20768 0.166992 5.99935C0.166992 4.45225 0.781574 2.96852 1.87554 1.87456C2.9695 0.780597 4.45323 0.166016 6.00033 0.166016ZM6.29199 3.08268V6.14518L8.91699 7.70268L8.47949 8.42018L5.41699 6.58268V3.08268H6.29199Z" fill="black" />
+          </svg>
+          {newsItem.time}
+        </div>
+      </div>
+
+      {/* News Info */}
+      <div className="px-4 pb-6">
+        <h1 className="text-2xl font-bold mb-4">{newsItem.title}</h1>
+
+        <div className="text-gray-700 text-base mb-4">
+          {expandedDescriptions[newsItem.id] 
+            ? newsItem.description 
+            : truncateDescription(newsItem.description)}
+          
+          {newsItem.description.split(' ').length > 50 && (
+            <button 
+              onClick={() => toggleReadMore(newsItem.id)}
+              className="ml-1 text-[#1DB954] font-medium hover:underline"
+            >
+              {expandedDescriptions[newsItem.id] ? 'Read less' : 'Read more'}
+            </button>
+          )}
+        </div>
+
+        <div className="text-sm text-gray-500">
+          Source: {newsItem.source}
+        </div>
+      </div>
+    </>
+  );
 
   return (
     <div className="mx-auto pb-8">
@@ -205,7 +281,7 @@ const NewsPage = () => {
                   ? 'bg-[#F4F4F9] hover:bg-gray-200'
                   : 'hover:bg-gray-50'
                   }`}
-                onClick={() => setCurrentNewsIndex(index)}
+                onClick={() => handleNewsClick(index)}
               >
                 <div className="w-12 h-12 rounded-md overflow-hidden mr-3 flex-shrink-0">
                   <Image
@@ -226,59 +302,37 @@ const NewsPage = () => {
         </div>
 
         {/* Main Content - News Article with fixed height */}
-        <div className={`w-full bg-[#F4F4F9] rounded-lg md:w-2/4 transition-all duration-300 ${
-          isEnlarged ? 'fixed top-0 left-0 w-full h-full bg-white z-50 p-8 ' : 'h-[600px]'
+        <div className={`w-full bg-[#F4F4F9] rounded-lg md:w-2/4 transition-all duration-300 overflow-hidden relative ${
+          isEnlarged ? 'fixed top-0 left-0 w-full h-full bg-white z-50 p-8' : 'h-[600px]'
         }`}>
-          {/* News Image with Progress Bar */}
-          <div className="relative bg-gray-100 rounded-t-lg overflow-hidden" style={{ aspectRatio: '16/9' }}>
-            <Image
-              src={currentNews.imageUrl}
-              alt={currentNews.title}
-              fill
-              className="object-cover"
-            />
-            {/* Progress Bar */}
-            <div className="absolute bottom-0 left-0 w-full h-1 bg-gray-200">
-              <div
-                className="h-full bg-green-500 transition-all duration-150"
-                style={{ width: `${progress}%` }}
-              />
+          <div className="absolute w-full h-full">
+            {/* Current News */}
+            <div 
+              className={`absolute w-full h-full transition-transform duration-300 ${
+                slideDirection === 'up' ? '-translate-y-full' : 
+                slideDirection === 'down' ? 'translate-y-full' : 
+                'translate-y-0'
+              }`}
+            >
+              {renderNewsContent(currentNews)}
             </div>
-          </div>
-
-          {/* News Header - Date and Time */}
-          <div className="flex px-4 justify-between my-4">
-            <div className="text-sm text-gray-500">{currentNews.date}</div>
-            <div className="text-sm flex gap-1 items-center justify-between text-gray-500">
-              <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M6.00033 10.666C7.238 10.666 8.42499 10.1743 9.30016 9.29918C10.1753 8.42401 10.667 7.23703 10.667 5.99935C10.667 4.76167 10.1753 3.57469 9.30016 2.69952C8.42499 1.82435 7.238 1.33268 6.00033 1.33268C4.76265 1.33268 3.57566 1.82435 2.70049 2.69952C1.82532 3.57469 1.33366 4.76167 1.33366 5.99935C1.33366 7.23703 1.82532 8.42401 2.70049 9.29918C3.57566 10.1743 4.76265 10.666 6.00033 10.666ZM6.00033 0.166016C6.76637 0.166016 7.52491 0.316899 8.23265 0.610052C8.94038 0.903204 9.58344 1.33288 10.1251 1.87456C10.6668 2.41623 11.0965 3.0593 11.3896 3.76703C11.6828 4.47476 11.8337 5.2333 11.8337 5.99935C11.8337 7.54644 11.2191 9.03018 10.1251 10.1241C9.03115 11.2181 7.54742 11.8327 6.00033 11.8327C2.77449 11.8327 0.166992 9.20768 0.166992 5.99935C0.166992 4.45225 0.781574 2.96852 1.87554 1.87456C2.9695 0.780597 4.45323 0.166016 6.00033 0.166016ZM6.29199 3.08268V6.14518L8.91699 7.70268L8.47949 8.42018L5.41699 6.58268V3.08268H6.29199Z" fill="black" />
-              </svg>
-              {currentNews.time}
-            </div>
-          </div>
-
-          {/* News Info */}
-          <div className="px-4 pb-6">
-            <h1 className="text-2xl font-bold mb-4">{currentNews.title}</h1>
-
-            <div className="text-gray-700 text-base mb-4">
-              {expandedDescriptions[currentNews.id] 
-                ? currentNews.description 
-                : truncateDescription(currentNews.description)}
-              
-              {currentNews.description.split(' ').length > 50 && (
-                <button 
-                  onClick={() => toggleReadMore(currentNews.id)}
-                  className="ml-1 text-[#1DB954] font-medium hover:underline"
-                >
-                  {expandedDescriptions[currentNews.id] ? 'Read less' : 'Read more'}
-                </button>
-              )}
-            </div>
-
-            <div className="text-sm text-gray-500">
-              Source: {currentNews.source}
-            </div>
+            
+            {/* Next News */}
+            {slideDirection && (
+              <div 
+                className={`absolute w-full h-full transition-transform duration-300 ${
+                  slideDirection === 'up' 
+                    ? 'translate-y-full' 
+                    : '-translate-y-full'
+                } ${
+                  slideDirection 
+                    ? (slideDirection === 'up' ? 'animate-slide-up-from-bottom' : 'animate-slide-down-from-top')
+                    : ''
+                }`}
+              >
+                {renderNewsContent(nextNews)}
+              </div>
+            )}
           </div>
         </div>
 
@@ -341,6 +395,35 @@ const NewsPage = () => {
           </button>
         </div>
       </div>
+
+      {/* Add this style tag to your CSS or global styles */}
+      <style jsx global>{`
+        @keyframes slide-up-from-bottom {
+          from {
+            transform: translateY(100%);
+          }
+          to {
+            transform: translateY(0);
+          }
+        }
+        
+        @keyframes slide-down-from-top {
+          from {
+            transform: translateY(-100%);
+          }
+          to {
+            transform: translateY(0);
+          }
+        }
+        
+        .animate-slide-up-from-bottom {
+          animation: slide-up-from-bottom 0.3s ease-out forwards;
+        }
+        
+        .animate-slide-down-from-top {
+          animation: slide-down-from-top 0.3s ease-out forwards;
+        }
+      `}</style>
     </div>
   );
 };

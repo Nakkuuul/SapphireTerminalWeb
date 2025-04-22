@@ -2,12 +2,15 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { ChevronDown } from "lucide-react";
 
 function Selector() {
   const pathname = usePathname();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [indicatorStyle, setIndicatorStyle] = useState({ width: 0, left: 0, initialized: false });
+  const tabsRef = useRef<(HTMLSpanElement | null)[]>([]);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   const tabs = [
     { name: "Stocks", path: "/trades/stocks" },
@@ -19,6 +22,35 @@ function Selector() {
   // Find the active tab
   const activeTab = tabs.find(tab => tab.path === pathname) || tabs[0];
 
+  // Update indicator position
+  useEffect(() => {
+    const updateIndicator = () => {
+      const activeIndex = tabs.findIndex(tab => tab.path === pathname);
+      if (activeIndex !== -1 && tabsRef.current[activeIndex] && containerRef.current) {
+        const activeTab = tabsRef.current[activeIndex];
+        const containerRect = containerRef.current.getBoundingClientRect();
+        const tabRect = activeTab.getBoundingClientRect();
+        
+        // Calculate position relative to the container
+        const left = tabRect.left - containerRect.left;
+        const width = tabRect.width;
+        
+        setIndicatorStyle({
+          width,
+          left,
+          initialized: true
+        });
+      }
+    };
+
+    // Use requestAnimationFrame to ensure measurements are accurate
+    requestAnimationFrame(updateIndicator);
+
+    // Add event listener for resize
+    window.addEventListener('resize', updateIndicator);
+    return () => window.removeEventListener('resize', updateIndicator);
+  }, [pathname]);
+
   // Toggle dropdown menu for mobile
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
@@ -27,14 +59,18 @@ function Selector() {
   return (
     <div className="w-full border-b-2 mb-6 border-gray-200 relative">
       {/* Desktop Version - Horizontal Tabs */}
-      <div className="hidden md:flex w-full gap-x-24 justify-center">
-        {tabs.map((tab) => (
+      <div 
+        ref={containerRef}
+        className="hidden md:flex w-full gap-x-24 justify-center relative"
+      >
+        {tabs.map((tab, index) => (
           <Link
             key={tab.name}
             href={tab.path}
             className="py-2 text-xl font-medium text-center flex justify-center"
           >
             <span 
+              ref={el => { if (el) tabsRef.current[index] = el }}
               className={`relative ${
                 pathname === tab.path
                   ? "text-[#1DB954] font-semibold"
@@ -42,13 +78,21 @@ function Selector() {
               }`}
             >
               {tab.name}
-              {pathname === tab.path && (
-                <span className="absolute top-9 left-0 w-full h-0.5 bg-[#1DB954]" 
-                      style={{ bottom: '-8px' }}></span>
-              )}
             </span>
           </Link>
         ))}
+        
+        {/* Sliding indicator */}
+        <span 
+          className={`absolute h-0.5 bg-[#1DB954] ${
+            indicatorStyle.initialized ? 'transition-all duration-300 ease-in-out' : ''
+          }`}
+          style={{
+            width: `${indicatorStyle.width}px`,
+            left: `${indicatorStyle.left}px`,
+            bottom: 0
+          }}
+        />
       </div>
 
       {/* Mobile Version - Dropdown */}
