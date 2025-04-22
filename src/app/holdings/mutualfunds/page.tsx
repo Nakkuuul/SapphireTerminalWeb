@@ -116,8 +116,15 @@ const MutualFundsTable = () => {
   // Sort handler
   const handleSort = useCallback((field: SortField) => {
     if (sortField === field) {
-      // Toggle direction if same field
-      setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
+      // If same field clicked
+      if (sortDirection === 'asc') {
+        // Change to descending
+        setSortDirection('desc');
+      } else {
+        // Reset to unsorted
+        setSortField(null);
+        setSortDirection('asc');
+      }
     } else {
       // New field, default to ascending
       setSortField(field);
@@ -153,7 +160,7 @@ const MutualFundsTable = () => {
   }, [holdings, sortField, sortDirection]);
 
   // Header cell component with sort logic
-  const HeaderCell = ({ field, label, className = '' }: { field: SortField, label: string, className?: string }) => {
+  const HeaderCell = ({ field, label, className = '' }: { field: SortField, label: string | React.ReactNode, className?: string }) => {
     const isActive = sortField === field;
     
     return (
@@ -264,8 +271,8 @@ const MutualFundsTable = () => {
               />
               <HeaderCell 
                 field="investmentValue" 
-                label="Investment value" 
-                className="border-l border-r border-[#D1D5DB]"
+                label={<>Investment<br />Value</>} 
+                className="border-r border-[#D1D5DB]"
               />
               <HeaderCell 
                 field="netPL" 
@@ -294,7 +301,7 @@ const MutualFundsTable = () => {
                 <td className="px-4 py-3 whitespace-nowrap text-center text-[#6B7280] text-sm border-r border-[#D1D5DB]">{holding.units}</td>
                 <td className="px-4 py-3 whitespace-nowrap text-center text-[#6B7280] text-sm border-r border-[#D1D5DB]">{formatCurrency(holding.avgNav)}</td>
                 <td className="px-4 py-3 whitespace-nowrap text-center text-[#6B7280] text-sm border-r border-[#D1D5DB]">{formatCurrency(holding.marketNav)}</td>
-                <td className="px-4 py-3 whitespace-nowrap text-center text-[#6B7280] text-sm border-l border-r border-[#D1D5DB]">{formatCurrency(holding.investmentValue)}</td>
+                <td className="px-4 py-3 whitespace-nowrap text-center text-[#6B7280] text-sm border-r border-[#D1D5DB]">{formatCurrency(holding.investmentValue)}</td>
                 <td className={`px-4 py-3 whitespace-nowrap text-sm text-center border-r border-[#D1D5DB] ${holding.netPL.value < 0 ? 'text-red-500' : 'text-[#22A06B]'}`}>
                   {formatCurrency(holding.netPL.value)} {formatPercentage(holding.netPL.percentage)}
                 </td>
@@ -304,9 +311,9 @@ const MutualFundsTable = () => {
               </tr>
             ))}
             <tr className="bg-gray-50 font-medium h-[50px]">
-              <td colSpan={5} className="px-4 py-3 whitespace-nowrap text-center text-sm">Total</td>
-              <td className="px-4 py-3 whitespace-nowrap text-center text-[#6B7280] text-sm border-l border-r border-[#D1D5DB]">{formatCurrency(totalInvestmentValue)}</td>
-              <td className="px-4 py-3 whitespace-nowrap text-sm text-center text-[#22A06B]">
+              <td colSpan={4} className="px-4 py-3 whitespace-nowrap text-center text-sm border-r border-[#D1D5DB]">Total</td>
+              <td className="px-4 py-3 whitespace-nowrap text-center text-[#6B7280] text-sm border-r border-[#D1D5DB]">{formatCurrency(totalInvestmentValue)}</td>
+              <td className="px-4 py-3 whitespace-nowrap text-sm text-center text-[#22A06B] border-r border-[#D1D5DB]">
                 {formatCurrency(totalNetPL.value)} {formatPercentage(totalNetPL.percentage)}
               </td>
               <td className="px-4 py-3 whitespace-nowrap text-sm text-center text-[#22A06B]">

@@ -127,8 +127,15 @@ const Positions: React.FC = () => {
   // Sort handler
   const handleSort = useCallback((field: SortField) => {
     if (sortField === field) {
-      // Toggle direction if same field
-      setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
+      // If same field clicked
+      if (sortDirection === 'asc') {
+        // Change to descending
+        setSortDirection('desc');
+      } else {
+        // Reset to unsorted
+        setSortField(null);
+        setSortDirection('asc');
+      }
     } else {
       // New field, default to ascending
       setSortField(field);
@@ -266,15 +273,17 @@ const Positions: React.FC = () => {
               <HeaderCell 
                 field="avgPrice" 
                 label="Avg. Price"
+                className="border-r border-[#D1D5DB]"
               />
               <HeaderCell 
                 field="ltp" 
                 label="LTP"
+                className="border-r border-[#D1D5DB]"
               />
               <HeaderCell 
                 field="netPL" 
                 label="Net P&L" 
-                className="border-l border-r border-[#D1D5DB]"
+                className="border-r border-[#D1D5DB]"
               />
               <HeaderCell 
                 field="dailyPL" 
@@ -297,9 +306,9 @@ const Positions: React.FC = () => {
                   </div>
                 </td>
                 <td className="px-4 py-3 whitespace-nowrap text-[#6B7280] text-center text-sm border-r border-[#D1D5DB]">{position.quantity}</td>
-                <td className="px-4 py-3 whitespace-nowrap text-[#6B7280] text-center text-sm">{formatCurrency(position.avgPrice)}</td>
-                <td className="px-4 py-3 whitespace-nowrap text-[#6B7280] text-center text-sm">{formatCurrency(position.ltp)}</td>
-                <td className={`px-4 py-3 whitespace-nowrap text-center text-sm border-l border-r border-[#D1D5DB] ${position.netPL.value < 0 ? 'text-[#E53935]' : 'text-[#22A06B]'}`}>
+                <td className="px-4 py-3 whitespace-nowrap text-[#6B7280] text-center text-sm border-r border-[#D1D5DB]">{formatCurrency(position.avgPrice)}</td>
+                <td className="px-4 py-3 whitespace-nowrap text-[#6B7280] text-center text-sm border-r border-[#D1D5DB]">{formatCurrency(position.ltp)}</td>
+                <td className={`px-4 py-3 whitespace-nowrap text-center text-sm border-r border-[#D1D5DB] ${position.netPL.value < 0 ? 'text-[#E53935]' : 'text-[#22A06B]'}`}>
                   {formatCurrency(position.netPL.value)} {formatPercentage(position.netPL.percentage)}
                 </td>
                 <td className={`px-4 py-3 whitespace-nowrap text-center text-sm ${position.dailyPL.value < 0 ? 'text-[#E53935]' : 'text-[#22A06B]'}`}>
@@ -308,8 +317,8 @@ const Positions: React.FC = () => {
               </tr>
             ))}
             <tr className="bg-gray-50 font-medium">
-              <td colSpan={5} className="px-4 py-3 whitespace-nowrap text-sm text-center">Total</td>
-              <td className="px-4 py-3 whitespace-nowrap text-center text-sm text-profit border-l border-r border-[#D1D5DB]">
+              <td colSpan={5} className="px-4 py-3 whitespace-nowrap text-sm text-center border-r border-[#D1D5DB]">Total</td>
+              <td className="px-4 py-3 whitespace-nowrap text-center text-sm text-profit border-r border-[#D1D5DB]">
                 {formatCurrency(totalNetPL.value)} {formatPercentage(totalNetPL.percentage)}
               </td>
               <td className="px-4 py-3 whitespace-nowrap text-center text-sm text-profit">

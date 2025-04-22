@@ -66,7 +66,7 @@ const BasketDialog = () => {
 
         <div className="p-4">
           {/* Search */}
-          <div className="flex justify-end mb-4">
+          <div className="flex  justify-end mb-4">
             <div className="relative w-64">
               <div className="absolute inset-y-0 left-2 flex items-center pointer-events-none">
                 <svg

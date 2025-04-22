@@ -46,6 +46,288 @@ const ItemTypes = {
   STOCK: "stock",
 };
 
+// Trading Popup Component
+const TradingPopup = ({ stock, isOpen, closePopup, orderType = "buy" }) => {
+  const [activeTab, setActiveTab] = useState("Instant");
+  const [quantity, setQuantity] = useState("0");
+  const [price, setPrice] = useState("");
+  const [triggerPrice, setTriggerPrice] = useState("");
+  const [orderValidity, setOrderValidity] = useState("Day");
+  const [disclosedQuantity, setDisclosedQuantity] = useState("0");
+  const [minutes, setMinutes] = useState("0");
+  const [numLegs, setNumLegs] = useState("0");
+  const [productType, setProductType] = useState("Intraday");
+  const [marketSelected, setMarketSelected] = useState(false);
+  const [showValidity, setShowValidity] = useState(false);
+  const [isToggleOn, setIsToggleOn] = useState(true);
+
+  // Required margin and available margin calculation
+  const marginRequired = "₹5,908.00";
+  const totalCharges = "₹5.00";
+  const availableMargin = "₹5,90,478.00";
+
+  if (!isOpen) return null;
+
+  const tabs = ["Instant", "Normal", "Iceberg", "Cover"];
+
+  const handleSubmit = () => {
+    console.log(`Placing ${orderType} order for ${stock.symbol}`);
+    closePopup();
+  };
+
+  const toggleValidity = () => {
+    setShowValidity(!showValidity);
+  };
+
+  const handleToggle = () => {
+    setIsToggleOn(!isToggleOn);
+  };
+
+  return (
+    <div
+      className="fixed inset-0 z-[9999]"
+      style={{
+        backgroundColor: "rgba(0, 0, 0, 0.1)",
+      }}
+      onClick={(e) => e.target === e.currentTarget && closePopup()}
+    >
+      <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white rounded-md shadow-xl w-[425px] overflow-hidden z-[10000]">
+        {/* Header with stock info and close button */}
+        <div className="p-3 pb-2 relative bg-gray-50 border-b border-gray-200">
+          <div className="flex items-center justify-between">
+            <div>
+              <div className="text-base font-medium">
+                Reliance Industries Ltd.
+              </div>
+              <div className="flex items-center space-x-1">
+                <span className="text-gray-500 text-sm">NSE</span>
+                <span className="text-xl font-medium">1,687.45</span>
+                <span className="text-red-500 text-sm font-medium">
+                  -19.10 (-2.70%)
+                </span>
+              </div>
+            </div>
+
+            {/* Toggle switch */}
+            <div className="w-14 h-7 rounded-full bg-gray-200 p-1 cursor-pointer relative">
+              <div
+                className={`w-5 h-5 rounded-full absolute transform transition-transform duration-200 ${
+                  isToggleOn
+                    ? "bg-green-500 translate-x-7"
+                    : "bg-white translate-x-0"
+                }`}
+                onClick={handleToggle}
+              ></div>
+            </div>
+
+            {/* Close button */}
+            <button
+              onClick={closePopup}
+              className="absolute right-4 top-3 text-gray-500 hover:text-gray-700 cursor-pointer z-10"
+            >
+              <X size={20} />
+            </button>
+          </div>
+        </div>
+
+        {/* Tab Navigation */}
+        <div className="border-b border-gray-200">
+          <div className="flex">
+            {tabs.slice(0, 2).map((tab) => (
+              <button
+                key={tab}
+                className={`py-2 px-6 text-base ${
+                  activeTab === tab
+                    ? "text-green-500 border-b-2 border-green-500 font-medium"
+                    : "text-gray-700"
+                }`}
+                onClick={() => setActiveTab(tab)}
+              >
+                {tab}
+              </button>
+            ))}
+            <button className="py-2 px-1 text-gray-400">
+              <ChevronRight size={20} />
+            </button>
+          </div>
+        </div>
+
+        {/* Form Content */}
+        <div className="p-4">
+          {/* Product Type */}
+          <div className="mb-3">
+            <div className="text-gray-700 mb-1.5">Product Type:</div>
+            <div className="flex space-x-6">
+              <label className="flex items-center">
+                <input
+                  type="radio"
+                  name="productType"
+                  checked={productType === "Intraday"}
+                  onChange={() => setProductType("Intraday")}
+                  className="mr-1.5 h-4 w-4"
+                />
+                <span className="text-sm">Intraday</span>
+              </label>
+              <label className="flex items-center">
+                <input
+                  type="radio"
+                  name="productType"
+                  checked={productType === "Delivery"}
+                  onChange={() => setProductType("Delivery")}
+                  className="mr-1.5 h-4 w-4"
+                />
+                <span className="text-sm">Delivery</span>
+              </label>
+              <label className="flex items-center">
+                <input
+                  type="radio"
+                  name="productType"
+                  checked={productType === "MTF"}
+                  onChange={() => setProductType("MTF")}
+                  className="mr-1.5 h-4 w-4"
+                />
+                <span className="text-sm">MTF</span>
+              </label>
+            </div>
+          </div>
+
+          {/* Quantity */}
+          <div className="mb-3">
+            <div className="text-gray-700 mb-1.5">Quantity</div>
+            <div className="relative">
+              <input
+                type="text"
+                value={quantity}
+                onChange={(e) => setQuantity(e.target.value)}
+                className="w-full px-3 py-2 border border-gray-300 rounded text-base"
+              />
+              <div className="absolute right-2 top-1/2 transform -translate-y-1/2 flex flex-col">
+                <button className="text-gray-400">
+                  <svg width="16" height="8" viewBox="0 0 16 8" fill="none">
+                    <path d="M8 0L16 8H0L8 0Z" fill="currentColor" />
+                  </svg>
+                </button>
+                <button className="text-gray-400">
+                  <svg width="16" height="8" viewBox="0 0 16 8" fill="none">
+                    <path d="M8 8L0 0H16L8 8Z" fill="currentColor" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          {/* Price */}
+          <div className="mb-3">
+            <div className="text-gray-700 mb-1.5">Price</div>
+            <div className="relative">
+              <div className="flex items-center">
+                <span className="absolute left-3 text-base">₹</span>
+                <input
+                  type="text"
+                  value={price}
+                  onChange={(e) => setPrice(e.target.value)}
+                  className="w-full pl-6 pr-3 py-2 border border-gray-300 rounded text-base"
+                  disabled={marketSelected}
+                  placeholder=""
+                />
+              </div>
+            </div>
+
+            <div className="flex mt-2 space-x-6">
+              <label className="flex items-center">
+                <input
+                  type="radio"
+                  name="priceType"
+                  checked={!marketSelected}
+                  onChange={() => setMarketSelected(false)}
+                  className="mr-1.5 h-4 w-4"
+                />
+                <span className="text-sm">Limit</span>
+              </label>
+              <label className="flex items-center">
+                <input
+                  type="radio"
+                  name="priceType"
+                  checked={marketSelected}
+                  onChange={() => setMarketSelected(true)}
+                  className="mr-1.5 h-4 w-4"
+                />
+                <span className="text-sm">Market</span>
+              </label>
+            </div>
+          </div>
+
+          {/* Margin Information */}
+          <div className="grid grid-cols-3 gap-3 mb-4 border-t border-gray-200 pt-3">
+            <div>
+              <div className="text-gray-500 text-xs mb-0.5">
+                Margin Required
+              </div>
+              <div className="text-gray-800 font-medium text-sm">
+                {marginRequired}
+              </div>
+            </div>
+            <div>
+              <div className="text-gray-500 text-xs mb-0.5">Total Charges</div>
+              <div className="flex items-center text-gray-800 font-medium text-sm">
+                {totalCharges}
+                <svg
+                  className="h-3 w-3 ml-1 text-gray-400"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2h-1V9z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+              </div>
+            </div>
+            <div>
+              <div className="text-gray-500 text-xs mb-0.5">
+                Available Margin
+              </div>
+              <div className="text-green-500 font-medium text-sm">
+                {availableMargin}
+                <span className="inline-block ml-1">
+                  <svg
+                    className="h-3 w-3 text-gray-400"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2h-1V9z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                </span>
+              </div>
+            </div>
+          </div>
+
+          {/* Action Buttons */}
+          <div className="grid grid-cols-2 gap-3">
+            <button
+              onClick={closePopup}
+              className="py-2.5 rounded bg-gray-100 text-gray-800 text-sm font-medium hover:bg-gray-200"
+            >
+              Cancel
+            </button>
+            <button
+              onClick={handleSubmit}
+              className="py-2.5 rounded bg-green-500 text-white text-sm font-medium hover:bg-green-600"
+            >
+              Buy
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 // Draggable Stock component with hover actions that replace price info
 // Draggable Stock component with hover actions and popup menu
 const DraggableStock = ({ stock, subheadingId, index, moveStock }) => {
@@ -53,6 +335,8 @@ const DraggableStock = ({ stock, subheadingId, index, moveStock }) => {
   const [isHovering, setIsHovering] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
   const popupRef = useRef(null);
+  const [showTradingPopup, setShowTradingPopup] = useState(false);
+  const [tradingType, setTradingType] = useState("buy");
 
   // Close popup when clicking outside
   useEffect(() => {
@@ -120,12 +404,14 @@ const DraggableStock = ({ stock, subheadingId, index, moveStock }) => {
   // Action handlers
   const handleBuy = (e) => {
     e.stopPropagation();
-    console.log(`Placing buy order for ${stock.symbol}`);
+    setTradingType("buy");
+    setShowTradingPopup(true);
   };
 
   const handleSell = (e) => {
     e.stopPropagation();
-    console.log(`Placing sell order for ${stock.symbol}`);
+    setTradingType("sell");
+    setShowTradingPopup(true);
   };
 
   const handleEye = (e) => {
@@ -488,6 +774,16 @@ const DraggableStock = ({ stock, subheadingId, index, moveStock }) => {
           </div>
         )}
       </div>
+
+      {/* Trading Popup */}
+      {showTradingPopup && (
+        <TradingPopup
+          stock={stock}
+          isOpen={showTradingPopup}
+          closePopup={() => setShowTradingPopup(false)}
+          orderType={tradingType}
+        />
+      )}
     </div>
   );
 };
