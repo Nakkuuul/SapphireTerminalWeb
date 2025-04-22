@@ -78,7 +78,7 @@ function OrderSelector() {
 
           {/* Dropdown Menu */}
           {isDropdownOpen && (
-            <div className="absolute mt-1 w-full rounded-md shadow-lg bg-white z-10 border border-gray-200">
+            <div className="absolute mt-1 w-full rounded-md shadow-lg bg-white border border-gray-200">
               {tabs.map((tab) => {
                 const isActive = pathname === tab.path;
                 return (
