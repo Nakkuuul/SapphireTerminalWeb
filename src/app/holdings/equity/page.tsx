@@ -1,5 +1,5 @@
 'use client'
-import React, { useState } from 'react';
+import React, { useState, useCallback, useMemo } from 'react';
 import { Download, Search, MoreVertical, ArrowUpDown, MoreHorizontal } from 'lucide-react';
 import DownloadButton from '@/components/gen-components/DownloadButton';
 import SearchButton from '@/components/gen-components/SearchButton';
@@ -40,6 +40,9 @@ interface PLValue {
   percentage: number;
 }
 
+type SortField = 'security' | 'quantity' | 'avgPrice' | 'ltp' | 'investmentValue' | 'netPL' | 'dailyPL';
+type SortDirection = 'asc' | 'desc';
+
 const EquityHoldings = () => {
   // Initial portfolio data
   const [portfolioSummary] = useState({
@@ -55,7 +58,7 @@ const EquityHoldings = () => {
     },
   });
 
-  const [holdings] = useState([
+  const initialHoldings: StockHolding[] = [
     {
       security: 'MRF',
       quantity: 500,
@@ -131,18 +134,12 @@ const EquityHoldings = () => {
         percentage: 24.7,
       },
     },
-  ]);
+  ];
 
-  // Calculate total values
-  const totalInvestmentValue = holdings.reduce((sum, holding) => sum + holding.investmentValue, 0);
-  const totalNetPL = {
-    value: holdings.reduce((sum, holding) => sum + holding.netPL.value, 0),
-    percentage: -24.7, // This would normally be calculated
-  };
-  const totalDailyPL = {
-    value: holdings.reduce((sum, holding) => sum + holding.dailyPL.value, 0),
-    percentage: 24.7, // This would normally be calculated
-  };
+  // Sorting state
+  const [sortField, setSortField] = useState<SortField | null>(null);
+  const [sortDirection, setSortDirection] = useState<SortDirection>('asc');
+  const [hoveredHeader, setHoveredHeader] = useState<SortField | null>(null);
 
   // Format currency values
   const formatCurrency = (value : any) => {
@@ -157,11 +154,90 @@ const EquityHoldings = () => {
     return `(${value.toFixed(2)}%)`;
   };
 
+  // Sort handler
+  const handleSort = useCallback((field: SortField) => {
+    if (sortField === field) {
+      // If same field clicked
+      if (sortDirection === 'asc') {
+        // Change to descending
+        setSortDirection('desc');
+      } else {
+        // Reset to unsorted
+        setSortField(null);
+        setSortDirection('asc');
+      }
+    } else {
+      // New field, default to ascending
+      setSortField(field);
+      setSortDirection('asc');
+    }
+  }, [sortField, sortDirection]);
+
+  // Sorted holdings
+  const sortedHoldings = useMemo(() => {
+    if (!sortField) return initialHoldings;
+
+    return [...initialHoldings].sort((a, b) => {
+      let valueA, valueB;
+
+      if (sortField === 'netPL' || sortField === 'dailyPL') {
+        valueA = a[sortField].value;
+        valueB = b[sortField].value;
+      } else {
+        valueA = a[sortField];
+        valueB = b[sortField];
+      }
+
+      if (typeof valueA === 'string' && typeof valueB === 'string') {
+        return sortDirection === 'asc'
+          ? valueA.localeCompare(valueB)
+          : valueB.localeCompare(valueA);
+      }
+
+      return sortDirection === 'asc'
+        ? (valueA as number) - (valueB as number)
+        : (valueB as number) - (valueA as number);
+    });
+  }, [initialHoldings, sortField, sortDirection]);
+
+  // Calculate total values
+  const totalInvestmentValue = initialHoldings.reduce((sum, holding) => sum + holding.investmentValue, 0);
+  const totalNetPL = {
+    value: initialHoldings.reduce((sum, holding) => sum + holding.netPL.value, 0),
+    percentage: -24.7, // This would normally be calculated
+  };
+  const totalDailyPL = {
+    value: initialHoldings.reduce((sum, holding) => sum + holding.dailyPL.value, 0),
+    percentage: 24.7, // This would normally be calculated
+  };
+
+  // Header cell component with sort logic
+  const HeaderCell = ({ field, label, className = '' }: { field: SortField, label: string, className?: string }) => {
+    const isActive = sortField === field;
+    
+    return (
+      <th 
+        className={`px-4 py-0 text-left text-base font-normal border-r cursor-pointer hover:bg-gray-100 ${className} 
+          ${isActive ? 'bg-gray-200' : 'bg-gray-50'}`}
+        onClick={() => handleSort(field)}
+        onMouseEnter={() => setHoveredHeader(field)}
+        onMouseLeave={() => setHoveredHeader(null)}
+      >
+        <div className="flex items-center justify-between">
+          <span>{label}</span>
+          <ArrowUpDown 
+            className={`w-4 h-4 ml-2 ${hoveredHeader === field || isActive ? 'opacity-100' : 'opacity-0'}`} 
+          />
+        </div>
+      </th>
+    );
+  };
+
   return (
-    <div className=" max-w-6xl mx-auto">
+    <div className="max-w-6xl mx-auto">
       <HoldingSelector />
       {/* Summary Section */}
-      <div className="grid grid-cols-4 bg-[#F4F4F9] mb-4 h-24  overflow-hidden">
+      <div className="grid grid-cols-4 bg-[#F4F4F9] mb-4 h-24 overflow-hidden">
         <div className="flex flex-col justify-center h-full px-3 relative text-center">
           <div className="text-base text-gray-600 text-center">Investment Value</div>
           <div className="font-normal text-xl text-center">{formatCurrency(portfolioSummary.investmentValue)}</div>
@@ -202,64 +278,29 @@ const EquityHoldings = () => {
           <table className="min-w-full divide-y divide-gray-200">
             <thead>
               <tr className="bg-gray-50" style={{ height: '54px' }}>
-                <th className="px-4 py-0 text-center text-base font-normal border-r">
-                  <div className="flex items-center justify-between">
-                    Security
-                    <ArrowUpDown className="w-4 h-4" />
-                  </div>
-                </th>
-                <th className="px-4 py-0 text-center text-base font-normal border-r">
-                  <div className="flex items-center justify-between">
-                    Qty
-                    <ArrowUpDown className="w-4 h-4" />
-                  </div>
-                </th>
-                <th className="px-4 py-0 text-center text-base font-normal">
-                  <div className="flex items-center justify-between">
-                    Avg. Price
-                    <ArrowUpDown className="w-4 h-4" />
-                  </div>
-                </th>
-                <th className="px-4 py-0 text-center text-base font-normal border-r">
-                  <div className="flex items-center justify-between">
-                    LTP
-                    <ArrowUpDown className="w-4 h-4" />
-                  </div>
-                </th>
-                <th className="px-4 py-0 text-center text-base font-normal border-r">
-                  <div className="flex items-center justify-between">
-                    Investment value
-                    <ArrowUpDown className="min-w-4 min-h-4" />
-                  </div>
-                </th>
-                <th className="px-4 py-0 text-center text-base font-normal">
-                  <div className="flex items-center justify-between">
-                    Net P&L
-                    <ArrowUpDown className="w-4 h-4" />
-                  </div>
-                </th>
-                <th className="px-4 py-0 text-center text-base font-normal">
-                  <div className="flex items-center justify-between">
-                    Daily P&L
-                    <ArrowUpDown className="w-4 h-4" />
-                  </div>
-                </th>
+                <HeaderCell field="security" label="Security" />
+                <HeaderCell field="quantity" label="Qty" />
+                <HeaderCell field="avgPrice" label="Avg. Price" />
+                <HeaderCell field="ltp" label="LTP" />
+                <HeaderCell field="investmentValue" label="Investment Value" />
+                <HeaderCell field="netPL" label="Net P&L" />
+                <HeaderCell field="dailyPL" label="Daily P&L" />
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
-              {holdings.map((holding, index) => (
+              {sortedHoldings.map((holding, index) => (
                 <tr key={index} style={{ height: '50px' }}>
-                  <td className="px-4 py-0 text-center whitespace-nowrap border-r">
+                  <td className="px-4 py-0 whitespace-nowrap border-r">
                     <div className="flex items-center justify-between">
                       <span className="text-[#6B7280]" style={{ fontSize: '14px' }}>{holding.security}</span>
                       <MoreHorizontal strokeWidth={2} className="w-4 h-4 ml-4 rotate-90 text-gray-400" />
                     </div>
                   </td>
                   <td className="px-4 py-0 text-center text-[#6B7280] whitespace-nowrap border-r" style={{ fontSize: '14px' }}>{holding.quantity}</td>
-                  <td className="px-4 py-0 text-center text-[#6B7280] whitespace-nowrap" style={{ fontSize: '14px' }}>{formatCurrency(holding.avgPrice)}</td>
+                  <td className="px-4 py-0 text-center text-[#6B7280] whitespace-nowrap border-r" style={{ fontSize: '14px' }}>{formatCurrency(holding.avgPrice)}</td>
                   <td className="px-4 py-0 text-center text-[#6B7280] whitespace-nowrap border-r" style={{ fontSize: '14px' }}>{formatCurrency(holding.ltp)}</td>
-                  <td className="px-4 py-0 text-center text-[#6B7280]  border-r" style={{ fontSize: '14px' }}>{formatCurrency(holding.investmentValue)}</td>
-                  <td className="px-4 py-0 text-center whitespace-nowrap" style={{ fontSize: '14px' }}>
+                  <td className="px-4 py-0 text-center text-[#6B7280] border-r" style={{ fontSize: '14px' }}>{formatCurrency(holding.investmentValue)}</td>
+                  <td className="px-4 py-0 text-center whitespace-nowrap border-r" style={{ fontSize: '14px' }}>
                     <span className={holding.netPL.percentage < 0 ? "text-red-500" : "text-[#22A06B]"}>
                       {formatCurrency(holding.netPL.value)} {formatPercentage(holding.netPL.percentage)}
                     </span>
@@ -271,13 +312,12 @@ const EquityHoldings = () => {
                   </td>
                 </tr>
               ))}
+            </tbody>
+            <tfoot>
               <tr className="bg-gray-50 font-medium" style={{ height: '50px' }}>
-                <td className="px-4 py-0 text-center whitespace-nowrap border-r" style={{ fontSize: '14px' }}>Total</td>
-                <td className="px-4 py-0 text-center whitespace-nowrap border-r"></td>
-                <td className="px-4 py-0 text-center whitespace-nowrap"></td>
-                <td className="px-4 py-0 text-center whitespace-nowrap border-r"></td>
+                <td colSpan={4} className="px-4 py-0 text-center whitespace-nowrap border-r" style={{ fontSize: '14px' }}>Total</td>
                 <td className="px-4 py-0 text-center text-[#6B7280] whitespace-nowrap border-r" style={{ fontSize: '14px' }}>{formatCurrency(totalInvestmentValue)}</td>
-                <td className="px-4 py-0 text-center whitespace-nowrap" style={{ fontSize: '14px' }}>
+                <td className="px-4 py-0 text-center whitespace-nowrap border-r" style={{ fontSize: '14px' }}>
                   <span className="text-red-500">
                     {formatCurrency(totalNetPL.value)} {formatPercentage(totalNetPL.percentage)}
                   </span>
@@ -288,7 +328,7 @@ const EquityHoldings = () => {
                   </span>
                 </td>
               </tr>
-            </tbody>
+            </tfoot>
           </table>
         </div>
       </div>

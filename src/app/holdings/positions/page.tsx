@@ -4,7 +4,7 @@ import DownloadButton from '@/components/gen-components/DownloadButton';
 import SearchButton from '@/components/gen-components/SearchButton';
 import HoldingSelector from '@/components/holdings/HoldingSelector';
 import { ArrowUpDown } from 'lucide-react';
-import React from 'react';
+import React, { useState, useCallback, useMemo } from 'react';
 
 // TypeScript interfaces
 interface PLValue {
@@ -28,7 +28,16 @@ interface SummaryData {
   netPL: PLValue;
 }
 
+// Sort types
+type SortField = 'type' | 'security' | 'action' | 'quantity' | 'avgPrice' | 'ltp' | 'netPL' | 'dailyPL';
+type SortDirection = 'asc' | 'desc';
+
 const Positions: React.FC = () => {
+  // State for sorting
+  const [sortField, setSortField] = useState<SortField | null>(null);
+  const [sortDirection, setSortDirection] = useState<SortDirection>('asc');
+  const [hoveredHeader, setHoveredHeader] = useState<SortField | null>(null);
+
   // Summary data
   const summaryData: SummaryData = {
     dailyPL: {
@@ -42,7 +51,7 @@ const Positions: React.FC = () => {
   };
 
   // Positions data
-  const positions: Position[] = [
+  const initialPositions: Position[] = [
     {
       type: 'Intraday',
       security: 'MRF',
@@ -115,6 +124,45 @@ const Positions: React.FC = () => {
     }
   ];
 
+  // Sort handler
+  const handleSort = useCallback((field: SortField) => {
+    if (sortField === field) {
+      // Toggle direction if same field
+      setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
+    } else {
+      // New field, default to ascending
+      setSortField(field);
+      setSortDirection('asc');
+    }
+  }, [sortField, sortDirection]);
+
+  // Sorted positions
+  const sortedPositions = useMemo(() => {
+    if (!sortField) return initialPositions;
+
+    return [...initialPositions].sort((a, b) => {
+      let valueA, valueB;
+
+      if (sortField === 'netPL' || sortField === 'dailyPL') {
+        valueA = a[sortField].value;
+        valueB = b[sortField].value;
+      } else {
+        valueA = a[sortField];
+        valueB = b[sortField];
+      }
+
+      if (typeof valueA === 'string' && typeof valueB === 'string') {
+        return sortDirection === 'asc'
+          ? valueA.localeCompare(valueB)
+          : valueB.localeCompare(valueA);
+      }
+
+      return sortDirection === 'asc'
+        ? (valueA as number) - (valueB as number)
+        : (valueB as number) - (valueA as number);
+    });
+  }, [initialPositions, sortField, sortDirection]);
+
   // Total values calculation
   const totalNetPL: PLValue = {
     value: 5673.79,
@@ -139,30 +187,52 @@ const Positions: React.FC = () => {
     return `(${value.toFixed(1)}%)`;
   };
 
+  // Header cell component with sort logic
+  const HeaderCell = ({ field, label, className = '' }: { field: SortField, label: string, className?: string }) => {
+    const isActive = sortField === field;
+    
+    return (
+      <th 
+        className={`px-4 py-3 text-left text-base font-normal whitespace-nowrap h-[54px] cursor-pointer ${className} 
+          ${isActive ? 'bg-gray-200' : 'bg-gray-50'}`}
+        onClick={() => handleSort(field)}
+        onMouseEnter={() => setHoveredHeader(field)}
+        onMouseLeave={() => setHoveredHeader(null)}
+      >
+        <div className="flex items-center justify-between">
+          <span>{label}</span>
+          <ArrowUpDown 
+            className={`h-4 w-4 transition-opacity ${hoveredHeader === field || isActive ? 'opacity-100' : 'opacity-0'}`} 
+          />
+        </div>
+      </th>
+    );
+  };
+
   return (
     <div className="w-full">
       <HoldingSelector />
       {/* Header Summary */}
       <div className="flex w-full h-24 mb-4">
-      <div className="w-1/2 text-center bg-[#F4F4F9] p-4">
-        <div className="text-base text-[#6B7280] font-medium">Daily P&L</div>
-        <div className={`text-xl font-normal ${summaryData.dailyPL.value < 0 ? 'text-red-500' : 'text-green-500'}`}>
-          {formatCurrency(summaryData.dailyPL.value)} <span className='text-sm'>{formatPercentage(summaryData.dailyPL.percentage)}</span>
+        <div className="w-1/2 text-center bg-[#F4F4F9] p-4">
+          <div className="text-base text-[#6B7280] font-medium">Daily P&L</div>
+          <div className={`text-xl font-normal ${summaryData.dailyPL.value < 0 ? 'text-red-500' : 'text-green-500'}`}>
+            {formatCurrency(summaryData.dailyPL.value)} <span className='text-sm'>{formatPercentage(summaryData.dailyPL.percentage)}</span>
+          </div>
+        </div>
+        
+        {/* Vertical divider with gap on top and bottom */}
+        <div className="relative h-full flex items-center">
+          <div className="absolute h-[90%] w-px bg-[#D1D5DB] my-auto"></div>
+        </div>
+        
+        <div className="w-1/2 text-center bg-[#F4F4F9] p-4">
+          <div className="text-base text-[#6B7280] font-medium">Net P&L</div>
+          <div className={`text-xl font-normal ${summaryData.netPL.value < 0 ? 'text-loss' : 'text-profit'}`}>
+            {formatCurrency(summaryData.netPL.value)} <span className='text-sm'> {formatPercentage(summaryData.netPL.percentage)}</span>
+          </div>
         </div>
       </div>
-      
-      {/* Vertical divider with gap on top and bottom */}
-      <div className="relative h-full flex items-center">
-        <div className="absolute h-[90%] w-px bg-[#D1D5DB] my-auto"></div>
-      </div>
-      
-      <div className="w-1/2 text-center bg-[#F4F4F9] p-4">
-        <div className="text-base text-[#6B7280] font-medium">Net P&L</div>
-        <div className={`text-xl font-normal ${summaryData.netPL.value < 0 ? 'text-loss' : 'text-profit'}`}>
-          {formatCurrency(summaryData.netPL.value)} <span className='text-sm'> {formatPercentage(summaryData.netPL.percentage)}</span>
-        </div>
-      </div>
-    </div>
 
       {/* Positions Section Header */}
       <div className="flex justify-between items-center mb-4">
@@ -174,92 +244,82 @@ const Positions: React.FC = () => {
       </div>
 
       {/* Positions Table */}
-    <div className="overflow-x-auto border rounded-md">
-      <table className="min-w-full divide-y divide-gray-200">
-        <thead>
-          <tr className="bg-gray-50">
-            <th className="px-4 py-3 text-left text-base font-normal border-r border-[#D1D5DB] whitespace-nowrap h-[54px]">
-              <div className="flex items-center justify-between">
-                <span>Action</span>
-                <ArrowUpDown className="h-4 w-4" />
-              </div>
-            </th>
-            <th className="px-4 py-3 text-left text-base font-normal border-r border-[#D1D5DB] whitespace-nowrap h-[54px]">
-              <div className="flex items-center justify-between">
-                <span>Security</span>
-                <ArrowUpDown className="h-4 w-4" />
-              </div>
-            </th>
-            <th className="px-4 py-3 text-left text-base font-normal border-r border-[#D1D5DB] whitespace-nowrap h-[54px]">
-              <div className="flex items-center justify-between">
-                <span>Qty.</span>
-                <ArrowUpDown className="h-4 w-4" />
-              </div>
-            </th>
-            <th className="px-4 py-3 text-left text-base font-normal whitespace-nowrap h-[54px]">
-              <div className="flex items-center justify-between">
-                <span>Avg. Price</span>
-                <ArrowUpDown className="h-4 w-4 ml-4" />
-              </div>
-            </th>
-            <th className="px-4 py-3 text-left text-base font-normal whitespace-nowrap h-[54px]">
-              <div className="flex items-center justify-between">
-                <span>LTP</span>
-                <ArrowUpDown className="h-4 w-4" />
-              </div>
-            </th>
-            <th className="px-4 py-3 text-left text-base font-normal border-l border-[#D1D5DB] whitespace-nowrap h-[54px]">
-              <div className="flex items-center justify-between">
-                <span>Net P&L</span>
-                <ArrowUpDown className="h-4 w-4" />
-              </div>
-            </th>
-            <th className="px-4 py-3 text-left text-base font-normal whitespace-nowrap h-[54px]">
-              <div className="flex items-center justify-between">
-                <span>Daily P&L</span>
-                <ArrowUpDown className="h-4 w-4" />
-              </div>
-            </th>
-          </tr>
-        </thead>
-        <tbody className="bg-white divide-y divide-gray-200">
-          {positions.map((position, index) => (
-            <tr key={index} className="h-[50px]">
-              <td className="px-4 py-3 whitespace-nowrap text-center text-[#6B7280] text-sm border-r border-[#D1D5DB]">{position.type}</td>
-              <td className="px-4 py-3 border-r border-[#D1D5DB]">
-                <div className="flex items-center justify-between">
-                  <span className="text-[#6B7280] text-sm">{position.security}</span>
-                  <div className={`text-xs ml-8 py-1 rounded-sm w-12 text-center ${position.action === 'BUY' 
-                    ? 'bg-[#D5FFC6] text-profit' 
-                    : 'bg-red-100 text-loss'}`}>
-                    {position.action}
+      <div className="overflow-x-auto border rounded-md">
+        <table className="min-w-full divide-y divide-gray-200">
+          <thead>
+            <tr>
+              <HeaderCell 
+                field="type" 
+                label="Action" 
+                className="border-r border-[#D1D5DB]"
+              />
+              <HeaderCell 
+                field="security" 
+                label="Security" 
+                className="border-r border-[#D1D5DB]"
+              />
+              <HeaderCell 
+                field="quantity" 
+                label="Qty." 
+                className="border-r border-[#D1D5DB]"
+              />
+              <HeaderCell 
+                field="avgPrice" 
+                label="Avg. Price"
+              />
+              <HeaderCell 
+                field="ltp" 
+                label="LTP"
+              />
+              <HeaderCell 
+                field="netPL" 
+                label="Net P&L" 
+                className="border-l border-r border-[#D1D5DB]"
+              />
+              <HeaderCell 
+                field="dailyPL" 
+                label="Daily P&L"
+              />
+            </tr>
+          </thead>
+          <tbody className="bg-white divide-y divide-gray-200">
+            {sortedPositions.map((position, index) => (
+              <tr key={index} className="h-[50px]">
+                <td className="px-4 py-3 whitespace-nowrap text-center text-[#6B7280] text-sm border-r border-[#D1D5DB]">{position.type}</td>
+                <td className="px-4 py-3 border-r border-[#D1D5DB]">
+                  <div className="flex items-center justify-between">
+                    <span className="text-[#6B7280] text-sm">{position.security}</span>
+                    <div className={`text-xs ml-8 py-1 rounded-sm w-12 text-center ${position.action === 'BUY' 
+                      ? 'bg-[#D5FFC6] text-profit' 
+                      : 'bg-red-100 text-loss'}`}>
+                      {position.action}
+                    </div>
                   </div>
-                </div>
+                </td>
+                <td className="px-4 py-3 whitespace-nowrap text-[#6B7280] text-center text-sm border-r border-[#D1D5DB]">{position.quantity}</td>
+                <td className="px-4 py-3 whitespace-nowrap text-[#6B7280] text-center text-sm">{formatCurrency(position.avgPrice)}</td>
+                <td className="px-4 py-3 whitespace-nowrap text-[#6B7280] text-center text-sm">{formatCurrency(position.ltp)}</td>
+                <td className={`px-4 py-3 whitespace-nowrap text-center text-sm border-l border-r border-[#D1D5DB] ${position.netPL.value < 0 ? 'text-[#E53935]' : 'text-[#22A06B]'}`}>
+                  {formatCurrency(position.netPL.value)} {formatPercentage(position.netPL.percentage)}
+                </td>
+                <td className={`px-4 py-3 whitespace-nowrap text-center text-sm ${position.dailyPL.value < 0 ? 'text-[#E53935]' : 'text-[#22A06B]'}`}>
+                  {formatCurrency(position.dailyPL.value)} {formatPercentage(position.dailyPL.percentage)}
+                </td>
+              </tr>
+            ))}
+            <tr className="bg-gray-50 font-medium">
+              <td colSpan={5} className="px-4 py-3 whitespace-nowrap text-sm text-center">Total</td>
+              <td className="px-4 py-3 whitespace-nowrap text-center text-sm text-profit border-l border-r border-[#D1D5DB]">
+                {formatCurrency(totalNetPL.value)} {formatPercentage(totalNetPL.percentage)}
               </td>
-              <td className="px-4 py-3 whitespace-nowrap text-[#6B7280] text-center text-sm border-r border-[#D1D5DB]">{position.quantity}</td>
-              <td className="px-4 py-3 whitespace-nowrap text-[#6B7280] text-center text-sm">{formatCurrency(position.avgPrice)}</td>
-              <td className="px-4 py-3 whitespace-nowrap text-[#6B7280] text-center text-sm">{formatCurrency(position.ltp)}</td>
-              <td className={`px-4 py-3 whitespace-nowrap text-center text-sm border-l border-[#D1D5DB] ${position.netPL.value < 0 ? 'text-[#E53935]' : 'text-[#22A06B]'}`}>
-                {formatCurrency(position.netPL.value)} {formatPercentage(position.netPL.percentage)}
-              </td>
-              <td className={`px-4 py-3 whitespace-nowrap text-center text-sm ${position.dailyPL.value < 0 ? 'text-[#E53935]' : 'text-[#22A06B]'}`}>
-                {formatCurrency(position.dailyPL.value)} {formatPercentage(position.dailyPL.percentage)}
+              <td className="px-4 py-3 whitespace-nowrap text-center text-sm text-profit">
+                {formatCurrency(totalDailyPL.value)} {formatPercentage(totalDailyPL.percentage)}
               </td>
             </tr>
-          ))}
-          <tr className="bg-gray-50 font-medium">
-            <td colSpan={5} className="px-4 py-3 whitespace-nowrap text-sm">Total</td>
-            <td className="px-4 py-3 whitespace-nowrap text-right text-sm text-profit border-l border-[#D1D5DB]">
-              {formatCurrency(totalNetPL.value)} {formatPercentage(totalNetPL.percentage)}
-            </td>
-            <td className="px-4 py-3 whitespace-nowrap text-right text-sm text-profit border-l border-[#D1D5DB]">
-              {formatCurrency(totalDailyPL.value)} {formatPercentage(totalDailyPL.percentage)}
-            </td>
-          </tr>
-        </tbody>
-      </table>
+          </tbody>
+        </table>
       </div>
-</div>
+    </div>
   );
 };
 

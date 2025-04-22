@@ -23,7 +23,7 @@ const Navbar = () => {
   // Main navigation links without sub-routes for Trade section
   const navLinks = [
     { href: "/", label: "Home" },
-    { href: "/trades/stocks", label: "Trade" },
+    { href: "/trades/stocks", label: "Trades" },
     { href: "/news", label: "News" },
     { href: "/watchlist", label: "Watchlist" },
     { href: "/order/queued", label: "Orders" },
@@ -69,12 +69,14 @@ const Navbar = () => {
       return pathname === "/";
     }
     
-    // Modified to properly handle the trades routes
+    // Modified to properly handle both trades and holdings routes
     // Check if the current path starts with the href (parent route) OR
-    // specially handle the "/trades" route to be active for any trade subpath
+    // specially handle the "/trades" and "/holdings" routes to be active for any subpaths
     return pathname === href || 
            pathname.startsWith(`${href}/`) || 
-           (href === "/trades/stocks" && pathname.startsWith("/trades/"));
+           (href === "/trades/stocks" && pathname.startsWith("/trades/")) ||
+           (href === "/holdings/equity" && pathname.startsWith("/holdings/")) ||
+           (href === "/order/queued" && pathname.startsWith("/order/"));
   };
 
   return (
