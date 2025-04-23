@@ -183,7 +183,7 @@ const MutualFundsTable = () => {
 
     return (
       <th
-        className={`px-4 py-3 text-left text-base font-normal whitespace-nowrap h-[54px] cursor-pointer ${className} 
+        className={`px-4 py-0 text-left text-base font-normal border-r cursor-pointer hover:bg-gray-100 ${className} 
           ${isActive ? "bg-gray-200" : "bg-gray-50"}`}
         onClick={() => handleSort(field)}
         onMouseEnter={() => setHoveredHeader(field)}
@@ -192,7 +192,7 @@ const MutualFundsTable = () => {
         <div className="flex items-center justify-between">
           <span>{label}</span>
           <ArrowUpDown
-            className={`h-4 w-4 transition-opacity ${
+            className={`w-4 h-4 ml-2 ${
               hoveredHeader === field || isActive ? "opacity-100" : "opacity-0"
             }`}
           />
@@ -281,46 +281,41 @@ const MutualFundsTable = () => {
       <div className="overflow-x-auto border rounded-md">
         <table className="min-w-full divide-y divide-gray-200">
           <thead>
-            <tr>
+            <tr className="bg-gray-50" style={{ height: "54px" }}>
               <HeaderCell
                 field="security"
                 label="Security"
-                className="border-r border-[#D1D5DB]"
+                className="w-[20%]"
               />
-              <HeaderCell
-                field="units"
-                label="Units"
-                className="border-r border-[#D1D5DB]"
-              />
-              <HeaderCell
-                field="avgNav"
-                label="Avg. NAV"
-                className="border-r border-[#D1D5DB]"
-              />
+              <HeaderCell field="units" label="Units" className="w-[10%]" />
+              <HeaderCell field="avgNav" label="Avg. NAV" className="w-[12%]" />
               <HeaderCell
                 field="marketNav"
                 label="Market NAV"
-                className="border-r border-[#D1D5DB]"
+                className="w-[12%]"
               />
               <HeaderCell
                 field="investmentValue"
                 label="Investment Value"
-                className="border-r border-[#D1D5DB]"
+                className="w-[16%]"
               />
+              <HeaderCell field="netPL" label="Net P&L" className="w-[15%]" />
               <HeaderCell
-                field="netPL"
-                label="Net P&L"
-                className="border-r border-[#D1D5DB]"
+                field="dailyPL"
+                label="Daily P&L"
+                className="w-[15%]"
               />
-              <HeaderCell field="dailyPL" label="Daily P&L" />
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
             {sortedHoldings.map((holding, index) => (
-              <tr key={index} className="h-[50px]">
-                <td className="px-4 py-3 border-r border-[#D1D5DB]">
+              <tr key={index} style={{ height: "50px" }}>
+                <td className="px-4 py-0 whitespace-nowrap border-r">
                   <div className="flex items-center justify-between">
-                    <span className="text-[#6B7280] text-sm">
+                    <span
+                      className="text-[#6B7280]"
+                      style={{ fontSize: "14px" }}
+                    >
                       {holding.security}
                     </span>
                     <button className="text-gray-400 ml-2">
@@ -340,57 +335,86 @@ const MutualFundsTable = () => {
                     </button>
                   </div>
                 </td>
-                <td className="px-4 py-3 whitespace-nowrap text-center text-[#6B7280] text-sm border-r border-[#D1D5DB]">
+                <td
+                  className="px-4 py-0 text-center text-[#6B7280] whitespace-nowrap border-r"
+                  style={{ fontSize: "14px" }}
+                >
                   {holding.units}
                 </td>
-                <td className="px-4 py-3 whitespace-nowrap text-center text-[#6B7280] text-sm border-r border-[#D1D5DB]">
+                <td
+                  className="px-4 py-0 text-center text-[#6B7280] whitespace-nowrap border-r"
+                  style={{ fontSize: "14px" }}
+                >
                   {formatCurrency(holding.avgNav)}
                 </td>
-                <td className="px-4 py-3 whitespace-nowrap text-center text-[#6B7280] text-sm border-r border-[#D1D5DB]">
+                <td
+                  className="px-4 py-0 text-center text-[#6B7280] whitespace-nowrap border-r"
+                  style={{ fontSize: "14px" }}
+                >
                   {formatCurrency(holding.marketNav)}
                 </td>
-                <td className="px-4 py-3 whitespace-nowrap text-center text-[#6B7280] text-sm border-r border-[#D1D5DB]">
+                <td
+                  className="px-4 py-0 text-center text-[#6B7280] whitespace-nowrap border-r"
+                  style={{ fontSize: "14px" }}
+                >
                   {formatCurrency(holding.investmentValue)}
                 </td>
                 <td
-                  className={`px-4 py-3 whitespace-nowrap text-sm text-center border-r border-[#D1D5DB] ${
-                    holding.netPL.value < 0
-                      ? "text-[#E53935]"
-                      : "text-[#22A06B]"
-                  }`}
+                  className="px-4 py-0 text-center whitespace-nowrap border-r"
+                  style={{ fontSize: "14px" }}
                 >
-                  {formatCurrency(holding.netPL.value)}{" "}
-                  {formatPercentage(holding.netPL.percentage)}
+                  <span
+                    className={
+                      holding.netPL.value < 0
+                        ? "text-[#E53935]"
+                        : "text-[#22A06B]"
+                    }
+                  >
+                    {formatCurrency(holding.netPL.value)}{" "}
+                    {formatPercentage(holding.netPL.percentage)}
+                  </span>
                 </td>
                 <td
-                  className={`px-4 py-3 whitespace-nowrap text-sm text-center ${
-                    holding.dailyPL.value < 0
-                      ? "text-[#E53935]"
-                      : "text-[#22A06B]"
-                  }`}
+                  className="px-4 py-0 text-center whitespace-nowrap"
+                  style={{ fontSize: "14px" }}
                 >
-                  {formatCurrency(holding.dailyPL.value)}{" "}
-                  {formatPercentage(holding.dailyPL.percentage)}
+                  <span
+                    className={
+                      holding.dailyPL.value < 0
+                        ? "text-[#E53935]"
+                        : "text-[#22A06B]"
+                    }
+                  >
+                    {formatCurrency(holding.dailyPL.value)}{" "}
+                    {formatPercentage(holding.dailyPL.percentage)}
+                  </span>
                 </td>
               </tr>
             ))}
-            <tr className="bg-gray-50 font-medium h-[50px]">
+            <tr className="bg-gray-50 font-medium" style={{ height: "50px" }}>
               <td
                 colSpan={4}
-                className="px-4 py-3 whitespace-nowrap text-center text-sm border-r border-[#D1D5DB]"
+                className="px-4 py-0 whitespace-nowrap text-sm text-center border-r"
               >
                 Total
               </td>
-              <td className="px-4 py-3 whitespace-nowrap text-center text-[#6B7280] text-sm border-r border-[#D1D5DB]">
+              <td
+                className="px-4 py-0 text-center text-[#6B7280] whitespace-nowrap border-r"
+                style={{ fontSize: "14px" }}
+              >
                 {formatCurrency(totalInvestmentValue)}
               </td>
-              <td className="px-4 py-3 whitespace-nowrap text-sm text-center text-[#22A06B] border-r border-[#D1D5DB]">
-                {formatCurrency(totalNetPL.value)}{" "}
-                {formatPercentage(totalNetPL.percentage)}
+              <td className="px-4 py-0 whitespace-nowrap text-center text-sm border-r">
+                <span className="text-[#22A06B]">
+                  {formatCurrency(totalNetPL.value)}{" "}
+                  {formatPercentage(totalNetPL.percentage)}
+                </span>
               </td>
-              <td className="px-4 py-3 whitespace-nowrap text-sm text-center text-[#22A06B]">
-                {formatCurrency(totalDailyPL.value)}{" "}
-                {formatPercentage(totalDailyPL.percentage)}
+              <td className="px-4 py-0 whitespace-nowrap text-center text-sm">
+                <span className="text-[#22A06B]">
+                  {formatCurrency(totalDailyPL.value)}{" "}
+                  {formatPercentage(totalDailyPL.percentage)}
+                </span>
               </td>
             </tr>
           </tbody>

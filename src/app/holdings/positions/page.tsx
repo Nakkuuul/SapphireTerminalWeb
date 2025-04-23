@@ -3,7 +3,7 @@
 import DownloadButton from "@/components/gen-components/DownloadButton";
 import SearchButton from "@/components/gen-components/SearchButton";
 import HoldingSelector from "@/components/holdings/HoldingSelector";
-import { ArrowUpDown } from "lucide-react";
+import { ArrowUpDown, MoreHorizontal } from "lucide-react";
 import React, { useState, useCallback, useMemo } from "react";
 
 // TypeScript interfaces
@@ -81,7 +81,7 @@ const Positions: React.FC = () => {
       dailyPL: { value: 2042.63, percentage: 24.7 },
     },
     {
-      type: "Delivery",
+      type: "MTF",
       security: "ITC",
       action: "BUY",
       quantity: 100,
@@ -91,7 +91,7 @@ const Positions: React.FC = () => {
       dailyPL: { value: 2042.63, percentage: 24.7 },
     },
     {
-      type: "Intraday",
+      type: "CarryForward",
       security: "MOTILALOSWAL",
       action: "SELL",
       quantity: -5000,
@@ -219,7 +219,7 @@ const Positions: React.FC = () => {
 
     return (
       <th
-        className={`px-4 py-3 text-left text-base font-normal whitespace-nowrap h-[54px] cursor-pointer ${className} 
+        className={`px-4 py-0 text-left text-base font-normal border-r cursor-pointer hover:bg-gray-100 ${className} 
           ${isActive ? "bg-gray-200" : "bg-gray-50"}`}
         onClick={() => handleSort(field)}
         onMouseEnter={() => setHoveredHeader(field)}
@@ -228,7 +228,7 @@ const Positions: React.FC = () => {
         <div className="flex items-center justify-between">
           <span>{label}</span>
           <ArrowUpDown
-            className={`h-4 w-4 transition-opacity ${
+            className={`w-4 h-4 ml-2 ${
               hoveredHeader === field || isActive ? "opacity-100" : "opacity-0"
             }`}
           />
@@ -289,53 +289,87 @@ const Positions: React.FC = () => {
       <div className="overflow-x-auto border rounded-md">
         <table className="min-w-full divide-y divide-gray-200">
           <thead>
-            <tr>
-              <HeaderCell
-                field="type"
-                label="Action"
-                className="border-r border-[#D1D5DB]"
-              />
+            <tr className="bg-gray-50" style={{ height: "54px" }}>
               <HeaderCell
                 field="security"
                 label="Security"
-                className="border-r border-[#D1D5DB]"
+                className="w-[20%]"
               />
-              <HeaderCell
-                field="quantity"
-                label="Qty."
-                className="border-r border-[#D1D5DB]"
-              />
+              <HeaderCell field="quantity" label="Qty." className="w-[10%]" />
               <HeaderCell
                 field="avgPrice"
                 label="Avg. Price"
-                className="border-r border-[#D1D5DB]"
+                className="w-[12%]"
               />
+              <HeaderCell field="ltp" label="LTP" className="w-[12%]" />
+              <HeaderCell field="type" label="Action" className="w-[16%]" />
+              <HeaderCell field="netPL" label="Net P&L" className="w-[15%]" />
               <HeaderCell
-                field="ltp"
-                label="LTP"
-                className="border-r border-[#D1D5DB]"
+                field="dailyPL"
+                label="Daily P&L"
+                className="w-[15%]"
               />
-              <HeaderCell
-                field="netPL"
-                label="Net P&L"
-                className="border-r border-[#D1D5DB]"
-              />
-              <HeaderCell field="dailyPL" label="Daily P&L" />
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
             {sortedPositions.map((position, index) => (
-              <tr key={index} className="h-[50px]">
-                <td className="px-4 py-3 whitespace-nowrap text-center text-[#6B7280] text-sm border-r border-[#D1D5DB]">
-                  {position.type}
-                </td>
-                <td className="px-4 py-3 border-r border-[#D1D5DB]">
+              <tr key={index} style={{ height: "50px" }}>
+                <td className="px-4 py-0 whitespace-nowrap border-r">
                   <div className="flex items-center justify-between">
-                    <span className="text-[#6B7280] text-sm">
+                    <span
+                      className="text-[#6B7280]"
+                      style={{ fontSize: "14px" }}
+                    >
                       {position.security}
                     </span>
+                    <MoreHorizontal
+                      strokeWidth={2}
+                      className="w-4 h-4 ml-4 rotate-90 text-gray-400"
+                    />
+                  </div>
+                </td>
+                <td
+                  className="px-4 py-0 text-center text-[#6B7280] whitespace-nowrap border-r"
+                  style={{ fontSize: "14px" }}
+                >
+                  {position.quantity}
+                </td>
+                <td
+                  className="px-4 py-0 text-center text-[#6B7280] whitespace-nowrap border-r"
+                  style={{ fontSize: "14px" }}
+                >
+                  {formatCurrency(position.avgPrice)}
+                </td>
+                <td
+                  className="px-4 py-0 text-center text-[#6B7280] whitespace-nowrap border-r"
+                  style={{ fontSize: "14px" }}
+                >
+                  {formatCurrency(position.ltp)}
+                </td>
+                <td
+                  className="px-4 py-0 whitespace-nowrap border-r"
+                  style={{ fontSize: "14px" }}
+                >
+                  <div className="flex items-center justify-center">
+                    <div 
+                      className="text-xs py-1 px-2 rounded-sm mr-2"
+                      style={{
+                        backgroundColor: 
+                          position.type === "Delivery" ? "#F1F8F6" :
+                          position.type === "CarryForward" ? "#F3F5FA" :
+                          position.type === "Intraday" ? "#FFF9ED" :
+                          position.type === "MTF" ? "#F7F3FB" : "#F1F1F1",
+                        color:
+                          position.type === "Delivery" ? "#2E7D6F" :
+                          position.type === "CarryForward" ? "#3C4F94" :
+                          position.type === "Intraday" ? "#E65100" :
+                          position.type === "MTF" ? "#6A1B9A" : "#666666"
+                      }}
+                    >
+                      {position.type}
+                    </div>
                     <div
-                      className={`text-xs ml-8 py-1 rounded-sm w-12 text-center ${
+                      className={`text-xs py-1 rounded-sm w-12 text-center ${
                         position.action === "BUY"
                           ? "bg-[#D5FFC6] text-profit"
                           : "bg-red-100 text-loss"
@@ -345,51 +379,56 @@ const Positions: React.FC = () => {
                     </div>
                   </div>
                 </td>
-                <td className="px-4 py-3 whitespace-nowrap text-[#6B7280] text-center text-sm border-r border-[#D1D5DB]">
-                  {position.quantity}
-                </td>
-                <td className="px-4 py-3 whitespace-nowrap text-[#6B7280] text-center text-sm border-r border-[#D1D5DB]">
-                  {formatCurrency(position.avgPrice)}
-                </td>
-                <td className="px-4 py-3 whitespace-nowrap text-[#6B7280] text-center text-sm border-r border-[#D1D5DB]">
-                  {formatCurrency(position.ltp)}
+                <td
+                  className="px-4 py-0 text-center whitespace-nowrap border-r"
+                  style={{ fontSize: "14px" }}
+                >
+                  <span
+                    className={
+                      position.netPL.value < 0
+                        ? "text-[#E53935]"
+                        : "text-[#22A06B]"
+                    }
+                  >
+                    {formatCurrency(position.netPL.value)}{" "}
+                    {formatPercentage(position.netPL.percentage)}
+                  </span>
                 </td>
                 <td
-                  className={`px-4 py-3 whitespace-nowrap text-center text-sm border-r border-[#D1D5DB] ${
-                    position.netPL.value < 0
-                      ? "text-[#E53935]"
-                      : "text-[#22A06B]"
-                  }`}
+                  className="px-4 py-0 text-center whitespace-nowrap"
+                  style={{ fontSize: "14px" }}
                 >
-                  {formatCurrency(position.netPL.value)}{" "}
-                  {formatPercentage(position.netPL.percentage)}
-                </td>
-                <td
-                  className={`px-4 py-3 whitespace-nowrap text-center text-sm ${
-                    position.dailyPL.value < 0
-                      ? "text-[#E53935]"
-                      : "text-[#22A06B]"
-                  }`}
-                >
-                  {formatCurrency(position.dailyPL.value)}{" "}
-                  {formatPercentage(position.dailyPL.percentage)}
+                  <span
+                    className={
+                      position.dailyPL.value < 0
+                        ? "text-[#E53935]"
+                        : "text-[#22A06B]"
+                    }
+                  >
+                    {formatCurrency(position.dailyPL.value)}{" "}
+                    {formatPercentage(position.dailyPL.percentage)}
+                  </span>
                 </td>
               </tr>
             ))}
-            <tr className="bg-gray-50 font-medium">
+            <tr className="bg-gray-50 font-medium" style={{ height: "50px" }}>
               <td
                 colSpan={5}
-                className="px-4 py-3 whitespace-nowrap text-sm text-center border-r border-[#D1D5DB]"
+                className="px-4 py-0 whitespace-nowrap text-sm text-center border-r"
               >
                 Total
               </td>
-              <td className="px-4 py-3 whitespace-nowrap text-center text-sm text-profit border-r border-[#D1D5DB]">
-                {formatCurrency(totalNetPL.value)}{" "}
-                {formatPercentage(totalNetPL.percentage)}
+              <td className="px-4 py-0 whitespace-nowrap text-center text-sm border-r">
+                <span className="text-[#22A06B]">
+                  {formatCurrency(totalNetPL.value)}{" "}
+                  {formatPercentage(totalNetPL.percentage)}
+                </span>
               </td>
-              <td className="px-4 py-3 whitespace-nowrap text-center text-sm text-profit">
-                {formatCurrency(totalDailyPL.value)}{" "}
-                {formatPercentage(totalDailyPL.percentage)}
+              <td className="px-4 py-0 whitespace-nowrap text-center text-sm">
+                <span className="text-[#22A06B]">
+                  {formatCurrency(totalDailyPL.value)}{" "}
+                  {formatPercentage(totalDailyPL.percentage)}
+                </span>
               </td>
             </tr>
           </tbody>
