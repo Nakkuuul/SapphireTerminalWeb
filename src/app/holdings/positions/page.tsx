@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import DownloadButton from '@/components/gen-components/DownloadButton';
-import SearchButton from '@/components/gen-components/SearchButton';
-import HoldingSelector from '@/components/holdings/HoldingSelector';
-import { ArrowUpDown } from 'lucide-react';
-import React, { useState, useCallback, useMemo } from 'react';
+import DownloadButton from "@/components/gen-components/DownloadButton";
+import SearchButton from "@/components/gen-components/SearchButton";
+import HoldingSelector from "@/components/holdings/HoldingSelector";
+import { ArrowUpDown } from "lucide-react";
+import React, { useState, useCallback, useMemo } from "react";
 
 // TypeScript interfaces
 interface PLValue {
@@ -15,7 +15,7 @@ interface PLValue {
 interface Position {
   type: string;
   security: string;
-  action: 'BUY' | 'SELL';
+  action: "BUY" | "SELL";
   quantity: number;
   avgPrice: number;
   ltp: number;
@@ -29,23 +29,31 @@ interface SummaryData {
 }
 
 // Sort types
-type SortField = 'type' | 'security' | 'action' | 'quantity' | 'avgPrice' | 'ltp' | 'netPL' | 'dailyPL';
-type SortDirection = 'asc' | 'desc';
+type SortField =
+  | "type"
+  | "security"
+  | "action"
+  | "quantity"
+  | "avgPrice"
+  | "ltp"
+  | "netPL"
+  | "dailyPL";
+type SortDirection = "asc" | "desc";
 
 const Positions: React.FC = () => {
   // State for sorting
   const [sortField, setSortField] = useState<SortField | null>(null);
-  const [sortDirection, setSortDirection] = useState<SortDirection>('asc');
+  const [sortDirection, setSortDirection] = useState<SortDirection>("asc");
   const [hoveredHeader, setHoveredHeader] = useState<SortField | null>(null);
 
   // Summary data
   const summaryData: SummaryData = {
     dailyPL: {
-      value: -24780.90,
+      value: -24780.9,
       percentage: -3.67,
     },
     netPL: {
-      value: 44780.90,
+      value: 44780.9,
       percentage: 8.79,
     },
   };
@@ -53,95 +61,98 @@ const Positions: React.FC = () => {
   // Positions data
   const initialPositions: Position[] = [
     {
-      type: 'Intraday',
-      security: 'MRF',
-      action: 'BUY',
+      type: "Intraday",
+      security: "MRF",
+      action: "BUY",
       quantity: 820,
       avgPrice: 2042.64,
       ltp: 46780,
       netPL: { value: 2042.63, percentage: 24.7 },
-      dailyPL: { value: 2042.63, percentage: 24.7 }
+      dailyPL: { value: 2042.63, percentage: 24.7 },
     },
     {
-      type: 'Delivery',
-      security: 'TATASTEEL',
-      action: 'SELL',
+      type: "Delivery",
+      security: "TATASTEEL",
+      action: "SELL",
       quantity: 400,
-      avgPrice: 822.10,
+      avgPrice: 822.1,
       ltp: 46780,
       netPL: { value: 2042.63, percentage: 24.7 },
-      dailyPL: { value: 2042.63, percentage: 24.7 }
+      dailyPL: { value: 2042.63, percentage: 24.7 },
     },
     {
-      type: 'Delivery',
-      security: 'ITC',
-      action: 'BUY',
+      type: "Delivery",
+      security: "ITC",
+      action: "BUY",
       quantity: 100,
       avgPrice: 92281.63,
       ltp: 46780,
       netPL: { value: 2042.63, percentage: 24.7 },
-      dailyPL: { value: 2042.63, percentage: 24.7 }
+      dailyPL: { value: 2042.63, percentage: 24.7 },
     },
     {
-      type: 'Intraday',
-      security: 'MOTILALOSWAL',
-      action: 'SELL',
+      type: "Intraday",
+      security: "MOTILALOSWAL",
+      action: "SELL",
       quantity: -5000,
       avgPrice: 87.42,
       ltp: 46780,
       netPL: { value: -2042.63, percentage: 24.7 },
-      dailyPL: { value: -2042.63, percentage: 24.7 }
+      dailyPL: { value: -2042.63, percentage: 24.7 },
     },
     {
-      type: 'Intraday',
-      security: 'MOTILALOSWAL',
-      action: 'BUY',
+      type: "Intraday",
+      security: "MOTILALOSWAL",
+      action: "BUY",
       quantity: 2910,
       avgPrice: 87.42,
       ltp: 46780,
       netPL: { value: 2042.63, percentage: 24.7 },
-      dailyPL: { value: 2042.63, percentage: 24.7 }
+      dailyPL: { value: 2042.63, percentage: 24.7 },
     },
     {
-      type: 'Intraday',
-      security: 'MOTILALOSWAL',
-      action: 'SELL',
+      type: "Intraday",
+      security: "MOTILALOSWAL",
+      action: "SELL",
       quantity: 5750,
       avgPrice: 87.42,
       ltp: 46780,
       netPL: { value: 2042.63, percentage: 24.7 },
-      dailyPL: { value: 2042.63, percentage: 24.7 }
+      dailyPL: { value: 2042.63, percentage: 24.7 },
     },
     {
-      type: 'Intraday',
-      security: 'MOTILALOSWAL',
-      action: 'SELL',
+      type: "Intraday",
+      security: "MOTILALOSWAL",
+      action: "SELL",
       quantity: 2350,
       avgPrice: 87.42,
       ltp: 46780,
       netPL: { value: 2042.63, percentage: 24.7 },
-      dailyPL: { value: 2042.63, percentage: 24.7 }
-    }
+      dailyPL: { value: 2042.63, percentage: 24.7 },
+    },
   ];
 
   // Sort handler
-  const handleSort = useCallback((field: SortField) => {
-    if (sortField === field) {
-      // If same field clicked
-      if (sortDirection === 'asc') {
-        // Change to descending
-        setSortDirection('desc');
+  const handleSort = useCallback(
+    (field: SortField) => {
+      if (sortField === field) {
+        // If same field clicked
+        if (sortDirection === "asc") {
+          // Change to descending
+          setSortDirection("desc");
+        } else {
+          // Reset to unsorted
+          setSortField(null);
+          setSortDirection("asc");
+        }
       } else {
-        // Reset to unsorted
-        setSortField(null);
-        setSortDirection('asc');
+        // New field, default to ascending
+        setSortField(field);
+        setSortDirection("asc");
       }
-    } else {
-      // New field, default to ascending
-      setSortField(field);
-      setSortDirection('asc');
-    }
-  }, [sortField, sortDirection]);
+    },
+    [sortField, sortDirection]
+  );
 
   // Sorted positions
   const sortedPositions = useMemo(() => {
@@ -150,7 +161,7 @@ const Positions: React.FC = () => {
     return [...initialPositions].sort((a, b) => {
       let valueA, valueB;
 
-      if (sortField === 'netPL' || sortField === 'dailyPL') {
+      if (sortField === "netPL" || sortField === "dailyPL") {
         valueA = a[sortField].value;
         valueB = b[sortField].value;
       } else {
@@ -158,13 +169,13 @@ const Positions: React.FC = () => {
         valueB = b[sortField];
       }
 
-      if (typeof valueA === 'string' && typeof valueB === 'string') {
-        return sortDirection === 'asc'
+      if (typeof valueA === "string" && typeof valueB === "string") {
+        return sortDirection === "asc"
           ? valueA.localeCompare(valueB)
           : valueB.localeCompare(valueA);
       }
 
-      return sortDirection === 'asc'
+      return sortDirection === "asc"
         ? (valueA as number) - (valueB as number)
         : (valueB as number) - (valueA as number);
     });
@@ -173,19 +184,19 @@ const Positions: React.FC = () => {
   // Total values calculation
   const totalNetPL: PLValue = {
     value: 5673.79,
-    percentage: 24.7
+    percentage: 24.7,
   };
 
   const totalDailyPL: PLValue = {
     value: 5673.79,
-    percentage: 24.7
+    percentage: 24.7,
   };
 
   // Format currency
   const formatCurrency = (value: number): string => {
-    return value.toLocaleString('en-IN', {
+    return value.toLocaleString("en-IN", {
       maximumFractionDigits: 2,
-      minimumFractionDigits: 2
+      minimumFractionDigits: 2,
     });
   };
 
@@ -195,21 +206,31 @@ const Positions: React.FC = () => {
   };
 
   // Header cell component with sort logic
-  const HeaderCell = ({ field, label, className = '' }: { field: SortField, label: string, className?: string }) => {
+  const HeaderCell = ({
+    field,
+    label,
+    className = "",
+  }: {
+    field: SortField;
+    label: string;
+    className?: string;
+  }) => {
     const isActive = sortField === field;
-    
+
     return (
-      <th 
+      <th
         className={`px-4 py-3 text-left text-base font-normal whitespace-nowrap h-[54px] cursor-pointer ${className} 
-          ${isActive ? 'bg-gray-200' : 'bg-gray-50'}`}
+          ${isActive ? "bg-gray-200" : "bg-gray-50"}`}
         onClick={() => handleSort(field)}
         onMouseEnter={() => setHoveredHeader(field)}
         onMouseLeave={() => setHoveredHeader(null)}
       >
         <div className="flex items-center justify-between">
           <span>{label}</span>
-          <ArrowUpDown 
-            className={`h-4 w-4 transition-opacity ${hoveredHeader === field || isActive ? 'opacity-100' : 'opacity-0'}`} 
+          <ArrowUpDown
+            className={`h-4 w-4 transition-opacity ${
+              hoveredHeader === field || isActive ? "opacity-100" : "opacity-0"
+            }`}
           />
         </div>
       </th>
@@ -221,22 +242,36 @@ const Positions: React.FC = () => {
       <HoldingSelector />
       {/* Header Summary */}
       <div className="flex w-full h-24 mb-4">
-        <div className="w-1/2 text-center bg-[#F4F4F9] p-4">
+        <div className="w-1/2 text-center bg-[#F4F4F9] p-4 flex flex-col items-center justify-center">
           <div className="text-base text-[#6B7280] font-medium">Daily P&L</div>
-          <div className={`text-xl font-normal ${summaryData.dailyPL.value < 0 ? 'text-red-500' : 'text-green-500'}`}>
-            {formatCurrency(summaryData.dailyPL.value)} <span className='text-sm'>{formatPercentage(summaryData.dailyPL.percentage)}</span>
+          <div
+            className={`text-xl font-normal ${
+              summaryData.dailyPL.value < 0 ? "text-loss" : "text-profit"
+            }`}
+          >
+            {formatCurrency(summaryData.dailyPL.value)}{" "}
+            <span className="text-sm">
+              {formatPercentage(summaryData.dailyPL.percentage)}
+            </span>
           </div>
         </div>
-        
+
         {/* Vertical divider with gap on top and bottom */}
         <div className="relative h-full flex items-center">
-          <div className="absolute h-[90%] w-px bg-[#D1D5DB] my-auto"></div>
+          <div className="absolute h-[70%] w-px bg-[#D1D5DB] my-auto"></div>
         </div>
-        
-        <div className="w-1/2 text-center bg-[#F4F4F9] p-4">
+
+        <div className="w-1/2 text-center bg-[#F4F4F9] p-4 flex flex-col items-center justify-center">
           <div className="text-base text-[#6B7280] font-medium">Net P&L</div>
-          <div className={`text-xl font-normal ${summaryData.netPL.value < 0 ? 'text-loss' : 'text-profit'}`}>
-            {formatCurrency(summaryData.netPL.value)} <span className='text-sm'> {formatPercentage(summaryData.netPL.percentage)}</span>
+          <div
+            className={`text-xl font-normal ${
+              summaryData.netPL.value < 0 ? "text-loss" : "text-profit"
+            }`}
+          >
+            {formatCurrency(summaryData.netPL.value)}{" "}
+            <span className="text-sm">
+              {formatPercentage(summaryData.netPL.percentage)}
+            </span>
           </div>
         </div>
       </div>
@@ -255,74 +290,106 @@ const Positions: React.FC = () => {
         <table className="min-w-full divide-y divide-gray-200">
           <thead>
             <tr>
-              <HeaderCell 
-                field="type" 
-                label="Action" 
+              <HeaderCell
+                field="type"
+                label="Action"
                 className="border-r border-[#D1D5DB]"
               />
-              <HeaderCell 
-                field="security" 
-                label="Security" 
+              <HeaderCell
+                field="security"
+                label="Security"
                 className="border-r border-[#D1D5DB]"
               />
-              <HeaderCell 
-                field="quantity" 
-                label="Qty." 
+              <HeaderCell
+                field="quantity"
+                label="Qty."
                 className="border-r border-[#D1D5DB]"
               />
-              <HeaderCell 
-                field="avgPrice" 
+              <HeaderCell
+                field="avgPrice"
                 label="Avg. Price"
                 className="border-r border-[#D1D5DB]"
               />
-              <HeaderCell 
-                field="ltp" 
+              <HeaderCell
+                field="ltp"
                 label="LTP"
                 className="border-r border-[#D1D5DB]"
               />
-              <HeaderCell 
-                field="netPL" 
-                label="Net P&L" 
+              <HeaderCell
+                field="netPL"
+                label="Net P&L"
                 className="border-r border-[#D1D5DB]"
               />
-              <HeaderCell 
-                field="dailyPL" 
-                label="Daily P&L"
-              />
+              <HeaderCell field="dailyPL" label="Daily P&L" />
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
             {sortedPositions.map((position, index) => (
               <tr key={index} className="h-[50px]">
-                <td className="px-4 py-3 whitespace-nowrap text-center text-[#6B7280] text-sm border-r border-[#D1D5DB]">{position.type}</td>
+                <td className="px-4 py-3 whitespace-nowrap text-center text-[#6B7280] text-sm border-r border-[#D1D5DB]">
+                  {position.type}
+                </td>
                 <td className="px-4 py-3 border-r border-[#D1D5DB]">
                   <div className="flex items-center justify-between">
-                    <span className="text-[#6B7280] text-sm">{position.security}</span>
-                    <div className={`text-xs ml-8 py-1 rounded-sm w-12 text-center ${position.action === 'BUY' 
-                      ? 'bg-[#D5FFC6] text-profit' 
-                      : 'bg-red-100 text-loss'}`}>
+                    <span className="text-[#6B7280] text-sm">
+                      {position.security}
+                    </span>
+                    <div
+                      className={`text-xs ml-8 py-1 rounded-sm w-12 text-center ${
+                        position.action === "BUY"
+                          ? "bg-[#D5FFC6] text-profit"
+                          : "bg-red-100 text-loss"
+                      }`}
+                    >
                       {position.action}
                     </div>
                   </div>
                 </td>
-                <td className="px-4 py-3 whitespace-nowrap text-[#6B7280] text-center text-sm border-r border-[#D1D5DB]">{position.quantity}</td>
-                <td className="px-4 py-3 whitespace-nowrap text-[#6B7280] text-center text-sm border-r border-[#D1D5DB]">{formatCurrency(position.avgPrice)}</td>
-                <td className="px-4 py-3 whitespace-nowrap text-[#6B7280] text-center text-sm border-r border-[#D1D5DB]">{formatCurrency(position.ltp)}</td>
-                <td className={`px-4 py-3 whitespace-nowrap text-center text-sm border-r border-[#D1D5DB] ${position.netPL.value < 0 ? 'text-[#E53935]' : 'text-[#22A06B]'}`}>
-                  {formatCurrency(position.netPL.value)} {formatPercentage(position.netPL.percentage)}
+                <td className="px-4 py-3 whitespace-nowrap text-[#6B7280] text-center text-sm border-r border-[#D1D5DB]">
+                  {position.quantity}
                 </td>
-                <td className={`px-4 py-3 whitespace-nowrap text-center text-sm ${position.dailyPL.value < 0 ? 'text-[#E53935]' : 'text-[#22A06B]'}`}>
-                  {formatCurrency(position.dailyPL.value)} {formatPercentage(position.dailyPL.percentage)}
+                <td className="px-4 py-3 whitespace-nowrap text-[#6B7280] text-center text-sm border-r border-[#D1D5DB]">
+                  {formatCurrency(position.avgPrice)}
+                </td>
+                <td className="px-4 py-3 whitespace-nowrap text-[#6B7280] text-center text-sm border-r border-[#D1D5DB]">
+                  {formatCurrency(position.ltp)}
+                </td>
+                <td
+                  className={`px-4 py-3 whitespace-nowrap text-center text-sm border-r border-[#D1D5DB] ${
+                    position.netPL.value < 0
+                      ? "text-[#E53935]"
+                      : "text-[#22A06B]"
+                  }`}
+                >
+                  {formatCurrency(position.netPL.value)}{" "}
+                  {formatPercentage(position.netPL.percentage)}
+                </td>
+                <td
+                  className={`px-4 py-3 whitespace-nowrap text-center text-sm ${
+                    position.dailyPL.value < 0
+                      ? "text-[#E53935]"
+                      : "text-[#22A06B]"
+                  }`}
+                >
+                  {formatCurrency(position.dailyPL.value)}{" "}
+                  {formatPercentage(position.dailyPL.percentage)}
                 </td>
               </tr>
             ))}
             <tr className="bg-gray-50 font-medium">
-              <td colSpan={5} className="px-4 py-3 whitespace-nowrap text-sm text-center border-r border-[#D1D5DB]">Total</td>
+              <td
+                colSpan={5}
+                className="px-4 py-3 whitespace-nowrap text-sm text-center border-r border-[#D1D5DB]"
+              >
+                Total
+              </td>
               <td className="px-4 py-3 whitespace-nowrap text-center text-sm text-profit border-r border-[#D1D5DB]">
-                {formatCurrency(totalNetPL.value)} {formatPercentage(totalNetPL.percentage)}
+                {formatCurrency(totalNetPL.value)}{" "}
+                {formatPercentage(totalNetPL.percentage)}
               </td>
               <td className="px-4 py-3 whitespace-nowrap text-center text-sm text-profit">
-                {formatCurrency(totalDailyPL.value)} {formatPercentage(totalDailyPL.percentage)}
+                {formatCurrency(totalDailyPL.value)}{" "}
+                {formatPercentage(totalDailyPL.percentage)}
               </td>
             </tr>
           </tbody>
