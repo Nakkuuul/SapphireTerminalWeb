@@ -11,22 +11,10 @@ export const metadata = {
   description: 'A modern trading platform interface',
 };
 
-export default function RootLayout({
+export default function FuturesLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  return (
-    <div className={inter.className}>
-      <Navbar />
-      <div className="flex w-full pt-[60px]">
-        <div className="w-[30%]">
-          <Sidebar />
-        </div>
-        <main className="w-[70%] py-6 px-9 bg-white dark:bg-[#121212]">
-          {children}
-        </main>
-      </div>
-    </div>
-  );
+  return <>{children}</>;
 }
