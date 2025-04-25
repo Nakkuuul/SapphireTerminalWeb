@@ -1,38 +1,36 @@
-import React from 'react';
-import { ChevronRight, Plus, ArrowRightLeft} from 'lucide-react';
-import Image from 'next/image';
+import React from "react";
+import { ChevronRight } from "lucide-react";
 
 interface ActionButtonsProps {
   onDeposit: () => void;
   onWithdraw: () => void;
 }
 
-const ActionButtons: React.FC<ActionButtonsProps> = ({ onDeposit, onWithdraw }: ActionButtonsProps) => {
+const ActionButtons: React.FC<ActionButtonsProps> = ({
+  onDeposit,
+  onWithdraw,
+}: ActionButtonsProps) => {
   return (
-    <div className="flex space-x-4 mb-6">
-      <button 
-        onClick={onDeposit}
-        className="flex items-center text-[#6B7280] border border-gray-300 px-4 py-2 rounded-md hover:bg-gray-50"
-      >
-        Deposit
-        <Plus size={20} className=" ml-7 text-[#1DB954]" />
-      </button>
+    <div className="">
+      <div className="flex justify-between items-center">
+        <div className="flex items-center gap-3">
+          <button
+            onClick={onWithdraw}
+            className="px-5 py-2 border border-green-500 text-green-600 rounded-md bg-green-50 hover:bg-green-100 transition-colors"
+          >
+            Withdraw
+          </button>
+
+          <button
+            onClick={onDeposit}
+            className="px-5 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 transition-colors"
+          >
+            Deposit
+          </button>
+        </div>
+      </div>
+
       
-      <button 
-        onClick={onWithdraw}
-        className="flex items-center text-[#6B7280] border border-gray-300 px-4 py-2 rounded-md hover:bg-gray-50"
-      >
-        Withdraw
-       <Image src="/funds/withdraw.svg" alt="Withdraw" width={20} height={20} className="ml-7" />
-      </button>
-      
-      <div className="flex-grow"></div>
-      
-      <button className="flex items-center border border-[#D1D5DB] text-[#6B7280] px-4 py-2 rounded-md hover:bg-gray-50">
-        <Image src="/funds/transaction.svg" alt="Transaction History" width={20} height={20} className="mr-2" />
-        <span className="mr-6">View All Transaction History</span>
-        <ChevronRight size={20} />
-      </button>
     </div>
   );
 };

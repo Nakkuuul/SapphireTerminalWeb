@@ -1,6 +1,10 @@
 // components/FundsSummaryCards.tsx
-import React from 'react';
-import { Equal, Info, Plus } from 'lucide-react';
+import React, { useState } from "react";
+import { ChevronRight, RefreshCw } from "lucide-react";
+import ActionButtons from "./ActionButtons";
+import DepositPage from "./DepositPage";
+import WithdrawPage from "./Withdraw";
+import TransactionStatusBadge from "../gen-components/TransactionStatusBadge";
 
 interface FundsSummaryCardsProps {
   data: {
@@ -12,47 +16,52 @@ interface FundsSummaryCardsProps {
 
 const FundsSummaryCards: React.FC<FundsSummaryCardsProps> = ({ data }) => {
   const formatCurrency = (value: number) => {
-    return new Intl.NumberFormat('en-IN', {
+    return new Intl.NumberFormat("en-IN", {
       maximumFractionDigits: 2,
-      minimumFractionDigits: 2
+      minimumFractionDigits: 2,
     }).format(value);
   };
 
+  const [activeSection, setActiveSection] = useState<
+    "main" | "deposit" | "withdraw"
+  >("main");
+
+  const handleNavigate = (section: "main" | "deposit" | "withdraw") => {
+    setActiveSection(section);
+  };
+
+  if (activeSection === "deposit") {
+    return <DepositPage onBack={() => handleNavigate("main")} />;
+  }
+
+  if (activeSection === "withdraw") {
+    return <WithdrawPage onBack={() => handleNavigate("main")} />;
+  }
+
   return (
-    <div className="bg-[#F4F4F9] rounded-md mb-6 py-6 px-20 flex justify-between items-center">
-      {/* Available Margin */}
-      <div className="flex flex-col items-center">
-        <div className="text-base text-[#6B7280] flex items-center">
-          Available Margin
+    <div className="bg-[#F4F4F9] border border-[#D1D5DB] rounded-lg p-6 mb-1">
+      <div className="flex items-center justify-between ">
+        <div className="flex flex-col">
+          <div className="text-gray-700 text-base">
+            Trading Balance (Cash + Collateral)
+          </div>
+          <div className="flex items-center mt-1">
+            <span className="text-2xl font-medium">₹49,561.80</span>
+            <RefreshCw
+              size={16}
+              className="ml-2 text-gray-500 cursor-pointer"
+            />
+          </div>
         </div>
-        <div className="text-xl font-normal text-[#1A1A1A] mt-1">
-          ₹{formatCurrency(data.availableMargin)}
-        </div>
+        <ActionButtons
+          onDeposit={() => handleNavigate("deposit")}
+          onWithdraw={() => handleNavigate("withdraw")}
+        />
       </div>
+      <div className="w-[90%] mt-8 py-1 text-md text-gray-500 text-center  mx-auto border-t border-gray-400/30">
+        <div className="flex items-center justify-center mt-4">
 
-      {/* Equals Symbol */}
-      <Equal size={18} className='text-[#6B7280]' />
-
-      {/* Cash Balance */}
-      <div className="flex flex-col items-center">
-        <div className="text-base text-[#6B7280] flex items-center">
-          Cash Balance <Info size={14} className="ml-1 text-gray-400" />
-        </div>
-        <div className="text-xl font-normal text-[#1A1A1A] mt-1">
-          ₹{formatCurrency(data.cashBalance)}
-        </div>
-      </div>
-
-      {/* Plus Symbol */}
-      <Plus size={18} className='text-[#6B7280]'/>
-
-      {/* Margin from Pledge */}
-      <div className="flex flex-col items-center">
-        <div className="text-base text-[#6B7280] flex items-center">
-          Margin from Pledge <Info size={14} className="ml-1 text-gray-400" />
-        </div>
-        <div className="text-xl font-normal text-[#1A1A1A] mt-1">
-          ₹{formatCurrency(data.marginFromPledge)}
+          View All Transaction History <ChevronRight />
         </div>
       </div>
     </div>

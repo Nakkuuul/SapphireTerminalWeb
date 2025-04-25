@@ -120,10 +120,42 @@ const BalanceBreakdown: React.FC<BalanceBreakdownProps> = ({
   );
 
   return (
-    <div className="border border-gray-200 rounded-md p-4">
-      {renderSectionHeader("Total Balance", totalBalance, true)}
+    <div className="border border-gray-200 rounded-lg p-4">
+      <div className="flex items-center mb-3">
+        <h2 className="text-green-500 text-base font-medium flex items-center">
+          Total Balance <Info size={14} className="ml-1 text-gray-400" />
+        </h2>
+        <div className="ml-auto text-green-500 font-medium">
+          ₹{formatCurrency(totalBalance)}
+        </div>
+      </div>
 
-      <div className="mb-4 pt-2">{renderTable(balanceItems)}</div>
+      <div className="mb-4">
+        <table className="w-full">
+          <tbody>
+            <tr className="bg-gray-50">
+              <td className="py-2 px-3 text-gray-600">Cash Balance</td>
+              <td className="py-2 px-3 text-right text-gray-600">
+                ₹{formatCurrency(balanceData.cashBalance)}
+              </td>
+            </tr>
+            <tr>
+              <td className="py-2 px-3 text-gray-600">Collateral Balance</td>
+              <td className="py-2 px-3 text-right text-gray-600">
+                ₹{formatCurrency(balanceData.collateralBalance)}
+              </td>
+            </tr>
+            <tr className="bg-gray-50">
+              <td className="py-2 px-3 text-gray-600">
+                Collateral (Liquid Funds)
+              </td>
+              <td className="py-2 px-3 text-right text-gray-600">
+                ₹{formatCurrency(balanceData.collateralLiquidFunds)}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
 
       {renderSectionHeader("Margin Utilised", balanceData.marginUtilised)}
 
