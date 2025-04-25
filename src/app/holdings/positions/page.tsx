@@ -351,25 +351,35 @@ const Positions: React.FC = () => {
                   style={{ fontSize: "14px" }}
                 >
                   <div className="flex items-center justify-center">
-                    <div 
-                      className="text-xs py-1 px-2 rounded-sm mr-2"
+                    <div
+                      className="text-xs py-1 px-3 rounded-md mr-2 min-w-[90px] text-center"
                       style={{
-                        backgroundColor: 
-                          position.type === "Delivery" ? "#F1F8F6" :
-                          position.type === "CarryForward" ? "#F3F5FA" :
-                          position.type === "Intraday" ? "#FFF9ED" :
-                          position.type === "MTF" ? "#F7F3FB" : "#F1F1F1",
+                        backgroundColor:
+                          position.type === "Delivery"
+                            ? "#F1F8F6"
+                            : position.type === "CarryForward"
+                            ? "#F3F5FA"
+                            : position.type === "Intraday"
+                            ? "#FFF9ED"
+                            : position.type === "MTF"
+                            ? "#F7F3FB"
+                            : "#F1F1F1",
                         color:
-                          position.type === "Delivery" ? "#2E7D6F" :
-                          position.type === "CarryForward" ? "#3C4F94" :
-                          position.type === "Intraday" ? "#E65100" :
-                          position.type === "MTF" ? "#6A1B9A" : "#666666"
+                          position.type === "Delivery"
+                            ? "#2E7D6F"
+                            : position.type === "CarryForward"
+                            ? "#3C4F94"
+                            : position.type === "Intraday"
+                            ? "#E65100"
+                            : position.type === "MTF"
+                            ? "#6A1B9A"
+                            : "#666666",
                       }}
                     >
                       {position.type}
                     </div>
                     <div
-                      className={`text-xs py-1 rounded-sm w-12 text-center ${
+                      className={`text-xs py-1 px-3 rounded-md min-w-[50px] text-center ${
                         position.action === "BUY"
                           ? "bg-[#D5FFC6] text-profit"
                           : "bg-red-100 text-loss"
