@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import React, { useState, FormEvent } from "react";
 import TroubleLogin from "./trouble/TroubleLogin";
@@ -10,11 +10,11 @@ interface LoginScreenProps {
   setShowProgressBar?: (show: boolean) => void;
 }
 
-const LoginScreen: React.FC<LoginScreenProps> = ({ 
-  setCurrentStep, 
-  username, 
+const LoginScreen: React.FC<LoginScreenProps> = ({
+  setCurrentStep,
+  username,
   setUsername,
-  setShowProgressBar = () => {} // Optional prop with default no-op function
+  setShowProgressBar = () => {}, // Optional prop with default no-op function
 }) => {
   const [password, setPassword] = useState<string>("");
   const [showPassword, setShowPassword] = useState<boolean>(false);
@@ -30,11 +30,10 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
       // Set error and trigger shake animation
       setError(true);
       setShake(true);
-      
-      // Clear the input fields
+
+      // Keep password field but clear username
       setUsername("");
-      setPassword("");
-      
+
       // Remove shake animation after it completes
       setTimeout(() => setShake(false), 500);
     }
@@ -55,9 +54,11 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
   }
 
   // Inline animation styles
-  const shakeStyle = shake ? {
-    animation: 'shake 0.5s ease-in-out',
-  } : {};
+  const shakeStyle = shake
+    ? {
+        animation: "shake 0.5s ease-in-out",
+      }
+    : {};
 
   const keyframes = `
     @keyframes shake {
@@ -79,7 +80,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
     <div className="flex-1 flex flex-col justify-center space-y-4 px-6">
       {/* Inject the keyframes for the shake animation */}
       <style jsx>{keyframes}</style>
-      
+
       <div className="text-center mb-7 mt-10 space-y-2">
         <h1 className="text-xl -mt-20 sm:text-3xl font-normal text-black dark:text-white">
           Sapphire Terminal
@@ -139,16 +140,14 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
               type="button"
               onClick={() => setShowPassword(!showPassword)}
               className="absolute inset-y-0 right-0 flex items-center px-3 text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white transition-colors duration-200"
-            >
-              
-            </button>
+            ></button>
           </div>
-          <button 
+          <button
             type="button"
             onClick={handleTroubleLogin}
-            className="absolute right-0 mt-1 text-xs text-blue-400 hover:text-blue-500 transition-colors duration-200"
+            className="absolute right-0 mt-3 text-xs text-blue-400 hover:text-blue-500 transition-colors duration-200"
           >
-            Trouble Logging In?
+            Forgot Password?
           </button>
         </div>
 
@@ -156,7 +155,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
           <button
             type="submit"
             disabled={!username || !password}
-            className={`w-full py-3 mt-3 text-white font-semibold text-sm rounded-lg transition-all duration-200 ${
+            className={`w-full py-3 text-white font-semibold text-sm rounded-lg transition-all duration-200 ${
               !username || !password
                 ? "bg-[#00A645] cursor-not-allowed opacity-70"
                 : "bg-[#00C853] hover:bg-[#00B649]"
