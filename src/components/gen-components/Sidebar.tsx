@@ -1512,21 +1512,25 @@ const Sidebar = () => {
                 <div className="flex items-center">
                   <span className="text-sm">{watchlist.name}</span>
                   <div className="ml-2 flex items-center">
-                    <button
-                      onClick={(e) =>
-                        startEditingWatchlist(watchlist.id, watchlist.name, e)
-                      }
-                      className="text-gray-400 hover:text-gray-600 mx-0.5"
+                    <span
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        startEditingWatchlist(watchlist.id, watchlist.name, e);
+                      }}
+                      className="text-gray-400 hover:text-gray-600 mx-0.5 cursor-pointer"
                     >
                       <Edit size={12} />
-                    </button>
+                    </span>
                     {watchlists.length > 1 && (
-                      <button
-                        onClick={(e) => handleRemoveWatchlist(watchlist.id, e)}
-                        className="text-gray-400 hover:text-red-500 mx-0.5"
+                      <span
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleRemoveWatchlist(watchlist.id, e);
+                        }}
+                        className="text-gray-400 hover:text-red-500 mx-0.5 cursor-pointer"
                       >
                         <X size={12} />
-                      </button>
+                      </span>
                     )}
                   </div>
                 </div>

@@ -8,7 +8,11 @@ import { ChevronDown } from "lucide-react";
 function Selector() {
   const pathname = usePathname();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [indicatorStyle, setIndicatorStyle] = useState({ width: 0, left: 0, initialized: false });
+  const [indicatorStyle, setIndicatorStyle] = useState({
+    width: 0,
+    left: 0,
+    initialized: false,
+  });
   const tabsRef = useRef<(HTMLSpanElement | null)[]>([]);
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -20,25 +24,29 @@ function Selector() {
   ];
 
   // Find the active tab
-  const activeTab = tabs.find(tab => tab.path === pathname) || tabs[0];
+  const activeTab = tabs.find((tab) => tab.path === pathname) || tabs[0];
 
   // Update indicator position
   useEffect(() => {
     const updateIndicator = () => {
-      const activeIndex = tabs.findIndex(tab => tab.path === pathname);
-      if (activeIndex !== -1 && tabsRef.current[activeIndex] && containerRef.current) {
+      const activeIndex = tabs.findIndex((tab) => tab.path === pathname);
+      if (
+        activeIndex !== -1 &&
+        tabsRef.current[activeIndex] &&
+        containerRef.current
+      ) {
         const activeTab = tabsRef.current[activeIndex];
         const containerRect = containerRef.current.getBoundingClientRect();
         const tabRect = activeTab.getBoundingClientRect();
-        
+
         // Calculate position relative to the container
         const left = tabRect.left - containerRect.left;
         const width = tabRect.width;
-        
+
         setIndicatorStyle({
           width,
           left,
-          initialized: true
+          initialized: true,
         });
       }
     };
@@ -47,8 +55,8 @@ function Selector() {
     requestAnimationFrame(updateIndicator);
 
     // Add event listener for resize
-    window.addEventListener('resize', updateIndicator);
-    return () => window.removeEventListener('resize', updateIndicator);
+    window.addEventListener("resize", updateIndicator);
+    return () => window.removeEventListener("resize", updateIndicator);
   }, [pathname]);
 
   // Toggle dropdown menu for mobile
@@ -59,7 +67,7 @@ function Selector() {
   return (
     <div className="w-full border-b-2 mb-6 border-gray-200 relative">
       {/* Desktop Version - Horizontal Tabs */}
-      <div 
+      <div
         ref={containerRef}
         className="hidden md:flex w-full gap-x-24 justify-center relative"
       >
@@ -69,8 +77,10 @@ function Selector() {
             href={tab.path}
             className="py-2 text-xl font-medium text-center flex justify-center"
           >
-            <span 
-              ref={el => { if (el) tabsRef.current[index] = el }}
+            <span
+              ref={(el) => {
+                if (el) tabsRef.current[index] = el;
+              }}
               className={`relative ${
                 pathname === tab.path
                   ? "text-[#1DB954] font-semibold"
@@ -81,16 +91,18 @@ function Selector() {
             </span>
           </Link>
         ))}
-        
+
         {/* Sliding indicator */}
-        <span 
+        <span
           className={`absolute h-0.5 bg-[#1DB954] ${
-            indicatorStyle.initialized ? 'transition-all duration-300 ease-in-out' : ''
+            indicatorStyle.initialized
+              ? "transition-all duration-300 ease-in-out"
+              : ""
           }`}
           style={{
             width: `${indicatorStyle.width}px`,
             left: `${indicatorStyle.left}px`,
-            bottom: 0
+            bottom: 0,
           }}
         />
       </div>
@@ -102,12 +114,20 @@ function Selector() {
             onClick={toggleDropdown}
             className="w-full py-2 font-medium text-sm flex items-center justify-between"
           >
-            <span className={pathname.includes(activeTab.path) ? 'text-[#1DB954]' : 'text-gray-800'}>
+            <span
+              className={
+                pathname.includes(activeTab.path)
+                  ? "text-[#1DB954]"
+                  : "text-gray-800"
+              }
+            >
               {activeTab.name}
             </span>
-            <ChevronDown 
-              size={16} 
-              className={`transition-transform duration-300 ${isDropdownOpen ? 'rotate-180' : ''}`} 
+            <ChevronDown
+              size={16}
+              className={`transition-transform duration-300 ${
+                isDropdownOpen ? "rotate-180" : ""
+              }`}
             />
           </button>
 
@@ -119,9 +139,7 @@ function Selector() {
                   href={tab.path}
                   onClick={() => setIsDropdownOpen(false)}
                   className={`block px-4 py-3 text-sm hover:bg-gray-50 ${
-                    pathname === tab.path
-                      ? "text-[#1DB954]"
-                      : "text-gray-600"
+                    pathname === tab.path ? "text-[#1DB954]" : "text-gray-600"
                   }`}
                 >
                   {tab.name}

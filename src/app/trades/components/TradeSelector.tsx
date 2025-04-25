@@ -11,8 +11,8 @@ function TradeSelector() {
 
   const tabs = [
     { name: "Stocks", path: "/trades/stocks" },
-    { name: "Options", path: "/trades/options" },
     { name: "Futures", path: "/trades/futures" },
+    { name: "Options", path: "/trades/options" },
     { name: "Commodity", path: "/trades/commodity" },
   ];
 

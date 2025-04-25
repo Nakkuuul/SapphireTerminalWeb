@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { ChevronDown } from "lucide-react";
 
-function HoldingSelector() {
+function TradeSelector() {
   const pathname = usePathname();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
@@ -13,11 +13,10 @@ function HoldingSelector() {
     { name: "Equity", path: "/holdings/equity" },
     { name: "Positions", path: "/holdings/positions" },
     { name: "Mutual Funds", path: "/holdings/mutualfunds" },
-
   ];
 
   // Find the active tab
-  const activeTab = tabs.find(tab => tab.path === pathname) || tabs[0];
+  const activeTab = tabs.find((tab) => tab.path === pathname) || tabs[0];
 
   // Toggle dropdown menu for mobile
   const toggleDropdown = () => {
@@ -25,70 +24,81 @@ function HoldingSelector() {
   };
 
   return (
-    <div className="w-full border-b-2 mb-6 border-gray-200 relative">
+    <>
       {/* Desktop Version - Horizontal Tabs */}
-      <div className="flex w-full gap-x-24 justify-center">
-        {tabs.map((tab) => (
-          <Link
-            key={tab.name}
-            href={tab.path}
-            className="py-2 text-xl font-medium text-center flex justify-center"
-          >
-            <span 
-              className={`relative ${
-                pathname === tab.path
-                  ? "text-[#1DB954] font-semibold"
-                  : "text-gray-600"
-              }`}
+      <div className="hidden mb-10 border-b-2 border-gray-200 md:flex w-full justify-center items-center gap-x-4 lg:gap-x-12">
+        {tabs.map((tab) => {
+          const isActive = pathname === tab.path;
+          return (
+            <div
+              key={tab.name}
+              className="relative group h-[60px] flex items-center"
             >
-              {tab.name}
-              {pathname === tab.path && (
-                <span className="absolute top-9 left-0 w-full h-0.5 bg-[#1DB954]" 
-                      style={{ bottom: '-8px' }}></span>
-              )}
-            </span>
-          </Link>
-        ))}
+              <Link
+                href={tab.path}
+                className={`relative group text-sm xl:text-base font-medium py-2 transition-all duration-300 ${
+                  isActive ? "text-[#28A745]" : "text-gray-600"
+                } group-hover:text-[#28A745]`}
+              >
+                {tab.name}
+                {/* Green underline animation */}
+                <span
+                  className={`absolute -bottom-3 -left-[12px] h-[3px] bg-[#28A745] transition-all duration-300 ${
+                    isActive ? "w-[150%]" : "w-0"
+                  } group-hover:w-[150%]`}
+                ></span>
+              </Link>
+            </div>
+          );
+        })}
       </div>
 
-      {/* Mobile Version - Dropdown (Hidden in the image) */}
-      <div className="hidden">
+      {/* Mobile Version - Dropdown */}
+      <div className="md:hidden w-full px-4">
         <div className="relative">
           <button
             onClick={toggleDropdown}
-            className="w-full py-2 font-medium text-sm flex items-center justify-between"
+            className={`w-full px-4 py-2 font-medium text-sm flex items-center justify-between rounded-sm border transition-all duration-300 ${
+              pathname === activeTab.path
+                ? "text-[#28A745] border-[#28A745]"
+                : "text-gray-600 border-gray-300"
+            }`}
           >
-            <span className={pathname.includes(activeTab.path) ? 'text-[#1DB954]' : 'text-gray-800'}>
-              {activeTab.name}
-            </span>
-            <ChevronDown 
-              size={16} 
-              className={`transition-transform duration-300 ${isDropdownOpen ? 'rotate-180' : ''}`} 
+            <span>{activeTab.name}</span>
+            <ChevronDown
+              size={16}
+              className={`transition-transform duration-300 ${
+                isDropdownOpen ? "rotate-180" : ""
+              }`}
             />
           </button>
 
+          {/* Dropdown Menu */}
           {isDropdownOpen && (
-            <div className="absolute mt-1 w-full rounded-md shadow-lg bg-white z-10 border border-gray-200">
-              {tabs.map((tab) => (
-                <Link
-                  key={tab.name}
-                  href={tab.path}
-                  onClick={() => setIsDropdownOpen(false)}
-                  className={`block py-3 text-sm hover:bg-gray-50 ${
-                    pathname === tab.path
-                      ? "text-[#1DB954]"
-                      : "text-gray-600"
-                  }`}
-                >
-                  {tab.name}
-                </Link>
-              ))}
+            <div className="absolute mt-1 w-full rounded-md shadow-lg bg-white border border-gray-200">
+              {tabs.map((tab) => {
+                const isActive = pathname === tab.path;
+                return (
+                  <Link
+                    key={tab.name}
+                    href={tab.path}
+                    onClick={() => setIsDropdownOpen(false)}
+                    className={`block px-4 py-3 text-sm transition-colors duration-200 ${
+                      isActive
+                        ? "text-[#28A745] bg-green-50"
+                        : "text-gray-600 hover:text-[#28A745] hover:bg-gray-50"
+                    }`}
+                  >
+                    {tab.name}
+                  </Link>
+                );
+              })}
             </div>
           )}
         </div>
       </div>
-    </div>
+    </>
   );
 }
 
-export default HoldingSelector;
+export default TradeSelector;
