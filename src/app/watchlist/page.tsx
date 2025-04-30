@@ -15,10 +15,10 @@ function Watchlist() {
       container: "chartContainer",
       locale: "en",
       library_path: "charting_library/",
-      datafeed: new Datafeeds.UDFCompatibleDatafeed(
+      datafeed: new window.TradingView.UDFCompatibleDatafeed(
         "https://demo-feed-data.tradingview.com"
       ),
-      symbol: "AAPL",
+      symbol: "AAPL", 
       interval: "1D",
       fullscreen: true,
       debug: true,

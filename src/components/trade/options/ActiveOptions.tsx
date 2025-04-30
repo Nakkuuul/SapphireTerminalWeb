@@ -267,7 +267,7 @@ export default function TradesList() {
               2
             )}`,
             postedBy: "Trade Advisor",
-            marginReq: `₹${trade.marginRequired.toLocaleString("en-IN")}`,
+            marginReq: `₹${trade.marginRequired?.toLocaleString("en-IN")}`,
             duration: "2 days",
           }))}
         />
