@@ -1,3 +1,4 @@
+//@ts-nocheck
 "use client"
 import React, { useEffect } from "react";
 
@@ -15,10 +16,10 @@ function Watchlist() {
       container: "chartContainer",
       locale: "en",
       library_path: "charting_library/",
-      datafeed: new window.TradingView.UDFCompatibleDatafeed(
+      datafeed: new Datafeeds.UDFCompatibleDatafeed(
         "https://demo-feed-data.tradingview.com"
       ),
-      symbol: "AAPL", 
+      symbol: "AAPL",
       interval: "1D",
       fullscreen: true,
       debug: true,
