@@ -18,9 +18,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>
-        {children}
-      </body>
+      <head>
+        <script src="charting_library/charting_library.standalone.js"></script>
+        <script src="datafeeds/udf/dist/bundle.js"></script>
+      </head>
+      <body className={inter.className}>{children}</body>
     </html>
   );
 }
