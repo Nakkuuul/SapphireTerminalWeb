@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, MoreVertical } from "lucide-react";
 
 function OrderSelector() {
   const pathname = usePathname();
@@ -27,33 +27,38 @@ function OrderSelector() {
   return (
     <>
       {/* Desktop Version - Horizontal Tabs */}
-      <div className="hidden border-b-2 border-gray-200 md:flex w-full justify-center items-center  gap-x-4 lg:gap-x-12">
-        {tabs.map((tab) => {
-          const isActive = pathname === tab.path;
-          return (
-            <div
-              key={tab.name}
-              className="relative group h-[60px] flex items-center"
-            >
-              <Link
-                href={tab.path}
-                className={`relative group text-sm xl:text-base font-medium py-2 transition-all duration-300 ${
-                  isActive
-                    ? "text-[#28A745]"
-                    : "text-gray-600 hover:text-[#28A745]"
-                }`}
+      <div className="hidden border-b-2 border-gray-200 md:flex w-full justify-between items-center px-4 lg:px-8">
+        <div className="flex items-center w-full justify-between px-8">
+          {tabs.map((tab) => {
+            const isActive = pathname === tab.path;
+            return (
+              <div
+                key={tab.name}
+                className="relative group h-[60px] flex items-center"
               >
-                {tab.name}
-                {/* Green underline animation */}
-                <span
-                  className={`absolute -bottom-3 -left-[12px] h-[3px] bg-[#28A745] transition-all duration-300 ${
-                    isActive ? "w-[150%]" : "w-0"
-                  } group-hover:w-[150%]`}
-                ></span>
-              </Link>
-            </div>
-          );
-        })}
+                <Link
+                  href={tab.path}
+                  className={`relative group text-sm xl:text-base font-medium py-2 transition-all duration-300 ${
+                    isActive
+                      ? "text-[#28A745]"
+                      : "text-gray-600 hover:text-[#28A745]"
+                  }`}
+                >
+                  {tab.name}
+                  {/* Green underline animation */}
+                  <span
+                    className={`absolute -bottom-3 -left-[12px] h-[3px] bg-[#28A745] transition-all duration-300 ${
+                      isActive ? "w-[150%]" : "w-0"
+                    } group-hover:w-[150%]`}
+                  ></span>
+                </Link>
+              </div>
+            );
+          })}
+        </div>
+        <div className="flex ml-20 items-center">
+          <MoreVertical size={20} className=" cursor-pointer hover:text-[#28A745]" />
+        </div>
       </div>
 
       {/* Mobile Version - Dropdown */}
@@ -68,12 +73,15 @@ function OrderSelector() {
             }`}
           >
             <span>{activeTab.name}</span>
-            <ChevronDown
-              size={16}
-              className={`transition-transform duration-300 ${
-                isDropdownOpen ? "rotate-180" : ""
-              }`}
-            />
+            <div className="flex items-center">
+              <MoreVertical size={18} className="text-gray-600 mr-2" />
+              <ChevronDown
+                size={16}
+                className={`transition-transform duration-300 ${
+                  isDropdownOpen ? "rotate-180" : ""
+                }`}
+              />
+            </div>
           </button>
 
           {/* Dropdown Menu */}

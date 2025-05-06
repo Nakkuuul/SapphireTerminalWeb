@@ -137,7 +137,7 @@ const GridViewOptions: React.FC<GridViewTableProps> = ({ trades }) => {
 
           {/* Strategy section (replacing the todo section) */}
           <div className="px-5 py-2">
-            <div className="py-3 px-3 rounded bg-[#E7F4F3] dark:bg-[#1E2928] text-gray-500 dark:text-gray-400 text-sm">
+            <div className="py-3 px-3 rounded bg-[#B8DBD94D] dark:bg-[#1E2928] text-gray-500 dark:text-gray-400 text-sm">
               <div className="grid grid-cols-3  gap-8 lg:gap-10 ">
                 <div>
                   <div className="text-gray-500 dark:text-gray-400">Strategy</div>
@@ -179,7 +179,7 @@ const GridViewOptions: React.FC<GridViewTableProps> = ({ trades }) => {
 
           {/* Posted by section */}
           <div className="px-5 py-2">
-            <div className="py-3 px-2 rounded bg-[#E7F4F3] dark:bg-[#1E2928] text-gray-500 dark:text-gray-400 text-sm">
+            <div className="py-3 px-2 rounded bg-[#B8DBD94D] dark:bg-[#1E2928] text-gray-500 dark:text-gray-400 text-sm">
               Posted by:{' '}
               <span className="text-black dark:text-[#EBEEF5]">
                 {trade.postedBy}

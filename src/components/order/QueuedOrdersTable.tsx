@@ -1,9 +1,9 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Search } from "lucide-react";
 import Image from "next/image";
 
-const OrdersTable = () => {
+const QueuedOrdersTable = () => {
   // Sample data matching the image
   const [orders, setOrders] = useState([
     {
@@ -58,19 +58,103 @@ const OrdersTable = () => {
     },
   ]);
 
+  // Search functionality
+  const [searchTerm, setSearchTerm] = useState("");
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const searchRef = useRef(null);
+
+  // Dummy company data for search dropdown
+  const companies = [
+    { name: "Reliance Industries Ltd.", symbol: "RELIANCE", exchange: "NSE" },
+    { name: "Tata Consultancy Services Ltd.", symbol: "TCS", exchange: "NSE" },
+    { name: "HDFC Bank Ltd.", symbol: "HDFCBANK", exchange: "NSE" },
+    { name: "Infosys Ltd.", symbol: "INFY", exchange: "NSE" },
+    { name: "ICICI Bank Ltd.", symbol: "ICICIBANK", exchange: "NSE" },
+  ];
+
+  // Filter companies based on search term
+  const filteredCompanies = companies.filter(
+    (company) =>
+      company.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      company.symbol.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (searchRef.current && !(searchRef.current as HTMLElement).contains(event.target as Node)) {
+        setIsDropdownOpen(false);
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  // Handle search input change
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(e.target.value);
+    if (e.target.value.length > 0) {
+      setIsDropdownOpen(true);
+    } else {
+      setIsDropdownOpen(false);
+    }
+  };
+
+  // Handle company selection
+  const handleSelectCompany = (company: { name: string; symbol: string }) => {
+    setSearchTerm(company.name);
+    setIsDropdownOpen(false);
+    // Here you would typically filter orders or fetch data based on selected company
+    console.log(`Selected company: ${company.name} (${company.symbol})`);
+  };
+
   return (
-    <div className="bg-white w-full mx-auto shadow-sm">
+    <div className="bg-white w-full mx-auto">
       <div className="flex justify-between items-center py-4">
         <h2 className="text-base font-medium text-gray-800">5 Queued Orders</h2>
-        <div className="relative">
+        <div className="relative" ref={searchRef}>
           <input
             type="text"
             placeholder="Search everything..."
             className="pl-4 pr-11 py-2 border border-[#D1D5DB] rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-blue-500"
+            value={searchTerm}
+            onChange={handleSearchChange}
+            onClick={() => setIsDropdownOpen(true)}
           />
           <button className="absolute right-3 top-1/2 transform -translate-y-1/2">
             <Search size={16} className="text-gray-500" />
           </button>
+
+          {/* Search Dropdown */}
+          {isDropdownOpen && (
+            <div className="absolute z-10 mt-1 w-full bg-white border border-gray-200 rounded-md shadow-lg max-h-60 overflow-auto">
+              {filteredCompanies.length > 0 ? (
+                filteredCompanies.map((company, index) => (
+                  <div
+                    key={index}
+                    className="px-4 py-2 hover:bg-gray-100 cursor-pointer flex items-center justify-between"
+                    onClick={() => handleSelectCompany(company)}
+                  >
+                    <div className="flex items-center">
+                      <div className="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center mr-3">
+                        <span className="text-xs font-medium">{company.symbol.substring(0, 2)}</span>
+                      </div>
+                      <div>
+                        <p className="text-sm font-medium">{company.name}</p>
+                        <p className="text-xs text-gray-500">{company.symbol}</p>
+                      </div>
+                    </div>
+                    <span className="text-xs bg-gray-100 px-2 py-1 rounded">{company.exchange}</span>
+                  </div>
+                ))
+              ) : (
+                <div className="px-4 py-2 text-sm text-gray-500">No companies found</div>
+              )}
+            </div>
+          )}
         </div>
       </div>
 
@@ -230,4 +314,4 @@ const OrdersTable = () => {
   );
 };
 
-export default OrdersTable;
+export default QueuedOrdersTable;

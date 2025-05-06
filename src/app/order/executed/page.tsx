@@ -1,9 +1,15 @@
-import React from 'react'
+"use client";
+import ExecutedOrdersTable from '@/components/order/ExecutedOrdersTable';
+import React from 'react';
+
+
 
 const Home = () => {
   return (
-    <div>Home</div>
-  )
-}
+    <div className="bg-white w-full">
+      <ExecutedOrdersTable />
+    </div>
+  );
+};
 
-export default Home
+export default Home;

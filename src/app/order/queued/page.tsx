@@ -1,11 +1,11 @@
+"use client";
 import React from "react";
-import OrderSelector from "../components/OrderSelector";
-import OrdersTable from "../components/OrdersTable";
-
+import QueuedOrdersTable from "@/components/order/QueuedOrdersTable";
 
 const Home = () => {
   return (
     <div className="bg-white w-full">
+      <QueuedOrdersTable />
     </div>
   );
 };

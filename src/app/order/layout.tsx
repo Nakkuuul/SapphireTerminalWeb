@@ -2,8 +2,7 @@ import React from "react";
 import Navbar from "@/components/gen-components/Navbar";
 import Sidebar from "@/components/gen-components/Sidebar";
 import { Inter } from "next/font/google";
-import OrderSelector from "./components/OrderSelector";
-import OrdersTable from "./components/OrdersTable";
+import OrderSelector from "../../components/order/OrderSelector";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
@@ -24,12 +23,11 @@ export default function RootLayout({
           <Sidebar />
         </div>
         <main className="w-[70%] py-6 px-[38px] bg-white dark:bg-[#121212]">
-          {children}
+          
           <div className="bg-white w-full">
             <OrderSelector />
-
-            <OrdersTable />
           </div>
+          {children}
         </main>
       </div>
     </div>
