@@ -2,13 +2,12 @@ import React from "react";
 import Navbar from "@/components/gen-components/Navbar";
 import Sidebar from "@/components/gen-components/Sidebar";
 import { Inter } from "next/font/google";
-import OrderSelector from "./components/OrderSelector";
-import OrdersTable from "./components/OrdersTable";
+
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
-  title: "Trading Platform",
-  description: "A modern trading platform interface",
+  title: "Trading Platform - Trades",
+  description: "A modern trading platform interface for trades",
 };
 
 export default function RootLayout({
@@ -23,12 +22,9 @@ export default function RootLayout({
         <div className="w-[30%]">
           <Sidebar />
         </div>
-        <main className="w-[70%] py-6 px-[38px] bg-white dark:bg-[#121212]">
-          {children}
+        <main className="w-[70%] py-6 px-[27px] bg-white dark:bg-[#121212]">
           <div className="bg-white w-full">
-            <OrderSelector />
-
-            <OrdersTable />
+            {children}
           </div>
         </main>
       </div>

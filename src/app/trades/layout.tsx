@@ -23,7 +23,7 @@ export default function RootLayout({
         <div className="w-[30%]">
           <Sidebar />
         </div>
-        <main className="w-[70%] py-6 px-9 bg-white dark:bg-[#121212]">
+        <main className="w-[70%] py-6 px-[27px] bg-white dark:bg-[#121212]">
           <div className="bg-white w-full">
             <TradeSelector />
             {children}

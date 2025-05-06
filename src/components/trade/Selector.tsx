@@ -75,7 +75,7 @@ function Selector() {
           <Link
             key={tab.name}
             href={tab.path}
-            className="py-2 text-xl font-medium text-center flex justify-center"
+            className="py-2 text-2xl font-medium text-center flex justify-center"
           >
             <span
               ref={(el) => {

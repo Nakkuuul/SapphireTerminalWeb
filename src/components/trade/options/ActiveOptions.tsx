@@ -154,7 +154,7 @@ export default function TradesList() {
                   : "border-[#D1D5DB] text-gray-700"
               }`}
             >
-              <HiOutlineAdjustments size={14} className="dark:text-white" />
+              <HiOutlineAdjustments size={18} className="dark:text-white" />
               <span className="text-xs dark:text-white">Filter</span>
               {filterType && (
                 <div className="ml-1 flex h-5 w-5 items-center justify-center rounded-full bg-blue-500 text-xs text-white">
@@ -213,7 +213,7 @@ export default function TradesList() {
             <input
               type="text"
               placeholder="Search everything..."
-              className="w-full pl-3 pr-10 py-2.5 border border-[#D1D5DB] dark:border-dark-border dark:bg-[#121212] rounded-md text-xs focus:outline-none focus:ring-1 focus:ring-blue-500 h-[42px]"
+              className="w-full pl-3 pr-[70px] py-2.5 border border-[#D1D5DB] dark:border-dark-border dark:bg-[#121212] rounded-md text-xs focus:outline-none focus:ring-1 focus:ring-blue-500 h-[42px]"
               value={searchQuery}
               onChange={handleSearchChange}
             />

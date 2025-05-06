@@ -132,8 +132,8 @@ export default function ActiveCommodity() {
             <button 
               onClick={() => setShowFilters(!showFilters)} 
               className={`flex items-center gap-2 px-5 py-2.5 bg-[#F4F4F9] dark:bg-dark-insidecard rounded-md border dark:border-none h-[42px] ${showFilters || filterType ? 'border-blue-500 bg-blue-50 text-blue-600' : 'border-[#D1D5DB] text-gray-700'}`}           >
-              <HiOutlineAdjustments className='dark:text-white' size={16} />
-              <span className='dark:text-white'>Filter</span>
+              <HiOutlineAdjustments className='dark:text-white' size={18} />
+              <span className='dark:text-white text-xs'>Filter</span>
               {filterType && (
                 <div className="ml-1 flex h-5 w-5 items-center justify-center rounded-full bg-blue-500 text-xs text-white">
                   1
@@ -181,7 +181,7 @@ export default function ActiveCommodity() {
             <input
               type="text"
               placeholder="Search everything..."
-              className="w-full pl-3 pr-10 py-2.5 border border-[#D1D5DB] dark:border-dark-border dark:bg-[#121212] rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-blue-500 h-[42px]"
+              className="w-full pl-3 pr-[70px] py-2.5 border border-[#D1D5DB] dark:border-dark-border dark:bg-[#121212] rounded-md text-xs focus:outline-none focus:ring-1 focus:ring-blue-500 h-[42px]"
               value={searchQuery}
               onChange={handleSearchChange}
             />
@@ -190,7 +190,7 @@ export default function ActiveCommodity() {
                 onClick={() => setSearchQuery('')}
                 className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400 hover:text-gray-600"
               >
-                <X size={16} />
+                <X size={14} />
               </button>
             )}
           </div>

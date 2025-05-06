@@ -11,7 +11,7 @@ function TradeSelector() {
 
   const tabs = [
     { name: "Equity", path: "/holdings/equity" },
-    { name: "Positions", path: "/holdings/positions" },
+    // { name: "Positions", path: "/holdings/positions" },
     { name: "Mutual Funds", path: "/holdings/mutualfunds" },
   ];
 

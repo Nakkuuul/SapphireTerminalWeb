@@ -9,16 +9,16 @@ const FixedColumnTable = ({ filteredTrades }: any) => {
         <table className="border-collapse">
           <thead>
             <tr className="h-[54px]">
-              <th className="px-4 text-left font-medium text-black dark:text-dark-lighttext text-base whitespace-nowrap border-r border-gray-200 dark:border-[#2F2F2F] w-48 bg-[#F4F4F9] dark:bg-dark-insidecard h-[54px]">
+              <th className="px-4 text-left font-medium text-black dark:text-dark-lighttext text-base whitespace-nowrap border-r border-gray-200 dark:border-[#2F2F2F] w-48 bg-[#F4F4F9] dark:bg-dark-insidecard h-[54px] group">
                 <div className="flex items-center justify-between">
                   <span>Date & Time</span>
-                  <ArrowUpDown size={16} className="text-gray-500 dark:text-dark-lighttext ml-2" />
+                  <ArrowUpDown size={16} className="text-gray-500 dark:text-dark-lighttext ml-2 opacity-0 group-hover:opacity-100 transition-opacity" />
                 </div>
               </th>
-              <th className="px-4 text-left font-medium text-black dark:text-dark-lighttext text-base whitespace-nowrap border-r border-gray-200 dark:border-[#2F2F2F] w-64 bg-[#F4F4F9] dark:bg-dark-insidecard h-[54px]">
+              <th className="px-4 text-left font-medium text-black dark:text-dark-lighttext text-base whitespace-nowrap border-r border-gray-200 dark:border-[#2F2F2F] w-64 bg-[#F4F4F9] dark:bg-dark-insidecard h-[54px] group">
                 <div className="flex items-center justify-between">
                   <span>Security</span>
-                  <ArrowUpDown size={16} className="text-gray-500 dark:text-dark-lighttext ml-2" />
+                  <ArrowUpDown size={16} className="text-gray-500 dark:text-dark-lighttext ml-2 opacity-0 group-hover:opacity-100 transition-opacity" />
                 </div>
               </th>
             </tr>
@@ -27,7 +27,7 @@ const FixedColumnTable = ({ filteredTrades }: any) => {
             {filteredTrades.map((trade: any, index: number) => (
               <tr
                 key={`fixed-${index}`}
-                className={`border-t border-gray-200 dark:border-[#2F2F2F] ${index === filteredTrades.length - 1 ? '' : 'border-b'} bg-white dark:bg-dark-cardbg hover:bg-gray-100 dark:hover:bg-[#1E1E1E] h-[50px]`}
+                className={`border-t border-gray-200 dark:border-[#2F2F2F] ${index === filteredTrades.length - 1 ? '' : 'border-b'} bg-[#FAFAFA] dark:bg-dark-cardbg h-[50px]`}
               >
                 <td className="px-4 whitespace-nowrap border-r border-gray-200 dark:border-[#2F2F2F] text-sm text-[#6B7280] dark:text-dark-graytext h-[50px]">
                   <div className="text-sm font-medium">{trade.date} <span className="font-normal">{trade.time}</span></div>
@@ -53,52 +53,52 @@ const FixedColumnTable = ({ filteredTrades }: any) => {
         <table className="border-collapse">
           <thead>
             <tr className="bg-[#F4F4F9] dark:bg-dark-insidecard h-[54px]">
-              <th className="px-4 text-left font-medium text-black dark:text-dark-lighttext text-base whitespace-nowrap border-r border-gray-200 dark:border-[#2F2F2F] w-40 h-[54px]">
+              <th className="px-4 text-left font-medium text-black dark:text-dark-lighttext text-base whitespace-nowrap border-r border-gray-200 dark:border-[#2F2F2F] w-40 h-[54px] group">
                 <div className="flex items-center justify-between">
                   <span>Entry Price</span>
-                  <ArrowUpDown size={16} className="text-gray-500 dark:text-dark-lighttext ml-2" />
+                  <ArrowUpDown size={16} className="text-gray-500 dark:text-dark-lighttext ml-2 opacity-0 group-hover:opacity-100 transition-opacity" />
                 </div>
               </th>
-              <th className="px-4 text-left font-medium text-black dark:text-dark-lighttext text-base whitespace-nowrap border-r border-gray-200 dark:border-[#2F2F2F] w-40 h-[54px]">
+              <th className="px-4 text-left font-medium text-black dark:text-dark-lighttext text-base whitespace-nowrap border-r border-gray-200 dark:border-[#2F2F2F] w-40 h-[54px] group">
                 <div className="flex items-center justify-between">
                   <span>Exit Price</span>
-                  <ArrowUpDown size={16} className="text-gray-500 dark:text-dark-lighttext ml-2" />
+                  <ArrowUpDown size={16} className="text-gray-500 dark:text-dark-lighttext ml-2 opacity-0 group-hover:opacity-100 transition-opacity" />
                 </div>
               </th>
-              <th className="px-4 text-left font-medium text-black dark:text-dark-lighttext text-base whitespace-nowrap border-r border-gray-200 dark:border-[#2F2F2F] w-40 h-[54px]">
+              <th className="px-4 text-left font-medium text-black dark:text-dark-lighttext text-base whitespace-nowrap border-r border-gray-200 dark:border-[#2F2F2F] w-40 h-[54px] group">
                 <div className="flex items-center justify-between">
                   <span>Quantity</span>
-                  <ArrowUpDown size={16} className="text-gray-500 dark:text-dark-lighttext ml-2" />
+                  <ArrowUpDown size={16} className="text-gray-500 dark:text-dark-lighttext ml-2 opacity-0 group-hover:opacity-100 transition-opacity" />
                 </div>
               </th>
-              <th className="px-4 text-left font-medium text-black dark:text-dark-lighttext text-base whitespace-nowrap border-r border-gray-200 dark:border-[#2F2F2F] w-40 h-[54px]">
+              <th className="px-4 text-left font-medium text-black dark:text-dark-lighttext text-base whitespace-nowrap border-r border-gray-200 dark:border-[#2F2F2F] w-40 h-[54px] group">
                 <div className="flex items-center justify-between">
                   <span>Duration</span>
-                  <ArrowUpDown size={16} className="text-gray-500 dark:text-dark-lighttext ml-2" />
+                  <ArrowUpDown size={16} className="text-gray-500 dark:text-dark-lighttext ml-2 opacity-0 group-hover:opacity-100 transition-opacity" />
                 </div>
               </th>
-              <th className="px-4 text-left font-medium text-black dark:text-dark-lighttext text-base whitespace-nowrap border-r border-gray-200 dark:border-[#2F2F2F] w-40 h-[54px]">
+              <th className="px-4 text-left font-medium text-black dark:text-dark-lighttext text-base whitespace-nowrap border-r border-gray-200 dark:border-[#2F2F2F] w-40 h-[54px] group">
                 <div className="flex items-center justify-between">
                   <span>Net G/L</span>
-                  <ArrowUpDown size={16} className="text-gray-500 dark:text-dark-lighttext ml-2" />
+                  <ArrowUpDown size={16} className="text-gray-500 dark:text-dark-lighttext ml-2 opacity-0 group-hover:opacity-100 transition-opacity" />
                 </div>
               </th>
-              <th className="px-4 text-left font-medium text-black dark:text-dark-lighttext text-base whitespace-nowrap border-r border-gray-200 dark:border-[#2F2F2F] w-40 h-[54px]">
+              <th className="px-4 text-left font-medium text-black dark:text-dark-lighttext text-base whitespace-nowrap border-r border-gray-200 dark:border-[#2F2F2F] w-40 h-[54px] group">
                 <div className="flex items-center justify-between">
                   <span>Margin</span>
-                  <ArrowUpDown size={16} className="text-gray-500 dark:text-dark-lighttext ml-2" />
+                  <ArrowUpDown size={16} className="text-gray-500 dark:text-dark-lighttext ml-2 opacity-0 group-hover:opacity-100 transition-opacity" />
                 </div>
               </th>
-              <th className="px-4 text-left font-medium text-black dark:text-dark-lighttext text-base whitespace-nowrap border-r border-gray-200 dark:border-[#2F2F2F] w-40 h-[54px]">
+              <th className="px-4 text-left font-medium text-black dark:text-dark-lighttext text-base whitespace-nowrap border-r border-gray-200 dark:border-[#2F2F2F] w-40 h-[54px] group">
                 <div className="flex items-center justify-between">
                   <span>Posted by</span>
-                  <ArrowUpDown size={16} className="text-gray-500 dark:text-dark-lighttext ml-2" />
+                  <ArrowUpDown size={16} className="text-gray-500 dark:text-dark-lighttext ml-2 opacity-0 group-hover:opacity-100 transition-opacity" />
                 </div>
               </th>
-              <th className="px-4 text-left font-medium text-black dark:text-dark-lighttext text-base whitespace-nowrap border-r border-gray-200 dark:border-[#2F2F2F] w-40 h-[54px]">
+              <th className="px-4 text-left font-medium text-black dark:text-dark-lighttext text-base whitespace-nowrap border-r border-gray-200 dark:border-[#2F2F2F] w-40 h-[54px] group">
                 <div className="flex items-center justify-between">
                   <span>Status</span>
-                  <ArrowUpDown size={16} className="text-gray-500 dark:text-dark-lighttext ml-2" />
+                  <ArrowUpDown size={16} className="text-gray-500 dark:text-dark-lighttext ml-2 opacity-0 group-hover:opacity-100 transition-opacity" />
                 </div>
               </th>
             </tr>
@@ -107,7 +107,7 @@ const FixedColumnTable = ({ filteredTrades }: any) => {
             {filteredTrades.map((trade: any, index: number) => (
               <tr
                 key={`scroll-${index}`}
-                className={`border-t border-gray-200 dark:border-[#2F2F2F] hover:bg-gray-50 dark:hover:bg-[#1E1E1E] ${index === filteredTrades.length - 1 ? '' : 'border-b'} bg-white dark:bg-dark-cardbg h-[50px]`}
+                className={`border-t border-gray-200 dark:border-[#2F2F2F] hover:bg-[#FAFAFA] dark:hover:bg-[#1E1E1E] ${index === filteredTrades.length - 1 ? '' : 'border-b'} bg-white dark:bg-dark-cardbg h-[50px]`}
               >
                 <td className="px-4 whitespace-nowrap text-sm text-[#6B7280] dark:text-dark-graytext border-r border-gray-200 dark:border-[#2F2F2F] h-[50px]">{trade.entryPrice}</td>
                 <td className="px-4 whitespace-nowrap text-sm text-[#6B7280] dark:text-dark-graytext border-r border-gray-200 dark:border-[#2F2F2F] h-[50px]">{trade.exitPrice}</td>

@@ -100,36 +100,36 @@ const GridViewTable: React.FC<GridViewTableProps> = ({ trades }) => {
           </div>
 
           {/* Trade details grid */}
-          <div className="grid grid-cols-4 gap-x-6 px-6 pb-[18px]">
-            <div className="flex flex-col">
-              <span className="text-sm text-center text-[#495057] dark:text-[#C9CACC]">
+          <div className="flex px-6 pb-[18px]">
+            <div className="w-1/4">
+              <span className="text-sm text-[#495057] dark:text-[#C9CACC]">
                 Entry Price
               </span>
-              <span className="text-base font-normal  text-center text-black dark:text-[#EBEEF5]">
+              <span className="block text-base font-normal text-black dark:text-[#EBEEF5]">
                 {trade.entryPrice}
               </span>
             </div>
-            <div className="flex flex-col">
-              <span className="text-sm text-center text-[#495057] dark:text-[#C9CACC]">
+            <div className="w-1/4  ml-12">
+              <span className="text-sm text-[#495057] dark:text-[#C9CACC]">
                 Exit Price
               </span>
-              <span className="text-base font-normal text-center text-black dark:text-[#EBEEF5]">
+              <span className="block text-base font-normal text-black dark:text-[#EBEEF5]">
                 {trade.exitPrice}
               </span>
             </div>
-            <div className="flex flex-col">
-              <span className="text-sm text-center text-[#495057] dark:text-[#C9CACC]">
+            <div className="w-1/4 ml-12">
+              <span className="text-sm text-[#495057] dark:text-[#C9CACC]">
                 Quantity
               </span>
-              <span className="text-base font-normal text-center text-black dark:text-[#EBEEF5]">
+              <span className="block text-base font-normal text-black dark:text-[#EBEEF5]">
                 {trade.quantity}
               </span>
             </div>
-            <div className="flex flex-col">
-              <span className="text-sm text-center text-gray-500 dark:text-gray-400">
+            <div className="w-1/4 ml-12">
+              <span className="text-sm text-gray-500 dark:text-gray-400">
                 Net G/L
               </span>
-              <span className="text-base font-normal text-center text-black dark:text-[#EBEEF5]">
+              <span className="block text-base font-normal text-black dark:text-[#EBEEF5]">
                 {trade.net}
               </span>
             </div>

@@ -24,10 +24,11 @@ const Navbar = () => {
   const navLinks = [
     { href: "/", label: "Home" },
     { href: "/trades/stocks", label: "Trades" },
-    { href: "/news", label: "News" },
+    // { href: "/news", label: "News" },
     { href: "/watchlist", label: "Watchlist" },
     { href: "/order/queued", label: "Orders" },
     { href: "/holdings/equity", label: "Holdings" },
+    { href: "/positions", label: "Positions" },
     { href: "/funds", label: "Funds" },
   ];
 
@@ -86,12 +87,12 @@ const Navbar = () => {
           {/* Main single-row layout */}
           <div className="w-full flex items-center justify-between">
             {/* Left section with stock information - exactly 30% width */}
-            <div className="w-[30%] h-full relative border-r">
+            <div className="w-[29%] h-full relative border-r">
               {/* Stock Information - Internal padding */}
-              <div className="px-6 h-full flex items-center">
-                <div className="flex items-center space-x-4 w-full">
+              <div className="px-9 h-full flex items-center">
+                <div className="flex items-center space-x-8 w-full">
                   <div className="flex pr-3 border-r flex-col">
-                    <div className="flex items-center">
+                    <div className="flex items-center ">
                       <span className="text-sm font-medium">Nifty 50</span>
                       <span className="ml-2 bg-red-100 p-1 rounded-sm text-[10px] text-red-500">
                         Expiry Today
@@ -119,34 +120,34 @@ const Navbar = () => {
             </div>
 
             {/* Navigation Links - Left aligned with 36px padding from divider */}
-            <div className="hidden lg:flex flex-1 justify-start items-center pl-9">
-              <div className="flex items-center space-x-7">
-                {navLinks.map((link) => {
-                  // Check if this is the active route or its child route
-                  const isActive = isRouteActive(link.href);
-
-                  return (
-                    <div key={link.href} className="relative group">
-                      <Link
-                        href={link.href}
-                        className={`relative group text-lg font-normal py-2 transition-all duration-300 ${
-                          isActive ? "text-[#1DB954]" : ""
-                        } group-hover:text-[#1DB954]`}
-                        onClick={() => setActiveLink(link.href)}
-                      >
-                        {link.label}
-
-                        {/* Green underline animation - consistent for both hover & active states */}
-                        <span
-                          className={`absolute -bottom-5 left-1/2 transform -translate-x-1/2 h-[3px] bg-[#1DB954] transition-all duration-300 w-0 
-                          ${isActive ? "w-[140%]" : ""} 
-                          group-hover:w-[140%]`}
-                        ></span>
-                      </Link>
-                    </div>
-                  );
-                })}
-              </div>
+            <div className="hidden lg:flex flex-1 justify-start items-center pl-[18px]">
+              <div className="flex items-center space-x-[6px]"> 
+                {navLinks.map((link) => { 
+                // Check if this is the active route or its child route 
+                const isActive = isRouteActive(link.href); 
+                
+                return ( 
+                <div key={link.href} className="relative group w-[100px] text-center"> 
+                <Link 
+                href={link.href} 
+                className={`relative group text-lg font-normal py-2 transition-all duration-300 ${ 
+                isActive ? "text-[#1DB954]" : "" 
+                } group-hover:text-[#1DB954]`} 
+                onClick={() => setActiveLink(link.href)} 
+                > 
+                {link.label} 
+                
+                {/* Green underline animation - consistent for both hover & active states */} 
+                <span 
+                className={`absolute -bottom-5 left-1/2 transform -translate-x-1/2 h-[3px] bg-[#1DB954] transition-all duration-300 w-0 
+                ${isActive ? "w-[140%]" : ""} 
+                group-hover:w-[140%]`} 
+                ></span> 
+                </Link> 
+                </div> 
+                ); 
+                })} 
+                </div>
             </div>
 
             {/* Desktop Right Side Elements */}
