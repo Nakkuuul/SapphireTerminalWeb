@@ -354,7 +354,11 @@ const EquityHoldings = () => {
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
               {sortedHoldings.map((holding, index) => (
-                <tr key={index} style={{ height: "50px" }}>
+                <tr 
+                  key={index} 
+                  style={{ height: "50px" }}
+                  className="hover:bg-[#FAFAFA] transition-colors duration-150"
+                >
                   <td className="px-4 py-0 whitespace-nowrap border-r">
                     <div className="flex items-center justify-between">
                       <span

@@ -11,6 +11,7 @@ interface PLValue {
   percentage: number;
 }
 
+// Update the Position interface to include isClosed property
 interface Position {
   type: string;
   security: string;
@@ -20,6 +21,7 @@ interface Position {
   ltp: number;
   netPL: PLValue;
   dailyPL: PLValue;
+  isClosed: boolean; // New property to track if a trade is closed
 }
 
 interface SummaryData {
@@ -68,6 +70,7 @@ const Positions: React.FC = () => {
       ltp: 46780,
       netPL: { value: 2042.63, percentage: 24.7 },
       dailyPL: { value: 2042.63, percentage: 24.7 },
+      isClosed: false,
     },
     {
       type: "Delivery",
@@ -78,6 +81,7 @@ const Positions: React.FC = () => {
       ltp: 46780,
       netPL: { value: 2042.63, percentage: 24.7 },
       dailyPL: { value: 2042.63, percentage: 24.7 },
+      isClosed: false,
     },
     {
       type: "MTF",
@@ -88,6 +92,7 @@ const Positions: React.FC = () => {
       ltp: 46780,
       netPL: { value: 2042.63, percentage: 24.7 },
       dailyPL: { value: 2042.63, percentage: 24.7 },
+      isClosed: false,
     },
     {
       type: "CarryForward",
@@ -98,6 +103,7 @@ const Positions: React.FC = () => {
       ltp: 46780,
       netPL: { value: -2042.63, percentage: 24.7 },
       dailyPL: { value: -2042.63, percentage: 24.7 },
+      isClosed: true, // This is a closed trade
     },
     {
       type: "Intraday",
@@ -108,6 +114,7 @@ const Positions: React.FC = () => {
       ltp: 46780,
       netPL: { value: 2042.63, percentage: 24.7 },
       dailyPL: { value: 2042.63, percentage: 24.7 },
+      isClosed: true, // This is a closed trade
     },
     {
       type: "Intraday",
@@ -118,6 +125,7 @@ const Positions: React.FC = () => {
       ltp: 46780,
       netPL: { value: 2042.63, percentage: 24.7 },
       dailyPL: { value: 2042.63, percentage: 24.7 },
+      isClosed: true, // This is a closed trade
     },
     {
       type: "Intraday",
@@ -128,6 +136,7 @@ const Positions: React.FC = () => {
       ltp: 46780,
       netPL: { value: 2042.63, percentage: 24.7 },
       dailyPL: { value: 2042.63, percentage: 24.7 },
+      isClosed: false,
     },
   ];
 
@@ -155,11 +164,17 @@ const Positions: React.FC = () => {
 
   // Sorted positions
   const sortedPositions = useMemo(() => {
-    if (!sortField) return initialPositions;
-
-    return [...initialPositions].sort((a, b) => {
+    // First, separate active and closed trades
+    const activeTrades = initialPositions.filter(position => !position.isClosed);
+    const closedTrades = initialPositions.filter(position => position.isClosed);
+  
+    // If no sorting field is selected, just return active trades followed by closed trades
+    if (!sortField) return [...activeTrades, ...closedTrades];
+  
+    // Sort function for both groups
+    const sortByField = (a: Position, b: Position) => {
       let valueA, valueB;
-
+  
       if (sortField === "netPL" || sortField === "dailyPL") {
         valueA = a[sortField].value;
         valueB = b[sortField].value;
@@ -167,17 +182,26 @@ const Positions: React.FC = () => {
         valueA = a[sortField];
         valueB = b[sortField];
       }
-
+  
       if (typeof valueA === "string" && typeof valueB === "string") {
         return sortDirection === "asc"
           ? valueA.localeCompare(valueB)
           : valueB.localeCompare(valueA);
       }
-
+  
       return sortDirection === "asc"
         ? (valueA as number) - (valueB as number)
         : (valueB as number) - (valueA as number);
-    });
+    };
+  
+    // Sort active trades
+    const sortedActiveTrades = [...activeTrades].sort(sortByField);
+  
+    // Sort closed trades
+    const sortedClosedTrades = [...closedTrades].sort(sortByField);
+  
+    // Always return active trades first, followed by closed trades
+    return [...sortedActiveTrades, ...sortedClosedTrades];
   }, [initialPositions, sortField, sortDirection]);
 
   // Total values calculation
@@ -275,11 +299,17 @@ const Positions: React.FC = () => {
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
             {sortedPositions.map((position, index) => (
-              <tr key={index} style={{ height: "50px" }}>
+              <tr 
+                key={index} 
+                style={{ 
+                  height: "50px", 
+                  backgroundColor: position.isClosed ? "rgba(232, 232, 232, 0.4)" : "" 
+                }}
+              >
                 <td className="px-4 py-0 whitespace-nowrap border-r">
                   <div className="flex items-center justify-between">
                     <span
-                      className="text-[#6B7280]"
+                      className={position.isClosed ? "text-[#9E9E9E]" : "text-[#6B7280]"}
                       style={{ fontSize: "14px" }}
                     >
                       {position.security}
@@ -291,19 +321,19 @@ const Positions: React.FC = () => {
                   </div>
                 </td>
                 <td
-                  className="px-4 py-0 text-center text-[#6B7280] whitespace-nowrap border-r"
+                  className={`px-4 py-0 text-center whitespace-nowrap border-r ${position.isClosed ? "text-[#9E9E9E]" : "text-[#6B7280]"}`}
                   style={{ fontSize: "14px" }}
                 >
                   {position.quantity}
                 </td>
                 <td
-                  className="px-4 py-0 text-center text-[#6B7280] whitespace-nowrap border-r"
+                  className={`px-4 py-0 text-center whitespace-nowrap border-r ${position.isClosed ? "text-[#9E9E9E]" : "text-[#6B7280]"}`}
                   style={{ fontSize: "14px" }}
                 >
                   {formatCurrency(position.avgPrice)}
                 </td>
                 <td
-                  className="px-4 py-0 text-center text-[#6B7280] whitespace-nowrap border-r"
+                  className={`px-4 py-0 text-center whitespace-nowrap border-r ${position.isClosed ? "text-[#9E9E9E]" : "text-[#6B7280]"}`}
                   style={{ fontSize: "14px" }}
                 >
                   {formatCurrency(position.ltp)}
@@ -314,38 +344,40 @@ const Positions: React.FC = () => {
                 >
                   <div className="flex items-center justify-center">
                     <div
-                      className="text-xs py-1 px-3 rounded-md mr-2 min-w-[90px] text-center"
+                      className="text-xs rounded-md mr-2 text-center"
                       style={{
+                        padding: "3px 6px",
+                        minWidth: position.type === "MTF" ? "auto" : "auto",
                         backgroundColor:
                           position.type === "Delivery"
-                            ? "#F1F8F6"
+                            ? "#F1F8F6CC"
                             : position.type === "CarryForward"
-                            ? "#F3F5FA"
+                            ? "#E3F2FDCC"
                             : position.type === "Intraday"
-                            ? "#FFF9ED"
+                            ? "#FFF3E0CC"
                             : position.type === "MTF"
-                            ? "#F7F3FB"
+                            ? "#F3E5F5CC"
                             : "#F1F1F1",
                         color:
                           position.type === "Delivery"
-                            ? "#2E7D6F"
+                            ? "#2E7D6FB3"
                             : position.type === "CarryForward"
-                            ? "#3C4F94"
+                            ? "#64B5F6B3"
                             : position.type === "Intraday"
-                            ? "#E65100"
+                            ? "#FFB74DB3"
                             : position.type === "MTF"
-                            ? "#6A1B9A"
+                            ? "#BA68C8B3"
                             : "#666666",
                       }}
                     >
                       {position.type}
                     </div>
                     <div
-                      className={`text-xs py-1 px-3 rounded-md min-w-[50px] text-center ${
-                        position.action === "BUY"
-                          ? "bg-[#D5FFC6] text-profit"
-                          : "bg-red-100 text-loss"
-                      }`}
+                      className="text-xs py-[3px] px-1 rounded-md min-w-[50px] text-center"
+                      style={{
+                        backgroundColor: position.action === "BUY" ? "#E8F5E9CC" : "#FFEBEECC",
+                        color: position.action === "BUY" ? "#81C784CC" : "#E57373CC"
+                      }}
                     >
                       {position.action}
                     </div>
@@ -357,9 +389,13 @@ const Positions: React.FC = () => {
                 >
                   <span
                     className={
-                      position.netPL.value < 0
-                        ? "text-[#E53935]"
-                        : "text-[#22A06B]"
+                      position.isClosed
+                        ? position.netPL.value < 0
+                          ? "text-[#E5393580]" // Faded red for closed trades
+                          : "text-[#22A06B80]" // Faded green for closed trades
+                        : position.netPL.value < 0
+                        ? "text-[#E53935]" // Regular red for active trades
+                        : "text-[#22A06B]" // Regular green for active trades
                     }
                   >
                     {formatCurrency(position.netPL.value)}{" "}
@@ -372,9 +408,13 @@ const Positions: React.FC = () => {
                 >
                   <span
                     className={
-                      position.dailyPL.value < 0
-                        ? "text-[#E53935]"
-                        : "text-[#22A06B]"
+                      position.isClosed
+                        ? position.dailyPL.value < 0
+                          ? "text-[#E5393580]" // Faded red for closed trades
+                          : "text-[#22A06B80]" // Faded green for closed trades
+                        : position.dailyPL.value < 0
+                        ? "text-[#E53935]" // Regular red for active trades
+                        : "text-[#22A06B]" // Regular green for active trades
                     }
                   >
                     {formatCurrency(position.dailyPL.value)}{" "}

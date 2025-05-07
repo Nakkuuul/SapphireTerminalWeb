@@ -106,167 +106,158 @@ const DepositPage: React.FC<DepositPageProps> = ({ onBack }) => {
       </button>
 
       {/* Deposit Form */}
-      <div className="bg-white border border-[#D1D5DB] rounded-md mb-6">
+      <div className="bg-[#FAFAFA] max-w-2xl border border-gray-200 rounded-md mb-6 mx-auto">
         <div className="p-6">
-          <div className="flex w-[80%] gap-x-5">
-            {/* Amount Input - Increased height */}
-            <div className="mb-6 w-full">
-              <label className="block text-[#6B7280] text-sm mb-2">
-                Enter Amount
-              </label>
-              <input
-                type="text"
-                placeholder="₹20,000"
-                className="w-full border border-gray-300 rounded-md px-3 py-3 text-lg"
-                value={
-                  selectedAmount ? `₹${selectedAmount.toLocaleString()}` : ""
-                }
-                onChange={handleAmountChange}
-              />
-            </div>
-
-            {/* Bank Selection - Increased height */}
-            <div className="mb-6 w-full">
-              <label className="block text-[#6B7280] text-sm mb-2">
-                Select Bank
-              </label>
-              <div className="flex items-center justify-between w-full border border-gray-300 rounded-md px-3 py-3 h-12">
-                <div className="flex items-center">
-                  <div className="w-6 h-6 bg-orange-500 rounded-md flex items-center justify-center text-white text-xs mr-2">
-                    {banks[0]?.icon || "B"}
-                  </div>
-                  <span>
-                    {banks[0]?.name} - {banks[0]?.maskedAccount}
-                  </span>
-                </div>
-                <ChevronDown size={16} className="text-gray-400" />
-              </div>
-            </div>
+          {/* Title and Balance */}
+          <div className="flex justify-between items-center mb-4">
+            <h2 className="text-sm text-[#212529]">Enter Amount</h2>
+            <div className="text-[#6B7280] text-sm">Avl. Balance : <span className="text-[#333333]">₹1,39,000 </span></div>
           </div>
-
-          {/* Quick Amount Selection - Now increments instead of sets value */}
+          
+          {/* Amount Input */}
+          <input 
+            type="text" 
+            placeholder="₹20,000"
+            className="w-full border border-gray-300 rounded-md px-3 py-3 mb-6 text-sm"
+            value={selectedAmount ? `₹${selectedAmount.toLocaleString()}` : ""}
+            onChange={handleAmountChange}
+          />
+          
+          {/* Quick Amount Selection */}
           <div className="flex space-x-3 mb-6">
-            {depositAmountOptions.map((amount: any) => (
-              <div key={amount} className="relative">
-                {amount === 10000 ? (
-                  <div className="relative -mt-2">
-                    {/* Gradient border using pseudo-element */}
-                    <div
-                      className="absolute inset-0 rounded-md bg-gradient-to-t from-[#34A853] via-[#34A853]/40 to-transparent p-[1px]"
-                      style={{ margin: "-2px" }}
-                    ></div>
-                    <div
-                      className="relative bg-[#F4F4F9] rounded-sm px-3 py-1 text-sm cursor-pointer shadow-md"
-                      onClick={() => handleAmountIncrement(amount)}
-                    >
-                      + ₹{amount.toLocaleString()}
-                    </div>
-                  </div>
-                ) : (
-                  <div
-                    className="border border-gray-300 bg-[#F4F4F9] rounded-sm px-3 py-1 text-sm cursor-pointer hover:bg-[#E5E7EB]"
-                    onClick={() => handleAmountIncrement(amount)}
-                  >
-                    + ₹{amount.toLocaleString()}
-                  </div>
-                )}
-                {amount === 10000 && (
-                  <span className="absolute text-xs text-center w-full text-[#1DB954] mt-1">
-                    Popular
-                  </span>
-                )}
+            <div className="relative">
+              <div
+                className="bg-[#F4F4F9] rounded text-[#333333] px-3 py-2 text-sm cursor-pointer hover:bg-gray-50"
+                onClick={() => handleAmountIncrement(5000)}
+              >
+                + ₹5,000
               </div>
-            ))}
+            </div>
+            
+            <div className="relative">
+              <div className="relative -mt-2">
+                {/* Gradient border using pseudo-element */}
+                <div
+                  className="absolute inset-0 rounded bg-gradient-to-t from-[#34A853] via-[#34A853]/40 to-transparent p-[1px]"
+                  style={{ margin: "-2px" }}
+                ></div>
+                <div
+                  className="relative bg-[#F4F4F9] text-[#333333] rounded-md px-3 py-2 text-sm cursor-pointer"
+                  onClick={() => handleAmountIncrement(10000)}
+                >
+                  + ₹10,000
+                </div>
+              </div>
+              <span className="absolute text-xs text-center w-full text-green-500 mt-1">
+                Popular
+              </span>
+            </div>
+            
+            <div className="relative">
+              <div
+                className="bg-[#F4F4F9] text-[#333333] rounded px-3 py-2 text-sm cursor-pointer hover:bg-gray-50"
+                onClick={() => handleAmountIncrement(20000)}
+              >
+                + ₹20,000
+              </div>
+            </div>
           </div>
-
-          {/* Payment Modes */}
-          <div className="mb-4">
-            <p className="text-sm text-[#6B7280] mb-2">Payment mode:</p>
-            <div className="grid w-[80%] grid-cols-4 gap-3">
-              <button
-                className={`flex items-center justify-start bg-[#FAFAFA] border rounded-sm py-3 ${
-                  selectedPaymentMode === "upi"
-                    ? "border-[#1DB954] text-[#1DB954]"
-                    : "border-gray-300 "
-                }`}
-                onClick={() => handlePaymentModeSelect("upi")}
-              >
+          
+          {/* Bank Selection */}
+          <h2 className="text-sm mb-2">Select Bank</h2>
+          <div className="relative mb-6">
+            <div className="flex items-center justify-between w-full border border-gray-300 rounded-md px-3 py-3 ">
+              <div className="flex items-center">
                 <Image
-                  alt="UPI"
-                  src="/funds/upi-logo.svg"
-                  width={20}
-                  height={20}
-                  className="ml-2 mr-3 "
-                />
-                UPI
-              </button>
-
-              <button
-                className={`flex items-center justify-start bg-[#FAFAFA] border rounded-md py-3 ${
-                  selectedPaymentMode === "qr"
-                    ? "border-[#1DB954] text-[#1DB954]"
-                    : "border-gray-300 "
-                }`}
-                onClick={() => handlePaymentModeSelect("qr")}
-              >
-                <Image
-                  alt="QR"
-                  src="/funds/qr.svg"
-                  width={20}
-                  height={20}
-                  className="ml-2 mr-3 "
-                />
-                Scan QR
-              </button>
-
-              <button
-                className={`flex items-center justify-start bg-[#FAFAFA] border rounded-md py-3 ${
-                  selectedPaymentMode === "netbanking"
-                    ? "border-[#1DB954] text-[#1DB954]"
-                    : "border-gray-300 "
-                }`}
-                onClick={() => handlePaymentModeSelect("netbanking")}
-              >
-                <Image
-                  alt="Net Banking"
-                  src="/funds/net.svg"
-                  width={20}
-                  height={20}
-                  className="ml-2 mr-3 "
-                />
-                Net Banking
-              </button>
-
-              <button
-                className={`flex items-center justify-start bg-[#FAFAFA] border rounded-md py-3 ${
-                  selectedPaymentMode === "transfer"
-                    ? "border-[#1DB954] text-[#1DB954]"
-                    : "border-gray-300 "
-                }`}
-                onClick={() => handlePaymentModeSelect("transfer")}
-              >
-                <Image
-                  alt="Bank Transfer"
+                  alt="Bank"
                   src="/funds/bank-transfer.svg"
                   width={24}
                   height={24}
-                  className="ml-2 mr-3"
+                  className="mr-2"
                 />
-                Bank Transfer
-              </button>
+                <span>BOB - ******* 8829</span>
+              </div>
+              <ChevronDown size={16} className="text-gray-400" />
             </div>
           </div>
-        </div>
-
-        {/* Submit Button - In separate footer section */}
-        <div className="flex justify-end bg-[#F4F4F9] p-4">
-          <button
-            className="bg-[#22C55E] text-white py-2 px-20 rounded-md font-medium"
+          
+          {/* Payment Mode */}
+          <h2 className="text-sm mb-2">Payment mode:</h2>
+          <div className="grid grid-cols-3 gap-3 mb-6">
+            <button
+              className={`flex items-center justify-center border rounded py-3 px-4 ${
+                selectedPaymentMode === "upi"
+                  ? "border-green-500 text-green-600"
+                  : "border-gray-300"
+              }`}
+              onClick={() => handlePaymentModeSelect("upi")}
+            >
+              <Image
+                alt="UPI"
+                src="/funds/upi-logo.svg"
+                width={20}
+                height={20}
+                className="mr-2"
+              />
+              UPI
+            </button>
+          
+            <button
+              className={`flex items-center justify-center border rounded py-3 px-4 ${
+                selectedPaymentMode === "qr"
+                  ? "border-green-500 text-green-600"
+                  : "border-gray-300"
+              }`}
+              onClick={() => handlePaymentModeSelect("qr")}
+            >
+              <Image
+                alt="QR"
+                src="/funds/qr.svg"
+                width={20}
+                height={20}
+                className="mr-2"
+              />
+              Scan QR
+            </button>
+          
+            <button
+              className={`flex items-center justify-center border rounded py-3 px-4 ${
+                selectedPaymentMode === "netbanking"
+                  ? "border-green-500 text-green-600"
+                  : "border-gray-300"
+              }`}
+              onClick={() => handlePaymentModeSelect("netbanking")}
+            >
+              <Image
+                alt="Net Banking"
+                src="/funds/net.svg"
+                width={20}
+                height={20}
+                className="mr-2"
+              />
+              Net Banking
+            </button>
+          </div>
+          
+          {/* UPI ID Input - Only show when UPI is selected */}
+          {selectedPaymentMode === "upi" && (
+            <div className="mb-6">
+              <h2 className="text-sm mb-2">Enter UPI ID</h2>
+              <input
+                type="text"
+                placeholder="abcd@ybl"
+                className="w-full border border-gray-300 rounded-md px-3 py-3 text-sm"
+              />
+            </div>
+          )}
+          
+          {/* Submit Button */}
+          <button 
+            className="w-full bg-green-500 text-white font-medium py-3 rounded-md text-center text-sm"
             onClick={handlePaymentClick}
             disabled={!selectedAmount}
           >
-            Add{" "}
-            {selectedAmount ? `₹${selectedAmount.toLocaleString()}` : "amount"}
+            Add {selectedAmount ? `₹${selectedAmount.toLocaleString()}` : "amount"}
           </button>
         </div>
       </div>

@@ -42,11 +42,11 @@ const FundsSummaryCards: React.FC<FundsSummaryCardsProps> = ({ data }) => {
     <div className="bg-[#F4F4F9] border border-[#D1D5DB] rounded-lg p-6 mb-1">
       <div className="flex items-center justify-between ">
         <div className="flex flex-col">
-          <div className="text-gray-700 text-base">
-            Trading BWalance (Cash + Collateral)
+          <div className="text-[#6B7080] text-base">
+            Trading Balance (Cash + Collateral)
           </div>
           <div className="flex items-center mt-1">
-            <span className="text-2xl font-medium">₹49,561.80</span>
+            <span className="text-xl font-medium">₹49,561.80</span>
             <RefreshCw
               size={16}
               className="ml-2 text-gray-500 cursor-pointer"
