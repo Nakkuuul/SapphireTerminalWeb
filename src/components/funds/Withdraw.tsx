@@ -170,6 +170,9 @@ const WithdrawPage: React.FC<WithdrawPageProps> = ({ onBack }) => {
         </div>
       </div>
       
+      {/* Horizontal Divider */}
+      <hr className="my-6 border-gray-200" />
+      
       {/* Withdrawal History */}
       <div>
         <h2 className="text-lg font-medium my-4">Fund Withdraw History</h2>

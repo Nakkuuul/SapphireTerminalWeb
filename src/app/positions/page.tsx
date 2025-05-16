@@ -62,7 +62,7 @@ const Positions: React.FC = () => {
   // Positions data
   const initialPositions: Position[] = [
     {
-      type: "Intraday",
+      type: "INT",
       security: "MRF",
       action: "BUY",
       quantity: 820,
@@ -73,7 +73,7 @@ const Positions: React.FC = () => {
       isClosed: false,
     },
     {
-      type: "Delivery",
+      type: "DEL",
       security: "TATASTEEL",
       action: "SELL",
       quantity: 400,
@@ -95,7 +95,7 @@ const Positions: React.FC = () => {
       isClosed: false,
     },
     {
-      type: "CarryForward",
+      type: "CFD",
       security: "MOTILALOSWAL",
       action: "SELL",
       quantity: -5000,
@@ -106,7 +106,7 @@ const Positions: React.FC = () => {
       isClosed: true, // This is a closed trade
     },
     {
-      type: "Intraday",
+      type: "INT",
       security: "MOTILALOSWAL",
       action: "BUY",
       quantity: 2910,
@@ -117,7 +117,7 @@ const Positions: React.FC = () => {
       isClosed: true, // This is a closed trade
     },
     {
-      type: "Intraday",
+      type: "INT",
       security: "MOTILALOSWAL",
       action: "SELL",
       quantity: 5750,
@@ -128,7 +128,7 @@ const Positions: React.FC = () => {
       isClosed: true, // This is a closed trade
     },
     {
-      type: "Intraday",
+      type: "INT",
       security: "MOTILALOSWAL",
       action: "SELL",
       quantity: 2350,
@@ -342,28 +342,37 @@ const Positions: React.FC = () => {
                   className="px-4 py-0 whitespace-nowrap border-r"
                   style={{ fontSize: "14px" }}
                 >
-                  <div className="flex items-center justify-center">
+                  <div className="flex items-center justify-start">
                     <div
-                      className="text-xs rounded-md mr-2 text-center"
+                      className="text-xs py-[3px] px-1 rounded-md min-w-[50px] text-center mr-3"
                       style={{
-                        padding: "3px 6px",
-                        minWidth: position.type === "MTF" ? "auto" : "auto",
+                        backgroundColor: position.action === "BUY" ? "#E8F5E9CC" : "#FFEBEECC",
+                        color: position.action === "BUY" ? "#81C784CC" : "#E57373CC"
+                      }}
+                    >
+                      {position.action}
+                    </div>
+                    <div
+                      className="text-xs rounded-md text-center"
+                      style={{
+                        padding: "3px 12px",
+                        minWidth: "50px",
                         backgroundColor:
-                          position.type === "Delivery"
+                          position.type === "DEL"
                             ? "#F1F8F6CC"
-                            : position.type === "CarryForward"
+                            : position.type === "CFD"
                             ? "#E3F2FDCC"
-                            : position.type === "Intraday"
+                            : position.type === "INT"
                             ? "#FFF3E0CC"
                             : position.type === "MTF"
                             ? "#F3E5F5CC"
                             : "#F1F1F1",
                         color:
-                          position.type === "Delivery"
+                          position.type === "DEL"
                             ? "#2E7D6FB3"
-                            : position.type === "CarryForward"
+                            : position.type === "CFD"
                             ? "#64B5F6B3"
-                            : position.type === "Intraday"
+                            : position.type === "INT"
                             ? "#FFB74DB3"
                             : position.type === "MTF"
                             ? "#BA68C8B3"
@@ -371,15 +380,6 @@ const Positions: React.FC = () => {
                       }}
                     >
                       {position.type}
-                    </div>
-                    <div
-                      className="text-xs py-[3px] px-1 rounded-md min-w-[50px] text-center"
-                      style={{
-                        backgroundColor: position.action === "BUY" ? "#E8F5E9CC" : "#FFEBEECC",
-                        color: position.action === "BUY" ? "#81C784CC" : "#E57373CC"
-                      }}
-                    >
-                      {position.action}
                     </div>
                   </div>
                 </td>

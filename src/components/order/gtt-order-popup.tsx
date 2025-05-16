@@ -13,7 +13,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Switch } from "@/components/ui/switch";
-import { X, ArrowRight } from "lucide-react";
+import { X, ArrowRight, Plus } from "lucide-react";
 import React, { useState } from "react";
 
 export function GttOrderPopup() {
@@ -22,7 +22,7 @@ export function GttOrderPopup() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="outline">Place GTT Order</Button>
+        <button className="flex items-center bg-[#F4F4F9] text-xs text-[#1A1A1A] px-3 py-[10px] rounded"><Plus size={18} className="mr-2" /> New GTT Order</button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[600px] p-0 rounded-lg">
         <DialogHeader className="flex bg-[#F4F4F9] flex-row items-start justify-between p-3">
@@ -47,7 +47,7 @@ export function GttOrderPopup() {
               className={`h-7 px-3 rounded-md ${
                 !isSell
                   ? "bg-[#00C853] hover:bg-[#00B84D] text-white"
-                  : "text-[#00C853]/40 hover:text-[#00B84D] bg-[#00B84D]/10 hover:bg-[#00B84D]/30"
+                  : "text-[#00C853]/60 hover:text-[#00B84D] bg-[#00B84D]/20 hover:bg-[#00B84D]/30"
               }`}
             >
               BUY

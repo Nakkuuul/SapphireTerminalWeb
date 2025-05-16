@@ -8,7 +8,7 @@ interface ViewToggleProps {
 
 const ViewToggle: React.FC<ViewToggleProps> = ({ viewMode, setViewMode }) => {
   return (
-    <div className="flex border border-border dark:border-[#D9D9D9] rounded-lg overflow-hidden h-[42px]">
+    <div className="flex border border-border dark:border-[#D9D9D9] rounded-sm overflow-hidden h-[42px]">
       <button 
         className={`px-4 flex items-center justify-center h-full ${viewMode === 'grid' ? 'bg-[#F6F6F6] dark:bg-[#1E1E1E] text-[#28A745]' : 'text-[#212529] dark:text-[#C4C4C4]'}`}
         onClick={() => setViewMode('grid')}

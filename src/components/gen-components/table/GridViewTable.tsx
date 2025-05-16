@@ -28,7 +28,7 @@ const GridViewTable: React.FC<GridViewTableProps> = ({ trades }) => {
       {trades.map((trade, index) => (
         <div
           key={index}
-          className="border border-[#8F8F8FCC] dark:border-[#2F2F2F] bg-[#F4F4F9] dark:bg-dark-cardbg rounded-lg overflow-hidden dark:bg-darkbackground"
+          className="border border-gray-200 dark:border-[#2F2F2F] bg-[#F4F4F9] dark:bg-dark-cardbg rounded-lg overflow-hidden dark:bg-darkbackground"
         >
           {/* Header with logo, title, buy/sell chip and status label */}
           <div className="p-[18px]">
@@ -56,10 +56,10 @@ const GridViewTable: React.FC<GridViewTableProps> = ({ trades }) => {
                     <div className="font-normal text-lg text-black dark:text-[#EBEEF5]">
                       {trade.security}
                       <span
-                        className={`px-1.5 py-0.5 text-xs ml-3 rounded ${
+                        className={`px-1.5 text-xs ml-3 rounded ${
                           trade.type === 'BUY'
-                            ? 'bg-[#E5FFDC] text-[#34A853] dark:bg-green-900 dark:text-green-300'
-                            : 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300'
+                            ? 'bg-[#E5FFDC] text-[#34A853] py-1 px-2 dark:bg-green-900 dark:text-green-300'
+                            : 'bg-red-100 text-[#F10930] py-1 px-2 dark:bg-red-900 dark:text-red-300'
                         }`}
                       >
                         {trade.type}
@@ -100,7 +100,7 @@ const GridViewTable: React.FC<GridViewTableProps> = ({ trades }) => {
           </div>
 
           {/* Trade details grid */}
-          <div className="flex px-6 pb-[18px]">
+          <div className="flex gap-10 px-6 pb-[18px]">
             <div className="w-1/4">
               <span className="text-sm text-[#495057] dark:text-[#C9CACC]">
                 Entry Price
@@ -109,7 +109,7 @@ const GridViewTable: React.FC<GridViewTableProps> = ({ trades }) => {
                 {trade.entryPrice}
               </span>
             </div>
-            <div className="w-1/4  ml-12">
+            <div className="w-1/4">
               <span className="text-sm text-[#495057] dark:text-[#C9CACC]">
                 Exit Price
               </span>
@@ -117,7 +117,7 @@ const GridViewTable: React.FC<GridViewTableProps> = ({ trades }) => {
                 {trade.exitPrice}
               </span>
             </div>
-            <div className="w-1/4 ml-12">
+            <div className="w-1/4">
               <span className="text-sm text-[#495057] dark:text-[#C9CACC]">
                 Quantity
               </span>
@@ -125,7 +125,7 @@ const GridViewTable: React.FC<GridViewTableProps> = ({ trades }) => {
                 {trade.quantity}
               </span>
             </div>
-            <div className="w-1/4 ml-12">
+            <div className="w-1/4">
               <span className="text-sm text-gray-500 dark:text-gray-400">
                 Net G/L
               </span>

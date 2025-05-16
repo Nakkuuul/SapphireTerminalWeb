@@ -17,7 +17,7 @@ const SearchInput: React.FC<SearchInputProps> = ({
       <input
         type="text"
         placeholder="Search everything..."
-        className="w-full h-[42px]  pl-4 pr-8 py-2.5 dark:bg-[#121212] border border-border dark:border-dark-border rounded-lg"
+        className="w-full h-[42px]  pl-4 pr-8 py-2.5 dark:bg-[#121212] border border-border dark:border-dark-border rounded-sm"
         value={searchQuery}
         onChange={handleSearchChange}
       />

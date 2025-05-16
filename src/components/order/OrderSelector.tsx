@@ -38,7 +38,7 @@ function OrderSelector() {
               >
                 <Link
                   href={tab.path}
-                  className={`relative group text-sm xl:text-base font-medium py-2 transition-all duration-300 ${
+                  className={`relative group text-base xl:text-xl font-medium py-2 transition-all duration-300 ${
                     isActive
                       ? "text-[#28A745]"
                       : "text-gray-600 hover:text-[#28A745]"
@@ -47,7 +47,7 @@ function OrderSelector() {
                   {tab.name}
                   {/* Green underline animation */}
                   <span
-                    className={`absolute -bottom-3 -left-[12px] h-[3px] bg-[#28A745] transition-all duration-300 ${
+                    className={`absolute -bottom-2.5 -left-[12px] h-[3px] bg-[#28A745] transition-all duration-300 ${
                       isActive ? "w-[150%]" : "w-0"
                     } group-hover:w-[150%]`}
                   ></span>
@@ -56,9 +56,7 @@ function OrderSelector() {
             );
           })}
         </div>
-        <div className="flex ml-20 items-center">
-          <MoreVertical size={20} className=" cursor-pointer hover:text-[#28A745]" />
-        </div>
+
       </div>
 
       {/* Mobile Version - Dropdown */}

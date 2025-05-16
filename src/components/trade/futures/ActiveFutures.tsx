@@ -134,7 +134,7 @@ export default function TradesList() {
             <button
               onClick={() => setShowFilters(!showFilters)}
               className={`flex items-center gap-2 px-5 py-2.5 bg-[#F4F4F9] dark:bg-dark-insidecard rounded-md border dark:border-none h-[42px] ${
-                showFilters || filterType
+                showFilters || filterType 
                   ? "border-blue-500 bg-blue-50 text-blue-600"
                   : "border-[#D1D5DB] text-gray-700"
               }`}

@@ -106,7 +106,7 @@ const DepositPage: React.FC<DepositPageProps> = ({ onBack }) => {
       </button>
 
       {/* Deposit Form */}
-      <div className="bg-[#FAFAFA] max-w-2xl border border-gray-200 rounded-md mb-6 mx-auto">
+      <div className="bg-[#FAFAFA] max-w-xl border border-gray-200 rounded-md mb-6 mx-auto">
         <div className="p-6">
           {/* Title and Balance */}
           <div className="flex justify-between items-center mb-4">
@@ -142,7 +142,7 @@ const DepositPage: React.FC<DepositPageProps> = ({ onBack }) => {
                   style={{ margin: "-2px" }}
                 ></div>
                 <div
-                  className="relative bg-[#F4F4F9] text-[#333333] rounded-md px-3 py-2 text-sm cursor-pointer"
+                  className="relative bg-[#F4F4F9] text-[#333333] rounded px-3 py-2 text-sm cursor-pointer"
                   onClick={() => handleAmountIncrement(10000)}
                 >
                   + ₹10,000
@@ -164,31 +164,31 @@ const DepositPage: React.FC<DepositPageProps> = ({ onBack }) => {
           </div>
           
           {/* Bank Selection */}
-          <h2 className="text-sm mb-2">Select Bank</h2>
+          <h2 className="text-sm text-[#212529] mb-2">Select Bank</h2>
           <div className="relative mb-6">
             <div className="flex items-center justify-between w-full border border-gray-300 rounded-md px-3 py-3 ">
               <div className="flex items-center">
                 <Image
                   alt="Bank"
                   src="/funds/bank-transfer.svg"
-                  width={24}
-                  height={24}
+                  width={27}
+                  height={27}
                   className="mr-2"
                 />
-                <span>BOB - ******* 8829</span>
+                <span className="text-[#21252980] ml-2">BOB - ******* 8829</span>
               </div>
               <ChevronDown size={16} className="text-gray-400" />
             </div>
           </div>
           
           {/* Payment Mode */}
-          <h2 className="text-sm mb-2">Payment mode:</h2>
+          <h2 className="text-sm text-[#212529] mb-2">Payment mode:</h2>
           <div className="grid grid-cols-3 gap-3 mb-6">
             <button
               className={`flex items-center justify-center border rounded py-3 px-4 ${
                 selectedPaymentMode === "upi"
                   ? "border-green-500 text-green-600"
-                  : "border-gray-300"
+                  : "border-gray-300 text-[#212529]"
               }`}
               onClick={() => handlePaymentModeSelect("upi")}
             >
@@ -206,7 +206,7 @@ const DepositPage: React.FC<DepositPageProps> = ({ onBack }) => {
               className={`flex items-center justify-center border rounded py-3 px-4 ${
                 selectedPaymentMode === "qr"
                   ? "border-green-500 text-green-600"
-                  : "border-gray-300"
+                  : "border-gray-300 text-[#212529]"
               }`}
               onClick={() => handlePaymentModeSelect("qr")}
             >
@@ -224,7 +224,7 @@ const DepositPage: React.FC<DepositPageProps> = ({ onBack }) => {
               className={`flex items-center justify-center border rounded py-3 px-4 ${
                 selectedPaymentMode === "netbanking"
                   ? "border-green-500 text-green-600"
-                  : "border-gray-300"
+                  : "border-gray-300 text-[#212529]"
               }`}
               onClick={() => handlePaymentModeSelect("netbanking")}
             >
@@ -242,7 +242,7 @@ const DepositPage: React.FC<DepositPageProps> = ({ onBack }) => {
           {/* UPI ID Input - Only show when UPI is selected */}
           {selectedPaymentMode === "upi" && (
             <div className="mb-6">
-              <h2 className="text-sm mb-2">Enter UPI ID</h2>
+              <h2 className="text-sm text-[#212529] mb-2">Enter UPI ID</h2>
               <input
                 type="text"
                 placeholder="abcd@ybl"
@@ -261,6 +261,9 @@ const DepositPage: React.FC<DepositPageProps> = ({ onBack }) => {
           </button>
         </div>
       </div>
+
+      {/* Horizontal Divider */}
+      <hr className="my-6 border-gray-200" />
 
       {/* Deposit History */}
       <div>

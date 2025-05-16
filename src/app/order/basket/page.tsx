@@ -1,6 +1,6 @@
 "use client";
-import React, { useState } from "react";
-import { Dialog, DialogContent } from "@/components/ui/dialog";
+import React, { useState, useRef, useEffect } from "react";
+import BasketDialogPopup from "@/components/order/BasketDialogPopup";
 import {
   Table,
   TableBody,
@@ -9,267 +9,294 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { Button } from "@/components/ui/button";
+import { ArrowUpDown, MoreVertical, Move, X } from "lucide-react";
 import { Input } from "@/components/ui/input";
-import { Checkbox } from "@/components/ui/checkbox";
-import Image from "next/image";
-import { Circle } from "lucide-react";
 
-const BasketDialog = () => {
-  const [open, setOpen] = useState(true);
-  const [includeExisting, setIncludeExisting] = useState(false);
+// Define proper types for the basket items
+interface BasketItem {
+  id: string;
+  name: string;
+  date: string;
+  items: string;
+}
 
-  const items = [
-    {
-      type: "Intraday",
-      security: "MRF",
-      qty: 2,
-      price: 2045.63,
-      orderType: "BUY",
-      margin: 467.8,
-    },
-    {
-      type: "Intraday",
-      security: "ITC",
-      qty: 2,
-      price: 2045.63,
-      orderType: "BUY",
-      margin: 467.8,
-    },
-    {
-      type: "Intraday",
-      security: "WIPRO",
-      qty: 2,
-      price: 2045.63,
-      orderType: "BUY",
-      margin: 467.8,
-    },
+// Define the BasketNameInput component
+interface BasketNameInputProps {
+  show: boolean;
+  onClose: () => void;
+  onConfirm: (name: string) => void;
+}
+
+// Draggable basket name input component
+const BasketNameInput: React.FC<BasketNameInputProps> = ({ show, onClose, onConfirm }) => {
+  const [basketName, setBasketName] = useState("");
+  const dialogRef = useRef<HTMLDivElement>(null);
+  const [isDragging, setIsDragging] = useState(false);
+  const [position, setPosition] = useState({ x: 0, y: 0 });
+  const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
+  
+  // Center the dialog when first opened
+  useEffect(() => {
+    if (show && dialogRef.current) {
+      const rect = dialogRef.current.getBoundingClientRect();
+      setPosition({
+        x: (window.innerWidth - rect.width) / 2,
+        y: (window.innerHeight - rect.height) / 2
+      });
+    }
+  }, [show]);
+  
+  // Handle mouse events for dragging
+  const startDrag = (e: React.MouseEvent) => {
+    if (dialogRef.current) {
+      const rect = dialogRef.current.getBoundingClientRect();
+      setDragOffset({
+        x: e.clientX - rect.left,
+        y: e.clientY - rect.top
+      });
+      setIsDragging(true);
+    }
+  };
+  
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      if (isDragging) {
+        setPosition({
+          x: e.clientX - dragOffset.x,
+          y: e.clientY - dragOffset.y
+        });
+      }
+    };
+    
+    const handleMouseUp = () => {
+      setIsDragging(false);
+    };
+    
+    window.addEventListener('mousemove', handleMouseMove);
+    window.addEventListener('mouseup', handleMouseUp);
+    
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('mouseup', handleMouseUp);
+    };
+  }, [isDragging, dragOffset]);
+  
+  const handleConfirm = () => {
+    if (basketName.trim()) {
+      onConfirm(basketName);
+      setBasketName("");
+    }
+  };
+  
+  if (!show) return null;
+  
+  return (
+    <div 
+      ref={dialogRef}
+      className="fixed z-50 bg-white rounded-lg shadow-xl w-[400px]"
+      style={{
+        left: `${position.x}px`,
+        top: `${position.y}px`,
+        cursor: isDragging ? 'grabbing' : 'auto'
+      }}
+    >
+      {/* Header with grab handle */}
+      <div 
+        className="flex items-center justify-between p-4 border-b cursor-grab bg-gray-50 rounded-t-lg"
+        onMouseDown={startDrag}
+      >
+        <div className="flex items-center">
+          <h2 className="text-lg font-medium">Create New Basket</h2>
+        </div>
+        <button 
+          onClick={onClose}
+          className="text-gray-400 hover:text-gray-600"
+        >
+          <X size={20} />
+        </button>
+      </div>
+      
+      {/* Content */}
+      <div className="p-6">
+        <div className="mb-6">
+          <label htmlFor="basket-name" className="text-base mb-2 block">
+            Enter Basket Name
+          </label>
+          <Input
+            id="basket-name"
+            value={basketName}
+            onChange={(e) => setBasketName(e.target.value)}
+            className="h-12 text-base"
+            placeholder=""
+          />
+        </div>
+
+        <Button
+          onClick={handleConfirm}
+          className="w-full h-12 bg-[#00C852] hover:bg-[#00B84D] text-white text-base"
+        >
+          Create
+        </Button>
+      </div>
+    </div>
+  );
+};
+
+export default function Page() {
+  const [showDialog, setShowDialog] = useState(false);
+  const [showBasketNameInput, setShowBasketNameInput] = useState(false);
+  const [selectedBasket, setSelectedBasket] = useState<BasketItem | null>(null);
+
+  // Sample data for the baskets with proper typing
+  const baskets: BasketItem[] = [
+    { id: "234566", name: "Stocks", date: "24 Jan 2025", items: "467.80" },
+    { id: "244566", name: "Mutual Funds", date: "24 Jan 2025", items: "467.80" },
+    { id: "454567", name: "Stock 2", date: "24 Jan 2025", items: "467.80" },
   ];
 
+  const handleBasketClick = (basket: BasketItem) => {
+    setSelectedBasket(basket);
+    setShowDialog(true);
+  };
+  
+  const handleBasketNameConfirm = (name: string) => {
+    // Generate a random ID for the new basket
+    const newId = Math.floor(Math.random() * 1000000).toString();
+    const currentDate = new Date().toLocaleDateString('en-GB', {
+      day: '2-digit',
+      month: 'short',
+      year: 'numeric'
+    });
+    
+    setSelectedBasket({ 
+      id: newId, 
+      name, 
+      date: currentDate, 
+      items: "0.00" 
+    });
+    
+    setShowBasketNameInput(false);
+    setShowDialog(true);
+  };
+
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <DialogContent className="max-w-[900px] p-0">
-        {/* Header */}
-        <div className="flex items-center justify-between p-3 border-b bg-[#B8DBD94D]">
-          <div className="flex items-center gap-2">
-            <span className="text-sm">Basket1</span>
+    <div className="min-h-screen p-4">
+      <div className="bg-white">
+        <div className="py-4 flex justify-between items-center">
+          <Button 
+            className="flex items-center gap-2 bg-gray-100 text-gray-800 hover:bg-gray-200 rounded-lg border-0"
+            onClick={() => {
+              setShowBasketNameInput(true);
+            }}
+          >
+            <span className="text-xl">+</span> Basket Order
+          </Button>
+          <div className="relative">
+            <input 
+              type="text" 
+              placeholder="Search everything..." 
+              className="px-4 py-2 pr-10 border rounded-lg focus:outline-none focus:ring-1 focus:ring-gray-300"
+            />
             <svg
-              className="w-3.5 h-3.5 text-gray-500"
+              className="absolute right-3 top-2.5 w-5 h-5 text-gray-400"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
               strokeWidth="2"
             >
-              <path d="M17 3a2.85 2.85 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3Z" />
+              <circle cx="11" cy="11" r="8" />
+              <path d="m21 21-4.3-4.3" />
             </svg>
           </div>
         </div>
-
-        <div className="p-4">
-          {/* Search */}
-          <div className="flex  justify-end mb-4">
-            <div className="relative w-64">
-              <div className="absolute inset-y-0 left-2 flex items-center pointer-events-none">
-                <svg
-                  className="w-4 h-4 text-gray-400"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                >
-                  <circle cx="11" cy="11" r="8" />
-                  <path d="m21 21-4.3-4.3" />
-                </svg>
-              </div>
-              <Input
-                placeholder="Search everything..."
-                className="pl-8 h-8 text-sm border-gray-200"
-              />
-            </div>
-          </div>
-
-          {/* Table */}
-          <div className="border rounded">
-            <Table>
-              <TableHeader>
-                <TableRow className="bg-[#F4F4F9] hover:bg-gray-50">
-                  <TableHead className="text-xs font-normal text-gray-600 w-32 border-r">
-                    <div className="flex items-center justify-between">
-                      <span>Product Type</span>
-                      <Image
-                        src="/sort-icon.svg"
-                        width={16}
-                        height={16}
-                        alt="Sort"
-                      />
-                    </div>
-                  </TableHead>
-                  <TableHead className="text-xs font-normal text-gray-600 border-r">
-                    <div className="flex items-center justify-between">
-                      <span>Security (3/50)</span>
-                      <img
-                        src="/sort-icon.svg"
-                        width={16}
-                        height={16}
-                        alt="Sort"
-                      />
-                    </div>
-                  </TableHead>
-                  <TableHead className="text-xs font-normal text-gray-600 w-20 border-r">
-                    <div className="flex items-center justify-between">
-                      <span>Qty.</span>
-                      <Image
-                        src="/sort-icon.svg"
-                        width={16}
-                        height={16}
-                        alt="Sort"
-                      />
-                    </div>
-                  </TableHead>
-                  <TableHead className="text-xs font-normal text-gray-600 w-24 border-r">
-                    <div className="flex items-center justify-between">
-                      <span>Price</span>
-                      <Image
-                        src="/sort-icon.svg"
-                        width={16}
-                        height={16}
-                        alt="Sort"
-                      />
-                    </div>
-                  </TableHead>
-                  <TableHead className="text-xs font-normal text-gray-600 w-20 border-r">
-                    <div className="flex items-center justify-between">
-                      <span>Type</span>
-                      <Image
-                        src="/sort-icon.svg"
-                        width={16}
-                        height={16}
-                        alt="Sort"
-                      />
-                    </div>
-                  </TableHead>
-                  <TableHead className="text-xs font-normal text-gray-600 w-28">
-                    <div className="flex items-center justify-between">
-                      <span>Margin Req</span>
-                      <Image
-                        src="/sort-icon.svg"
-                        width={16}
-                        height={16}
-                        alt="Sort"
-                      />
-                    </div>
-                  </TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {items.map((item, i) => (
-                  <TableRow key={i} className="hover:bg-gray-50">
-                    <TableCell className="text-xs border-r text-center text-[#515C7A]">
-                      {item.type}
-                    </TableCell>
-                    <TableCell className="text-xs border-r">
-                      <div className="flex items-center justify-between">
-                        <span className="text-[#515C7A]">{item.security}</span>
-                        <Image
-                          src="/three-dots.svg"
-                          width={16}
-                          height={16}
-                          alt="Menu"
-                        />
-                      </div>
-                    </TableCell>
-                    <TableCell className="text-xs border-r text-center text-[#515C7A]">
-                      {item.qty}
-                    </TableCell>
-                    <TableCell className="text-xs border-r text-center">
-                      ₹{item.price.toFixed(2)}
-                    </TableCell>
-                    <TableCell className="border-r text-center">
-                      <span className="bg-green-100 text-green-600 text-[10px] px-2 py-0.5 rounded">
-                        {item.orderType}
-                      </span>
-                    </TableCell>
-                    <TableCell className="text-xs text-center text-[#515C7A]">
-                      ₹{item.margin.toFixed(2)}
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </div>
-
-          {/* Footer */}
-          <div className="flex justify-between items-start mt-4">
-            <div className="flex flex-col">
-              <div className="flex gap-8">
-                <div>
-                  <div className="text-xs text-gray-500">Margin Required</div>
-                  <div className="text-sm font-medium">₹5,908.00</div>
-                </div>
-                <div>
-                  <div className="flex items-center gap-1">
-                    <div className="text-xs text-gray-500">Final Margin</div>
-                    <svg
-                      className="w-3.5 h-3.5 text-gray-400"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                    >
-                      <circle cx="12" cy="12" r="10" />
-                      <line x1="12" y1="16" x2="12" y2="12" />
-                      <line x1="12" y1="8" x2="12.01" y2="8" />
-                    </svg>
+        <div className="overflow-hidden rounded-md border border-[#D1D5DB]">
+          <table className="w-full border-collapse">
+            <thead>
+              <tr className="bg-[#F4F4F9] text-xs font-medium text-gray-600 border-b border-[#D1D5DB]">
+                <th className="px-4 py-4 whitespace-nowrap border-r border-[#D1D5DB]">
+                  <div className="flex justify-between items-center">
+                    <span className="mr-2 text-[#1A1A1A] text-sm font-[400]">Date</span>
+                    <ArrowUpDown size={16}/>
                   </div>
-                  <div className="flex items-center gap-1">
-                    <div className="text-sm font-medium text-green-500">
-                      ₹5,90,478.00
-                    </div>
-                    <button className="text-gray-400 hover:text-gray-600">
-                      {/* //TODO: add relaod icon */}
-                    </button>
+                </th>
+                <th className="px-4 py-4 whitespace-nowrap border-r border-[#D1D5DB]">
+                  <div className="flex justify-between items-center">
+                    <span className="mr-2 text-[#1A1A1A] text-sm font-[400]">Basket ID</span>
+                    <ArrowUpDown size={16}/>
                   </div>
-                </div>
-              </div>
-              <div className="flex items-center gap-2 mt-3">
-                <Checkbox
-                  id="include-positions"
-                  checked={includeExisting}
-                  onCheckedChange={(checked) => setIncludeExisting(!!checked)}
-                  className="w-3.5 h-3.5 rounded-sm border-gray-300"
-                />
-                <label
-                  htmlFor="include-positions"
-                  className="text-xs text-gray-600"
+                </th>
+                <th className="px-4 py-4 whitespace-nowrap border-r border-[#D1D5DB]">
+                  <div className="flex justify-between items-center">
+                    <span className="mr-2 text-[#1A1A1A] text-sm font-[400]">Basket Name</span>
+                    <ArrowUpDown size={16}/>
+                  </div>
+                </th>
+                <th className="px-4 py-4 whitespace-nowrap">
+                  <div className="flex justify-between items-center">
+                    <span className="mr-2 text-[#1A1A1A] text-sm font-[400]">Items</span>
+                    <ArrowUpDown size={16}/>
+                  </div>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {baskets.map((basket, index) => (
+                <tr
+                  key={basket.id}
+                  className={`border-t border-[#D1D5DB] hover:bg-gray-50 cursor-pointer ${
+                    index === baskets.length - 1 ? "rounded-b-md overflow-hidden" : ""
+                  }`}
+                  onClick={() => handleBasketClick(basket)}
                 >
-                  Include existing positions
-                </label>
-              </div>
-            </div>
-            <div className="flex gap-2">
-              <button
-                onClick={() => setOpen(false)}
-                className="px-4 py-1.5 text-xs font-medium text-gray-600 bg-gray-100 rounded hover:bg-gray-200"
-              >
-                Cancel
-              </button>
-              <button
-                onClick={() => setOpen(false)}
-                className="px-4 py-1.5 text-xs font-medium text-white bg-green-500 rounded hover:bg-green-600"
-              >
-                Execute
-              </button>
-            </div>
-          </div>
+                  <td className="px-4 py-3 text-sm text-[#515C7A] border-r border-[#D1D5DB]">
+                    <div className="flex items-center">
+                      <span>{basket.date}</span>
+                    </div>
+                  </td>
+                  <td className="px-4 py-3 text-sm text-[#515C7A] border-r border-[#D1D5DB]">
+                    <div className="flex items-center justify-between">
+                      <span>{basket.id}</span>
+                      <button className="text-[#515C7A] hover:text-gray-600">
+                        <MoreVertical size={16}/>
+                      </button>
+                    </div>
+                  </td>
+                  <td className="px-4 py-3 text-sm text-[#515C7A] border-r border-[#D1D5DB]">
+                    <div className="flex items-center justify-between">
+                      <span>{basket.name}</span>
+                      <button className="text-[#515C7A] hover:text-gray-600">
+                        <MoreVertical size={16}/>
+                      </button>
+                    </div>
+                  </td>
+                  <td className="px-4 py-3 text-sm text-[#515C7A] text-right">
+                    <div className="flex justify-end items-center">
+                      <span>₹{basket.items}</span>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
-      </DialogContent>
-    </Dialog>
-  );
-};
+      </div>
 
-export default function Page() {
-  return (
-    <div className="min-h-screen bg-gray-100 p-4">
-      <BasketDialog />
+      {/* Basket Name Input Dialog (Draggable) */}
+      <BasketNameInput 
+        show={showBasketNameInput}
+        onClose={() => setShowBasketNameInput(false)}
+        onConfirm={handleBasketNameConfirm}
+      />
+
+      {/* Basket Dialog (Draggable - updated in BasketDialogPopup component) */}
+      {showDialog && selectedBasket && (
+        <BasketDialogPopup 
+          open={showDialog} 
+          setOpen={setShowDialog} 
+          basketName={selectedBasket.name} 
+        />
+      )}
     </div>
   );
 }
