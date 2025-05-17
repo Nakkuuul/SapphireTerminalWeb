@@ -74,7 +74,7 @@ export default function FundsPage() {
       </div>
 
       {/* Two Column Layout */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 pt-3 gap-6">
         {/* Left Column - Balance Breakdown */}
         <BalanceBreakdown
           balanceData={balanceData}

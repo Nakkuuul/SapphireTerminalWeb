@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/table";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Move } from "lucide-react";
+import { ArrowUpDown, Move, X } from "lucide-react";
 import Image from 'next/image';
 
 // Define proper interfaces for component props and data
@@ -121,7 +121,7 @@ const BasketDialogPopup: React.FC<BasketDialogPopupProps> = ({
   return (
     <div 
       ref={dialogRef}
-      className={`fixed z-50 bg-white rounded-lg shadow-xl max-w-[900px] ${open ? 'block' : 'hidden'}`}
+      className={`fixed z-50 bg-white rounded-lg shadow-xl min-w-[850px] ${open ? 'block' : 'hidden'}`}
       style={{
         left: `${position.x}px`,
         top: `${position.y}px`,
@@ -130,7 +130,7 @@ const BasketDialogPopup: React.FC<BasketDialogPopupProps> = ({
     >
       {/* Header */}
       <div 
-        className="flex items-center justify-between p-3 border-b bg-[#F4F4F9] cursor-grab rounded-t-lg"
+        className="flex items-center justify-between px-6 py-3  bg-[#EAF4F4] cursor-grab rounded-t-lg"
         onMouseDown={startDrag}
       >
         <div className="flex items-center gap-2">
@@ -145,15 +145,13 @@ const BasketDialogPopup: React.FC<BasketDialogPopupProps> = ({
             <path d="M17 3a2.85 2.85 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3Z" />
           </svg>
         </div>
-        <button 
-          onClick={() => setOpen(false)}
-          className="text-gray-500 hover:text-gray-700 text-xl"
-        >
-          ×
+        <button onClick={onclose}>
+        <X  size={28} color='gray' />
         </button>
+       
       </div>
 
-      <div className="p-4">
+      <div className="px-6 pt-[18px] pb-[24px]">
         {/* Search with border below */}
         <div className="flex justify-end mb-4 pb-4 border-b border-[#E5E7EB]">
           <div className="relative w-64">
@@ -184,44 +182,44 @@ const BasketDialogPopup: React.FC<BasketDialogPopupProps> = ({
                 <TableHead className="text-sm font-medium text-[#424242] w-32 border-r">
                   <div className="flex items-center justify-between">
                     <span>Product Type</span>
-                    <span className="text-xs">↕</span>
+                    <span className="text-xs"><ArrowUpDown size={14} /></span>
                   </div>
                 </TableHead>
                 <TableHead className="text-sm font-medium text-[#424242] border-r">
                   <div className="flex items-center justify-between">
                     <span>Security (3/50)</span>
-                    <span className="text-xs">↕</span>
+                    <span className="text-xs"><ArrowUpDown size={14} /></span>
                   </div>
                 </TableHead>
                 <TableHead className="text-sm font-medium text-[#424242] w-20 border-r">
                   <div className="flex items-center justify-between">
                     <span>Qty.</span>
-                    <span className="text-xs">↕</span>
+                    <span className="text-xs"><ArrowUpDown size={14} /></span>
                   </div>
                 </TableHead>
                 <TableHead className="text-sm font-medium text-[#424242] w-36 border-r">
                   <div className="flex items-center justify-between">
                     <span>Price</span>
-                    <span className="text-xs">↕</span>
+                    <span className="text-xs"><ArrowUpDown size={14} /></span>
                   </div>
                 </TableHead>
                 <TableHead className="text-sm font-medium text-[#424242] w-20 border-r">
                   <div className="flex items-center justify-between">
                     <span>Type</span>
-                    <span className="text-xs">↕</span>
+                    <span className="text-xs"><ArrowUpDown size={14} /></span>
                   </div>
                 </TableHead>
                 <TableHead className="text-sm font-medium text-[#424242] w-36">
                   <div className="flex items-center justify-between">
                     <span>Margin Req</span>
-                    <span className="text-xs">↕</span>
+                    <span className="text-xs"><ArrowUpDown size={14} /></span>
                   </div>
                 </TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {items.map((item, i) => (
-                <TableRow key={i} className="hover:bg-gray-50">
+                <TableRow key={i} className="h-10 hover:bg-gray-50">
                   <TableCell className="text-sm border-r text-center text-[#515C7A]">
                     {item.type}
                   </TableCell>
@@ -258,31 +256,27 @@ const BasketDialogPopup: React.FC<BasketDialogPopupProps> = ({
         </div>
 
         {/* Footer - Border top and bottom */}
-        <div className="mt-6 pt-4 pb-4 border-t border-b border-[#E5E7EB]">
+        <div className="mt-6 pt-4  border-t border-[#E5E7EB]">
           <div className="flex justify-between">
             <div className="flex">
               {/* Margin Required */}
               <div className="mr-8">
-                <div className="text-sm text-gray-500">Margin Required</div>
+                <div className="text-sm text-gray-500 mb-[6px]">Margin Required</div>
                 <div className="text-base font-medium">₹5,908.00</div>
               </div>
               
               {/* Final Margin with Checkbox Below */}
               <div>
                 <div>
-                  <div className="flex items-center gap-1">
+                  <div className="flex items-center mb-[6px] gap-1">
                     <div className="text-sm text-gray-500">Final Margin</div>
-                    <svg
-                      className="w-4 h-4 text-gray-400"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                    >
-                      <circle cx="12" cy="12" r="10" />
-                      <line x1="12" y1="16" x2="12" y2="12" />
-                      <line x1="12" y1="8" x2="12.01" y2="8" />
-                    </svg>
+                    <Image
+                      src="/info.svg"
+                      alt="Info Icon"
+                      width={16}
+                      height={16}
+                      className="text-gray-400"
+                    />
                   </div>
                   <div className="flex items-center gap-1">
                     <div className="text-base font-medium text-green-500">

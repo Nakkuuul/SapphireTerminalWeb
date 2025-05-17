@@ -241,10 +241,12 @@ const EquityHoldings = () => {
     field,
     label,
     className = "",
+    width = "",
   }: {
     field: SortField;
     label: string;
     className?: string;
+    width?: string;
   }) => {
     const isActive = sortField === field;
 
@@ -255,6 +257,7 @@ const EquityHoldings = () => {
         onClick={() => handleSort(field)}
         onMouseEnter={() => setHoveredHeader(field)}
         onMouseLeave={() => setHoveredHeader(null)}
+        style={{ width }}
       >
         <div className="flex items-center justify-between">
           <span>{label}</span>
@@ -269,7 +272,7 @@ const EquityHoldings = () => {
   };
 
   return (
-    <div className=" mx-auto">
+    <div className="mx-auto">
       <HoldingSelector />
       {/* Summary Section */}
       <div className="grid grid-cols-4 bg-[#F4F4F9] mb-4 h-24 overflow-hidden">
@@ -303,9 +306,9 @@ const EquityHoldings = () => {
         </div>
         <div className="flex flex-col justify-center h-full px-3 text-center">
           <div className="text-base text-gray-600 text-center">Net P&L</div>
-          <div className="font-normal text-xl text-center text-loss">
+          <div className="font-normal text-xl text-center text-red-500">
             {formatCurrency(portfolioSummary.netPL.value)}{" "}
-            <span className="text-loss text-sm">
+            <span className="text-red-500 text-sm">
               {formatPercentage(portfolioSummary.netPL.percentage)}
             </span>
           </div>
@@ -314,7 +317,7 @@ const EquityHoldings = () => {
 
       {/* Equity Section */}
       <div className="mb-4">
-        <div className="flex justify-between items-center mb-4">
+        <div className="flex justify-between items-end mb-4">
           <h2 className="text-xl font-normal">Equity (5)</h2>
           <div className="flex items-center gap-2">
             <DownloadButton />
@@ -324,31 +327,31 @@ const EquityHoldings = () => {
 
         {/* Equity Table with vertical columns and divider lines */}
         <div className="overflow-x-auto border rounded-md">
-          <table className="min-w-full divide-y divide-gray-200">
+          <table className="min-w-full divide-y divide-gray-200 table-fixed">
             <thead>
               <tr className="bg-gray-50" style={{ height: "54px" }}>
                 <HeaderCell
                   field="security"
                   label="Security"
-                  className="w-[20%]"
+                  width="216px"
                 />
-                <HeaderCell field="quantity" label="Qty" className="w-[10%]" />
+                <HeaderCell field="quantity" label="Qty" width="100px" />
                 <HeaderCell
                   field="avgPrice"
                   label="Avg. Price"
-                  className="w-[12%]"
+                  width="120px"
                 />
-                <HeaderCell field="ltp" label="LTP" className="w-[12%]" />
+                <HeaderCell field="ltp" label="LTP" width="120px" />
                 <HeaderCell
                   field="investmentValue"
                   label="Investment Value"
-                  className="w-[16%]"
+                  width="160px"
                 />
-                <HeaderCell field="netPL" label="Net P&L" className="w-[15%]" />
+                <HeaderCell field="netPL" label="Net P&L" width="150px" />
                 <HeaderCell
                   field="dailyPL"
                   label="Daily P&L"
-                  className="w-[15%]"
+                  width="150px"
                 />
               </tr>
             </thead>

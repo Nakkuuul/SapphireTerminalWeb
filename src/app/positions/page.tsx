@@ -228,6 +228,62 @@ const Positions: React.FC = () => {
     return `(${value.toFixed(1)}%)`;
   };
 
+  // Helper function to get action badge styles
+  const getActionBadgeStyles = (action: "BUY" | "SELL", isClosed: boolean) => {
+    // Base background colors at 100% opacity
+    const buyBgColor = "#D5FFC6";
+    const sellBgColor = "#FFE4DD";
+    // Base text colors at 100% opacity
+    const buyTextColor = "#34A853";
+    const sellTextColor = "#F10930";
+
+    // For closed (faded) positions, apply 50% opacity to both bg and text
+    return {
+      backgroundColor: isClosed 
+        ? action === "BUY" ? buyBgColor + "80" : sellBgColor + "80"
+        : action === "BUY" ? buyBgColor : sellBgColor,
+      color: isClosed
+        ? action === "BUY" ? buyTextColor + "80" : sellTextColor + "80"
+        : action === "BUY" ? buyTextColor : sellTextColor
+    };
+  };
+
+  // Helper function to get type badge styles
+  const getTypeBadgeStyles = (type: string, isClosed: boolean) => {
+    // Base background colors and text colors based on type
+    let bgColor, textColor;
+    
+    switch (type) {
+      case "DEL":
+        bgColor = "#F1F8F6";
+        textColor = "#2E7D6F";
+        break;
+      case "CFD":
+        bgColor = "#E3F2FD";
+        textColor = "#64B5F6";
+        break;
+      case "INT":
+        bgColor = "#FFF3E0";
+        textColor = "#FFB74D";
+        break;
+      case "MTF":
+        bgColor = "#F3E5F5";
+        textColor = "#BA68C8";
+        break;
+      default:
+        bgColor = "#F1F1F1";
+        textColor = "#666666";
+    }
+
+    // Apply opacity for closed positions
+    const opacity = isClosed ? "80" : "CC"; // CC is ~80% opacity, 80 is 50% opacity
+    
+    return {
+      backgroundColor: bgColor + opacity,
+      color: textColor + (isClosed ? "80" : "B3") // B3 is ~70% opacity
+    };
+  };
+
   // Header cell component with sort logic
   const HeaderCell = ({
     field,
@@ -263,7 +319,7 @@ const Positions: React.FC = () => {
   return (
     <div className="w-full">
       {/* Positions Section Header */}
-      <div className="flex justify-between items-center mt-6 mb-4">
+      <div className="flex justify-between items-end mt-6 mb-4">
         <h2 className="text-xl font-normal">Positions (5)</h2>
         <div className="flex items-center gap-2">
           <DownloadButton />
@@ -345,10 +401,7 @@ const Positions: React.FC = () => {
                   <div className="flex items-center justify-start">
                     <div
                       className="text-xs py-[3px] px-1 rounded-md min-w-[50px] text-center mr-3"
-                      style={{
-                        backgroundColor: position.action === "BUY" ? "#E8F5E9CC" : "#FFEBEECC",
-                        color: position.action === "BUY" ? "#81C784CC" : "#E57373CC"
-                      }}
+                      style={getActionBadgeStyles(position.action, position.isClosed)}
                     >
                       {position.action}
                     </div>
@@ -357,26 +410,7 @@ const Positions: React.FC = () => {
                       style={{
                         padding: "3px 12px",
                         minWidth: "50px",
-                        backgroundColor:
-                          position.type === "DEL"
-                            ? "#F1F8F6CC"
-                            : position.type === "CFD"
-                            ? "#E3F2FDCC"
-                            : position.type === "INT"
-                            ? "#FFF3E0CC"
-                            : position.type === "MTF"
-                            ? "#F3E5F5CC"
-                            : "#F1F1F1",
-                        color:
-                          position.type === "DEL"
-                            ? "#2E7D6FB3"
-                            : position.type === "CFD"
-                            ? "#64B5F6B3"
-                            : position.type === "INT"
-                            ? "#FFB74DB3"
-                            : position.type === "MTF"
-                            ? "#BA68C8B3"
-                            : "#666666",
+                        ...getTypeBadgeStyles(position.type, position.isClosed)
                       }}
                     >
                       {position.type}

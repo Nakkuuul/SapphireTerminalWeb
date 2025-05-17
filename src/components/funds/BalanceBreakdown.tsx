@@ -89,10 +89,10 @@ const BalanceBreakdown: React.FC<BalanceBreakdownProps> = ({
             key={item.label}
             className={index % 2 === 0 ? "bg-[#F4F4F9]" : ""}
           >
-            <td className="py-2 pl-2 text-[#6B7280] text-[14px]">
+            <td className="py-2 pl-[30px] text-[#6B7280] text-[14px]">
               {item.label}
             </td>
-            <td className="py-2 pr-2 text-[#6B7280] text-right text-[14px]">
+            <td className="py-2 pr-[30px] text-[#6B7280] text-right text-[14px]">
               ₹{formatCurrency(item.value)}
             </td>
           </tr>
@@ -108,9 +108,9 @@ const BalanceBreakdown: React.FC<BalanceBreakdownProps> = ({
     isFirst: boolean = false
   ) => (
     <div
-      className={`flex items-center mb-4 ${!isFirst ? "border-t pt-4" : ""}`}
+      className={`flex items-center ${!isFirst ? "border-t pt-4" : ""}`}
     >
-      <h2 className="text-base font-medium text-[#1DB954]">
+      <h2 className="text-base  font-medium text-[#1DB954]">
         {title} <Info size={16} className="inline ml-1 text-gray-400" />
       </h2>
       <div className="ml-auto text-base font-medium text-[#1DB954]">
@@ -122,10 +122,10 @@ const BalanceBreakdown: React.FC<BalanceBreakdownProps> = ({
   return (
     <div className="border border-gray-200 rounded-lg p-4">
       <div className="flex items-center mb-3">
-        <h2 className="text-green-500 text-base font-medium flex items-center">
+        <h2 className="text-[#1DB954] text-base font-medium flex items-center">
           Total Balance <Info size={14} className="ml-1 text-gray-400" />
         </h2>
-        <div className="ml-auto text-green-500 font-medium">
+        <div className="ml-auto text-[#1DB954] font-medium">
           ₹{formatCurrency(totalBalance)}
         </div>
       </div>
@@ -133,23 +133,23 @@ const BalanceBreakdown: React.FC<BalanceBreakdownProps> = ({
       <div className="mb-4">
         <table className="w-full">
           <tbody>
-            <tr className="bg-gray-50">
-              <td className="py-2 px-3 text-gray-600">Cash Balance</td>
-              <td className="py-2 px-3 text-right text-gray-600">
+            <tr className="bg-gray-50 text-[#6B7380] text-sm">
+              <td className="py-2 px-3  ">Cash Balance</td>
+              <td className="py-2 px-3 text-right ">
                 ₹{formatCurrency(balanceData.cashBalance)}
               </td>
             </tr>
-            <tr>
-              <td className="py-2 px-3 text-gray-600">Collateral Balance</td>
-              <td className="py-2 px-3 text-right text-gray-600">
+            <tr className="text-sm text-[#6B7380]">
+              <td className="py-2 px-3">Collateral Balance</td>
+              <td className="py-2 px-3 text-right ">
                 ₹{formatCurrency(balanceData.collateralBalance)}
               </td>
             </tr>
-            <tr className="bg-gray-50">
-              <td className="py-2 px-3 text-gray-600">
+            <tr className="bg-gray-50 text-[#6B7380] text-sm">
+              <td className="py-2 px-3 ">
                 Collateral (Liquid Funds)
               </td>
-              <td className="py-2 px-3 text-right text-gray-600">
+              <td className="py-2 px-3 text-right ">
                 ₹{formatCurrency(balanceData.collateralLiquidFunds)}
               </td>
             </tr>
@@ -159,18 +159,18 @@ const BalanceBreakdown: React.FC<BalanceBreakdownProps> = ({
 
       {renderSectionHeader("Margin Utilised", balanceData.marginUtilised)}
 
-      <div className="mb-4 pt-2">
-        <h3 className="text-sm font-normal mb-2">P&L (Profit & Loss)</h3>
+      <div className=" pt-2">
+        <h3 className="text-sm font-normal mb-2  ml-[15px]">P&L (Profit & Loss)</h3>
         {renderTable(profitLossItems)}
       </div>
 
-      <div className="mb-4 pt-2">
-        <h3 className="text-sm font-normal mb-2">Margin</h3>
+      <div className=" pt-2">
+        <h3 className="text-sm font-normal mb-2 ml-[15px]">Margin</h3>
         {renderTable(marginItems)}
       </div>
 
-      <div className="mb-4 pt-2">
-        <h3 className="text-sm font-normal mb-2">Premiums</h3>
+      <div className=" pt-2">
+        <h3 className="text-sm font-normal mb-2 ml-[15px]">Premiums</h3>
         {renderTable(premiumItems)}
       </div>
 

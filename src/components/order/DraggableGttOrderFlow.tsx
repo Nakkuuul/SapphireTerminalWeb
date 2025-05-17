@@ -5,34 +5,50 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Switch } from "@/components/ui/switch";
-import { X, ArrowRight, Plus, Move } from "lucide-react";
+import { X, ArrowRight, Plus, Search } from "lucide-react";
 
 export function DraggableGttOrderFlow() {
-  const [basketName, setBasketName] = useState("");
   const [isSell, setIsSell] = useState(false);
-  const [showBasketDialog, setShowBasketDialog] = useState(false);
+  const [showStockSearchDialog, setShowStockSearchDialog] = useState(false);
   const [showGttDialog, setShowGttDialog] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedStock, setSelectedStock] = useState(null);
   
   // For dragging
-  const basketDialogRef = useRef<HTMLDivElement>(null);
-  const gttDialogRef = useRef<HTMLDivElement>(null);
+  const stockSearchDialogRef = useRef(null);
+  const gttDialogRef = useRef(null);
   
-  const [basketPosition, setBasketPosition] = useState({ x: 0, y: 0 });
+  const [stockSearchPosition, setStockSearchPosition] = useState({ x: 0, y: 0 });
   const [gttPosition, setGttPosition] = useState({ x: 0, y: 0 });
-  const [isDraggingBasket, setIsDraggingBasket] = useState(false);
+  const [isDraggingStockSearch, setIsDraggingStockSearch] = useState(false);
   const [isDraggingGtt, setIsDraggingGtt] = useState(false);
   const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
+
+  // Dummy stock data
+  const stocksData = [
+    { name: "Reliance Industries Ltd.", symbol: "RELIANCE", exchange: "NSE", price: 1687.45, change: -19.10, changePercent: -2.70 },
+    { name: "Tata Consultancy Services Ltd.", symbol: "TCS", exchange: "NSE", price: 3456.20, change: 34.80, changePercent: 1.02 },
+    { name: "HDFC Bank Ltd.", symbol: "HDFCBANK", exchange: "NSE", price: 1587.75, change: 12.35, changePercent: 0.78 },
+    { name: "Infosys Ltd.", symbol: "INFY", exchange: "NSE", price: 1467.90, change: -5.60, changePercent: -0.38 },
+    { name: "ICICI Bank Ltd.", symbol: "ICICIBANK", exchange: "NSE", price: 945.30, change: 8.75, changePercent: 0.93 }
+  ];
+
+  // Filter stocks based on search query
+  const filteredStocks = stocksData.filter(stock => 
+    stock.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
+    stock.symbol.toLowerCase().includes(searchQuery.toLowerCase())
+  );
   
-// Center the dialogs when first opened
-useEffect(() => {
-    if (showBasketDialog && basketDialogRef.current) {
-      const rect = basketDialogRef.current.getBoundingClientRect();
-      setBasketPosition({
+  // Center the dialogs when first opened
+  useEffect(() => {
+    if (showStockSearchDialog && stockSearchDialogRef.current) {
+      const rect = stockSearchDialogRef.current.getBoundingClientRect();
+      setStockSearchPosition({
         x: (window.innerWidth - rect.width) / 2,
         y: (window.innerHeight - rect.height) / 2
       });
     }
-  }, [showBasketDialog]);
+  }, [showStockSearchDialog]);
   
   useEffect(() => {
     if (showGttDialog && gttDialogRef.current) {
@@ -45,18 +61,18 @@ useEffect(() => {
   }, [showGttDialog]);
   
   // Handle mouse events for dragging
-  const startDragBasket = (e: React.MouseEvent) => {
-    if (basketDialogRef.current) {
-      const rect = basketDialogRef.current.getBoundingClientRect();
+  const startDragStockSearch = (e) => {
+    if (stockSearchDialogRef.current) {
+      const rect = stockSearchDialogRef.current.getBoundingClientRect();
       setDragOffset({
         x: e.clientX - rect.left,
         y: e.clientY - rect.top
       });
-      setIsDraggingBasket(true);
+      setIsDraggingStockSearch(true);
     }
   };
   
-  const startDragGtt = (e: React.MouseEvent) => {
+  const startDragGtt = (e) => {
     if (gttDialogRef.current) {
       const rect = gttDialogRef.current.getBoundingClientRect();
       setDragOffset({
@@ -68,9 +84,9 @@ useEffect(() => {
   };
   
   useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      if (isDraggingBasket) {
-        setBasketPosition({
+    const handleMouseMove = (e) => {
+      if (isDraggingStockSearch) {
+        setStockSearchPosition({
           x: e.clientX - dragOffset.x,
           y: e.clientY - dragOffset.y
         });
@@ -83,7 +99,7 @@ useEffect(() => {
     };
     
     const handleMouseUp = () => {
-      setIsDraggingBasket(false);
+      setIsDraggingStockSearch(false);
       setIsDraggingGtt(false);
     };
     
@@ -94,22 +110,22 @@ useEffect(() => {
       window.removeEventListener('mousemove', handleMouseMove);
       window.removeEventListener('mouseup', handleMouseUp);
     };
-  }, [isDraggingBasket, isDraggingGtt, dragOffset]);
-  const handleBasketCreation = () => {
-    if (basketName.trim() !== "") {
-      setShowBasketDialog(false);
-      setShowGttDialog(true);
-    }
+  }, [isDraggingStockSearch, isDraggingGtt, dragOffset]);
+
+  const handleStockSelection = (stock) => {
+    setSelectedStock(stock);
+    setShowStockSearchDialog(false);
+    setShowGttDialog(true);
   };
 
   const handleGttCancel = () => {
     setShowGttDialog(false);
-    setBasketName("");
+    setSelectedStock(null);
   };
 
-  const handleBasketCancel = () => {
-    setShowBasketDialog(false);
-    setBasketName("");
+  const handleStockSearchCancel = () => {
+    setShowStockSearchDialog(false);
+    setSearchQuery("");
   };
 
   return (
@@ -117,32 +133,32 @@ useEffect(() => {
       {/* Trigger Button */}
       <button 
         className="flex items-center bg-[#F4F4F9] text-xs text-[#1A1A1A] px-3 py-[10px] rounded"
-        onClick={() => setShowBasketDialog(true)}
+        onClick={() => setShowStockSearchDialog(true)}
       >
         <Plus size={18} className="mr-2" /> New GTT Order
       </button>
 
-      {/* Create New Basket Dialog (Draggable) */}
-      {showBasketDialog && (
+      {/* Stock Search Dialog (Draggable) */}
+      {showStockSearchDialog && (
         <div 
-          ref={basketDialogRef}
-          className="fixed z-50 bg-white rounded-lg shadow-xl w-[400px]"
+          ref={stockSearchDialogRef}
+          className="fixed z-50 bg-white rounded-lg shadow-xl w-[500px]"
           style={{
-            left: `${basketPosition.x}px`,
-            top: `${basketPosition.y}px`,
-            cursor: isDraggingBasket ? 'grabbing' : 'auto'
+            left: `${stockSearchPosition.x}px`,
+            top: `${stockSearchPosition.y}px`,
+            cursor: isDraggingStockSearch ? 'grabbing' : 'auto'
           }}
         >
           {/* Header with grab handle */}
           <div 
-            className="flex items-center justify-between p-4 border-b cursor-grab bg-gray-50 rounded-t-lg"
-            onMouseDown={startDragBasket}
+            className="flex items-center justify-between p-4 border-b cursor-grab bg-[#F4F4F9] rounded-t-lg"
+            onMouseDown={startDragStockSearch}
           >
             <div className="flex items-center">
-              <h2 className="text-lg font-medium">Create New Basket</h2>
+              <h2 className="text-lg font-normal">Select Stock</h2>
             </div>
             <button 
-              onClick={handleBasketCancel} 
+              onClick={handleStockSearchCancel} 
               className="text-gray-400 hover:text-gray-600"
             >
               <X size={20} />
@@ -150,32 +166,54 @@ useEffect(() => {
           </div>
           
           {/* Content */}
-          <div className="p-6">
-            <div className="mb-6">
-              <Label htmlFor="basket-name" className="text-base mb-2 block">
-                Enter Basket Name
-              </Label>
+          <div className="p-4">
+            {/* Search Input */}
+            <div className="relative mb-4">
+              <Search className="absolute left-2 top-1/2 -translate-y-1/2 text-gray-500 h-4 w-4" />
               <Input
-                id="basket-name"
-                value={basketName}
-                onChange={(e) => setBasketName(e.target.value)}
-                className="h-12 text-base"
-                placeholder=""
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="pl-8 h-10 text-base"
+                placeholder="Search stocks..."
               />
             </div>
 
-            <Button
-              onClick={handleBasketCreation}
-              className="w-full h-12 bg-[#00C852] hover:bg-[#00B84D] text-white text-base"
-            >
-              Create
-            </Button>
+            {/* Stock List */}
+            <div className="max-h-[300px] overflow-y-auto">
+              {filteredStocks.map((stock, index) => (
+                <div 
+                  key={index}
+                  onClick={() => handleStockSelection(stock)}
+                  className="flex items-center justify-between p-3 hover:bg-gray-50 cursor-pointer border-b"
+                >
+                  <div>
+                    <p className="font-medium">{stock.name}</p>
+                    <p className="text-sm text-gray-500">{stock.symbol}</p>
+                  </div>
+                  <div className="flex items-center">
+                    <span className="text-sm bg-gray-100 px-2 py-0.5 rounded mr-2">{stock.exchange}</span>
+                    <div className="text-right">
+                      <p className="font-medium">₹{stock.price.toFixed(2)}</p>
+                      <p className={`text-xs ${stock.change >= 0 ? 'text-green-500' : 'text-red-500'}`}>
+                        {stock.change >= 0 ? '+' : ''}{stock.change.toFixed(2)} ({stock.change >= 0 ? '+' : ''}{stock.changePercent.toFixed(2)}%)
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              ))}
+              
+              {filteredStocks.length === 0 && (
+                <div className="p-4 text-center text-gray-500">
+                  No stocks found matching "{searchQuery}"
+                </div>
+              )}
+            </div>
           </div>
         </div>
       )}
 
       {/* GTT Order Dialog (Draggable) */}
-      {showGttDialog && (
+      {showGttDialog && selectedStock && (
         <div 
           ref={gttDialogRef}
           className="fixed z-50 bg-white rounded-lg shadow-xl w-[600px]"
@@ -187,21 +225,23 @@ useEffect(() => {
         >
           {/* Header with drag handle */}
           <div 
-            className="flex bg-[#F4F4F9] flex-row items-start justify-between p-3 cursor-grab rounded-t-lg"
+            className="flex bg-[#F4F4F9] flex-row items-center justify-between p-3 cursor-grab rounded-t-lg"
             onMouseDown={startDragGtt}
           >
             <div className="flex-1">
               <div className="flex items-center">
                 <div className="text-base font-medium flex items-center gap-1.5">
-                  Reliance Industries Ltd.
+                  {selectedStock.name}
                   <span className="text-[11px] font-normal text-muted-foreground bg-[#B8D8D9]/30 px-1 rounded">
-                    NSE
+                    {selectedStock.exchange}
                   </span>
                 </div>
               </div>
-              <p className="mt-0.5 text-sm ml-6">
-                1,687.45
-                <span className="text-red-500 text-xs"> -19.10 (-2.70%)</span>
+              <p className="mt-0.5 text-sm">
+                {selectedStock.price.toFixed(2)}
+                <span className={`text-xs ${selectedStock.change >= 0 ? 'text-green-500' : 'text-red-500'}`}>
+                  {' '}{selectedStock.change >= 0 ? '+' : ''}{selectedStock.change.toFixed(2)} ({selectedStock.change >= 0 ? '+' : ''}{selectedStock.changePercent.toFixed(2)}%)
+                </span>
               </p>
             </div>
 
@@ -239,7 +279,7 @@ useEffect(() => {
               onClick={handleGttCancel} 
               className="text-gray-400 hover:text-gray-600 ml-2"
             >
-              <X size={20} />
+              <X size={28} />
             </button>
           </div>
 
@@ -270,9 +310,9 @@ useEffect(() => {
               </RadioGroup>
             </div>
 
-            {/* Basket Info Display */}
+            {/* Stock Info Display */}
             <div className="mb-4 text-sm border border-gray-100 bg-gray-50 p-2 rounded-md">
-              <span className="font-medium">Basket:</span> {basketName}
+              <span className="font-medium">Stock:</span> {selectedStock.symbol} ({selectedStock.exchange})
             </div>
 
             {/* Inputs Grid */}
