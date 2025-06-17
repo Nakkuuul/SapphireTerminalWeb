@@ -30,22 +30,56 @@ interface RecentTransaction {
   cardLastDigits: string;
 }
 
+// Define proper interfaces for margins and premiums to match BalanceBreakdown expectations
+interface MarginData {
+  spanMargin: number;
+  exposureMargin: number;
+  cncAmount: number;
+  commodityAdditionalMargin: number;
+  cashIntradayMTFMargin: number;
+  coroMargin: number;
+}
+
+interface PremiumData {
+  fnoOptionPremium: number;
+  currencyPremium: number;
+  commodityPremium: number;
+  totalPremium: number;
+}
+
 export default function FundsPage() {
   const [activeSection, setActiveSection] = useState<
     "main" | "deposit" | "withdraw"
   >("main");
 
   // Replace with real API calls when integrating with backend
-  const [summaryData, setSummaryData] = useState(fundsSummary);
-  const [balanceData, setBalanceData] = useState(balanceBreakdown);
-  const [profitLossData, setProfitLossData] = useState(pnlData);
-  const [margins, setMargins] = useState(marginData as any); // Type assertion to fix margins type mismatch
-  const [premiums, setPremiums] = useState(premiumData as any); // Type assertion to fix premiums type mismatch
-  const [withdrawable, setWithdrawable] = useState(withdrawableBalance);
-  const [transactions, setTransactions] = useState<RecentTransaction[]>(
-    recentTransactions as any
-  ); // Type assertion for transaction
-  const [chartValues, setChartValues] = useState(chartData);
+  const [summaryData] = useState(fundsSummary);
+  const [balanceData] = useState(balanceBreakdown);
+  const [profitLossData] = useState(pnlData);
+  
+  // Fix margin data structure to match expected interface
+  const [margins] = useState<MarginData>({
+    spanMargin: marginData.spanMargin || 0,
+    exposureMargin: marginData.exposureMargin || 0,
+    cncAmount: marginData.spanAddOn || 0, // Use spanAddOn for cncAmount
+    commodityAdditionalMargin: marginData.commodityAdditionalMargin || 0,
+    cashIntradayMTFMargin: marginData.cashIntradayMISMargin || 0, // Fixed: use the correct property name
+    coroMargin: marginData.coroMargin || 0,
+  });
+  
+  // Fix premium data structure to match expected interface
+  const [premiums] = useState<PremiumData>({
+    fnoOptionPremium: premiumData.optionPremium || 0, // Use optionPremium for fnoOptionPremium
+    currencyPremium: premiumData.currencyPremium || 0,
+    commodityPremium: premiumData.commodityPremium || 0,
+    totalPremium: premiumData.totalPremium || 0,
+  });
+  
+  const [withdrawable] = useState(withdrawableBalance);
+  const [transactions] = useState<RecentTransaction[]>(
+    recentTransactions as RecentTransaction[]
+  );
+  const [chartValues] = useState(chartData);
 
   // Calculate total balance for BalanceBreakdown component
   const totalBalance =
@@ -58,39 +92,49 @@ export default function FundsPage() {
     setActiveSection(section);
   };
 
-  if (activeSection === "deposit") {
-    return <DepositPage onBack={() => handleNavigate("main")} />;
-  }
+  // Render based on active section
+  const renderContent = () => {
+    switch (activeSection) {
+      case "deposit":
+        return <DepositPage onBack={() => handleNavigate("main")} />;
+        
+      case "withdraw":
+        return <WithdrawPage onBack={() => handleNavigate("main")} />;
+        
+      case "main":
+      default:
+        return (
+          <>
+            <div className="mb-4">
+              <FundsSummaryCards data={summaryData} onNavigate={handleNavigate} />
+            </div>
 
-  if (activeSection === "withdraw") {
-    return <WithdrawPage onBack={() => handleNavigate("main")} />;
-  }
+            {/* Two Column Layout */}
+            <div className="grid grid-cols-1 md:grid-cols-2 pt-3 gap-6">
+              {/* Left Column - Balance Breakdown */}
+              <BalanceBreakdown
+                balanceData={balanceData}
+                profitLossData={profitLossData}
+                margins={margins}
+                premiums={premiums}
+                withdrawable={withdrawable}
+                totalBalance={totalBalance}
+              />
 
-  // Main view
+              {/* Right Column - Recent Transactions and Chart */}
+              <div>
+                <RecentTransactions transactions={transactions} />
+                <BalanceChart data={chartValues} />
+              </div>
+            </div>
+          </>
+        );
+    }
+  };
+
   return (
     <div className="pb-10 mx-auto">
-      <div className="mb-4">
-        <FundsSummaryCards data={summaryData} />
-      </div>
-
-      {/* Two Column Layout */}
-      <div className="grid grid-cols-1 md:grid-cols-2 pt-3 gap-6">
-        {/* Left Column - Balance Breakdown */}
-        <BalanceBreakdown
-          balanceData={balanceData}
-          profitLossData={profitLossData}
-          margins={margins}
-          premiums={premiums}
-          withdrawable={withdrawable}
-          totalBalance={totalBalance}
-        />
-
-        {/* Right Column - Recent Transactions and Chart */}
-        <div>
-          <RecentTransactions transactions={transactions} />
-          <BalanceChart data={chartValues} />
-        </div>
-      </div>
+      {renderContent()}
     </div>
   );
 }

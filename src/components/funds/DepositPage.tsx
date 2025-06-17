@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { ChevronLeft, ChevronDown, ArrowUpDown } from "lucide-react";
+import { ChevronLeft, ChevronDown, ArrowUpDown, ChevronRight } from "lucide-react";
 import UpiPaymentModal from "@/components/funds/pop-ups/UpiPaymentModal";
 import QrPaymentModal from "@/components/funds/pop-ups/QrPaymentModal";
 import BankTransferModal from "@/components/funds/pop-ups/BankTransferModal";
@@ -39,6 +39,14 @@ const DepositPage: React.FC<DepositPageProps> = ({ onBack }) => {
   const [isUpiModalOpen, setIsUpiModalOpen] = useState(false);
   const [isQrModalOpen, setIsQrModalOpen] = useState(false);
   const [isBankTransferModalOpen, setIsBankTransferModalOpen] = useState(false);
+
+  // Pagination states
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage] = useState(5);
+  const [sortConfig, setSortConfig] = useState<{
+    key: string;
+    direction: 'asc' | 'desc';
+  } | null>(null);
 
   // Handle increment from chips
   const handleAmountIncrement = (amount: number) => {
@@ -92,6 +100,52 @@ const DepositPage: React.FC<DepositPageProps> = ({ onBack }) => {
 
     // Reset form or navigate back
     // onBack(); // Uncomment to navigate back after successful payment
+  };
+
+  // Handle sorting
+  const handleSort = (key: string) => {
+    let direction: 'asc' | 'desc' = 'asc';
+    if (sortConfig && sortConfig.key === key && sortConfig.direction === 'asc') {
+      direction = 'desc';
+    }
+    setSortConfig({ key, direction });
+  };
+
+  // Sort data
+  const sortedHistory = React.useMemo(() => {
+    let sortableItems = [...history];
+    if (sortConfig !== null) {
+      sortableItems.sort((a, b) => {
+        if (a[sortConfig.key as keyof typeof a] < b[sortConfig.key as keyof typeof b]) {
+          return sortConfig.direction === 'asc' ? -1 : 1;
+        }
+        if (a[sortConfig.key as keyof typeof a] > b[sortConfig.key as keyof typeof b]) {
+          return sortConfig.direction === 'asc' ? 1 : -1;
+        }
+        return 0;
+      });
+    }
+    return sortableItems;
+  }, [history, sortConfig]);
+
+  // Calculate pagination
+  const totalPages = Math.ceil(sortedHistory.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const currentItems = sortedHistory.slice(startIndex, endIndex);
+
+  // Handle page change
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
+
+  // Generate page numbers for pagination
+  const getPageNumbers = () => {
+    const pages = [];
+    for (let i = 1; i <= totalPages; i++) {
+      pages.push(i);
+    }
+    return pages;
   };
 
   return (
@@ -273,40 +327,55 @@ const DepositPage: React.FC<DepositPageProps> = ({ onBack }) => {
           <table className="min-w-full divide-y divide-gray-200">
             <thead className="bg-[#F4F4F9]">
               <tr>
-                <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider border-r">
-                  <div className="flex items-center justify-between w-full">
-                    <span> Account </span>
-                    <ArrowUpDown className="\ w-4 h-4" />
+                <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider border-r group hover:bg-gray-100 cursor-pointer">
+                  <div 
+                    className="flex items-center justify-between w-full"
+                    onClick={() => handleSort('account')}
+                  >
+                    <span>Account</span>
+                    <ArrowUpDown className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity" />
                   </div>
                 </th>
-                <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider border-r">
-                  <div className="flex items-center justify-between w-full">
-                    <span> Bank</span>
-                    <ArrowUpDown className="ml-1 w-4 h-4" />
+                <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider border-r group hover:bg-gray-100 cursor-pointer">
+                  <div 
+                    className="flex items-center justify-between w-full"
+                    onClick={() => handleSort('bank')}
+                  >
+                    <span>Bank</span>
+                    <ArrowUpDown className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity" />
                   </div>
                 </th>
-                <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider border-r">
-                  <div className="flex items-center justify-between w-full">
-                    <span> Date & Time </span>
-                    <ArrowUpDown className="ml-1 w-4 h-4" />
+                <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider border-r group hover:bg-gray-100 cursor-pointer">
+                  <div 
+                    className="flex items-center justify-between w-full"
+                    onClick={() => handleSort('date')}
+                  >
+                    <span>Date & Time</span>
+                    <ArrowUpDown className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity" />
                   </div>
                 </th>
-                <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider border-r">
-                  <div className="flex items-center justify-between w-full">
-                    <span> Amount </span>
-                    <ArrowUpDown className="ml-1 w-4 h-4" />
+                <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider border-r group hover:bg-gray-100 cursor-pointer">
+                  <div 
+                    className="flex items-center justify-between w-full"
+                    onClick={() => handleSort('amount')}
+                  >
+                    <span>Amount</span>
+                    <ArrowUpDown className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity" />
                   </div>
                 </th>
-                <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider">
-                  <div className="flex items-center justify-between w-full">
-                    <span> Status </span>
-                    <ArrowUpDown className="ml-1 w-4 h-4" />
+                <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider group hover:bg-gray-100 cursor-pointer">
+                  <div 
+                    className="flex items-center justify-between w-full"
+                    onClick={() => handleSort('status')}
+                  >
+                    <span>Status</span>
+                    <ArrowUpDown className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity" />
                   </div>
                 </th>
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
-              {history.map((item, index) => (
+              {currentItems.map((item, index) => (
                 <tr key={index}>
                   <td className="px-4 py-4 whitespace-nowrap text-sm text-[#6B7280] text-center border-r">
                     {item.account}
@@ -341,6 +410,48 @@ const DepositPage: React.FC<DepositPageProps> = ({ onBack }) => {
               ))}
             </tbody>
           </table>
+        </div>
+
+        {/* Pagination */}
+        <div className="flex items-center justify-between mt-4">
+          <div className="text-sm text-gray-500">
+            Showing {startIndex + 1} to {Math.min(endIndex, sortedHistory.length)} of {sortedHistory.length} entries
+          </div>
+          
+          <div className="flex items-center space-x-2">
+            {/* Previous Button */}
+            <button
+              onClick={() => handlePageChange(currentPage - 1)}
+              disabled={currentPage === 1}
+              className="p-2 border border-gray-300 rounded hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              <ChevronLeft size={16} />
+            </button>
+
+            {/* Page Numbers */}
+            {getPageNumbers().map((page) => (
+              <button
+                key={page}
+                onClick={() => handlePageChange(page)}
+                className={`px-3 py-2 border rounded ${
+                  currentPage === page
+                    ? "bg-blue-500 text-white border-blue-500"
+                    : "border-gray-300 hover:bg-gray-50"
+                }`}
+              >
+                {page}
+              </button>
+            ))}
+
+            {/* Next Button */}
+            <button
+              onClick={() => handlePageChange(currentPage + 1)}
+              disabled={currentPage === totalPages}
+              className="p-2 border border-gray-300 rounded hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              <ChevronRight size={16} />
+            </button>
+          </div>
         </div>
       </div>
 

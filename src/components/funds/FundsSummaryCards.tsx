@@ -1,9 +1,7 @@
 // components/FundsSummaryCards.tsx
-import React, { useState } from "react";
+import React from "react";
 import { ChevronRight, RefreshCw } from "lucide-react";
 import ActionButtons from "./ActionButtons";
-import DepositPage from "./DepositPage";
-import WithdrawPage from "./Withdraw";
 import TransactionStatusBadge from "../gen-components/TransactionStatusBadge";
 import Image from "next/image";
 
@@ -13,31 +11,16 @@ interface FundsSummaryCardsProps {
     cashBalance: number;
     marginFromPledge: number;
   };
+  onNavigate: (section: "main" | "deposit" | "withdraw") => void;
 }
 
-const FundsSummaryCards: React.FC<FundsSummaryCardsProps> = ({ data }) => {
+const FundsSummaryCards: React.FC<FundsSummaryCardsProps> = ({ data, onNavigate }) => {
   const formatCurrency = (value: number) => {
     return new Intl.NumberFormat("en-IN", {
       maximumFractionDigits: 2,
       minimumFractionDigits: 2,
     }).format(value);
   };
-
-  const [activeSection, setActiveSection] = useState<
-    "main" | "deposit" | "withdraw"
-  >("main");
-
-  const handleNavigate = (section: "main" | "deposit" | "withdraw") => {
-    setActiveSection(section);
-  };
-
-  if (activeSection === "deposit") {
-    return <DepositPage onBack={() => handleNavigate("main")} />;
-  }
-
-  if (activeSection === "withdraw") {
-    return <WithdrawPage onBack={() => handleNavigate("main")} />;
-  }
 
   return (
     <div style={{
@@ -82,10 +65,7 @@ const FundsSummaryCards: React.FC<FundsSummaryCardsProps> = ({ data }) => {
               />
             </div>
           </div>
-          <ActionButtons
-            onDeposit={() => handleNavigate("deposit")}
-            onWithdraw={() => handleNavigate("withdraw")}
-          />
+          <ActionButtons onNavigate={onNavigate} />
         </div>
         <div className="w-[90%] mt-8 py-1 text-md text-gray-500 text-center  mx-auto border-t border-gray-400/30">
           <div className="flex items-center justify-center mt-4">
