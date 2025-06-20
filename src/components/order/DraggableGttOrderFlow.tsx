@@ -12,11 +12,11 @@ export function DraggableGttOrderFlow() {
   const [showStockSearchDialog, setShowStockSearchDialog] = useState(false);
   const [showGttDialog, setShowGttDialog] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
-  const [selectedStock, setSelectedStock] = useState(null);
+  const [selectedStock, setSelectedStock] = useState<Stock | null>(null);
   
   // For dragging
-  const stockSearchDialogRef = useRef(null);
-  const gttDialogRef = useRef(null);
+  const stockSearchDialogRef = useRef<HTMLDivElement>(null);
+  const gttDialogRef = useRef<HTMLDivElement>(null);
   
   const [stockSearchPosition, setStockSearchPosition] = useState({ x: 0, y: 0 });
   const [gttPosition, setGttPosition] = useState({ x: 0, y: 0 });
@@ -61,7 +61,7 @@ export function DraggableGttOrderFlow() {
   }, [showGttDialog]);
   
   // Handle mouse events for dragging
-  const startDragStockSearch = (e) => {
+  const startDragStockSearch = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     if (stockSearchDialogRef.current) {
       const rect = stockSearchDialogRef.current.getBoundingClientRect();
       setDragOffset({
@@ -72,7 +72,7 @@ export function DraggableGttOrderFlow() {
     }
   };
   
-  const startDragGtt = (e) => {
+  const startDragGtt = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     if (gttDialogRef.current) {
       const rect = gttDialogRef.current.getBoundingClientRect();
       setDragOffset({
@@ -84,7 +84,7 @@ export function DraggableGttOrderFlow() {
   };
   
   useEffect(() => {
-    const handleMouseMove = (e) => {
+    const handleMouseMove = (e: MouseEvent) => {
       if (isDraggingStockSearch) {
         setStockSearchPosition({
           x: e.clientX - dragOffset.x,
@@ -112,7 +112,16 @@ export function DraggableGttOrderFlow() {
     };
   }, [isDraggingStockSearch, isDraggingGtt, dragOffset]);
 
-  const handleStockSelection = (stock) => {
+  type Stock = {
+    name: string;
+    symbol: string;
+    exchange: string;
+    price: number;
+    change: number;
+    changePercent: number;
+  };
+
+  const handleStockSelection = (stock: Stock) => {
     setSelectedStock(stock);
     setShowStockSearchDialog(false);
     setShowGttDialog(true);

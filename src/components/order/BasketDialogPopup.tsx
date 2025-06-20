@@ -145,7 +145,7 @@ const BasketDialogPopup: React.FC<BasketDialogPopupProps> = ({
             <path d="M17 3a2.85 2.85 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3Z" />
           </svg>
         </div>
-        <button onClick={onclose}>
+        <button onClick={() => setOpen(false)}>
         <X  size={28} color='gray' />
         </button>
        
