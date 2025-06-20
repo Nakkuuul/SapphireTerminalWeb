@@ -22,22 +22,41 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
   const [shake, setShake] = useState<boolean>(false);
   const [showTroubleLogin, setShowTroubleLogin] = useState<boolean>(false);
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (username.toLowerCase() === "user" && password === "user") {
+    setError(false);
+    setShake(false);
+
+    try {
+      const response = await fetch("http://13.202.238.76:3000/api/v1/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          clientId: username,   // username maps to clientId
+          password: password,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data?.message || "Invalid credentials");
+      }
+
+      // Login successful, go to next screen
       setCurrentStep(1);
-    } else {
-      // Set error and trigger shake animation
+    } catch (err) {
       setError(true);
       setShake(true);
-
-      // Keep password field but clear username
-      setUsername("");
-
-      // Remove shake animation after it completes
       setTimeout(() => setShake(false), 500);
+      setPassword(""); // Optional: clear input on failure
     }
   };
+
+
+
 
   const handleTroubleLogin = () => {
     setShowTroubleLogin(true);

@@ -8,11 +8,14 @@ import { motion, AnimatePresence } from "framer-motion";
 
 interface TroubleLoginProps {
   onCancel: () => void;
+  setUsername?: (username: string) => void;
 }
 
 const TroubleLogin: React.FC<TroubleLoginProps> = ({ onCancel }) => {
   const [currentStep, setCurrentStep] = useState<number>(0);
   const [panNumber, setPanNumber] = useState<string>("");
+  const [requestId, setRequestId] = useState<string>(""); 
+
 
   const slideVariants = {
     initial: (direction: number) => ({
@@ -38,24 +41,31 @@ const TroubleLogin: React.FC<TroubleLoginProps> = ({ onCancel }) => {
     damping: 30,
   };
 
+  
+  
+  
   const screens = [
     <PanVerification 
-      key="pan" 
-      panNumber={panNumber} 
-      setPanNumber={setPanNumber} 
-      setCurrentStep={setCurrentStep}
-      onCancel={onCancel}
+    key="pan" 
+    panNumber={panNumber} 
+    setPanNumber={setPanNumber} 
+    setCurrentStep={setCurrentStep}
+    onCancel={onCancel}
+    setRequestId={setRequestId} 
     />,
     <OtpVerification 
-      key="otp" 
-      setCurrentStep={setCurrentStep}
-      onCancel={onCancel} 
-    />,
+    key="otp" 
+    requestId={requestId} 
+    setRequestId={setRequestId}
+    setCurrentStep={setCurrentStep}
+    onCancel={onCancel} 
+  />,
     <ResetPassword 
-      key="reset" 
-      panNumber={panNumber}
-      onComplete={onCancel} 
-      onCancel={onCancel}
+    key="reset" 
+    panNumber={panNumber}
+    requestId={requestId} 
+    onComplete={onCancel} 
+    onCancel={onCancel}
     />,
   ];
 

@@ -4,13 +4,17 @@ import React, { useState, useEffect } from "react";
 import { ChevronLeft } from "lucide-react";
 
 interface OtpVerificationProps {
+  requestId: string; // ✅ use requestId instead of panNumber
+  setRequestId: (id: string) => void;
   setCurrentStep: (step: number) => void;
   onCancel: () => void;
 }
 
 const OtpVerification: React.FC<OtpVerificationProps> = ({ 
+  requestId,
   setCurrentStep, 
-  onCancel 
+  onCancel,
+  setRequestId, // added this
 }) => {
   const [otp, setOtp] = useState<string[]>(["", "", "", "", "", ""]);
   const [timeLeft, setTimeLeft] = useState<number>(60);
@@ -47,49 +51,78 @@ const OtpVerification: React.FC<OtpVerificationProps> = ({
 
   const handleKeyDown = (index: number, e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Backspace" && !otp[index] && index > 0) {
-      // Focus previous input on backspace if current is empty
       document.querySelector<HTMLInputElement>(`input[name="otp-${index - 1}"]`)?.focus();
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    console.log(requestId);
+    console.log(setRequestId);
+    
     e.preventDefault();
-    
+
     const otpValue = otp.join("");
-    
-    if (otpValue.length !== 6) {
-      setError("Please enter the 6-digit OTP");
+
+    if (otpValue.length !== 6 || !/^\d{6}$/.test(otpValue)) {
+      setError("Please enter a valid 6-digit OTP");
       return;
     }
-    
-    if (!/^\d{6}$/.test(otpValue)) {
-      setError("OTP must contain 6 digits");
-      return;
+
+    try {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/v1/auth/login/forgot-password/verify-otp`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          requestId: requestId, 
+          otp: otpValue,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data?.message || "OTP verification failed");
+      }
+
+      setCurrentStep(2); 
+    } catch (err: any) {
+      setError(err.message || "Something went wrong during OTP verification");
     }
-    
-    // For demo, just check if OTP is "123456"
-    if (otpValue !== "123456") {
-      setError("Invalid OTP. For demo, use 123456");
-      return;
-    }
-    
-    // All validations passed, proceed to next step
-    setCurrentStep(2);
   };
 
-  const handleResendOtp = () => {
-    // Reset OTP fields
-    setOtp(["", "", "", "", "", ""]);
-    
-    // Reset timer
-    setTimeLeft(120);
-    
-    // Clear error
-    setError("");
-    
-    // Focus on first input
-    document.querySelector<HTMLInputElement>(`input[name="otp-0"]`)?.focus();
+
+
+
+  const handleResendOtp = async () => {
+    try {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/v1/auth/login/forgot-password/resend-otp`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          requestId,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data?.message || "Failed to resend OTP");
+      }
+
+      setOtp(["", "", "", "", "", ""]);
+      setTimeLeft(60); // Reset timer
+      setError("");
+      document.querySelector<HTMLInputElement>(`input[name="otp-0"]`)?.focus();
+    } catch (err: any) {
+      setError(err.message || "Something went wrong while resending OTP");
+    }
   };
+
 
   return (
     <div className="flex-1 flex flex-col space-y-4 px-6">

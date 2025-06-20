@@ -8,6 +8,7 @@ interface PanVerificationProps {
   setPanNumber: (pan: string) => void;
   setCurrentStep: (step: number) => void;
   onCancel: () => void;
+  setRequestId: (id: string) => void; 
 }
 
 const PanVerification: React.FC<PanVerificationProps> = ({
@@ -15,6 +16,7 @@ const PanVerification: React.FC<PanVerificationProps> = ({
   setPanNumber,
   setCurrentStep,
   onCancel,
+  setRequestId, 
 }) => {
   const [captchaInput, setCaptchaInput] = useState<string>("");
   const [captchaText, setCaptchaText] = useState<string>(generateCaptcha());
@@ -100,17 +102,13 @@ const PanVerification: React.FC<PanVerificationProps> = ({
     }
   `;
 
-  const handleSubmit = (e: React.FormEvent) => {
+  // Validates PAN and captcha, then initiates OTP API call
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     let hasError = false;
 
-    if (!panNumber) {
-      setPanError(true);
-      hasError = true;
-    }
-
-    if (!validatePAN(panNumber)) {
+    if (!panNumber || !validatePAN(panNumber)) {
       setPanError(true);
       hasError = true;
     }
@@ -122,15 +120,35 @@ const PanVerification: React.FC<PanVerificationProps> = ({
     }
 
     if (hasError) {
-      // Trigger shake animation
       setShake(true);
       setTimeout(() => setShake(false), 500);
       return;
     }
 
-    // All validations passed, proceed to next step
-    setCurrentStep(1);
+    try {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/v1/auth/login/forgot-password/initiate`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ panNumber: panNumber }),
+      });
+
+      const data = await res.json();
+
+
+      if (!res.ok) {
+        throw new Error(data?.message || "Failed to send OTP");
+      }
+
+      setRequestId(data.data.requestId);      
+      
+      setCurrentStep(1);
+    } catch (error: any) {
+      alert(error.message || "Something went wrong.");
+    }
   };
+
 
   return (
     <>
