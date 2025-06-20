@@ -20,6 +20,7 @@ jobs:
           
       - name: Install dependencies and build
         run: |
+          echo """${{ secrets.ENV }}""" > .env
           npm ci
           npm run build
           
