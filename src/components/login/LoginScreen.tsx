@@ -59,7 +59,9 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
       console.log("Login successful:", data);
       setCurrentStep(2); // progress bar
       if (data?.data?.nextStep) {
-        onNextStep(data.data.nextStep, data.data); // send full session
+        // onNextStep("2fa", data.data); // send full session
+        onNextStep("set-mpin", data.data); // send full session
+        // onNextStep(data.data.nextStep, data.data); // send full session
       }
 
 

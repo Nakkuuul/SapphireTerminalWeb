@@ -7,21 +7,29 @@ import ForgotMPin from './ForgotMPin';
 interface OtpScreenProps {
   username: string;
   greeting: string;
+  sessionId: string;
   setOtpCompleted?: (completed: boolean) => void;
+  onNextStep: (nextStep: string, session: any) => void;
+  onShowForgotMPin: () => void;
 }
 
 const MPin: React.FC<OtpScreenProps> = ({ 
   username, 
   greeting,
-  setOtpCompleted = () => {} // Default no-op function
+  sessionId,
+  setOtpCompleted = () => {}, // Default no-op function
+  onNextStep,
+  onShowForgotMPin
 }) => {
   const router = useRouter();
   const [otp, setOtp] = useState<string[]>(["", "", "", ""]);
   const [isRedirecting, setIsRedirecting] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
   const [isF, setIsF] = useState<boolean>(false);
   const [iT, setIT] = useState<number>(30);
   const [iE, setIE] = useState<boolean>(false);
   const [showForgotMPin, setShowForgotMPin] = useState<boolean>(false);
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
   // Check if all MPIN fields are filled
   const isMpinComplete = otp.every((digit) => digit !== "");
@@ -41,21 +49,75 @@ const MPin: React.FC<OtpScreenProps> = ({
     }
   }, [isF, iT]);
 
+  const handleSubmit = async (mpinArray?: string[]) => {
+    if (isSubmitting) return; // Prevent multiple submissions
+    
+    setError(null);
+    const mpinValue = (mpinArray || otp).join('');
+    console.log('MPIN Value:', mpinValue, 'Length:', mpinValue.length, 'OTP Array:', mpinArray || otp);
+    
+    if (mpinValue.length !== 4) {
+      setError("Please enter the complete 4-digit MPIN.");
+      return;
+    }
+
+    try {
+      setIsSubmitting(true);
+      console.log('Submitting MPIN:', mpinValue, 'Session ID:', sessionId);
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/v1/auth/login/verify-mpin`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          sessionId: sessionId,
+          mpin: mpinValue,
+        }),
+      });
+
+      const data = await response.json();
+      console.log('MPIN verification response:', data);
+
+      if (!response.ok) {
+        throw new Error(data.message || 'MPIN verification failed.');
+      }
+
+      setOtpCompleted(true);
+      if (data?.data?.nextStep) {
+        onNextStep(data.data.nextStep, data.data);
+      } else {
+        setIsRedirecting(true);
+        setTimeout(() => {
+          router.push('/stocks');
+        }, 700);
+      }
+
+    } catch (err: any) {
+      console.error('MPIN verification error:', err);
+      setError(err.message || "An unexpected error occurred.");
+      setOtp(["", "", "", ""]);
+      const firstInput = document.querySelector<HTMLInputElement>('input[name="otp-0"]');
+      if (firstInput) {
+        firstInput.focus();
+      }
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   const handleRedirect = () => {
     setTimeout(() => {
-      router.push('/trades/stocks');
+      router.push('/stocks');
     }, 700); // delay in milliseconds (0.7 seconds)
   };  
 
   const handleOtpComplete = () => {
-    setIsRedirecting(true);
-    setTimeout(() => router.push("/"), 500);
+    handleSubmit();
   };
 
   const handleVerifyAndContinue = () => {
-    if (isMpinComplete) {
-      setOtpCompleted(true);
-      handleRedirect();
+    if (isMpinComplete && !isSubmitting) {
+      handleSubmit();
     }
   };
 
@@ -93,8 +155,14 @@ const MPin: React.FC<OtpScreenProps> = ({
       document.querySelector<HTMLInputElement>(`input[name="otp-${index + 1}"]`)?.focus();
     }
 
+    // Check if all fields are filled and auto-submit with a small delay
     if (newOtp.every((d) => d !== "") && value !== "") {
-      handleOtpComplete();
+      // Add a small delay to ensure state is updated
+      setTimeout(() => {
+        if (newOtp.every((d) => d !== "") && newOtp.join('').length === 4) {
+          handleSubmit(newOtp);
+        }
+      }, 100);
     }
   };
 
@@ -139,6 +207,7 @@ const MPin: React.FC<OtpScreenProps> = ({
         <p className="text-xs text-gray-600 dark:text-gray-300">
            Please enter your 4-digit MPIN to continue
         </p>
+        {error && <p className="text-xs text-red-500">{error}</p>}
       </div>
 
       <div className="flex justify-start gap-6">
@@ -162,29 +231,25 @@ const MPin: React.FC<OtpScreenProps> = ({
       </div>
 
 
-    <div className="flex justify-end">
-      <button
-        className={`text-xs transition-colors duration-200 
-        ${iE
-          ? "text-blue-400 hover:text-blue-500"
-          : isF
-          ? "text-gray-400 hover:text-gray-500 cursor-not-allowed"
-          : "text-blue-400 hover:text-blue-500"
-        }`}
-        disabled={isF && !iE}
-      />
+    <div className="flex justify-between items-center w-full">
+        <button
+            onClick={onShowForgotMPin}
+            className="text-xs text-blue-400 hover:text-blue-500 transition-colors duration-200"
+        >
+            Forgot MPIN?
+        </button>
 
       <button
         type="submit"
         onClick={handleVerifyAndContinue}
-        disabled={!isMpinComplete}
-        className={`w-full py-3 text-white font-semibold text-sm rounded-lg transition-all duration-200 ${
-          !isMpinComplete
+        disabled={!isMpinComplete || isRedirecting || isSubmitting}
+        className={`w-1/2 py-3 text-white font-semibold text-sm rounded-lg transition-all duration-200 ${
+          !isMpinComplete || isSubmitting
             ? "bg-[#00A645] cursor-not-allowed opacity-70"
             : "bg-[#00C853] hover:bg-[#00B649]"
         }`}
       >
-        Verify and Continue
+        {isRedirecting || isSubmitting ? 'Verifying...' : 'Verify and Continue'}
       </button>
     </div>
     </div>

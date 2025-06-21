@@ -6,20 +6,28 @@ import { useRouter } from 'next/navigation';
 interface OtpScreenProps {
   username: string;
   greeting: string;
+  sessionId: string;
   setOtpCompleted?: (completed: boolean) => void;
+  onNextStep: (nextStep: string, session: any) => void;
 }
 
 const Text2FA: React.FC<OtpScreenProps> = ({ 
   username, 
   greeting,
-  setOtpCompleted = () => {} // Default no-op function
+  sessionId,
+  setOtpCompleted = () => {}, // Default no-op function
+  onNextStep,
 }) => {
   const router = useRouter();
   const [otp, setOtp] = useState<string[]>(["", "", "", "", "", ""]);
   const [isRedirecting, setIsRedirecting] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
   const [isF, setIsF] = useState<boolean>(false);
   const [iT, setIT] = useState<number>(30);
   const [iE, setIE] = useState<boolean>(false);
+  const [isResending, setIsResending] = useState<boolean>(false);
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const [resendTimer, setResendTimer] = useState<number>(0);
 
   useEffect(() => {
     if (isF && iT > 0) {
@@ -36,6 +44,140 @@ const Text2FA: React.FC<OtpScreenProps> = ({
     }
   }, [isF, iT]);
 
+  // Timer for resend OTP button
+  useEffect(() => {
+    if (resendTimer > 0) {
+      const timer = setInterval(() => {
+        setResendTimer((prev) => {
+          if (prev <= 1) {
+            return 0;
+          }
+          return prev - 1;
+        });
+      }, 1000);
+      return () => clearInterval(timer);
+    }
+  }, [resendTimer]);
+
+  const handleResendOTP = async () => {
+    if (isResending || resendTimer > 0) return;
+    
+    // Start timer immediately when button is clicked
+    setResendTimer(15);
+    
+    try {
+      setIsResending(true);
+      console.log('Resending OTP for session ID:', sessionId);
+      
+      // Try the resend endpoint first
+      let response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/v1/auth/login/2fa/resend-otp`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          sessionId: sessionId,
+          clientId: username
+        })
+      });
+
+      // If resend endpoint fails, try using the verify endpoint with resend parameter
+      if (!response.ok) {
+        console.log('Resend endpoint failed, trying verify endpoint with resend parameter');
+        response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/v1/auth/login/verify-2fa`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            sessionId: sessionId,
+            action: 'resend'
+          })
+        });
+      }
+
+      const data = await response.json();
+      console.log('Resend OTP response:', data, 'Status:', response.status);
+
+      if (!response.ok) {
+        throw new Error(data.message || 'Failed to resend OTP');
+      }
+
+      // Reset timer and clear OTP fields on success
+      setIsF(true);
+      setIT(30);
+      setIE(false);
+      setOtp(["", "", "", "", "", ""]);
+      setError(null);
+      console.log('OTP resent successfully');
+      
+    } catch (err: any) {
+      console.error('Resend OTP error:', err);
+      // Don't show error message to user, just log it for debugging
+    } finally {
+      setIsResending(false);
+    }
+  };
+
+  const handleButtonClick = () => {
+    handleSubmit();
+  };
+
+  const handleSubmit = async (otpArray?: string[]) => {
+    if (isSubmitting) return; // Prevent multiple submissions
+    
+    setError(null);
+    const otpValue = (otpArray || otp).join("");
+    console.log('OTP Value:', otpValue, 'Length:', otpValue.length, 'OTP Array:', otpArray || otp);
+    
+    if (otpValue.length !== 6) {
+      setError("Please enter the complete 6-digit OTP.");
+      return;
+    }
+
+    try {
+      setIsSubmitting(true);
+      console.log('Submitting OTP:', otpValue, 'Session ID:', sessionId);
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/v1/auth/login/verify-2fa`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          sessionId: sessionId,
+          token: otpValue
+        })
+      });
+
+      const data = await response.json();
+      console.log('OTP verification response:', data);
+
+      if (!response.ok) {
+        throw new Error(data.message || 'OTP verification failed.');
+      }
+
+      // Handle successful OTP verification
+      setOtpCompleted(true);
+      if (data?.data?.nextStep) {
+        onNextStep(data.data.nextStep, data.data);
+      } else {
+        // Fallback or final step
+        setIsRedirecting(true);
+        setTimeout(() => {
+          router.push('/stocks');
+        }, 700);
+      }
+
+    } catch (err: any) {
+      console.error('OTP verification error:', err);
+      setError(err.message || "An unexpected error occurred.");
+      setOtp(["", "", "", "", "", ""]); // Clear OTP on error
+      document.querySelector<HTMLInputElement>(`input[name="otp-0"]`)?.focus();
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   const handleRedirect = () => {
     setTimeout(() => {
       router.push('/trades/stocks');
@@ -43,8 +185,7 @@ const Text2FA: React.FC<OtpScreenProps> = ({
   };  
 
   const handleOtpComplete = () => {
-    setIsRedirecting(true);
-    setTimeout(() => router.push("/"), 500);
+    handleSubmit();
   };
 
   const handleOtpChange = (index: number, value: string) => {
@@ -58,8 +199,14 @@ const Text2FA: React.FC<OtpScreenProps> = ({
       document.querySelector<HTMLInputElement>(`input[name="otp-${index + 1}"]`)?.focus();
     }
 
+    // Check if all fields are filled and auto-submit with a small delay
     if (newOtp.every((d) => d !== "") && value !== "") {
-      handleOtpComplete();
+      // Add a small delay to ensure state is updated
+      setTimeout(() => {
+        if (newOtp.every((d) => d !== "") && newOtp.join('').length === 6) {
+          handleSubmit(newOtp);
+        }
+      }, 100);
     }
   };
 
@@ -100,6 +247,7 @@ const Text2FA: React.FC<OtpScreenProps> = ({
         <p className="text-xs text-gray-600 dark:text-gray-300">
            with ••••4567
         </p>
+        {error && <p className="text-xs text-red-500">{error}</p>}
       </div>
 
       <div className="flex justify-start gap-4">
@@ -117,25 +265,32 @@ const Text2FA: React.FC<OtpScreenProps> = ({
             onKeyDown={(e: KeyboardEvent<HTMLInputElement>) => handleKeyDown(index, e)}
             className="w-[42px] h-[42px] text-center text-lg rounded-md border bg-white dark:bg-[#1E1E1E] text-gray-900 dark:text-white border-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-400 focus:ring-1 focus:ring-opacity-50 focus:outline-none"
             autoFocus={index === 0}
-            disabled={isRedirecting}
+            disabled={isRedirecting || isSubmitting}
           />
         ))}
       </div>
 
       <div className="flex justify-between items-center">
-        <button className="text-[#22F07D] transition-colors duration-200 text-sm">
-          Resend OTP
+        <button 
+          type="button"
+          onClick={handleResendOTP}
+          disabled={isResending || resendTimer > 0 || (isF && !iE)}
+          className={`text-[#22F07D] transition-colors duration-200 text-sm ${
+            isResending || resendTimer > 0 || (isF && !iE) ? 'opacity-50 cursor-not-allowed' : 'hover:text-[#1DD069]'
+          }`}
+        >
+          {isResending ? 'Resending...' : 
+           resendTimer > 0 ? `Resend in ${resendTimer}s` : 
+           'Resend OTP'}
         </button>
       </div>
       
       <button
-        onClick={() => {
-          setOtpCompleted(true);
-          handleRedirect();
-        }}
+        onClick={handleButtonClick}
         className="mt-2 px-4 py-2 bg-gray-200 dark:bg-gray-700 rounded-md text-sm"
+        disabled={isRedirecting || isSubmitting}
       >
-        Verify and Continue
+        {isRedirecting || isSubmitting ? 'Verifying...' : 'Verify and Continue'}
       </button>
     </div>
   );

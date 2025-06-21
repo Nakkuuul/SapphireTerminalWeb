@@ -133,6 +133,8 @@ const Login = () => {
           username={displayUsername}
           greeting={greeting}
           setOtpCompleted={setOtpCompleted}
+          sessionId={sessionId}
+          onNextStep={setActiveScreenFromNextStep}
         />
       );
       break;
@@ -142,6 +144,9 @@ const Login = () => {
           username={displayUsername}
           greeting={greeting}
           setOtpCompleted={setOtpCompleted}
+          sessionId={sessionId}
+          onNextStep={setActiveScreenFromNextStep}
+          onShowForgotMPin={handleShowForgotMPin}
         />
       );
       break;
@@ -152,6 +157,7 @@ const Login = () => {
           greeting={greeting}
           setOtpCompleted={setOtpCompleted}
           sessionId={sessionId}
+          onNextStep={setActiveScreenFromNextStep}
         />
       );
       break;
@@ -163,6 +169,7 @@ const Login = () => {
           setOtpCompleted={setOtpCompleted}
           sessionId={sessionId}
           onCancel={handleForgotMPinCancel}
+          onNextStep={setActiveScreenFromNextStep}
         />
       );
       break;
