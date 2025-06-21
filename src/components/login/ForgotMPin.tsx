@@ -9,7 +9,16 @@ export interface ForgotMPinProps {
   greeting: string;
   setOtpCompleted: React.Dispatch<React.SetStateAction<boolean>>;
   onCancel: () => void;
+  sessionId: string;
 }
+
+// interface ForgotMPinProps {
+//   username: string;
+//   greeting: string;
+//   setOtpCompleted: React.Dispatch<React.SetStateAction<boolean>>;
+//   onCancel: () => void;
+//   sessionId: string;
+// }
 
 const ForgotMPin: React.FC<ForgotMPinProps> = ({
   onCancel,

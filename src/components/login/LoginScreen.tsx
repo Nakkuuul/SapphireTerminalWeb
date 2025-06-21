@@ -10,19 +10,27 @@ interface LoginScreenProps {
   username: string;
   setUsername: (username: string) => void;
   setShowProgressBar?: (show: boolean) => void;
+  onNextStep: (nextStep: string, session: any) => void; // new
 }
+
 
 const LoginScreen: React.FC<LoginScreenProps> = ({
   setCurrentStep,
   username,
   setUsername,
-  setShowProgressBar = () => { }, // Optional prop with default no-op function
+  setShowProgressBar = () => {},
+  onNextStep, // ✅ you missed this!
 }) => {
+
   const [password, setPassword] = useState<string>("");
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [error, setError] = useState<boolean>(false);
   const [shake, setShake] = useState<boolean>(false);
   const [showTroubleLogin, setShowTroubleLogin] = useState<boolean>(false);
+  const [nextStep, setNextStep] = useState<string | null>(null);
+
+
+
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -48,7 +56,13 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
       }
 
       // Login successful, go to next screen
-      setCurrentStep(2);
+      console.log("Login successful:", data);
+      setCurrentStep(2); // progress bar
+      if (data?.data?.nextStep) {
+        onNextStep(data.data.nextStep, data.data); // send full session
+      }
+
+
     } catch (err) {
       setError(true);
       setShake(true);
@@ -56,8 +70,6 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
       setPassword(""); // Optional: clear input on failure
     }
   };
-
-
 
 
   const handleTroubleLogin = () => {
@@ -73,6 +85,12 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
   if (showTroubleLogin) {
     return <TroubleLogin onCancel={handleTroubleLoginCancel} />;
   }
+
+
+
+
+
+
 
   // Inline animation styles
   const shakeStyle = shake
@@ -166,7 +184,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
             </button>
 
 
-            
+
           </div>
           <button
             type="button"
@@ -182,8 +200,8 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
             type="submit"
             disabled={!username || !password}
             className={`w-full py-3 text-white font-semibold text-sm rounded-lg transition-all duration-200 ${!username || !password
-                ? "bg-[#00A645] cursor-not-allowed opacity-70"
-                : "bg-[#00C853] hover:bg-[#00B649]"
+              ? "bg-[#00A645] cursor-not-allowed opacity-70"
+              : "bg-[#00C853] hover:bg-[#00B649]"
               }`}
           >
             Login
