@@ -125,9 +125,9 @@ const OtpVerification: React.FC<OtpVerificationProps> = ({
 
 
   return (
-    <div className="flex-1 flex flex-col space-y-4 px-6">
-      <div className="flex items-center mb-2">
-        <button 
+    <div className="flex-1 flex flex-col space-y-4">
+      <div className="flex items-center mb-2 -px-2 -ml-5">
+        <button
           onClick={() => setCurrentStep(0)}
           className="p-1 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700"
         >
@@ -138,11 +138,11 @@ const OtpVerification: React.FC<OtpVerificationProps> = ({
         </h2>
       </div>
 
-      <p className="text-sm text-gray-600 dark:text-gray-300">
+      <p className="text-sm text-gray-600 dark:text-gray-300 px-2">
         We have sent a 6-digit OTP to your registered email and phone number.
       </p>
 
-      <form onSubmit={handleSubmit} className="space-y-6">
+      <form onSubmit={handleSubmit} className="space-y-6 px-2">
         <div>
           <label className="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-200">
             Enter OTP
@@ -192,7 +192,7 @@ const OtpVerification: React.FC<OtpVerificationProps> = ({
         
         <button
           type="submit"
-          className={`px-4 py-2 text-white font-semibold text-sm rounded-lg transition-all duration-200 ${
+          className={`px-4 py-2 w-full text-white font-semibold text-sm rounded-lg transition-all duration-200 ${
             otp.join("").length !== 6
               ? "bg-[#00A645] cursor-not-allowed opacity-70"
               : "bg-[#00C853] hover:bg-[#00B649]"

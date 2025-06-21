@@ -3,9 +3,11 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import LoginScreen from '../login/LoginScreen';
-import VerifyScreen from '../login/VerifyScreen';
-import OtpScreen from '../login/OtpScreen';
+import OtpScreen from './Auth2FA';
 import ProgressBar from "../login/ProgressBar";
+import Text2FA from "../login/Text2FA";
+import MPin from "../login/MPin";
+import ForgotMPin from "../login/ForgotMPin";
 
 const Login = () => {
   const [currentStep, setCurrentStep] = useState<number>(0);
@@ -49,6 +51,8 @@ const Login = () => {
     setGreeting(getGreeting());
   }, []);
 
+  
+
   const screens = [
     <LoginScreen 
       key="login" 
@@ -57,20 +61,23 @@ const Login = () => {
       setUsername={setUsername}
       setShowProgressBar={setShowProgressBar}
     />,
-    <VerifyScreen key="verify" username={username} setCurrentStep={setCurrentStep} greeting={greeting} />,
     <OtpScreen key="otp" username={username} greeting={greeting} setOtpCompleted={setOtpCompleted} />,
+    // <Text2FA key="otp" username={username} greeting={greeting} setOtpCompleted={setOtpCompleted} />,
+    <MPin key="otp" username={username} greeting={greeting} setOtpCompleted={setOtpCompleted} />,
+    <ForgotMPin key="otp" username={username} greeting={greeting} setOtpCompleted={setOtpCompleted} onCancel={() => setCurrentStep(0)} />,
   ];
 
   return (
-    <div className="fixed inset-0 flex flex-col items-center justify-center p-3 transition-colors duration-300 bg-[#FFFFF] dark:bg-[#121212]">
+    <div className="fixed inset-0 flex flex-col items-center justify-center p-[0.75rem] transition-colors duration-300 bg-[#FFFFF] dark:bg-[#121212]">
       <div className="container max-w-md flex flex-col items-center justify-center gap-3">
-        <div className="w-full h-[500px] sm:h-[520px] md:h-[550px] shadow-xl transition-colors duration-300 flex flex-col overflow-hidden rounded-md bg-[#FAFAFA] dark:bg-[#1E1E1E]">
+        <div className="w-full h-[31.25rem] sm:h-[32.5rem] md:h-[34.375rem] shadow-xl transition-colors duration-300 flex flex-col overflow-hidden rounded-md bg-[#FAFAFA] dark:bg-[#1E1E1E]">
           {/* Progress bar positioned at the top of the black box, conditionally shown */}
           {showProgressBar && (
             <ProgressBar currentStep={currentStep} isRedirecting={isRedirecting} otpCompleted={otpCompleted} />
           )}
           
-          <div className="p-4 sm:p-5 md:p-6 flex-1 flex flex-col overflow-hidden">
+          <div className="p-[1rem] sm:p-[1.25rem] md:p-[1.5rem] flex-1 flex flex-col overflow-hidden">
+
             <AnimatePresence mode="wait" initial={false} custom={currentStep}>
               <motion.div
                 key={currentStep}
@@ -86,7 +93,7 @@ const Login = () => {
               </motion.div>
             </AnimatePresence>
 
-            <div className="mt-auto pt-3 sm:pt-4">
+            <div className="mt-auto pt-[0.75rem] sm:pt-[1rem]">
               <div className="flex flex-wrap justify-center items-center gap-2 text-xs text-gray-600 dark:text-gray-300">
                 <a href="https://www.sapphirebroking.com/privacy-policy"
                     target="_blank"
@@ -113,7 +120,7 @@ const Login = () => {
           </div>
         </div>
 
-        <div className="w-full px-2 space-y-1">
+        <div className="w-full px-[0.5rem] space-y-1">
           <div className="text-center text-xs text-gray-600 dark:text-gray-500">
             NSE, BSE, MCX & NCDEX – SEBI Registration no.: excg.sebi.regn.number | CDSL – SEBI Registration no.: cdsl.sebi.regn.number
           </div>

@@ -86,16 +86,16 @@ const OtpScreen: React.FC<OtpScreenProps> = ({
   };
 
   return (
-    <div key="otp" className="flex-1 flex flex-col justify-center space-y-3 px-6">
+    <div key="otp" className="flex-1 flex flex-col justify-center space-y-6 px-6">
       <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
         {greeting}, {username}!
       </h2>
       <div className="space-y-1">
-        <h3 className="text-lg font-normal text-gray-900 dark:text-white">
-          Enter OTP
+        <h3 className="text-lg font-normal text-gray-900 dark:text-white pb-2">
+          Enter your authentication code.
         </h3>
         <p className="text-xs text-gray-600 dark:text-gray-300">
-          We have sent an OTP to registered email & phone
+          Open Your Authenticator App and Enter the 6-Digit Code
         </p>
       </div>
 
@@ -124,23 +124,7 @@ const OtpScreen: React.FC<OtpScreenProps> = ({
           Resend OTP
         </button>
       </div>
-      <div className="flex justify-end">
-        <button
-          onClick={demon}
-          className={`text-xs transition-colors duration-200 
-            ${iE
-              ? "text-blue-400 hover:text-blue-500"
-              : isF
-              ? "text-gray-400 hover:text-gray-500 cursor-not-allowed"
-              : "text-blue-400 hover:text-blue-500"
-            }`}
-          disabled={isF && !iE}
-        >
-          {isF
-            ? `Mobile Prompt ${iT > 0 ? `(${iT}s)` : ""}`
-            : "Looking for more ways to sign in?"}
-        </button>
-      </div>
+
       <button
         onClick={() => {
           setOtpCompleted(true);
@@ -148,7 +132,7 @@ const OtpScreen: React.FC<OtpScreenProps> = ({
         }}
         className="mt-2 px-4 py-2 bg-gray-200 dark:bg-gray-700 rounded-md text-sm"
       >
-        Test: Complete Progress
+        Verify and Continue
       </button>
     </div>
   );

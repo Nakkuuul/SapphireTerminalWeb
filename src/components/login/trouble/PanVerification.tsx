@@ -152,11 +152,11 @@ const PanVerification: React.FC<PanVerificationProps> = ({
 
   return (
     <>
-      <div className="flex-1 flex flex-col space-y-8 px-6">
+      <div className="flex-1 flex flex-col space-y-8 px-1">
         {/* Inject the keyframes for the shake animation */}
         <style jsx>{keyframes}</style>
 
-        <div className="flex items-center -ml-9 -mt-2 ">
+        <div className="flex items-center -ml-6 -mt-2">
           <button
             onClick={onCancel}
             className="p-1 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700"
@@ -165,7 +165,7 @@ const PanVerification: React.FC<PanVerificationProps> = ({
           </button>
           <h2
             onClick={onCancel}
-            className="text-lg  font-medium  hover:cursor-pointer text-gray-800 dark:text-white"
+            className="text-lg  font-medium  hover:cursor-pointer text-gray-800 dark:text-white pl-2"
           >
             Account Recovery
           </h2>

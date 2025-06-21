@@ -2,6 +2,8 @@
 
 import React, { useState, FormEvent } from "react";
 import TroubleLogin from "./trouble/TroubleLogin";
+import { FiEyeOff, FiEye } from "react-icons/fi";
+
 
 interface LoginScreenProps {
   setCurrentStep: (step: number) => void;
@@ -14,7 +16,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
   setCurrentStep,
   username,
   setUsername,
-  setShowProgressBar = () => {}, // Optional prop with default no-op function
+  setShowProgressBar = () => { }, // Optional prop with default no-op function
 }) => {
   const [password, setPassword] = useState<string>("");
   const [showPassword, setShowPassword] = useState<boolean>(false);
@@ -28,7 +30,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
     setShake(false);
 
     try {
-      const response = await fetch("http://13.202.238.76:3000/api/v1/auth/login", {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/v1/auth/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -46,7 +48,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
       }
 
       // Login successful, go to next screen
-      setCurrentStep(1);
+      setCurrentStep(2);
     } catch (err) {
       setError(true);
       setShake(true);
@@ -75,8 +77,8 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
   // Inline animation styles
   const shakeStyle = shake
     ? {
-        animation: "shake 0.5s ease-in-out",
-      }
+      animation: "shake 0.5s ease-in-out",
+    }
     : {};
 
   const keyframes = `
@@ -123,11 +125,10 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
             }}
             style={shakeStyle}
             className={`w-full p-3 rounded-lg transition-all duration-200 
-              bg-white dark:bg-[#1E1E1E] text-gray-900 dark:text-white
-              ${
-                error
-                  ? "border-red-500 focus:border-red-500 focus:ring-red-500"
-                  : "border-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-400 focus:ring-blue-400"
+              bg-[#121212] dark:bg-[#1E1E1E] text-gray-900 dark:text-white color-white
+              ${error
+                ? "border-red-500 focus:border-red-500 focus:ring-red-500"
+                : "border-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-400 focus:ring-blue-400"
               } border focus:ring-1 focus:ring-opacity-50`}
             placeholder="Enter your client code"
           />
@@ -148,18 +149,24 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
               style={shakeStyle}
               className={`w-full p-3 rounded-lg transition-all duration-200 
                 bg-white dark:bg-[#1E1E1E] text-gray-900 dark:text-white
-                ${
-                  error
-                    ? "border-red-500 focus:border-red-500 focus:ring-red-500"
-                    : "border-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-400 focus:ring-blue-400"
+                ${error
+                  ? "border-red-500 focus:border-red-500 focus:ring-red-500"
+                  : "border-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-400 focus:ring-blue-400"
                 } border focus:ring-1 focus:ring-opacity-50`}
               placeholder="Enter your password"
             />
+
+
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
               className="absolute inset-y-0 right-0 flex items-center px-3 text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white transition-colors duration-200"
-            ></button>
+            >
+              {showPassword ? <FiEye /> : <FiEyeOff />}
+            </button>
+
+
+            
           </div>
           <button
             type="button"
@@ -174,11 +181,10 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
           <button
             type="submit"
             disabled={!username || !password}
-            className={`w-full py-3 text-white font-semibold text-sm rounded-lg transition-all duration-200 ${
-              !username || !password
+            className={`w-full py-3 text-white font-semibold text-sm rounded-lg transition-all duration-200 ${!username || !password
                 ? "bg-[#00A645] cursor-not-allowed opacity-70"
                 : "bg-[#00C853] hover:bg-[#00B649]"
-            }`}
+              }`}
           >
             Login
           </button>
