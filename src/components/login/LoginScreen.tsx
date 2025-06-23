@@ -127,7 +127,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
   `;
 
   return (
-    <div className="flex-1 flex flex-col justify-center space-y-4 px-6">
+    <div className="flex-1 flex flex-col justify-center space-y-4 px-1">
       {/* Inject the keyframes for the shake animation */}
       <style jsx>{keyframes}</style>
 
