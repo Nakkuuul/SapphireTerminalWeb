@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useState, KeyboardEvent, ChangeEvent } from "react";
-import { ChevronLeft, Eye, EyeOff } from "lucide-react";
+import React, { useState, KeyboardEvent, ChangeEvent, useEffect } from "react";
+import { ChevronLeft, Eye, EyeOff, RefreshCw } from "lucide-react";
 import { useRouter } from 'next/navigation';
 
 export interface ForgotMPinProps {
@@ -33,6 +33,67 @@ const ForgotMPin: React.FC<ForgotMPinProps> = ({
   const [showConfirmMpin, setShowConfirmMpin] = useState<boolean>(false);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
+  // Timer states for resend OTP
+  const [timeLeft, setTimeLeft] = useState<number>(0);
+
+  // Captcha states
+  const [captchaInput, setCaptchaInput] = useState<string>("");
+  const [captchaText, setCaptchaText] = useState<string>(generateCaptcha());
+  const [captchaError, setCaptchaError] = useState<boolean>(false);
+  const [shake, setShake] = useState<boolean>(false);
+
+  // Timer effect for resend OTP (matches OtpVerification format)
+  useEffect(() => {
+    if (timeLeft > 0) {
+      const timer = setInterval(() => {
+        setTimeLeft(prev => prev - 1);
+      }, 1000);
+      return () => clearInterval(timer);
+    }
+  }, [timeLeft]);
+
+  const formatTime = (seconds: number) => {
+    return `${seconds}`;
+  };
+
+  function generateCaptcha() {
+    const chars = "ABCDEFGHJKLMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789";
+    let captcha = "";
+    for (let i = 0; i < 6; i++) {
+      captcha += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+    return captcha;
+  }
+
+  const refreshCaptcha = () => {
+    setCaptchaText(generateCaptcha());
+    setCaptchaInput("");
+    setCaptchaError(false);
+  };
+
+  // Inline animation styles
+  const shakeStyle = shake
+    ? {
+        animation: "shake 0.5s ease-in-out",
+      }
+    : {};
+
+  const keyframes = `
+    @keyframes shake {
+      0% { transform: translateX(0); }
+      10% { transform: translateX(-5px); }
+ 
+      30% { transform: translateX(5px); }
+
+      50% { transform: translateX(-5px); }
+
+      70% { transform: translateX(5px); }
+
+      90% { transform: translateX(-5px); }
+      100% { transform: translateX(0); }
+    }
+  `;
+
   const handleRedirect = () => {
     setTimeout(() => {
       router.push('/stocks');
@@ -62,6 +123,7 @@ const ForgotMPin: React.FC<ForgotMPinProps> = ({
     const newOtp = [...otp];
     newOtp[index] = value;
     setOtp(newOtp);
+    setError(null);
 
     if (value && index < 5) {
       document.querySelector<HTMLInputElement>(`input[name="otp-${index + 1}"]`)?.focus();
@@ -90,6 +152,15 @@ const ForgotMPin: React.FC<ForgotMPinProps> = ({
   };
 
   const handleInitiate = async () => {
+    // Validate captcha before proceeding
+    if (captchaInput.toLowerCase() !== captchaText.toLowerCase()) {
+      setCaptchaError(true);
+      refreshCaptcha();
+      setShake(true);
+      setTimeout(() => setShake(false), 500);
+      return;
+    }
+
     try {
       setIsLoading(true);
       setError(null);
@@ -112,6 +183,9 @@ const ForgotMPin: React.FC<ForgotMPinProps> = ({
 
       setRequestId(data.data?.requestId || '');
       setCurrentStep('verify-otp');
+      
+      // Start timer when OTP is first sent
+      setTimeLeft(60);
       
     } catch (err: any) {
       setError(err.message || 'Failed to initiate MPIN reset');
@@ -188,7 +262,9 @@ const ForgotMPin: React.FC<ForgotMPinProps> = ({
       }
 
       setOtp(["", "", "", "", "", ""]);
+      setTimeLeft(60); // Reset timer to 60 seconds
       setError(null);
+      document.querySelector<HTMLInputElement>(`input[name="otp-0"]`)?.focus();
       
     } catch (err: any) {
       setError(err.message || 'Failed to resend OTP');
@@ -244,10 +320,52 @@ const ForgotMPin: React.FC<ForgotMPinProps> = ({
   };
 
   const renderInitiateStep = () => (
-    <div className="space-y-6">
-      <p className="text-[0.74rem] text-gray-600 dark:text-gray-300">
+    <div className="space-y-6 transition-all duration-200">
+      {/* Inject the keyframes for the shake animation */}
+      <style jsx>{keyframes}</style>
+      
+      <p className="text-[0.9rem] text-gray-600 dark:text-gray-300">
         We'll send a verification code to your registered mobile number to reset your MPIN.
       </p>
+
+      <div>
+        <label className="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-200">
+          Captcha Verification
+        </label>
+
+        <div className="flex items-center space-x-2 mb-3">
+          <div className="flex-1 p-2 text-center font-mono text-lg bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded select-none">
+            {captchaText}
+          </div>
+          <button
+            type="button"
+            onClick={refreshCaptcha}
+            className="p-2 rounded bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600"
+          >
+            <RefreshCw
+              size={18}
+              className="text-gray-800 dark:text-white"
+            />
+          </button>
+        </div>
+
+        <input
+          type="text"
+          value={captchaInput}
+          onChange={(e) => {
+            setCaptchaInput(e.target.value);
+            setCaptchaError(false);
+          }}
+          placeholder="Enter captcha code"
+          style={shakeStyle}
+          className={`w-full p-2 rounded-lg border bg-white dark:bg-[#1E1E1E] text-gray-900 dark:text-white 
+          ${
+            captchaError
+              ? "border-red-500 focus:border-red-500 focus:ring-red-500"
+              : "border-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-400 focus:ring-blue-400"
+          } focus:ring-1 focus:ring-opacity-50`}
+        />
+      </div>
       
       {error && (
         <div className="text-red-500 text-sm bg-red-50 dark:bg-red-900/20 p-3 rounded-lg">
@@ -258,10 +376,10 @@ const ForgotMPin: React.FC<ForgotMPinProps> = ({
       <button
         type="button"
         onClick={handleInitiate}
-        disabled={isLoading}
+        disabled={isLoading || !captchaInput}
         className={`w-full py-3 text-white font-semibold text-sm rounded-lg transition-all duration-200 ${
-          isLoading
-            ? "bg-gray-400 cursor-not-allowed"
+          isLoading || !captchaInput
+            ? "bg-[#00A645] cursor-not-allowed opacity-70"
             : "bg-[#00C853] hover:bg-[#00B649]"
         }`}
       >
@@ -271,8 +389,8 @@ const ForgotMPin: React.FC<ForgotMPinProps> = ({
   );
 
   const renderVerifyOTPStep = () => (
-    <div className="space-y-6">
-      <p className="text-[0.74rem] text-gray-600 dark:text-gray-300">
+    <div className="space-y-6 transition-all duration-200">
+      <p className="text-[0.9rem] text-gray-600 dark:text-gray-300">
         Enter the 6-digit verification code sent to your mobile number.
       </p>
 
@@ -306,24 +424,44 @@ const ForgotMPin: React.FC<ForgotMPinProps> = ({
         <button
           type="button"
           onClick={handleResendOTP}
-          disabled={isLoading}
-          className="text-[#22F07D] hover:text-[#1DD069] transition-colors duration-200 text-sm disabled:opacity-50"
+          disabled={timeLeft > 0}
+          className={`text-xs ${
+            timeLeft > 0
+              ? "text-gray-400 dark:text-gray-500"
+              : "text-[#00d05c]"
+          }`}
         >
-          {isLoading ? 'Sending...' : 'Resend Code'}
+          {timeLeft > 0 
+            ? `Resend Code (${formatTime(timeLeft)})`
+            : "Resend Code"
+          }
         </button>
       </div>
+
+      <button 
+        type="button" 
+        onClick={() => handleVerifyOTP()} 
+        disabled={isSubmitting || otp.join("").length !== 6} 
+        className={`w-full py-3 text-white font-semibold text-sm rounded-lg transition-all duration-200 ${
+          isSubmitting || otp.join("").length !== 6
+            ? "bg-[#00A645] cursor-not-allowed opacity-70" 
+            : "bg-[#00C853] hover:bg-[#00B649]"
+        }`}
+      >
+        {isSubmitting ? 'Verifying...' : 'Continue'}
+      </button>
     </div>
   );
 
   const renderResetMPINStep = () => (
-    <div className="space-y-6">
-      <p className="text-[0.74rem] text-gray-600 dark:text-gray-300">
+    <div className="space-y-6 transition-all duration-200">
+      <p className="text-[0.9rem] text-gray-600 dark:text-gray-300">
         Create a new 4-digit MPIN for your account.
       </p>
 
       <div>
         <label className="block text-[0.74rem] font-medium mb-[0.42rem] text-gray-700 dark:text-gray-200">
-          Enter New MPIN (4 digits only)
+          Enter New MPIN
         </label>
         <div className="relative">
           <input
@@ -350,7 +488,7 @@ const ForgotMPin: React.FC<ForgotMPinProps> = ({
 
       <div>
         <label className="block text-[0.74rem] font-medium mb-[0.42rem] text-gray-700 dark:text-gray-200">
-          Confirm New MPIN (4 digits only)
+          Confirm New MPIN
         </label>
         <div className="relative">
           <input
@@ -387,11 +525,11 @@ const ForgotMPin: React.FC<ForgotMPinProps> = ({
         disabled={isLoading || newMpin.length !== 4 || confirmMpin.length !== 4}
         className={`w-full py-3 text-white font-semibold text-sm rounded-lg transition-all duration-200 ${
           isLoading || newMpin.length !== 4 || confirmMpin.length !== 4
-            ? "bg-gray-400 cursor-not-allowed"
+            ? "bg-[#00A645] cursor-not-allowed opacity-70"
             : "bg-[#00C853] hover:bg-[#00B649]"
         }`}
       >
-        {isLoading ? 'Resetting...' : 'Reset MPIN'}
+        {isLoading ? 'Resetting...' : 'Forgot MPIN'}
       </button>
     </div>
   );
@@ -406,7 +544,7 @@ const ForgotMPin: React.FC<ForgotMPinProps> = ({
           <ChevronLeft size={17} className="text-gray-800 dark:text-white" />
         </button>
         <h2 className="text-[1.02rem] font-medium text-gray-800 dark:text-white pl-[0.42rem]">
-          {currentStep === 'initiate' && 'Reset MPIN'}
+          {currentStep === 'initiate' && 'Forgot MPIN'}
           {currentStep === 'verify-otp' && 'Verify Code'}
           {currentStep === 'reset-mpin' && 'Create New MPIN'}
         </h2>

@@ -77,7 +77,7 @@ const Text2FA: React.FC<OtpScreenProps> = ({
         },
         body: JSON.stringify({
           sessionId: sessionId,
-          clientId: username
+          // clientId: username
         })
       });
 

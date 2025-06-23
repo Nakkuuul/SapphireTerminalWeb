@@ -121,49 +121,19 @@ const MPin: React.FC<OtpScreenProps> = ({
     }
   };
 
-
-
-
-//   const handleForgotMPin = () => {
-//     setShowForgotMPin(true);
-//   };
-
-//   const handleForgotMPinCancel = () => {
-//     setShowForgotMPin(false);
-//   };
-
-// if (showForgotMPin) {
-//     return (
-//         <ForgotMPin
-//             onCancel={handleForgotMPinCancel}
-//             setOtpCompleted={setOtpCompleted}
-//         />
-//     );
-// }
-
-
-
-
   const handleOtpChange = (index: number, value: string) => {
     if (!/^\d*$/.test(value)) return;
 
     const newOtp = [...otp];
     newOtp[index] = value;
     setOtp(newOtp);
+    setError(null);
 
     if (value && index < 3) {
       document.querySelector<HTMLInputElement>(`input[name="otp-${index + 1}"]`)?.focus();
     }
 
-    // Check if all fields are filled and auto-submit with a small delay
-    if (newOtp.every((d) => d !== "") && value !== "") {
-      // Add a small delay to ensure state is updated
-      setTimeout(() => {
-        if (newOtp.every((d) => d !== "") && newOtp.join('').length === 4) {
-          handleSubmit(newOtp);
-        }
-      }, 100);
-    }
+    // Removed auto-submission - user must click "Verify and Continue" button manually
   };
 
   const handleKeyDown = (index: number, e: KeyboardEvent<HTMLInputElement>) => {
@@ -196,7 +166,7 @@ const MPin: React.FC<OtpScreenProps> = ({
   };
 
   return (
-    <div key="otp" className="flex-1 flex flex-col justify-center space-y-6 px-6">
+    <div key="otp" className="flex-1 flex flex-col justify-center space-y-6 px-">
       <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
         {greeting}, {username}!
       </h2>
@@ -225,25 +195,26 @@ const MPin: React.FC<OtpScreenProps> = ({
             onKeyDown={(e: KeyboardEvent<HTMLInputElement>) => handleKeyDown(index, e)}
             className="w-[42px] h-[42px] text-center text-lg rounded-md border bg-white dark:bg-[#1E1E1E] text-gray-900 dark:text-white border-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-400 focus:ring-1 focus:ring-opacity-50 focus:outline-none"
             autoFocus={index === 0}
-            disabled={isRedirecting}
+            disabled={isRedirecting || isSubmitting}
           />
         ))}
       </div>
 
-
-    <div className="flex justify-between items-center w-full">
-        <button
+    <div className="flex justify-between items w-full flex-col">
+        <div className="flex justify-end w-full">
+          <button
             onClick={onShowForgotMPin}
-            className="text-xs text-blue-400 hover:text-blue-500 transition-colors duration-200"
-        >
+            className="text-xs text-blue-400 hover:text-blue-500 transition-colors duration-200 pb-3"
+          >
             Forgot MPIN?
-        </button>
+          </button>
+        </div>
 
       <button
         type="submit"
         onClick={handleVerifyAndContinue}
         disabled={!isMpinComplete || isRedirecting || isSubmitting}
-        className={`w-1/2 py-3 text-white font-semibold text-sm rounded-lg transition-all duration-200 ${
+        className={`w-full py-3 text-white font-semibold text-sm rounded-lg transition-all duration-200 ${
           !isMpinComplete || isSubmitting
             ? "bg-[#00A645] cursor-not-allowed opacity-70"
             : "bg-[#00C853] hover:bg-[#00B649]"

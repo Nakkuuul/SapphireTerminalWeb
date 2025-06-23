@@ -68,12 +68,12 @@ const Login = () => {
 
   const handleForgotMPinCancel = () => {
     setActiveScreen("mpin");
-    setCurrentStep(3);
+    setCurrentStep(4);
   };
 
   const handleShowForgotMPin = () => {
     setActiveScreen("forgot_mpin");
-    setCurrentStep(4);
+    setCurrentStep(0); // added 0 instead of 4 to reset the step
   };
 
   const slideVariants = {

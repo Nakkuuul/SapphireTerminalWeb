@@ -30,9 +30,7 @@ const OtpVerification: React.FC<OtpVerificationProps> = ({
   }, [timeLeft]);
 
   const formatTime = (seconds: number) => {
-    const mins = Math.floor(seconds / 60);
-    const secs = seconds % 60;
-    return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+    return `${seconds}`;
   };
 
   const handleOtpChange = (index: number, value: string) => {
@@ -180,11 +178,11 @@ const OtpVerification: React.FC<OtpVerificationProps> = ({
             className={`text-xs ${
               timeLeft > 0
                 ? "text-gray-400 dark:text-gray-500"
-                : "text-blue-500 hover:text-blue-600"
+                : "text-[#00d05c]"
             }`}
           >
             {timeLeft > 0 
-              ? `Resend OTP in ${formatTime(timeLeft)}`
+              ? `Resend OTP (${formatTime(timeLeft)})`
               : "Resend OTP"
             }
           </button>

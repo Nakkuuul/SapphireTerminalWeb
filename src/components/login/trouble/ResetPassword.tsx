@@ -124,8 +124,8 @@ const ResetPassword: React.FC<ResetPasswordProps> = ({
 
 
   return (
-    <div className="flex-1 flex flex-col space-y-4 px-6">
-      <div className="flex items-center mb-2">
+    <div className="flex-1 flex flex-col space-y-4 px-1">
+      <div className="flex items-center mb-2 -ml-6">
         <button 
           onClick={onCancel}
           className="p-1 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700"
