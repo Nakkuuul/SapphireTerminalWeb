@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, FormEvent } from "react";
+import React, { useState, FormEvent, useEffect } from "react";
 import TroubleLogin from "./trouble/TroubleLogin";
 import { FiEyeOff, FiEye } from "react-icons/fi";
 
@@ -29,8 +29,17 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
   const [showTroubleLogin, setShowTroubleLogin] = useState<boolean>(false);
   const [nextStep, setNextStep] = useState<string | null>(null);
 
-
-
+  // Auto-fill client code from URL parameters on component mount
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const urlParams = new URLSearchParams(window.location.search);
+      const clientIdFromUrl = urlParams.get('clientId');
+      
+      if (clientIdFromUrl && !username) {
+        setUsername(clientIdFromUrl.toUpperCase());
+      }
+    }
+  }, [username, setUsername]);
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
