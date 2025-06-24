@@ -27,7 +27,7 @@ const Login = () => {
   const [showProgressBar, setShowProgressBar] = useState<boolean>(true);
   const [otpCompleted, setOtpCompleted] = useState<boolean>(false);
 
-  const [activeScreen, setActiveScreen] = useState<"login" | "2fa" | "mpin" | "set_mpin" | "forgot_mpin">("login");
+  const [activeScreen, setActiveScreen] = useState<"login" | "sms_otp" | "authenticator" | "mpin" | "set_mpin" | "forgot_mpin">("login");
   const [sessionData, setSessionData] = useState<SessionData | null>(null);
 
   const setActiveScreenFromNextStep = (nextStep: string, session: any) => {
@@ -48,8 +48,12 @@ const Login = () => {
     setSessionData(formattedSession);
 
     switch (nextStep) {
-      case "2fa":
-        setActiveScreen("2fa");
+      case "authenticator":
+        setActiveScreen("authenticator");
+        setCurrentStep(1);
+        break;
+      case "sms_otp":
+        setActiveScreen("sms_otp");
         setCurrentStep(1);
         break;
       case "set-mpin":
@@ -127,7 +131,18 @@ const Login = () => {
 
   let screenToRender;
   switch (activeScreen) {
-    case "2fa":
+    case "authenticator":
+      screenToRender = (
+        <OtpScreen 
+          username={displayUsername}
+          greeting={greeting}
+          setOtpCompleted={setOtpCompleted}
+          sessionId={sessionId}
+          onNextStep={setActiveScreenFromNextStep}
+        />
+      );
+      break;
+    case "sms_otp":
       screenToRender = (
         <Text2FA 
           username={displayUsername}

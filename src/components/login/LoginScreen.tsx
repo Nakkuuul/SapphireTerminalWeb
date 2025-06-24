@@ -68,9 +68,14 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
       console.log("Login successful:", data);
       setCurrentStep(2); // progress bar
       if (data?.data?.nextStep) {
-        // onNextStep("2fa", data.data); // send full session
-        // onNextStep("set-mpin", data.data); // send full session
-        onNextStep(data.data.nextStep, data.data); // send full session
+        if(data.data.nextStep === "2fa"){
+          onNextStep(data.data.twoFactorMethod, data.data); // send full session
+        }else{
+          // onNextStep("set-mpin", data.data); // send full session
+          onNextStep(data.data.nextStep, data.data); // send full session
+        }
+        // onNextStep("sms_otp", data.data); // send full session
+        // onNextStep("authenticator", data.data); // send full session
       }
 
 
@@ -78,32 +83,25 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
       setError(true);
       setShake(true);
       setTimeout(() => setShake(false), 500);
-      setPassword(""); // Optional: clear input on failure
+      setPassword("");
     }
   };
 
 
   const handleTroubleLogin = () => {
     setShowTroubleLogin(true);
-    setShowProgressBar(false); // Hide progress bar when entering trouble login flow
+    setShowProgressBar(false);
   };
 
   const handleTroubleLoginCancel = () => {
     setShowTroubleLogin(false);
-    setShowProgressBar(true); // Show progress bar when returning to main login
+    setShowProgressBar(true);
   };
 
   if (showTroubleLogin) {
     return <TroubleLogin onCancel={handleTroubleLoginCancel} />;
   }
 
-
-
-
-
-
-
-  // Inline animation styles
   const shakeStyle = shake
     ? {
       animation: "shake 0.5s ease-in-out",
@@ -127,8 +125,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
   `;
 
   return (
-    <div className="flex-1 flex flex-col justify-center space-y-4 px-1">
-      {/* Inject the keyframes for the shake animation */}
+    <div className="flex-1 flex flex-col justify-center space-y-4">
       <style jsx>{keyframes}</style>
 
       <div className="text-center mb-7 mt-10 space-y-2">
@@ -154,7 +151,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
             }}
             style={shakeStyle}
             className={`w-full p-3 rounded-lg transition-all duration-200 
-              bg-[#121212] dark:bg-[#1E1E1E] text-gray-900 dark:text-white color-white
+              bg-[#121212] dark:bg-[#1E1E1E] text-gray-900 dark:text-white color-white text-left
               ${error
                 ? "border-red-500 focus:border-red-500 focus:ring-red-500"
                 : "border-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-400 focus:ring-blue-400"
@@ -176,8 +173,8 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
                 setPassword(e.target.value);
               }}
               style={shakeStyle}
-              className={`w-full p-3 rounded-lg transition-all duration-200 
-                bg-white dark:bg-[#1E1E1E] text-gray-900 dark:text-white
+              className={`w-full p-3 rounded-lg transition-all duration-200 text-left 
+                bg-white dark:bg-[#1E1E1E] text-gray-900 dark:text-white text-left
                 ${error
                   ? "border-red-500 focus:border-red-500 focus:ring-red-500"
                   : "border-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-400 focus:ring-blue-400"

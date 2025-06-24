@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { Eye, EyeOff } from 'lucide-react';
 
 interface MPinSetupProps {
@@ -18,6 +19,7 @@ const MPinSetup: React.FC<MPinSetupProps> = ({
   sessionId,
   onNextStep
 }) => {
+  const router = useRouter();
   const [mpin, setMpin] = useState<string>('');
   const [confirmMpin, setConfirmMpin] = useState<string>('');
   const [error, setError] = useState<string>('');
@@ -78,6 +80,8 @@ const MPinSetup: React.FC<MPinSetupProps> = ({
       setOtpCompleted(true);
       if (data?.data?.nextStep) {
         onNextStep(data.data.nextStep, data.data);
+      } else {
+        router.push('/login');
       }
       
     } catch (err: any) {
@@ -88,7 +92,7 @@ const MPinSetup: React.FC<MPinSetupProps> = ({
   };
 
   return (
-    <div className="flex-1 flex flex-col justify-center space-y-6 px-6">
+    <div className="flex-1 flex flex-col justify-center space-y-6 px-1">
       <div className="text-center mb-8 space-y-2">
         <h1 className="text-2xl font-semibold text-gray-900 dark:text-white">
           {greeting}, {username}!
@@ -103,12 +107,12 @@ const MPinSetup: React.FC<MPinSetupProps> = ({
           <label className="block text-sm font-medium mb-3 text-gray-700 dark:text-gray-200">
             Enter New MPIN
           </label>
-          <div className="relative">
+            <div className="relative">
             <input
               type={showMpin ? "text" : "password"}
               value={mpin}
               onChange={(e) => handleMpinChange(e.target.value)}
-              className="w-full p-4 text-center text-2xl tracking-widest rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-[#1E1E1E] text-gray-900 dark:text-white focus:border-blue-500 dark:focus:border-blue-400 focus:ring-1 focus:ring-blue-400 transition-all duration-200"
+              className="w-full p-4 text-left  tracking-widest rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-[#1E1E1E] text-gray-900 dark:text-white focus:border-blue-500 dark:focus:border-blue-400 focus:ring-1 focus:ring-blue-400 transition-all duration-200 h-12 placeholder:text-left"
               placeholder="••••"
               maxLength={4}
               disabled={isLoading}
@@ -120,19 +124,19 @@ const MPinSetup: React.FC<MPinSetupProps> = ({
             >
               {showMpin ? <Eye size={20} /> : <EyeOff size={20} />}
             </button>
-          </div>
+            </div>
         </div>
 
         <div>
           <label className="block text-sm font-medium mb-3 text-gray-700 dark:text-gray-200">
             Confirm MPIN
           </label>
-          <div className="relative">
+            <div className="relative">
             <input
               type={showConfirmMpin ? "text" : "password"}
               value={confirmMpin}
               onChange={(e) => handleConfirmMpinChange(e.target.value)}
-              className="w-full p-4 text-center text-2xl tracking-widest rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-[#1E1E1E] text-gray-900 dark:text-white focus:border-blue-500 dark:focus:border-blue-400 focus:ring-1 focus:ring-blue-400 transition-all duration-200"
+              className="w-full p-4 text-left  tracking-widest rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-[#1E1E1E] text-gray-900 dark:text-white focus:border-blue-500 dark:focus:border-blue-400 focus:ring-1 focus:ring-blue-400 transition-all duration-200 h-12 placeholder:text-left"
               placeholder="••••"
               maxLength={4}
               disabled={isLoading}
@@ -144,7 +148,7 @@ const MPinSetup: React.FC<MPinSetupProps> = ({
             >
               {showConfirmMpin ? <Eye size={20} /> : <EyeOff size={20} />}
             </button>
-          </div>
+            </div>
         </div>
 
         {error && (
@@ -158,11 +162,11 @@ const MPinSetup: React.FC<MPinSetupProps> = ({
           disabled={isLoading || mpin.length !== 4 || confirmMpin.length !== 4}
           className={`w-full py-3 text-white font-semibold rounded-lg transition-all duration-200 ${
             isLoading || mpin.length !== 4 || confirmMpin.length !== 4
-              ? 'bg-gray-400 cursor-not-allowed'
+              ? 'bg-[#00A645] cursor-not-allowed opacity-70'
               : 'bg-[#00C853] hover:bg-[#00B649]'
           }`}
         >
-          {isLoading ? 'Setting up...' : 'Setup MPIN'}
+          {isLoading ? 'Setting up...' : 'Set MPIN'}
         </button>
       </form>
 

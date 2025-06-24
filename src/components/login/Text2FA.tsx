@@ -232,8 +232,11 @@ const Text2FA: React.FC<OtpScreenProps> = ({
     }
   };
 
+  // Check if all OTP fields are empty
+  const allOtpEmpty = otp.every((digit) => digit === "");
+
   return (
-    <div key="otp" className="flex-1 flex flex-col justify-center space-y-6 px-6">
+    <div key="otp" className="flex-1 flex flex-col justify-center space-y-6 px-1">
       <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
         {greeting}, {username}!
       </h2>
@@ -276,7 +279,7 @@ const Text2FA: React.FC<OtpScreenProps> = ({
           onClick={handleResendOTP}
           disabled={isResending || resendTimer > 0 || (isF && !iE)}
           className={`text-[#22F07D] transition-colors duration-200 text-sm ${
-            isResending || resendTimer > 0 || (isF && !iE) ? 'opacity-50 cursor-not-allowed' : 'hover:text-[#1DD069]'
+            isResending || resendTimer > 0 || (isF && !iE) ? 'opacity-50 cursor-not-allowed' : ''
           }`}
         >
           {isResending ? 'Resending...' : 
@@ -287,8 +290,12 @@ const Text2FA: React.FC<OtpScreenProps> = ({
       
       <button
         onClick={handleButtonClick}
-        className="mt-2 px-4 py-2 bg-gray-200 dark:bg-gray-700 rounded-md text-sm"
-        disabled={isRedirecting || isSubmitting}
+        disabled={allOtpEmpty || isRedirecting || isSubmitting}
+        className={`w-full py-3 text-white font-semibold text-sm rounded-lg transition-all duration-200 ${
+          allOtpEmpty || isRedirecting || isSubmitting
+            ? "bg-[#00A645] cursor-not-allowed opacity-70"
+            : "bg-[#00C853] hover:bg-[#00B649]"
+        }`}
       >
         {isRedirecting || isSubmitting ? 'Verifying...' : 'Verify and Continue'}
       </button>
