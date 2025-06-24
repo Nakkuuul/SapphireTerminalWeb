@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, KeyboardEvent, ChangeEvent } from 'react';
 import { useRouter } from 'next/navigation';
+import { toast } from "sonner";
 
 interface OtpScreenProps {
   username: string;
@@ -54,6 +55,16 @@ const OtpScreen: React.FC<OtpScreenProps> = ({
     setShake(false);
     setIsRedirecting(true);
 
+    // Validate OTP length before making API call
+    if (otpValue.length !== 6) {
+      toast.error("Invalid OTP", {
+        description: "Please enter the complete 6-digit authentication code.",
+        duration: 3000,
+      });
+      setIsRedirecting(false);
+      return;
+    }
+
     try {
       const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/v1/auth/verify-otp`, {
         method: "POST",
@@ -84,12 +95,19 @@ const OtpScreen: React.FC<OtpScreenProps> = ({
         handleRedirect();
       }
 
-    } catch (err) {
+    } catch (err: any) {
       setError(true);
       setShake(true);
       setIsRedirecting(false);
       setTimeout(() => setShake(false), 500);
       setOtp(["", "", "", "", "", ""]);
+      
+      // Show Sonner toast for error instead of relying on the red text
+      toast.error("Authentication Failed", {
+        description: err.message || "Invalid authentication code. Please check your authenticator app and try again.",
+        duration: 3000,
+      });
+      
       // Focus first input
       document.querySelector<HTMLInputElement>(`input[name="otp-0"]`)?.focus();
     }
@@ -198,17 +216,16 @@ const OtpScreen: React.FC<OtpScreenProps> = ({
         ))}
       </div>
 
-      {error && (
-        <p className="text-red-500 text-xs text-center">
-          Invalid OTP. Please try again.
-        </p>
-      )}
-
       <button
         onClick={() => {
           const otpValue = otp.join('');
           if (otpValue.length === 6) {
             handleOtpComplete();
+          } else {
+            toast.error("Invalid OTP", {
+              description: "Please enter the complete 6-digit authentication code.",
+              duration: 3000,
+            });
           }
         }}
         disabled={allOtpEmpty || isRedirecting}
@@ -224,4 +241,4 @@ const OtpScreen: React.FC<OtpScreenProps> = ({
   );
 };
 
-export default OtpScreen;
+export default OtpScreen; 

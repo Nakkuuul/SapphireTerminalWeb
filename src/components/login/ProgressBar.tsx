@@ -23,7 +23,7 @@ const ProgressBar: React.FC<ProgressBarProps> = ({
   }, [currentStep, isRedirecting, otpCompleted]);
   
   return (
-    <div className="w-full h-2 dark:bg-[#FFFFF] overflow-hidden">
+    <div className="w-full h-1 dark:bg-[#FFFFF] overflow-hidden">
       <motion.div
         className="h-full bg-[#02B42D] origin-left"
         initial={{ scaleX: 0 }}
