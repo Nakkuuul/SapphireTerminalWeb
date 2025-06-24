@@ -185,7 +185,7 @@ const Sidebar: React.FC = () => {
 
     return (
       <div 
-        className="flex items-center justify-between p-3 hover:bg-gray-50 transition-colors relative group"
+        className="flex items-center justify-between py-3 hover:bg-gray-50 transition-colors relative group"
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
@@ -373,9 +373,9 @@ const Sidebar: React.FC = () => {
 
   if (showSearchResults) {
     return (
-      <div className="w-[320px] h-screen mx-auto bg-white shadow-sm ml-[38px] mt-[18px] flex flex-col">
+      <div className="w-[320px] h-screen mx-auto bg-white shadow-sm ml-[26px] mt-[18px] flex flex-col">
         {/* Search Bar - Fixed */}
-        <div className="p-4 border-b border-gray-200 flex-shrink-0">
+        <div className="pt-0 border-b border-gray-200 flex-shrink-0">
           <div className="flex items-center space-x-2">
             <div className="relative flex-1">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4 text-[#686868]" />
@@ -384,7 +384,7 @@ const Sidebar: React.FC = () => {
                 placeholder="Search everything..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-9 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-[#686868]"
+                className="w-full pl-9 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none  text-[#686868]"
               />
             </div>
           </div>
@@ -404,9 +404,9 @@ const Sidebar: React.FC = () => {
   }
 
   return (
-    <div className="w-[320px] h-screen mx-auto bg-white shadow-sm ml-[38px] mt-[18px] flex flex-col">
+    <div className="w-[320px] h-screen mx-auto bg-white shadow-sm ml-[26px] mt-[18px] flex flex-col">
       {/* Search Bar - Fixed */}
-      <div className="p-4 border-b border-gray-200 flex-shrink-0">
+      <div className="border-b border-gray-200 flex-shrink-0">
         <div className="flex items-center space-x-2">
           <div className="relative flex-1">
             <button 
@@ -434,7 +434,7 @@ const Sidebar: React.FC = () => {
       </div>
 
       {/* Pagination - Fixed */}
-      <div className="px-4 py-3 border-b border-gray-00 flex-shrink-0">
+      <div className=" py-3 border-b border-gray-00 flex-shrink-0">
         <div className="flex items-center space-x-1 gap-3">
           {[1, 2, 3, 4, 5, 6].map((page) => (
             <button
@@ -452,7 +452,7 @@ const Sidebar: React.FC = () => {
       </div>
 
       {/* Scrollable Content Area */}
-      <div className="flex-1 overflow-y-auto">
+      <div className=" overflow-y-auto">
         {/* Top Stocks Section */}
         <div className='border-none'>
           <SectionHeader
