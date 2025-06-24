@@ -26,6 +26,7 @@ const Login = () => {
   const [isRedirecting, setIsRedirecting] = useState<boolean>(false);
   const [showProgressBar, setShowProgressBar] = useState<boolean>(true);
   const [otpCompleted, setOtpCompleted] = useState<boolean>(false);
+  const [disableAnimation, setDisableAnimation] = useState<boolean>(false);
 
   const [activeScreen, setActiveScreen] = useState<"login" | "sms_otp" | "authenticator" | "mpin" | "set_mpin" | "forgot_mpin">("login");
   const [sessionData, setSessionData] = useState<SessionData | null>(null);
@@ -46,6 +47,7 @@ const Login = () => {
 
     console.log("Formatted session data:", formattedSession);
     setSessionData(formattedSession);
+    setDisableAnimation(false); // Enable animation for normal flow
 
     switch (nextStep) {
       case "authenticator":
@@ -71,30 +73,29 @@ const Login = () => {
   };
 
   const handleForgotMPinCancel = () => {
+    setDisableAnimation(true); // Disable animation for this transition
     setActiveScreen("mpin");
     setCurrentStep(4);
   };
 
   const handleShowForgotMPin = () => {
+    setDisableAnimation(true); // Disable animation for this transition
     setActiveScreen("forgot_mpin");
-    setCurrentStep(0); // added 0 instead 
+    setCurrentStep(0);
   };
 
   const slideVariants = {
     initial: (direction: number) => ({
-      x: direction > 0 ? 100 : -100,
-      opacity: 0,
-      scale: 0.95,
+      x: disableAnimation ? 0 : (direction > 0 ? 100 : -100),
+      opacity: disableAnimation ? 1 : 0,
     }),
     animate: {
       x: 0,
       opacity: 1,
-      scale: 1,
     },
     exit: (direction: number) => ({
-      x: direction > 0 ? -100 : 100,
-      opacity: 0,
-      scale: 0.95,
+      x: disableAnimation ? 0 : (direction > 0 ? -100 : 100),
+      opacity: disableAnimation ? 1 : 0,
     }),
   };
 
@@ -102,6 +103,7 @@ const Login = () => {
     type: "spring",
     stiffness: 400,
     damping: 30,
+    duration: disableAnimation ? 0 : undefined,
   };
 
   useEffect(() => {
@@ -203,7 +205,7 @@ const Login = () => {
   return (
     <div className="fixed inset-0 flex flex-col items-center justify-center p-[0.75rem] transition-colors duration-300 bg-[#FFFFF] dark:bg-[#121212]">
       <div className="container max-w-md flex flex-col items-center justify-center gap-3">
-        <div className="w-full h-[31.25rem] sm:h-[32.5rem] md:h-[34.375rem] shadow-xl transition-colors duration-300 flex flex-col overflow-hidden rounded-md bg-[#FAFAFA] dark:bg-[#1E1E1E]">
+        <div className="w-full h-[31.25rem] sm:h-[32.5rem] md:h-[34.375rem] shadow-xl transition-colors duration-300 flex flex-col overflow-hidden rounded-md bg-[#FAFAFA] dark:bg-[#1E1E1E] scale-90 origin-center">
           {showProgressBar && (
             <ProgressBar currentStep={currentStep} isRedirecting={isRedirecting} otpCompleted={otpCompleted} />
           )}
@@ -251,9 +253,9 @@ const Login = () => {
           </div>
         </div>
 
-        <div className="w-full px-[0.5rem] space-y-1">
+        <div className="w-full scale-90 px-[0.5rem] space-y-1">
           <div className="text-center text-xs text-gray-600 dark:text-gray-500">
-            NSE, BSE, MCX & NCDEX – SEBI Registration no.: excg.sebi.regn.number | CDSL – SEBI Registration no.: cdsl.sebi.regn.number
+            NSE, BSE, MCX & NCDEX - SEBI Registration no.: excg.sebi.regn.number | CDSL – SEBI Registration no.: cdsl.sebi.regn.number
           </div>
           <div className="text-center text-xs text-gray-600 dark:text-gray-500">
             © 2025 Sapphire Broking. All Rights Reserved.

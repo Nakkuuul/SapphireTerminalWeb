@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { ChevronLeft, RefreshCw } from "lucide-react";
+import { toast } from "sonner";
 
 interface PanVerificationProps {
   panNumber: string;
@@ -23,6 +24,7 @@ const PanVerification: React.FC<PanVerificationProps> = ({
   const [panError, setPanError] = useState<boolean>(false);
   const [captchaError, setCaptchaError] = useState<boolean>(false);
   const [shake, setShake] = useState<boolean>(false);
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
   function generateCaptcha() {
     const chars = "ABCDEFGHJKLMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789";
@@ -108,15 +110,25 @@ const PanVerification: React.FC<PanVerificationProps> = ({
 
     let hasError = false;
 
+    // Validate PAN
     if (!panNumber || !validatePAN(panNumber)) {
       setPanError(true);
       hasError = true;
+      toast.error("Invalid PAN Number", {
+        description: "Please enter a valid PAN number in the format AAAAA0000A.",
+        duration: 3000,
+      });
     }
 
+    // Validate captcha
     if (captchaInput.toLowerCase() !== captchaText.toLowerCase()) {
       setCaptchaError(true);
       refreshCaptcha();
       hasError = true;
+      toast.error("Invalid Captcha", {
+        description: "Please enter the correct captcha code.",
+        duration: 3000,
+      });
     }
 
     if (hasError) {
@@ -126,6 +138,7 @@ const PanVerification: React.FC<PanVerificationProps> = ({
     }
 
     try {
+      setIsSubmitting(true);
       const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/v1/auth/login/forgot-password/initiate`, {
         method: "POST",
         headers: {
@@ -136,19 +149,29 @@ const PanVerification: React.FC<PanVerificationProps> = ({
 
       const data = await res.json();
 
-
       if (!res.ok) {
         throw new Error(data?.message || "Failed to send OTP");
       }
 
       setRequestId(data.data.requestId);      
-      
       setCurrentStep(1);
+
+      // Show success toast
+      toast.success("Verification Initiated", {
+        description: "OTP has been sent to your registered mobile number.",
+        duration: 3000,
+      });
+
     } catch (error: any) {
-      alert(error.message || "Something went wrong.");
+      // Show error toast instead of alert
+      toast.error("Invalid PAN Number", {
+        description: error.message || "Something went wrong. Please try again.",
+        duration: 3000,
+      });
+    } finally {
+      setIsSubmitting(false);
     }
   };
-
 
   return (
     <>
@@ -238,13 +261,13 @@ const PanVerification: React.FC<PanVerificationProps> = ({
           <button
             type="submit"
             className={`w-full py-3 text-white font-semibold text-sm rounded-lg transition-all duration-200 mt-4 ${
-              !panNumber || !captchaInput
+              !panNumber || !captchaInput || isSubmitting
                 ? "bg-[#00A645] cursor-not-allowed opacity-70"
                 : "bg-[#00C853] hover:bg-[#00B649]"
             }`}
-            disabled={!panNumber || !captchaInput}
+            disabled={!panNumber || !captchaInput || isSubmitting}
           >
-            Verify & Continue
+            {isSubmitting ? 'Verifying...' : 'Verify & Continue'}
           </button>
         </form>
       </div>

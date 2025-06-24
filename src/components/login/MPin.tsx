@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, KeyboardEvent, ChangeEvent } from 'react';
 import { useRouter } from 'next/navigation';
+import { toast } from "sonner";
 import ForgotMPin from './ForgotMPin';
 
 interface OtpScreenProps {
@@ -57,7 +58,10 @@ const MPin: React.FC<OtpScreenProps> = ({
     console.log('MPIN Value:', mpinValue, 'Length:', mpinValue.length, 'OTP Array:', mpinArray || otp);
     
     if (mpinValue.length !== 4) {
-      setError("Please enter the complete 4-digit MPIN.");
+      toast.error("Invalid MPIN", {
+        description: "Please enter the complete 4-digit MPIN.",
+        duration: 3000,
+      });
       return;
     }
 
@@ -82,6 +86,13 @@ const MPin: React.FC<OtpScreenProps> = ({
         throw new Error(data.message || 'MPIN verification failed.');
       }
 
+      // Save token to cookies when MPIN verification is successful
+      // Token is at root level of response, not inside data
+      if (data?.token) {
+        saveTokenToCookies(data.token);
+        console.log('Token saved:', data.token); // Debug log
+      }
+
       setOtpCompleted(true);
       if (data?.data?.nextStep) {
         onNextStep(data.data.nextStep, data.data);
@@ -94,7 +105,13 @@ const MPin: React.FC<OtpScreenProps> = ({
 
     } catch (err: any) {
       console.error('MPIN verification error:', err);
-      setError(err.message || "An unexpected error occurred.");
+      
+      // Show Sonner toast for error instead of setting error state
+      toast.error("MPIN Verification Failed", {
+        description: err.message || "Invalid MPIN. Please check your 4-digit MPIN and try again.",
+        duration: 3000,
+      });
+      
       setOtp(["", "", "", ""]);
       const firstInput = document.querySelector<HTMLInputElement>('input[name="otp-0"]');
       if (firstInput) {
@@ -102,6 +119,25 @@ const MPin: React.FC<OtpScreenProps> = ({
       }
     } finally {
       setIsSubmitting(false);
+    }
+  };
+
+  // Function to save token in cookies
+  const saveTokenToCookies = (token: string) => {
+    try {
+      // Set HTTP-only cookie with proper settings
+      const cookieString = `auth-token=${token}; path=/; max-age=${7 * 24 * 60 * 60}; samesite=strict${process.env.NODE_ENV === 'production' ? '; secure' : ''}`;
+      document.cookie = cookieString;
+      
+      console.log('Cookie set:', cookieString); // Debug log
+      
+      // Verify cookie was set
+      const cookies = document.cookie.split(';');
+      const authCookie = cookies.find(cookie => cookie.trim().startsWith('auth-token='));
+      console.log('Cookie verification:', authCookie); // Debug log
+      
+    } catch (error) {
+      console.error('Error setting cookie:', error);
     }
   };
 
@@ -177,7 +213,6 @@ const MPin: React.FC<OtpScreenProps> = ({
         <p className="text-xs text-gray-600 dark:text-gray-300">
            Please enter your 4-digit MPIN to continue
         </p>
-        {error && <p className="text-xs text-red-500">{error}</p>}
       </div>
 
       <div className="flex justify-start gap-6">

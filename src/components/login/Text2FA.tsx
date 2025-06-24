@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, KeyboardEvent, ChangeEvent } from 'react';
 import { useRouter } from 'next/navigation';
+import { toast } from "sonner";
 
 interface OtpScreenProps {
   username: string;
@@ -111,9 +112,20 @@ const Text2FA: React.FC<OtpScreenProps> = ({
       setError(null);
       console.log('OTP resent successfully');
       
+      // Show success toast for resend
+      toast.success("OTP Resent", {
+        description: "A new 6-digit code has been sent to your registered email and mobile number.",
+        duration: 3000,
+      });
+      
     } catch (err: any) {
       console.error('Resend OTP error:', err);
-      // Don't show error message to user, just log it for debugging
+      
+      // Show error toast for resend failure
+      toast.error("Resend Failed", {
+        description: err.message || "Failed to resend OTP. Please try again.",
+        duration: 3000,
+      });
     } finally {
       setIsResending(false);
     }
@@ -131,7 +143,10 @@ const Text2FA: React.FC<OtpScreenProps> = ({
     console.log('OTP Value:', otpValue, 'Length:', otpValue.length, 'OTP Array:', otpArray || otp);
     
     if (otpValue.length !== 6) {
-      setError("Please enter the complete 6-digit OTP.");
+      toast.error("Invalid OTP", {
+        description: "Please enter the complete 6-digit OTP.",
+        duration: 3000,
+      });
       return;
     }
 
@@ -171,7 +186,13 @@ const Text2FA: React.FC<OtpScreenProps> = ({
 
     } catch (err: any) {
       console.error('OTP verification error:', err);
-      setError(err.message || "An unexpected error occurred.");
+      
+      // Show Sonner toast for error instead of setting error state
+      toast.error("OTP Verification Failed", {
+        description: err.message || "Invalid OTP. Please check your 6-digit code and try again.",
+        duration: 3000,
+      });
+      
       setOtp(["", "", "", "", "", ""]); // Clear OTP on error
       document.querySelector<HTMLInputElement>(`input[name="otp-0"]`)?.focus();
     } finally {
@@ -248,10 +269,6 @@ const Text2FA: React.FC<OtpScreenProps> = ({
         <p className="text-xs text-gray-600 dark:text-gray-300">
            We have sent a 6-digit code to your registered email and mobile number
         </p>
-        {/* <p className="text-xs text-gray-600 dark:text-gray-300">
-           with ••••4567
-        </p> */}
-        {error && <p className="text-xs text-red-500">{error}</p>}
       </div>
 
       <div className="flex justify-start gap-4">
