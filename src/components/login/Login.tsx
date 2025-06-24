@@ -114,6 +114,43 @@ const Login = () => {
       return "Good Evening";
     };
     setGreeting(getGreeting());
+    
+    // Check if user already has a token and should be redirected
+    const checkExistingAuth = () => {
+      const cookies = document.cookie.split(';').map(cookie => cookie.trim());
+      const authToken = cookies.find(cookie => cookie.startsWith('auth-token='));
+      
+      if (authToken) {
+        console.log('🔍 Found existing auth token, checking for redirect...');
+        
+        // Check for redirect cookie
+        const redirectCookie = cookies.find(cookie => cookie.startsWith('redirect-after-login='));
+        
+        if (redirectCookie) {
+          const encodedUrl = redirectCookie.split('=')[1];
+          const redirectUrl = decodeURIComponent(encodedUrl);
+          
+          console.log('✅ Found redirect URL for existing session:', redirectUrl);
+          
+          // Clear redirect cookie
+          document.cookie = 'redirect-after-login=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;';
+          
+          // Redirect to stored URL
+          if (redirectUrl && redirectUrl !== '/' && redirectUrl !== '/login') {
+            console.log('🚀 Redirecting existing session to:', redirectUrl);
+            window.location.href = redirectUrl;
+            return;
+          }
+        }
+        
+        // Default redirect if already logged in
+        console.log('📍 User already logged in, redirecting to /stocks');
+        window.location.href = '/stocks';
+      }
+    };
+    
+    // Small delay to ensure cookies are available
+    setTimeout(checkExistingAuth, 100);
   }, []);
 
   // Add safety check for sessionData
@@ -253,9 +290,9 @@ const Login = () => {
           </div>
         </div>
 
-        <div className="w-full scale-90 px-[0.5rem] space-y-1">
+        <div className="w-full px-[0.5rem] space-y-1">
           <div className="text-center text-xs text-gray-600 dark:text-gray-500">
-            NSE, BSE, MCX & NCDEX - SEBI Registration no.: excg.sebi.regn.number | CDSL – SEBI Registration no.: cdsl.sebi.regn.number
+            NSE, BSE, MCX & NCDEX – SEBI Registration no.: excg.sebi.regn.number | CDSL – SEBI Registration no.: cdsl.sebi.regn.number
           </div>
           <div className="text-center text-xs text-gray-600 dark:text-gray-500">
             © 2025 Sapphire Broking. All Rights Reserved.

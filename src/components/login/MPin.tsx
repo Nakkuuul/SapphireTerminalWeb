@@ -91,15 +91,22 @@ const MPin: React.FC<OtpScreenProps> = ({
       if (data?.token) {
         saveTokenToCookies(data.token);
         console.log('Token saved:', data.token); // Debug log
+        
+        // Wait a bit longer for cookie to be properly set, then handle redirect
+        setTimeout(() => {
+          handlePostLoginRedirect();
+        }, 200);
+        return; // Important: return here to prevent other redirect logic
       }
 
       setOtpCompleted(true);
       if (data?.data?.nextStep) {
         onNextStep(data.data.nextStep, data.data);
       } else {
+        // Fallback redirect if no token (shouldn't normally happen)
         setIsRedirecting(true);
         setTimeout(() => {
-          router.push('/home');
+          router.push('/stocks');
         }, 700);
       }
 
@@ -141,9 +148,52 @@ const MPin: React.FC<OtpScreenProps> = ({
     }
   };
 
+  // Function to handle redirect after successful login
+  const handlePostLoginRedirect = () => {
+    console.log('🔍 Checking for redirect URL...');
+    console.log('All cookies:', document.cookie);
+    
+    // Get all cookies and find the redirect one
+    const allCookies = document.cookie.split(';').map(cookie => cookie.trim());
+    console.log('Parsed cookies:', allCookies);
+    
+    const redirectCookie = allCookies.find(cookie => cookie.startsWith('redirect-after-login='));
+    
+    if (redirectCookie) {
+      const encodedUrl = redirectCookie.split('=')[1];
+      // Decode the URL to handle URL-encoded characters like %2F
+      const redirectUrl = decodeURIComponent(encodedUrl);
+      console.log('✅ Found redirect URL (encoded):', encodedUrl);
+      console.log('✅ Found redirect URL (decoded):', redirectUrl);
+      
+      // Clear the redirect cookie
+      document.cookie = 'redirect-after-login=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;';
+      console.log('🗑️ Cleared redirect cookie');
+      
+      // Redirect to the stored URL
+      if (redirectUrl && redirectUrl !== '/' && redirectUrl !== '/login') {
+        console.log('🚀 Redirecting to stored URL:', redirectUrl);
+        setIsRedirecting(true);
+        setTimeout(() => {
+          router.push(redirectUrl);
+        }, 500);
+        return;
+      }
+    } else {
+      console.log('❌ No redirect cookie found');
+    }
+    
+    // Default redirect to stocks if no stored URL
+    console.log('📍 No valid redirect URL found, going to default /stocks');
+    setIsRedirecting(true);
+    setTimeout(() => {
+      router.push('/stocks');
+    }, 500);
+  };
+
   const handleRedirect = () => {
     setTimeout(() => {
-      router.push('/home');
+      router.push('/stocks');
     }, 700); // delay in milliseconds (0.7 seconds)
   };  
 
