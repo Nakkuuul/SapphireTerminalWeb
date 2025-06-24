@@ -2,12 +2,14 @@
 
 import React, { useState } from "react";
 import { ChevronLeft, RefreshCw } from "lucide-react";
+import { toast } from "sonner";
 
 interface PanVerificationProps {
   panNumber: string;
   setPanNumber: (pan: string) => void;
   setCurrentStep: (step: number) => void;
   onCancel: () => void;
+  setRequestId: (id: string) => void; 
 }
 
 const PanVerification: React.FC<PanVerificationProps> = ({
@@ -15,12 +17,14 @@ const PanVerification: React.FC<PanVerificationProps> = ({
   setPanNumber,
   setCurrentStep,
   onCancel,
+  setRequestId, 
 }) => {
   const [captchaInput, setCaptchaInput] = useState<string>("");
   const [captchaText, setCaptchaText] = useState<string>(generateCaptcha());
   const [panError, setPanError] = useState<boolean>(false);
   const [captchaError, setCaptchaError] = useState<boolean>(false);
   const [shake, setShake] = useState<boolean>(false);
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
   function generateCaptcha() {
     const chars = "ABCDEFGHJKLMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789";
@@ -100,45 +104,82 @@ const PanVerification: React.FC<PanVerificationProps> = ({
     }
   `;
 
-  const handleSubmit = (e: React.FormEvent) => {
+  // Validates PAN and captcha, then initiates OTP API call
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     let hasError = false;
 
-    if (!panNumber) {
+    // Validate PAN
+    if (!panNumber || !validatePAN(panNumber)) {
       setPanError(true);
       hasError = true;
+      toast.error("Invalid PAN Number", {
+        description: "Please enter a valid PAN number in the format AAAAA0000A.",
+        duration: 3000,
+      });
     }
 
-    if (!validatePAN(panNumber)) {
-      setPanError(true);
-      hasError = true;
-    }
-
+    // Validate captcha
     if (captchaInput.toLowerCase() !== captchaText.toLowerCase()) {
       setCaptchaError(true);
       refreshCaptcha();
       hasError = true;
+      toast.error("Invalid Captcha", {
+        description: "Please enter the correct captcha code.",
+        duration: 3000,
+      });
     }
 
     if (hasError) {
-      // Trigger shake animation
       setShake(true);
       setTimeout(() => setShake(false), 500);
       return;
     }
 
-    // All validations passed, proceed to next step
-    setCurrentStep(1);
+    try {
+      setIsSubmitting(true);
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/v1/auth/login/forgot-password/initiate`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ panNumber: panNumber }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data?.message || "Failed to send OTP");
+      }
+
+      setRequestId(data.data.requestId);      
+      setCurrentStep(1);
+
+      // Show success toast
+      toast.success("Verification Initiated", {
+        description: "OTP has been sent to your registered mobile number.",
+        duration: 3000,
+      });
+
+    } catch (error: any) {
+      // Show error toast instead of alert
+      toast.error("Invalid PAN Number", {
+        description: error.message || "Something went wrong. Please try again.",
+        duration: 3000,
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
     <>
-      <div className="flex-1 flex flex-col space-y-8 px-6">
+      <div className="flex-1 flex flex-col space-y-8 px-1">
         {/* Inject the keyframes for the shake animation */}
         <style jsx>{keyframes}</style>
 
-        <div className="flex items-center -ml-9 -mt-2 ">
+        <div className="flex items-center -ml-6 -mt-2">
           <button
             onClick={onCancel}
             className="p-1 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700"
@@ -147,7 +188,7 @@ const PanVerification: React.FC<PanVerificationProps> = ({
           </button>
           <h2
             onClick={onCancel}
-            className="text-lg  font-medium  hover:cursor-pointer text-gray-800 dark:text-white"
+            className="text-lg  font-medium  hover:cursor-pointer text-gray-800 dark:text-white pl-2"
           >
             Account Recovery
           </h2>
@@ -220,13 +261,13 @@ const PanVerification: React.FC<PanVerificationProps> = ({
           <button
             type="submit"
             className={`w-full py-3 text-white font-semibold text-sm rounded-lg transition-all duration-200 mt-4 ${
-              !panNumber || !captchaInput
+              !panNumber || !captchaInput || isSubmitting
                 ? "bg-[#00A645] cursor-not-allowed opacity-70"
                 : "bg-[#00C853] hover:bg-[#00B649]"
             }`}
-            disabled={!panNumber || !captchaInput}
+            disabled={!panNumber || !captchaInput || isSubmitting}
           >
-            Verify & Continue
+            {isSubmitting ? 'Verifying...' : 'Verify & Continue'}
           </button>
         </form>
       </div>

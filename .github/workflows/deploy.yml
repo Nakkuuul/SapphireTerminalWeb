@@ -1,38 +1,57 @@
-name: Deploy Next.js to Vercel
+name: Deploy to EC2 (Main)
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - main
-  workflow_dispatch:
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
+      - uses: actions/checkout@v3
+      
+      - name: Install Node.js and Build
         uses: actions/setup-node@v3
         with:
-          node-version: '18'
-          cache: 'npm'
-          cache-dependency-path: package-lock.json  # since frontend is in root
-
-      - name: Install dependencies
-        run: yarn install
-
-      - name: Build Next.js app
-        run: yarn build
-
-      - name: Install Vercel CLI
-        run: yarn global add vercel@latest
-
-      - name: Deploy to Vercel
-        run: vercel deploy --prod --token=${{ secrets.VERCEL_TOKEN }} --yes
-        env:
-          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+          node-version: '20.x'
+          
+      - name: Install dependencies and build
+        run: |
+          echo """${{ secrets.ENV }}""" > .env
+          npm ci
+          npm run build
+          
+      - name: Deploy to Server
+        uses: easingthemes/ssh-deploy@main
+        with:
+          SSH_PRIVATE_KEY: ${{ secrets.EC2_KEY }}
+          ARGS: "-rlgoDzvc -i --delete"
+          SOURCE: ".next/standalone/ .next/static public"
+          REMOTE_HOST: ${{ secrets.EC2_HOST }}
+          REMOTE_USER: ${{ secrets.EC2_USER }}
+          TARGET: ${{ secrets.REMOTE_TARGET }}
+          SCRIPT_BEFORE: |
+            whoami
+            mkdir -p ${{ secrets.REMOTE_TARGET }}
+          SCRIPT_BEFORE_REQUIRED: true
+          SCRIPT_AFTER: |
+            cd "${{ secrets.REMOTE_TARGET }}"
+            screen -S sapphire-terminal -X quit || true
+            
+            if ! command -v nvm &> /dev/null; then
+              echo "Installing Node.js..."
+              curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.5/install.sh | bash
+              export NVM_DIR="$HOME/.nvm"
+              [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+              nvm install 20
+              nvm use 20
+            fi
+            
+            mv static .next/
+            
+            echo "Starting terminal..."
+            PORT=${{ secrets.EC2_PORT }} screen -S sapphire-terminal -d -m $(which node) server.js
+          SCRIPT_AFTER_REQUIRED: true

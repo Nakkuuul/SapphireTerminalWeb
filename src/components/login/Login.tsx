@@ -3,9 +3,21 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import LoginScreen from '../login/LoginScreen';
-import VerifyScreen from '../login/VerifyScreen';
-import OtpScreen from '../login/OtpScreen';
+import OtpScreen from './Auth2FA';
 import ProgressBar from "../login/ProgressBar";
+import Text2FA from "../login/Text2FA";
+import MPin from "../login/MPin";
+import ForgotMPin from "../login/ForgotMPin";
+import MPinSetup from "../login/MPinSetup";
+
+// Define the session data interface for better type safety
+interface SessionData {
+  sessionId: string;
+  nextStep: string;
+  firstName: string;
+  twoFactorMethod?: string;
+  deviceInfo?: any;
+}
 
 const Login = () => {
   const [currentStep, setCurrentStep] = useState<number>(0);
@@ -14,22 +26,76 @@ const Login = () => {
   const [isRedirecting, setIsRedirecting] = useState<boolean>(false);
   const [showProgressBar, setShowProgressBar] = useState<boolean>(true);
   const [otpCompleted, setOtpCompleted] = useState<boolean>(false);
+  const [disableAnimation, setDisableAnimation] = useState<boolean>(false);
+
+  const [activeScreen, setActiveScreen] = useState<"login" | "sms_otp" | "authenticator" | "mpin" | "set_mpin" | "forgot_mpin">("login");
+  const [sessionData, setSessionData] = useState<SessionData | null>(null);
+
+  const setActiveScreenFromNextStep = (nextStep: string, session: any) => {
+    console.log("Setting active screen with:", { nextStep, session }); // Debug log
+    console.log("Session ID received:", session?.sessionId);
+    console.log("First Name received:", session?.firstName);
+    
+    // Ensure session data is properly structured based on your API response
+    const formattedSession: SessionData = {
+      sessionId: session?.sessionId || '',
+      nextStep: nextStep,
+      firstName: session?.firstName || '',
+      twoFactorMethod: session?.twoFactorMethod || '',
+      deviceInfo: session?.deviceInfo
+    };
+
+    console.log("Formatted session data:", formattedSession);
+    setSessionData(formattedSession);
+    setDisableAnimation(false); // Enable animation for normal flow
+
+    switch (nextStep) {
+      case "authenticator":
+        setActiveScreen("authenticator");
+        setCurrentStep(1);
+        break;
+      case "sms_otp":
+        setActiveScreen("sms_otp");
+        setCurrentStep(1);
+        break;
+      case "set-mpin":
+        setActiveScreen("set_mpin");
+        setCurrentStep(2);
+        break;
+      case "mpin":
+        setActiveScreen("mpin");
+        setCurrentStep(3);
+        break;
+      default:
+        setActiveScreen("login");
+        setCurrentStep(0);
+    }
+  };
+
+  const handleForgotMPinCancel = () => {
+    setDisableAnimation(true); // Disable animation for this transition
+    setActiveScreen("mpin");
+    setCurrentStep(4);
+  };
+
+  const handleShowForgotMPin = () => {
+    setDisableAnimation(true); // Disable animation for this transition
+    setActiveScreen("forgot_mpin");
+    setCurrentStep(0);
+  };
 
   const slideVariants = {
     initial: (direction: number) => ({
-      x: direction > 0 ? 100 : -100,
-      opacity: 0,
-      scale: 0.95,
+      x: disableAnimation ? 0 : (direction > 0 ? 100 : -100),
+      opacity: disableAnimation ? 1 : 0,
     }),
     animate: {
       x: 0,
       opacity: 1,
-      scale: 1,
     },
     exit: (direction: number) => ({
-      x: direction > 0 ? -100 : 100,
-      opacity: 0,
-      scale: 0.95,
+      x: disableAnimation ? 0 : (direction > 0 ? -100 : 100),
+      opacity: disableAnimation ? 1 : 0,
     }),
   };
 
@@ -37,6 +103,7 @@ const Login = () => {
     type: "spring",
     stiffness: 400,
     damping: 30,
+    duration: disableAnimation ? 0 : undefined,
   };
 
   useEffect(() => {
@@ -49,31 +116,104 @@ const Login = () => {
     setGreeting(getGreeting());
   }, []);
 
-  const screens = [
-    <LoginScreen 
-      key="login" 
-      setCurrentStep={setCurrentStep} 
-      username={username} 
-      setUsername={setUsername}
-      setShowProgressBar={setShowProgressBar}
-    />,
-    <VerifyScreen key="verify" username={username} setCurrentStep={setCurrentStep} greeting={greeting} />,
-    <OtpScreen key="otp" username={username} greeting={greeting} setOtpCompleted={setOtpCompleted} />,
-  ];
+  // Add safety check for sessionData
+  const safeSessionData: SessionData = sessionData || {
+    sessionId: '',
+    nextStep: '',
+    firstName: '',
+    twoFactorMethod: '',
+    deviceInfo: undefined
+  };
+  const displayUsername = safeSessionData.firstName || username;
+  const sessionId = safeSessionData.sessionId || '';
+
+  // Log for debugging
+  console.log("Current session data:", sessionData);
+  console.log("Session ID being passed:", sessionId);
+
+  let screenToRender;
+  switch (activeScreen) {
+    case "authenticator":
+      screenToRender = (
+        <OtpScreen 
+          username={displayUsername}
+          greeting={greeting}
+          setOtpCompleted={setOtpCompleted}
+          sessionId={sessionId}
+          onNextStep={setActiveScreenFromNextStep}
+        />
+      );
+      break;
+    case "sms_otp":
+      screenToRender = (
+        <Text2FA 
+          username={displayUsername}
+          greeting={greeting}
+          setOtpCompleted={setOtpCompleted}
+          sessionId={sessionId}
+          onNextStep={setActiveScreenFromNextStep}
+        />
+      );
+      break;
+    case "mpin":
+      screenToRender = (
+        <MPin 
+          username={displayUsername}
+          greeting={greeting}
+          setOtpCompleted={setOtpCompleted}
+          sessionId={sessionId}
+          onNextStep={setActiveScreenFromNextStep}
+          onShowForgotMPin={handleShowForgotMPin}
+        />
+      );
+      break;
+    case "set_mpin":
+      screenToRender = (
+        <MPinSetup 
+          username={displayUsername}
+          greeting={greeting}
+          setOtpCompleted={setOtpCompleted}
+          sessionId={sessionId}
+          onNextStep={setActiveScreenFromNextStep}
+        />
+      );
+      break;
+    case "forgot_mpin":
+      screenToRender = (
+        <ForgotMPin
+          username={displayUsername}
+          greeting={greeting}
+          setOtpCompleted={setOtpCompleted}
+          sessionId={sessionId}
+          onCancel={handleForgotMPinCancel}
+          onNextStep={setActiveScreenFromNextStep}
+        />
+      );
+      break;
+    default:
+      screenToRender = (
+        <LoginScreen
+          setCurrentStep={setCurrentStep}
+          username={username}
+          setUsername={setUsername}
+          setShowProgressBar={setShowProgressBar}
+          onNextStep={(step, session) => setActiveScreenFromNextStep(step, session)}
+        />
+      );
+  }
 
   return (
-    <div className="fixed inset-0 flex flex-col items-center justify-center p-3 transition-colors duration-300 bg-[#FFFFF] dark:bg-[#121212]">
+    <div className="fixed inset-0 flex flex-col items-center justify-center p-[0.75rem] transition-colors duration-300 bg-[#FFFFF] dark:bg-[#121212]">
       <div className="container max-w-md flex flex-col items-center justify-center gap-3">
-        <div className="w-full h-[500px] sm:h-[520px] md:h-[550px] shadow-xl transition-colors duration-300 flex flex-col overflow-hidden rounded-md bg-[#FAFAFA] dark:bg-[#1E1E1E]">
-          {/* Progress bar positioned at the top of the black box, conditionally shown */}
+        <div className="w-full h-[31.25rem] sm:h-[32.5rem] md:h-[34.375rem] shadow-xl transition-colors duration-300 flex flex-col overflow-hidden rounded-md bg-[#FAFAFA] dark:bg-[#1E1E1E] scale-90 origin-center">
           {showProgressBar && (
             <ProgressBar currentStep={currentStep} isRedirecting={isRedirecting} otpCompleted={otpCompleted} />
           )}
           
-          <div className="p-4 sm:p-5 md:p-6 flex-1 flex flex-col overflow-hidden">
+          <div className="p-[1rem] sm:p-[1.25rem] md:p-[1.5rem] flex-1 flex flex-col overflow-hidden">
             <AnimatePresence mode="wait" initial={false} custom={currentStep}>
               <motion.div
-                key={currentStep}
+                key={activeScreen}
                 variants={slideVariants}
                 initial="initial"
                 animate="animate"
@@ -82,11 +222,11 @@ const Login = () => {
                 custom={currentStep}
                 className="flex-1 flex flex-col"
               >
-                {screens[currentStep]}
+                {screenToRender}
               </motion.div>
             </AnimatePresence>
 
-            <div className="mt-auto pt-3 sm:pt-4">
+            <div className="mt-auto pt-[0.75rem] sm:pt-[1rem]">
               <div className="flex flex-wrap justify-center items-center gap-2 text-xs text-gray-600 dark:text-gray-300">
                 <a href="https://www.sapphirebroking.com/privacy-policy"
                     target="_blank"
@@ -113,9 +253,9 @@ const Login = () => {
           </div>
         </div>
 
-        <div className="w-full px-2 space-y-1">
+        <div className="w-full scale-90 px-[0.5rem] space-y-1">
           <div className="text-center text-xs text-gray-600 dark:text-gray-500">
-            NSE, BSE, MCX & NCDEX – SEBI Registration no.: excg.sebi.regn.number | CDSL – SEBI Registration no.: cdsl.sebi.regn.number
+            NSE, BSE, MCX & NCDEX - SEBI Registration no.: excg.sebi.regn.number | CDSL – SEBI Registration no.: cdsl.sebi.regn.number
           </div>
           <div className="text-center text-xs text-gray-600 dark:text-gray-500">
             © 2025 Sapphire Broking. All Rights Reserved.

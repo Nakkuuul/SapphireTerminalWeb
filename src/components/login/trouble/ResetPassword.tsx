@@ -5,12 +5,13 @@ import { ChevronLeft, Eye, EyeOff, Check } from "lucide-react";
 
 interface ResetPasswordProps {
   panNumber: string;
+  requestId: string; 
   onComplete: () => void;
   onCancel: () => void;
 }
 
-const ResetPassword: React.FC<ResetPasswordProps> = ({ 
-  panNumber, 
+const ResetPassword: React.FC<ResetPasswordProps> = ({  
+  requestId, 
   onComplete, 
   onCancel 
 }) => {
@@ -25,7 +26,7 @@ const ResetPassword: React.FC<ResetPasswordProps> = ({
   }>({});
   const [isResetting, setIsResetting] = useState<boolean>(false);
 
-  // Password strength requirements
+  
   const requirements = [
     { 
       id: 'length', 
@@ -81,34 +82,50 @@ const ResetPassword: React.FC<ResetPasswordProps> = ({
     return newErrors;
   };
 
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     const validationErrors = validatePassword();
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
       return;
     }
-    
-    // Clear errors
+
     setErrors({});
     setIsResetting(true);
-    
+
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      
-      // Success - redirect to login
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/v1/auth/login/forgot-password/reset`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          requestId,
+          newPassword,
+          confirmPassword,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data?.message || "Failed to reset password");
+      }
+
       onComplete();
-    } catch (error) {
-      setErrors({ general: "An error occurred. Please try again." });
+    } catch (error: any) {
+      setErrors({ general: error.message || "Something went wrong" });
       setIsResetting(false);
     }
   };
 
+
+
   return (
-    <div className="flex-1 flex flex-col space-y-4 px-6">
-      <div className="flex items-center mb-2">
+    <div className="flex-1 flex flex-col space-y-4 px-1">
+      <div className="flex items-center mb-2 -ml-6">
         <button 
           onClick={onCancel}
           className="p-1 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700"
