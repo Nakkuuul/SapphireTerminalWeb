@@ -6,13 +6,17 @@ import { useRouter } from 'next/navigation';
 interface OtpScreenProps {
   username: string;
   greeting: string;
+  sessionId: string;
   setOtpCompleted?: (completed: boolean) => void;
+  onNextStep: (nextStep: string, session: any) => void;
 }
 
 const OtpScreen: React.FC<OtpScreenProps> = ({ 
   username, 
   greeting,
-  setOtpCompleted = () => {} // Default no-op function
+  sessionId,
+  setOtpCompleted = () => {}, // Default no-op function
+  onNextStep,
 }) => {
   const router = useRouter();
   const [otp, setOtp] = useState<string[]>(["", "", "", "", "", ""]);
@@ -85,8 +89,11 @@ const OtpScreen: React.FC<OtpScreenProps> = ({
     }
   };
 
+  // Check if all OTP fields are empty
+  const allOtpEmpty = otp.every((digit) => digit === "");
+
   return (
-    <div key="otp" className="flex-1 flex flex-col justify-center space-y-6 px-6">
+    <div key="otp" className="flex-1 flex flex-col justify-center space-y-6 px-1">
       <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
         {greeting}, {username}!
       </h2>
@@ -119,18 +126,17 @@ const OtpScreen: React.FC<OtpScreenProps> = ({
         ))}
       </div>
 
-      <div className="flex justify-between items-center">
-        <button className="text-[#22F07D] transition-colors duration-200 text-sm">
-          Resend OTP
-        </button>
-      </div>
-
       <button
         onClick={() => {
           setOtpCompleted(true);
           handleRedirect();
         }}
-        className="mt-2 px-4 py-2 bg-gray-200 dark:bg-gray-700 rounded-md text-sm"
+        disabled={allOtpEmpty}
+        className={`w-full py-3 text-white font-semibold text-sm rounded-lg transition-all duration-200 ${
+          allOtpEmpty
+            ? "bg-[#00A645] cursor-not-allowed opacity-70"
+            : "bg-[#00C853] hover:bg-[#00B649]"
+        }`}
       >
         Verify and Continue
       </button>

@@ -4,6 +4,9 @@ import React, { useState, KeyboardEvent, ChangeEvent, useEffect } from "react";
 import { ChevronLeft, Eye, EyeOff, RefreshCw } from "lucide-react";
 import { useRouter } from 'next/navigation';
 
+// Import the SuccessPage component
+import SuccessPage from "./MPINSuccess";// Adjust path as needed
+
 export interface ForgotMPinProps {
   username: string;
   greeting: string;
@@ -32,6 +35,9 @@ const ForgotMPin: React.FC<ForgotMPinProps> = ({
   const [showNewMpin, setShowNewMpin] = useState<boolean>(false);
   const [showConfirmMpin, setShowConfirmMpin] = useState<boolean>(false);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+
+  // Add state for showing success page
+  const [showSuccessPage, setShowSuccessPage] = useState<boolean>(false);
 
   // Timer states for resend OTP
   const [timeLeft, setTimeLeft] = useState<number>(0);
@@ -98,6 +104,21 @@ const ForgotMPin: React.FC<ForgotMPinProps> = ({
     setTimeout(() => {
       router.push('/stocks');
     }, 700);
+  };
+
+  const handleSuccessPageContinue = () => {
+    setShowSuccessPage(false);
+    
+    // Check if there's a next step stored
+    const nextStepData = sessionStorage.getItem('nextStepData');
+    if (nextStepData) {
+      const { nextStep, sessionData } = JSON.parse(nextStepData);
+      sessionStorage.removeItem('nextStepData');
+      onNextStep(nextStep, sessionData);
+    } else {
+      // Default redirect to stocks page
+      handleRedirect();
+    }
   };
 
   const validateMpinInput = (value: string): string => {
@@ -306,10 +327,17 @@ const ForgotMPin: React.FC<ForgotMPinProps> = ({
       }
 
       setOtpCompleted(true);
+      
+      // Show success page instead of immediate redirect
+      setShowSuccessPage(true);
+      
+      // Handle next step logic after success page is dismissed
       if (data?.data?.nextStep) {
-        onNextStep(data.data.nextStep, data.data);
-      } else {
-        handleRedirect();
+        // Store the next step data for later use
+        sessionStorage.setItem('nextStepData', JSON.stringify({
+          nextStep: data.data.nextStep,
+          sessionData: data.data
+        }));
       }
       
     } catch (err: any) {
@@ -529,10 +557,21 @@ const ForgotMPin: React.FC<ForgotMPinProps> = ({
             : "bg-[#00C853] hover:bg-[#00B649]"
         }`}
       >
-        {isLoading ? 'Resetting...' : 'Forgot MPIN'}
+        {isLoading ? 'Resetting...' : 'Reset MPIN'}
       </button>
     </div>
   );
+
+  // Render success page if MPIN reset is successful
+  if (showSuccessPage) {
+    return (
+      <SuccessPage
+        title="MPIN Reset Successfully"
+        message="Your MPIN has been reset successfully. You can now login with your new MPIN."
+        onContinue={handleSuccessPageContinue}
+      />
+    );
+  }
 
   return (
     <div className="flex-1 flex flex-col space-y-[1.7rem] px-[0.21rem]">
