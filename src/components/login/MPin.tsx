@@ -88,7 +88,7 @@ const MPin: React.FC<OtpScreenProps> = ({
       } else {
         setIsRedirecting(true);
         setTimeout(() => {
-          router.push('/stocks');
+          router.push('/home');
         }, 700);
       }
 
@@ -107,7 +107,7 @@ const MPin: React.FC<OtpScreenProps> = ({
 
   const handleRedirect = () => {
     setTimeout(() => {
-      router.push('/stocks');
+      router.push('/home');
     }, 700); // delay in milliseconds (0.7 seconds)
   };  
 
