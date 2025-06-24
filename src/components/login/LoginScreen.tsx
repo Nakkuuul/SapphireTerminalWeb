@@ -90,18 +90,19 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
 
   const handleTroubleLogin = () => {
     setShowTroubleLogin(true);
-    setShowProgressBar(false);
+    setShowProgressBar(false); // Hide progress bar when entering trouble login flow
   };
 
   const handleTroubleLoginCancel = () => {
     setShowTroubleLogin(false);
-    setShowProgressBar(true);
+    setShowProgressBar(true); // Show progress bar when returning to main login
   };
 
   if (showTroubleLogin) {
     return <TroubleLogin onCancel={handleTroubleLoginCancel} />;
   }
 
+  // Inline animation styles
   const shakeStyle = shake
     ? {
       animation: "shake 0.5s ease-in-out",
@@ -126,6 +127,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
 
   return (
     <div className="flex-1 flex flex-col justify-center space-y-4">
+      {/* Inject the keyframes for the shake animation */}
       <style jsx>{keyframes}</style>
 
       <div className="text-center mb-7 mt-10 space-y-2">
@@ -174,7 +176,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
               }}
               style={shakeStyle}
               className={`w-full p-3 rounded-lg transition-all duration-200 text-left 
-                bg-white dark:bg-[#1E1E1E] text-gray-900 dark:text-white
+                bg-white dark:bg-[#1E1E1E] text-gray-900 dark:text-white text-left
                 ${error
                   ? "border-red-500 focus:border-red-500 focus:ring-red-500"
                   : "border-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-400 focus:ring-blue-400"

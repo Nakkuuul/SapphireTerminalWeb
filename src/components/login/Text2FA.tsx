@@ -159,6 +159,7 @@ const Text2FA: React.FC<OtpScreenProps> = ({
       // Handle successful OTP verification
       setOtpCompleted(true);
       if (data?.data?.nextStep) {
+        // Handle next step based on API response - could be 'mpin' or 'set-mpin'
         onNextStep(data.data.nextStep, data.data);
       } else {
         // Fallback or final step
@@ -245,11 +246,11 @@ const Text2FA: React.FC<OtpScreenProps> = ({
           Enter the code we sent to you.
         </h3>
         <p className="text-xs text-gray-600 dark:text-gray-300">
-           We have sent a 6-digit code to your phone number ending
+           We have sent a 6-digit code to your registered email and mobile number
         </p>
-        <p className="text-xs text-gray-600 dark:text-gray-300">
+        {/* <p className="text-xs text-gray-600 dark:text-gray-300">
            with ••••4567
-        </p>
+        </p> */}
         {error && <p className="text-xs text-red-500">{error}</p>}
       </div>
 

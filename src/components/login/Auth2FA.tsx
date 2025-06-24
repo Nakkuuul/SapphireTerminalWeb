@@ -24,6 +24,8 @@ const OtpScreen: React.FC<OtpScreenProps> = ({
   const [isF, setIsF] = useState<boolean>(false);
   const [iT, setIT] = useState<number>(30);
   const [iE, setIE] = useState<boolean>(false);
+  const [error, setError] = useState<boolean>(false);
+  const [shake, setShake] = useState<boolean>(false);
 
   useEffect(() => {
     if (isF && iT > 0) {
@@ -46,9 +48,51 @@ const OtpScreen: React.FC<OtpScreenProps> = ({
     }, 700); // delay in milliseconds (1.5 seconds)
   };  
 
-  const handleOtpComplete = () => {
+  const handleOtpComplete = async () => {
+    const otpValue = otp.join('');
+    setError(false);
+    setShake(false);
     setIsRedirecting(true);
-    setTimeout(() => router.push("/"), 500);
+
+    try {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/v1/auth/verify-otp`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          sessionId,
+          otp: otpValue,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data?.message || "Invalid OTP");
+      }
+
+      // OTP verification successful
+      console.log("OTP verification successful:", data);
+      setOtpCompleted(true);
+      
+      if (data?.data?.nextStep) {
+        // Handle next step based on API response - could be 'mpin' or 'set-mpin'
+        onNextStep(data.data.nextStep, data.data);
+      } else {
+        // Default redirect to dashboard
+        handleRedirect();
+      }
+
+    } catch (err) {
+      setError(true);
+      setShake(true);
+      setIsRedirecting(false);
+      setTimeout(() => setShake(false), 500);
+      setOtp(["", "", "", "", "", ""]);
+      // Focus first input
+      document.querySelector<HTMLInputElement>(`input[name="otp-0"]`)?.focus();
+    }
   };
 
   const handleOtpChange = (index: number, value: string) => {
@@ -57,6 +101,7 @@ const OtpScreen: React.FC<OtpScreenProps> = ({
     const newOtp = [...otp];
     newOtp[index] = value;
     setOtp(newOtp);
+    setError(false);
 
     if (value && index < 5) {
       document.querySelector<HTMLInputElement>(`input[name="otp-${index + 1}"]`)?.focus();
@@ -92,8 +137,30 @@ const OtpScreen: React.FC<OtpScreenProps> = ({
   // Check if all OTP fields are empty
   const allOtpEmpty = otp.every((digit) => digit === "");
 
+  // Inline animation styles
+  const shakeStyle = shake
+    ? {
+      animation: "shake 0.5s ease-in-out",
+    }
+    : {};
+
+  const keyframes = `
+    @keyframes shake {
+      0% { transform: translateX(0); }
+      10% { transform: translateX(-5px); }
+      30% { transform: translateX(5px); }
+      50% { transform: translateX(-5px); }
+      70% { transform: translateX(5px); }
+      90% { transform: translateX(-5px); }
+      100% { transform: translateX(0); }
+    }
+  `;
+
   return (
     <div key="otp" className="flex-1 flex flex-col justify-center space-y-6 px-1">
+      {/* Inject the keyframes for the shake animation */}
+      <style jsx>{keyframes}</style>
+
       <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
         {greeting}, {username}!
       </h2>
@@ -119,26 +186,39 @@ const OtpScreen: React.FC<OtpScreenProps> = ({
             pattern="\d*"
             onChange={(e: ChangeEvent<HTMLInputElement>) => handleOtpChange(index, e.target.value)}
             onKeyDown={(e: KeyboardEvent<HTMLInputElement>) => handleKeyDown(index, e)}
-            className="w-[42px] h-[42px] text-center text-lg rounded-md border bg-white dark:bg-[#1E1E1E] text-gray-900 dark:text-white border-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-400 focus:ring-1 focus:ring-opacity-50 focus:outline-none"
+            style={shakeStyle}
+            className={`w-[42px] h-[42px] text-center text-lg rounded-md border bg-white dark:bg-[#1E1E1E] text-gray-900 dark:text-white transition-all duration-200 focus:ring-1 focus:ring-opacity-50 focus:outline-none ${
+              error
+                ? "border-red-500 focus:border-red-500 focus:ring-red-500"
+                : "border-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-400 focus:ring-blue-400"
+            }`}
             autoFocus={index === 0}
             disabled={isRedirecting}
           />
         ))}
       </div>
 
+      {error && (
+        <p className="text-red-500 text-xs text-center">
+          Invalid OTP. Please try again.
+        </p>
+      )}
+
       <button
         onClick={() => {
-          setOtpCompleted(true);
-          handleRedirect();
+          const otpValue = otp.join('');
+          if (otpValue.length === 6) {
+            handleOtpComplete();
+          }
         }}
-        disabled={allOtpEmpty}
+        disabled={allOtpEmpty || isRedirecting}
         className={`w-full py-3 text-white font-semibold text-sm rounded-lg transition-all duration-200 ${
-          allOtpEmpty
+          allOtpEmpty || isRedirecting
             ? "bg-[#00A645] cursor-not-allowed opacity-70"
             : "bg-[#00C853] hover:bg-[#00B649]"
         }`}
       >
-        Verify and Continue
+        {isRedirecting ? "Verifying..." : "Verify and Continue"}
       </button>
     </div>
   );
