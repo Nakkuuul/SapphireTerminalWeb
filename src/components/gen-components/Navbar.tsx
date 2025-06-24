@@ -22,7 +22,7 @@ const Navbar = () => {
 
   // Main navigation links without sub-routes for Trade section
   const navLinks = [
-    { href: "/", label: "Home" },
+    { href: "/home", label: "Home" },
     { href: "/trades/stocks", label: "Trades" },
     // { href: "/news", label: "News" },
     { href: "/watchlist", label: "Watchlist" },
