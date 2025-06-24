@@ -2,7 +2,6 @@ import { NextRequest, NextResponse } from 'next/server'
 
 // Define protected routes (routes that require session)
 const protectedRoutes = [
-    '/home',
   '/stocks',
   '/dashboard',
   '/portfolio',
@@ -16,6 +15,10 @@ const protectedRoutes = [
 // Define public routes (routes that don't require session)
 const publicRoutes = [
   '/',
+  '/login',
+  '/signup',
+  '/forgot-password',
+  // Add more public routes as needed
 ]
 
 async function checkSession(request: NextRequest): Promise<boolean> {
@@ -35,12 +38,15 @@ async function checkSession(request: NextRequest): Promise<boolean> {
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
+  console.log('🔥 Middleware running for:', pathname); // Debug log
+
   // Skip middleware for static files and API routes
   if (
     pathname.startsWith('/_next') ||
     pathname.startsWith('/api') ||
     pathname.includes('.') // Files with extensions
   ) {
+    console.log('⏭️ Skipping middleware for:', pathname);
     return NextResponse.next();
   }
 
@@ -49,19 +55,26 @@ export async function middleware(request: NextRequest) {
     pathname.startsWith(route)
   );
 
-  // Check if current route is public
-  const isPublicRoute = publicRoutes.some(route => 
-    pathname === route || pathname.startsWith(route)
-  );
+  // Check if current route is public (exact match only, not startsWith)
+  const isPublicRoute = publicRoutes.includes(pathname);
 
   // Check if session exists
   const hasSession = await checkSession(request);
 
+  console.log('🔍 Debug info:', {
+    pathname,
+    isProtectedRoute,
+    isPublicRoute,
+    hasSession,
+  });
+
   // If user has session
   if (hasSession) {
-    // If user is on login page and has session, redirect to dashboard
+    // If user is on login page and has session, let client-side handle redirect
+    // (Don't redirect in middleware since token might be set after page load)
     if (pathname === '/' || pathname === '/login') {
-      return NextResponse.redirect(new URL('/stocks', request.url));
+      console.log('🔄 User has session and is on login page, allowing client-side redirect');
+      return NextResponse.next();
     }
     // Allow access to all routes if session exists
     return NextResponse.next();
@@ -75,10 +88,11 @@ export async function middleware(request: NextRequest) {
       const response = NextResponse.redirect(new URL('/', request.url));
       response.cookies.set('redirect-after-login', pathname, {
         maxAge: 300, // 5 minutes
-        httpOnly: true,
+        httpOnly: false, // ❌ Changed: Make it readable by JavaScript
         secure: process.env.NODE_ENV === 'production',
         sameSite: 'lax'
       });
+      console.log('🚫 Storing redirect URL and redirecting to login:', pathname);
       return response;
     }
 
@@ -87,8 +101,16 @@ export async function middleware(request: NextRequest) {
       return NextResponse.next();
     }
 
-    // For any other route, redirect to login
-    return NextResponse.redirect(new URL('/', request.url));
+    // For any other route, redirect to login with redirect URL stored
+    const response = NextResponse.redirect(new URL('/', request.url));
+    response.cookies.set('redirect-after-login', pathname, {
+      maxAge: 300, // 5 minutes
+      httpOnly: false, // ❌ Changed: Make it readable by JavaScript
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax'
+    });
+    console.log('🚫 Storing redirect URL for unknown route and redirecting to login:', pathname);
+    return response;
   }
 
   return NextResponse.next();
