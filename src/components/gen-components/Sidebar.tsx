@@ -97,79 +97,18 @@ const Sidebar: React.FC = () => {
     }
   ];
 
-  // Search results data
-  const searchResults: Stock[] = [
-    {
-      id: 'search1',
-      name: 'Reliance Industries Ltd.',
-      symbol: 'RELIANCE',
-      exchange: 'NSE',
-      price: 2042.63,
-      change: 4.10,
-      changePercent: 24.7,
-      logo: '🏭'
-    },
-    {
-      id: 'search2',
-      name: 'Tata Consultancy Services Ltd.',
-      symbol: 'TCS',
-      exchange: 'NSE',
-      price: 2042.63,
-      change: -4.10,
-      changePercent: -24.7,
-      logo: '💼'
-    },
-    {
-      id: 'search3',
-      name: 'Bharti Airtel Ltd.',
-      symbol: 'BHARTIARTL',
-      exchange: 'NSE',
-      price: 2042.63,
-      change: 4.10,
-      changePercent: 24.7,
-      logo: '📱'
-    },
-    {
-      id: 'search4',
-      name: 'HDFC Bank Ltd.',
-      symbol: 'HDFCBANK',
-      exchange: 'NSE',
-      price: 2042.63,
-      change: 4.10,
-      changePercent: 24.7,
-      logo: '🏦'
-    },
-    {
-      id: 'search5',
-      name: 'HDFC Bank Ltd.',
-      symbol: 'HDFCBANK',
-      exchange: 'NSE',
-      price: 2042.63,
-      change: 4.10,
-      changePercent: 24.7,
-      logo: '🏦'
-    },
-    {
-      id: 'search6',
-      name: 'HDFC Bank Ltd.',
-      symbol: 'HDFCBANK',
-      exchange: 'NSE',
-      price: 2042.63,
-      change: 4.10,
-      changePercent: 24.7,
-      logo: '🏦'
-    },
-    {
-      id: 'search7',
-      name: 'Bharti Airtel Ltd.',
-      symbol: 'BHARTIARTL',
-      exchange: 'NSE',
-      price: 2042.63,
-      change: 4.10,
-      changePercent: 24.7,
-      logo: '📱'
-    }
-  ];
+  // Combine all stocks for searching
+  const allStocks: Stock[] = [...topStocks, ...latestStocks];
+
+  // Filtered search results based on searchQuery
+  const filteredSearchResults: Stock[] =
+    searchQuery.trim() === ''
+      ? []
+      : allStocks.filter(stock =>
+          stock.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          stock.symbol.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          stock.exchange.toLowerCase().includes(searchQuery.toLowerCase())
+        );
 
   const handleSearchClick = () => {
     setShowSearchResults(true);
@@ -214,28 +153,30 @@ const Sidebar: React.FC = () => {
         
         {/* Hover Action Buttons */}
         {isHovered && (
-          <div className="absolute inset-0 bg-white bg-opacity-95 flex items-center justify-center z-10">
-            <div className="flex items-center space-x-1 px-2">
-              <button className="w-8 h-8 bg-green-500 hover:bg-green-600 text-white rounded flex items-center justify-center transition-colors shadow-sm">
-                <span className="text-sm font-bold">B</span>
+          <div
+            className="absolute right-2 top-1/2 -translate-y-1/2 bg-white bg-opacity-95 flex items-center justify-center z-10 rounded shadow-md w-1/2 min-w-[120px] w-auto px-1 py-1 border border-gray-200"
+          >
+            <div className="flex items-center space-x-1">
+              <button className="w-6 h-6 bg-green-500 hover:bg-green-600 text-white rounded flex items-center justify-center transition-colors shadow-sm">
+                <span className="text-xs font-bold">B</span>
               </button>
-              <button className="w-8 h-8 bg-red-500 hover:bg-red-600 text-white rounded flex items-center justify-center transition-colors shadow-sm">
-                <span className="text-sm font-bold">S</span>
+              <button className="w-6 h-6 bg-red-500 hover:bg-red-600 text-white rounded flex items-center justify-center transition-colors shadow-sm">
+                <span className="text-xs font-bold">S</span>
               </button>
-              <button className="w-8 h-8 bg-gray-100 hover:bg-gray-200 text-gray-600 rounded flex items-center justify-center transition-colors shadow-sm border border-gray-300">
-                <Layers className="w-3 h-3" />
+              <button className="w-6 h-6 bg-gray-100 hover:bg-gray-200 text-gray-600 rounded flex items-center justify-center transition-colors shadow-sm border border-gray-300">
+                <Layers className="w-3 h-3" style={{fontSize: '12px'}} />
               </button>
-              <button className="w-8 h-8 bg-gray-100 hover:bg-gray-200 text-gray-600 rounded flex items-center justify-center transition-colors shadow-sm border border-gray-300">
-                <Link className="w-3 h-3" />
+              <button className="w-6 h-6 bg-gray-100 hover:bg-gray-200 text-gray-600 rounded flex items-center justify-center transition-colors shadow-sm border border-gray-300">
+                <Link className="w-3 h-3" style={{fontSize: '12px'}} />
               </button>
-              <button className="w-8 h-8 bg-gray-100 hover:bg-gray-200 text-gray-600 rounded flex items-center justify-center transition-colors shadow-sm border border-gray-300">
-                <TrendingUp className="w-3 h-3" />
+              <button className="w-6 h-6 bg-gray-100 hover:bg-gray-200 text-gray-600 rounded flex items-center justify-center transition-colors shadow-sm border border-gray-300">
+                <TrendingUp className="w-3 h-3" style={{fontSize: '12px'}} />
               </button>
-              <button className="w-8 h-8 bg-gray-100 hover:bg-gray-200 text-gray-600 rounded flex items-center justify-center transition-colors shadow-sm border border-gray-300">
-                <Trash2 className="w-3 h-3" />
+              <button className="w-6 h-6 bg-gray-100 hover:bg-gray-200 text-gray-600 rounded flex items-center justify-center transition-colors shadow-sm border border-gray-300">
+                <Trash2 className="w-3 h-3" style={{fontSize: '12px'}} />
               </button>
-              <button className="w-8 h-8 bg-gray-100 hover:bg-gray-200 text-gray-600 rounded flex items-center justify-center transition-colors shadow-sm border border-gray-300">
-                <ChevronRight className="w-3 h-3" />
+              <button className="w-6 h-6 bg-gray-100 hover:bg-gray-200 text-gray-600 rounded flex items-center justify-center transition-colors shadow-sm border border-gray-300">
+                <ChevronRight className="w-3 h-3" style={{fontSize: '12px'}} />
               </button>
             </div>
           </div>
@@ -373,17 +314,23 @@ const Sidebar: React.FC = () => {
 
   if (showSearchResults) {
     return (
-      <div className="w-[320px] h-screen mx-auto bg-white shadow-sm ml-[26px] mt-[18px] flex flex-col">
+      <div className="w-[320px] h-screen mx-auto bg-white shadow-sm ml-[26px] mt-[18px] flex flex-col overflow-hidden">
         {/* Search Bar - Fixed */}
         <div className="pt-0 border-b border-gray-200 flex-shrink-0">
           <div className="flex items-center space-x-2">
             <div className="relative flex-1">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4 text-[#686868]" />
+              <button 
+                onClick={handleSearchClick}
+                className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4 text-[#686868] z-10"
+              >
+                <Search className="w-4 h-4" />
+              </button>
               <input
                 type="text"
                 placeholder="Search everything..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
+                onFocus={handleSearchClick}
                 className="w-full pl-9 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none  text-[#686868]"
               />
             </div>
@@ -395,7 +342,10 @@ const Sidebar: React.FC = () => {
 
         {/* Search Results */}
         <div className="flex-1 overflow-y-auto">
-          {searchResults.map((stock) => (
+          {filteredSearchResults.length === 0 && searchQuery.trim() !== '' && (
+            <div className="text-center text-gray-400 py-8">No results found.</div>
+          )}
+          {filteredSearchResults.map((stock) => (
             <SearchResultItem key={stock.id} stock={stock} />
           ))}
         </div>
@@ -404,7 +354,7 @@ const Sidebar: React.FC = () => {
   }
 
   return (
-    <div className="w-[320px] h-screen mx-auto bg-white shadow-sm ml-[26px] mt-[18px] flex flex-col">
+    <div className="w-[320px] h-screen mx-auto bg-white shadow-sm ml-[26px] mt-[18px] flex flex-col overflow-hidden">
       {/* Search Bar - Fixed */}
       <div className="border-b border-gray-200 flex-shrink-0">
         <div className="flex items-center space-x-2">
@@ -434,25 +384,27 @@ const Sidebar: React.FC = () => {
       </div>
 
       {/* Pagination - Fixed */}
-      <div className=" py-3 border-b border-gray-00 flex-shrink-0">
-        <div className="flex items-center space-x-1 gap-3">
-          {[1, 2, 3, 4, 5, 6].map((page) => (
-            <button
-              key={page}
-              onClick={() => setCurrentPage(page)}
-              className={`px-3 h-8 rounded text-sm font-medium transition-colors border-[0.5px] ${currentPage === page
-                ? 'bg-[#EEFFF2] text-green-700 border-green-200'
-                : 'text-gray-600 bg-[#F4F4F9] border-[#E5E7EB]'
-              }`}
-            >
-              {page}
-            </button>
-          ))}
+      <div className="py-3 border-b border-gray-00 flex-shrink-0">
+        <div className="relative">
+          <div className="flex items-center space-x-1 gap-3 overflow-x-auto custom-scrollbar pb-3" style={{ scrollbarColor: '#9CA3AF #F3F4F6', scrollbarWidth: 'thin' }}>
+            {Array.from({ length: 20 }, (_, i) => i + 1).map((page) => (
+              <button
+                key={page}
+                onClick={() => setCurrentPage(page)}
+                className={`px-3 h-8 rounded text-sm font-medium transition-colors border-[0.5px] ${currentPage === page
+                  ? 'bg-[#EEFFF2] text-green-700 border-green-200'
+                  : 'text-gray-600 bg-[#F4F4F9] border-[#E5E7EB]'
+                }`}
+              >
+                {page}
+              </button>
+            ))}
+          </div>
         </div>
       </div>
 
       {/* Scrollable Content Area */}
-      <div className=" overflow-y-auto">
+      <div>
         {/* Top Stocks Section */}
         <div className='border-none'>
           <SectionHeader
@@ -461,7 +413,7 @@ const Sidebar: React.FC = () => {
             onToggle={() => setShowTopStocks(!showTopStocks)}
           />
           {showTopStocks && (
-            <div className="divide-y divide-gray-100">
+            <div className="divide-y divide-gray-100 overflow-y-auto overflow-x-hidden max-h-64 pr-1 auto-hide-scrollbar">
               {topStocks.map((stock) => (
                 <StockItem key={stock.id} stock={stock} />
               ))}
@@ -477,7 +429,7 @@ const Sidebar: React.FC = () => {
             onToggle={() => setShowLatest(!showLatest)}
           />
           {showLatest && (
-            <div className="divide-y divide-gray-100">
+            <div className="divide-y divide-gray-100 overflow-y-auto overflow-x-hidden max-h-64 pr-1 auto-hide-scrollbar">
               {latestStocks.map((stock) => (
                 <StockItem key={stock.id} stock={stock} />
               ))}
@@ -490,3 +442,30 @@ const Sidebar: React.FC = () => {
 };
 
 export default Sidebar;
+
+/* Add this to your global CSS for auto-hide scrollbars */
+/*
+.auto-hide-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: transparent transparent;
+  transition: scrollbar-color 0.2s;
+}
+.auto-hide-scrollbar:hover, .auto-hide-scrollbar:focus-within, .auto-hide-scrollbar:active {
+  scrollbar-color: #9CA3AF #F3F4F6;
+}
+.auto-hide-scrollbar::-webkit-scrollbar {
+  height: 0.5px;
+  width: 6px;
+  background: transparent;
+}
+.auto-hide-scrollbar::-webkit-scrollbar-thumb {
+  background: transparent;
+  border-radius: 0;
+  transition: background 0.2s;
+}
+.auto-hide-scrollbar:hover::-webkit-scrollbar-thumb,
+.auto-hide-scrollbar:focus-within::-webkit-scrollbar-thumb,
+.auto-hide-scrollbar:active::-webkit-scrollbar-thumb {
+  background: #9CA3AF;
+}
+*/
