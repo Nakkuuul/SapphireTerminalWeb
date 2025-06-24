@@ -11,6 +11,7 @@ interface LoginScreenProps {
   setUsername: (username: string) => void;
   setShowProgressBar?: (show: boolean) => void;
   onNextStep: (nextStep: string, session: any) => void;
+  greeting?: string; // Add optional greeting prop
 }
 
 const LoginScreen: React.FC<LoginScreenProps> = ({
@@ -19,6 +20,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
   setUsername,
   setShowProgressBar = () => {},
   onNextStep,
+  greeting, // Add greeting to destructuring
 }) => {
   const [password, setPassword] = useState<string>("");
   const [showPassword, setShowPassword] = useState<boolean>(false);
@@ -68,14 +70,9 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
       if (data?.data?.nextStep) {
         if(data.data.nextStep === "2fa"){
           onNextStep(data.data.twoFactorMethod, data.data);
-                    onNextStep("set-mpin", data.data); // send full session
-          onNextStep(data.data.nextStep, data.data); // send full session
-
         }else{
           onNextStep(data.data.nextStep, data.data);
         }
-        // onNextStep("sms_otp", data.data); // send full session
-        // onNextStep("authenticator", data.data); // send full session
       }
 
     } catch (err: any) {
