@@ -1,6 +1,7 @@
 "use client";
 import React, { useState } from 'react';
 import { Search, Filter, Plus, ChevronUp, ChevronDown, Edit2, Layers, Link, TrendingUp, Trash2, ChevronRight } from 'lucide-react';
+import MarketDepth from './MarketDepth';
 
 interface Stock {
   id: string;
@@ -19,6 +20,7 @@ const Sidebar: React.FC = () => {
   const [showTopStocks, setShowTopStocks] = useState(true);
   const [showLatest, setShowLatest] = useState(true);
   const [showSearchResults, setShowSearchResults] = useState(false);
+  const [openDepthId, setOpenDepthId] = useState<string | null>(null);
 
   // Hard-coded stock data
   const topStocks: Stock[] = [
@@ -384,7 +386,7 @@ const Sidebar: React.FC = () => {
         {/* Hover Action Buttons */}
         {isHovered && (
           <div
-            className="absolute right-0 top-1/2 -translate-y-1/2 bg-[#F4F4F9] flex items-center justify-center z-10 rounded-[3px] shadow-[0_2px_4px_0_#FAFAFA] w-1/2 min-w-[120px] w-auto px-[6px] py-[6px] border border-gray-200"
+            className="absolute right-0 top-1/2 -translate-y-1/2 bg-[#F4F4F9] flex flex-col items-center z-10 rounded-[3px] shadow-[0_2px_4px_0_#FAFAFA] w-1/2 min-w-[120px] w-auto px-[6px] py-[6px] border border-gray-200"
           >
             <div className="flex items-center space-x-1">
               <button className="w-6 h-6 hover:bg-[#04B94E] text-white rounded flex items-center justify-center transition-colors shadow-sm bg-[#00CA52]">
@@ -393,7 +395,8 @@ const Sidebar: React.FC = () => {
               <button className="w-6 h-6 hover:bg-[#F84848] text-white rounded flex items-center justify-center transition-colors shadow-sm bg-[#FF5252]">
                 <span className="text-xs font-bold">S</span>
               </button>
-              <button className="w-6 h-6 bg-gray-100 hover:bg-gray-200 text-gray-600 rounded flex items-center justify-center transition-colors shadow-sm border-[0.3px] border-[#8F8F8F]">
+              <button className="w-6 h-6 bg-gray-100 hover:bg-gray-200 text-gray-600 rounded flex items-center justify-center transition-colors shadow-sm border-[0.3px] border-[#8F8F8F]"
+                onClick={e => { e.stopPropagation(); setOpenDepthId(openDepthId === stock.id ? null : stock.id); }}>
                 <img src="/LayerIcon.svg" alt="Layer" className="w-3 h-3" style={{fontSize: '12px'}} />
               </button>
               <button className="w-6 h-6 bg-gray-100 hover:bg-gray-200 text-gray-600 rounded flex items-center justify-center transition-colors shadow-sm border-[0.3px] border-[#8F8F8F]">
@@ -413,7 +416,7 @@ const Sidebar: React.FC = () => {
         )}
 
         <div className="text-right">
-          <div className="font-semibold text-gray-900 text-[14px] mb-[4px]">{stock.price.toFixed(2)}</div>
+          <div className="font-semibold text-medium text-gray-900 text-[14px] mb-[4px]">{stock.price.toFixed(2)}</div>
           <div className={`text-[12px] ${stock.change >= 0 ? 'text-green-600' : 'text-red-600'}`}>
             {stock.change >= 0 ? '+' : ''}{stock.change.toFixed(2)} ({stock.change >= 0 ? '+' : ''}{stock.changePercent.toFixed(1)}%)
           </div>
@@ -542,7 +545,7 @@ const Sidebar: React.FC = () => {
 
   if (showSearchResults) {
     return (
-      <div className="w-[320px] h-screen mx-auto bg-white shadow-sm ml-[26px] mt-[18px] flex flex-col overflow-hidden">
+      <div className="fixed top-20 left-0 w-[320px] h-[calc(100vh-64px)] bg-white shadow-sm ml-[26px] mt-[18px] flex flex-col overflow-hidden z-30">
         {/* Search Bar - Fixed */}
         <div className="pt-0  border-gray-200 flex-shrink-0  mb-2">
           <div className="flex items-center space-x-2">
@@ -569,7 +572,7 @@ const Sidebar: React.FC = () => {
         <FilterTabs />
 
         {/* Search Results */}
-        <div className="flex-1 overflow-y-auto">
+        <div className="flex-1 overflow-y-auto hide-scrollbar">
           {filteredSearchResults.length === 0 && searchQuery.trim() !== '' && (
             <div className="text-center text-gray-400 py-8">No results found.</div>
           )}
@@ -583,7 +586,7 @@ const Sidebar: React.FC = () => {
 
   return (
     // <div className="w-[320px] h-screen mx-auto bg-white shadow-sm ml-[26px] mt-[18px] flex flex-col overflow-hidden">
-      <div className="fixed top-20 left-0 w-[320px] h-[calc(100vh-64px)] bg-white shadow-sm ml-[26px] mt-[18px] flex flex-col overflow-hidden z-30">
+      <div className="fixed top-20 left-0 w-[328px] h-[calc(100vh-64px)] bg-white shadow-sm ml-[26px] mt-[18px] flex flex-col overflow-hidden z-30">
       {/* Search Bar - Fixed */}
       <div className=" border-gray-200 flex-shrink-0">
         <div className="flex items-center space-x-2">
@@ -633,7 +636,7 @@ const Sidebar: React.FC = () => {
       </div>
 
       {/* Scrollable Content Area */}
-      <div className="flex-1 overflow-y-auto hide-scrollbar pr-1">
+      <div className="flex-1 overflow-y-auto hide-scrollbar pr-1 border border-gray-200 pl-[6px] pr-[6px]">
         {/* Top Stocks Section */}
         <div className='border-none'>
           <SectionHeader
@@ -643,9 +646,12 @@ const Sidebar: React.FC = () => {
           />
           {showTopStocks && (
             <div className="divide-y divide-gray-100">
-              {topStocks.map((stock) => (
-                <StockItem key={stock.id} stock={stock} />
-              ))}
+              {topStocks.map((stock) => [
+                <StockItem key={stock.id} stock={stock} />,
+                openDepthId === stock.id && (
+                  <div key={stock.id + '-depth'} className="w-full"><MarketDepth /></div>
+                )
+              ])}
             </div>
           )}
         </div>
@@ -659,9 +665,12 @@ const Sidebar: React.FC = () => {
           />
           {showLatest && (
             <div className="divide-y divide-gray-100">
-              {latestStocks.map((stock) => (
-                <StockItem key={stock.id} stock={stock} />
-              ))}
+              {latestStocks.map((stock) => [
+                <StockItem key={stock.id} stock={stock} />,
+                openDepthId === stock.id && (
+                  <div key={stock.id + '-depth'} className="w-full"><MarketDepth /></div>
+                )
+              ])}
             </div>
           )}
         </div>
