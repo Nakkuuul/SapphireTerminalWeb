@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { Search, Filter, Plus, ChevronUp, ChevronDown, Edit2, Layers, Link, TrendingUp, Trash2, ChevronRight } from 'lucide-react';
 import MarketDepth from './MarketDepth';
+import CreateWatchlistCategoryModals from './CreateWatchlistCategoryModals';
 
 interface Stock {
   id: string;
@@ -14,323 +15,361 @@ interface Stock {
   logo?: React.ReactNode;
 }
 
+interface Category {
+  id: string;
+  name: string;
+  watchlists: Stock[];
+}
+
 const Sidebar: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [currentPage, setCurrentPage] = useState(3);
-  const [showTopStocks, setShowTopStocks] = useState(true);
-  const [showLatest, setShowLatest] = useState(true);
+  const [expandedCategories, setExpandedCategories] = useState<{ [id: string]: boolean }>({});
   const [showSearchResults, setShowSearchResults] = useState(false);
   const [openDepthId, setOpenDepthId] = useState<string | null>(null);
+  const [showPopover, setShowPopover] = useState(false);
+  const [showWatchlistModal, setShowWatchlistModal] = useState(false);
+  const [showCategoryModal, setShowCategoryModal] = useState(false);
+  const [selectedCategoryId, setSelectedCategoryId] = useState<string | null>(null);
 
-  // Hard-coded stock data
-  const topStocks: Stock[] = [
+  // Initial categories state
+  const [categories, setCategories] = useState<Category[]>([
     {
-      id: '1',
-      name: 'Reliance Industries Ltd.',
-      symbol: 'RELIANCE',
-      exchange: 'NSE',
-      price: 2042.63,
-      change: 4.10,
-      changePercent: 24.7,
-      logo: '🏭'
+      id: 'top',
+      name: 'Top Stocks',
+      watchlists: [
+        {
+          id: '1',
+          name: 'Reliance Industries Ltd.',
+          symbol: 'RELIANCE',
+          exchange: 'NSE',
+          price: 2042.63,
+          change: 4.10,
+          changePercent: 24.7,
+          logo: '🏭'
+        },
+        {
+          id: '2',
+          name: 'Tata Consultancy Services Ltd.',
+          symbol: 'TCS',
+          exchange: 'NSE',
+          price: 2042.63,
+          change: -4.10,
+          changePercent: -24.7,
+          logo: '💼'
+        },
+        {
+          id: '3',
+          name: 'HDFC Bank Ltd.',
+          symbol: 'HDFCBANK',
+          exchange: 'NSE',
+          price: 2042.63,
+          change: 4.10,
+          changePercent: 24.7,
+          logo: '🏦'
+        },
+        {
+          id: '4',
+          name: 'Bharti Airtel Ltd.',
+          symbol: 'BHARTIARTL',
+          exchange: 'NSE',
+          price: 2042.63,
+          change: 4.10,
+          changePercent: 24.7,
+          logo: '📱'
+        },
+        {
+          id: '5',
+          name: 'Infosys Ltd.',
+          symbol: 'INFY',
+          exchange: 'NSE',
+          price: 1500.50,
+          change: 10.25,
+          changePercent: 0.7,
+          logo: '💻'
+        },
+        {
+          id: '6',
+          name: 'ICICI Bank Ltd.',
+          symbol: 'ICICIBANK',
+          exchange: 'NSE',
+          price: 900.10,
+          change: -2.15,
+          changePercent: -0.24,
+          logo: '🏦'
+        },
+        {
+          id: '7',
+          name: 'Hindustan Unilever Ltd.',
+          symbol: 'HINDUNILVR',
+          exchange: 'NSE',
+          price: 2500.00,
+          change: 5.00,
+          changePercent: 0.2,
+          logo: '🧴'
+        },
+        {
+          id: '8',
+          name: 'State Bank of India',
+          symbol: 'SBIN',
+          exchange: 'NSE',
+          price: 600.75,
+          change: 3.50,
+          changePercent: 0.58,
+          logo: '🏦'
+        },
+        {
+          id: '9',
+          name: 'Asian Paints Ltd.',
+          symbol: 'ASIANPAINT',
+          exchange: 'NSE',
+          price: 3200.20,
+          change: -12.00,
+          changePercent: -0.37,
+          logo: '🎨'
+        },
+        {
+          id: '10',
+          name: 'Bajaj Finance Ltd.',
+          symbol: 'BAJFINANCE',
+          exchange: 'NSE',
+          price: 7000.00,
+          change: 50.00,
+          changePercent: 0.72,
+          logo: '💳'
+        },
+        {
+          id: '11',
+          name: 'Maruti Suzuki India Ltd.',
+          symbol: 'MARUTI',
+          exchange: 'NSE',
+          price: 9000.00,
+          change: 100.00,
+          changePercent: 1.12,
+          logo: '🚗'
+        },
+        {
+          id: '12',
+          name: 'Larsen & Toubro Ltd.',
+          symbol: 'LT',
+          exchange: 'NSE',
+          price: 2500.00,
+          change: 20.00,
+          changePercent: 0.81,
+          logo: '🏗️'
+        },
+        {
+          id: '13',
+          name: 'Sun Pharmaceutical Industries Ltd.',
+          symbol: 'SUNPHARMA',
+          exchange: 'NSE',
+          price: 1100.00,
+          change: 8.00,
+          changePercent: 0.73,
+          logo: '💊'
+        },
+        {
+          id: '14',
+          name: 'Nestle India Ltd.',
+          symbol: 'NESTLEIND',
+          exchange: 'NSE',
+          price: 22000.00,
+          change: -150.00,
+          changePercent: -0.68,
+          logo: '🍫'
+        },
+        {
+          id: '15',
+          name: 'UltraTech Cement Ltd.',
+          symbol: 'ULTRACEMCO',
+          exchange: 'NSE',
+          price: 8000.00,
+          change: 60.00,
+          changePercent: 0.75,
+          logo: '🏢'
+        }
+      ],
     },
     {
-      id: '2',
-      name: 'Tata Consultancy Services Ltd.',
-      symbol: 'TCS',
-      exchange: 'NSE',
-      price: 2042.63,
-      change: -4.10,
-      changePercent: -24.7,
-      logo: '💼'
+      id: 'latest',
+      name: 'Latest',
+      watchlists: [
+        {
+          id: '16',
+          name: 'Reliance Industries Ltd.',
+          symbol: 'RELIANCE',
+          exchange: 'NSE',
+          price: 2042.63,
+          change: 4.10,
+          changePercent: 24.7,
+          logo: '🏭'
+        },
+        {
+          id: '17',
+          name: 'Tata Consultancy Services Ltd.',
+          symbol: 'TCS',
+          exchange: 'NSE',
+          price: 2042.63,
+          change: -4.10,
+          changePercent: -24.7,
+          logo: '💼'
+        },
+        {
+          id: '18',
+          name: 'HDFC Bank Ltd.',
+          symbol: 'HDFCBANK',
+          exchange: 'NSE',
+          price: 2042.63,
+          change: 4.10,
+          changePercent: 24.7,
+          logo: '🏦'
+        },
+        {
+          id: '19',
+          name: 'Bharti Airtel Ltd.',
+          symbol: 'BHARTIARTL',
+          exchange: 'NSE',
+          price: 2042.63,
+          change: 4.10,
+          changePercent: 24.7,
+          logo: '📱'
+        },
+        {
+          id: '20',
+          name: 'Infosys Ltd.',
+          symbol: 'INFY',
+          exchange: 'NSE',
+          price: 1500.50,
+          change: 10.25,
+          changePercent: 0.7,
+          logo: '💻'
+        },
+        {
+          id: '21',
+          name: 'ICICI Bank Ltd.',
+          symbol: 'ICICIBANK',
+          exchange: 'NSE',
+          price: 900.10,
+          change: -2.15,
+          changePercent: -0.24,
+          logo: '🏦'
+        },
+        {
+          id: '22',
+          name: 'Hindustan Unilever Ltd.',
+          symbol: 'HINDUNILVR',
+          exchange: 'NSE',
+          price: 2500.00,
+          change: 5.00,
+          changePercent: 0.2,
+          logo: '🧴'
+        },
+        {
+          id: '23',
+          name: 'State Bank of India',
+          symbol: 'SBIN',
+          exchange: 'NSE',
+          price: 600.75,
+          change: 3.50,
+          changePercent: 0.58,
+          logo: '🏦'
+        },
+        {
+          id: '24',
+          name: 'Asian Paints Ltd.',
+          symbol: 'ASIANPAINT',
+          exchange: 'NSE',
+          price: 3200.20,
+          change: -12.00,
+          changePercent: -0.37,
+          logo: '🎨'
+        },
+        {
+          id: '25',
+          name: 'Bajaj Finance Ltd.',
+          symbol: 'BAJFINANCE',
+          exchange: 'NSE',
+          price: 7000.00,
+          change: 50.00,
+          changePercent: 0.72,
+          logo: '💳'
+        },
+        {
+          id: '26',
+          name: 'Maruti Suzuki India Ltd.',
+          symbol: 'MARUTI',
+          exchange: 'NSE',
+          price: 9000.00,
+          change: 100.00,
+          changePercent: 1.12,
+          logo: '🚗'
+        },
+        {
+          id: '27',
+          name: 'Larsen & Toubro Ltd.',
+          symbol: 'LT',
+          exchange: 'NSE',
+          price: 2500.00,
+          change: 20.00,
+          changePercent: 0.81,
+          logo: '🏗️'
+        },
+        {
+          id: '28',
+          name: 'Sun Pharmaceutical Industries Ltd.',
+          symbol: 'SUNPHARMA',
+          exchange: 'NSE',
+          price: 1100.00,
+          change: 8.00,
+          changePercent: 0.73,
+          logo: '💊'
+        },
+        {
+          id: '29',
+          name: 'Nestle India Ltd.',
+          symbol: 'NESTLEIND',
+          exchange: 'NSE',
+          price: 22000.00,
+          change: -150.00,
+          changePercent: -0.68,
+          logo: '🍫'
+        },
+        {
+          id: '30',
+          name: 'UltraTech Cement Ltd.',
+          symbol: 'ULTRACEMCO',
+          exchange: 'NSE',
+          price: 8000.00,
+          change: 60.00,
+          changePercent: 0.75,
+          logo: '🏢'
+        }
+      ],
     },
-    {
-      id: '3',
-      name: 'HDFC Bank Ltd.',
-      symbol: 'HDFCBANK',
-      exchange: 'NSE',
-      price: 2042.63,
-      change: 4.10,
-      changePercent: 24.7,
-      logo: '🏦'
-    },
-    {
-      id: '4',
-      name: 'Bharti Airtel Ltd.',
-      symbol: 'BHARTIARTL',
-      exchange: 'NSE',
-      price: 2042.63,
-      change: 4.10,
-      changePercent: 24.7,
-      logo: '📱'
-    },
-    {
-      id: '5',
-      name: 'Infosys Ltd.',
-      symbol: 'INFY',
-      exchange: 'NSE',
-      price: 1500.50,
-      change: 10.25,
-      changePercent: 0.7,
-      logo: '💻'
-    },
-    {
-      id: '6',
-      name: 'ICICI Bank Ltd.',
-      symbol: 'ICICIBANK',
-      exchange: 'NSE',
-      price: 900.10,
-      change: -2.15,
-      changePercent: -0.24,
-      logo: '🏦'
-    },
-    {
-      id: '7',
-      name: 'Hindustan Unilever Ltd.',
-      symbol: 'HINDUNILVR',
-      exchange: 'NSE',
-      price: 2500.00,
-      change: 5.00,
-      changePercent: 0.2,
-      logo: '🧴'
-    },
-    {
-      id: '8',
-      name: 'State Bank of India',
-      symbol: 'SBIN',
-      exchange: 'NSE',
-      price: 600.75,
-      change: 3.50,
-      changePercent: 0.58,
-      logo: '🏦'
-    },
-    {
-      id: '9',
-      name: 'Asian Paints Ltd.',
-      symbol: 'ASIANPAINT',
-      exchange: 'NSE',
-      price: 3200.20,
-      change: -12.00,
-      changePercent: -0.37,
-      logo: '🎨'
-    },
-    {
-      id: '10',
-      name: 'Bajaj Finance Ltd.',
-      symbol: 'BAJFINANCE',
-      exchange: 'NSE',
-      price: 7000.00,
-      change: 50.00,
-      changePercent: 0.72,
-      logo: '💳'
-    },
-    {
-      id: '11',
-      name: 'Maruti Suzuki India Ltd.',
-      symbol: 'MARUTI',
-      exchange: 'NSE',
-      price: 9000.00,
-      change: 100.00,
-      changePercent: 1.12,
-      logo: '🚗'
-    },
-    {
-      id: '12',
-      name: 'Larsen & Toubro Ltd.',
-      symbol: 'LT',
-      exchange: 'NSE',
-      price: 2500.00,
-      change: 20.00,
-      changePercent: 0.81,
-      logo: '🏗️'
-    },
-    {
-      id: '13',
-      name: 'Sun Pharmaceutical Industries Ltd.',
-      symbol: 'SUNPHARMA',
-      exchange: 'NSE',
-      price: 1100.00,
-      change: 8.00,
-      changePercent: 0.73,
-      logo: '💊'
-    },
-    {
-      id: '14',
-      name: 'Nestle India Ltd.',
-      symbol: 'NESTLEIND',
-      exchange: 'NSE',
-      price: 22000.00,
-      change: -150.00,
-      changePercent: -0.68,
-      logo: '🍫'
-    },
-    {
-      id: '15',
-      name: 'UltraTech Cement Ltd.',
-      symbol: 'ULTRACEMCO',
-      exchange: 'NSE',
-      price: 8000.00,
-      change: 60.00,
-      changePercent: 0.75,
-      logo: '🏢'
-    }
-  ];
+  ]);
 
-  const latestStocks: Stock[] = [
-    {
-      id: '16',
-      name: 'Reliance Industries Ltd.',
-      symbol: 'RELIANCE',
-      exchange: 'NSE',
-      price: 2042.63,
-      change: 4.10,
-      changePercent: 24.7,
-      logo: '🏭'
-    },
-    {
-      id: '17',
-      name: 'Tata Consultancy Services Ltd.',
-      symbol: 'TCS',
-      exchange: 'NSE',
-      price: 2042.63,
-      change: -4.10,
-      changePercent: -24.7,
-      logo: '💼'
-    },
-    {
-      id: '18',
-      name: 'HDFC Bank Ltd.',
-      symbol: 'HDFCBANK',
-      exchange: 'NSE',
-      price: 2042.63,
-      change: 4.10,
-      changePercent: 24.7,
-      logo: '🏦'
-    },
-    {
-      id: '19',
-      name: 'Bharti Airtel Ltd.',
-      symbol: 'BHARTIARTL',
-      exchange: 'NSE',
-      price: 2042.63,
-      change: 4.10,
-      changePercent: 24.7,
-      logo: '📱'
-    },
-    {
-      id: '20',
-      name: 'Infosys Ltd.',
-      symbol: 'INFY',
-      exchange: 'NSE',
-      price: 1500.50,
-      change: 10.25,
-      changePercent: 0.7,
-      logo: '💻'
-    },
-    {
-      id: '21',
-      name: 'ICICI Bank Ltd.',
-      symbol: 'ICICIBANK',
-      exchange: 'NSE',
-      price: 900.10,
-      change: -2.15,
-      changePercent: -0.24,
-      logo: '🏦'
-    },
-    {
-      id: '22',
-      name: 'Hindustan Unilever Ltd.',
-      symbol: 'HINDUNILVR',
-      exchange: 'NSE',
-      price: 2500.00,
-      change: 5.00,
-      changePercent: 0.2,
-      logo: '🧴'
-    },
-    {
-      id: '23',
-      name: 'State Bank of India',
-      symbol: 'SBIN',
-      exchange: 'NSE',
-      price: 600.75,
-      change: 3.50,
-      changePercent: 0.58,
-      logo: '🏦'
-    },
-    {
-      id: '24',
-      name: 'Asian Paints Ltd.',
-      symbol: 'ASIANPAINT',
-      exchange: 'NSE',
-      price: 3200.20,
-      change: -12.00,
-      changePercent: -0.37,
-      logo: '🎨'
-    },
-    {
-      id: '25',
-      name: 'Bajaj Finance Ltd.',
-      symbol: 'BAJFINANCE',
-      exchange: 'NSE',
-      price: 7000.00,
-      change: 50.00,
-      changePercent: 0.72,
-      logo: '💳'
-    },
-    {
-      id: '26',
-      name: 'Maruti Suzuki India Ltd.',
-      symbol: 'MARUTI',
-      exchange: 'NSE',
-      price: 9000.00,
-      change: 100.00,
-      changePercent: 1.12,
-      logo: '🚗'
-    },
-    {
-      id: '27',
-      name: 'Larsen & Toubro Ltd.',
-      symbol: 'LT',
-      exchange: 'NSE',
-      price: 2500.00,
-      change: 20.00,
-      changePercent: 0.81,
-      logo: '🏗️'
-    },
-    {
-      id: '28',
-      name: 'Sun Pharmaceutical Industries Ltd.',
-      symbol: 'SUNPHARMA',
-      exchange: 'NSE',
-      price: 1100.00,
-      change: 8.00,
-      changePercent: 0.73,
-      logo: '💊'
-    },
-    {
-      id: '29',
-      name: 'Nestle India Ltd.',
-      symbol: 'NESTLEIND',
-      exchange: 'NSE',
-      price: 22000.00,
-      change: -150.00,
-      changePercent: -0.68,
-      logo: '🍫'
-    },
-    {
-      id: '30',
-      name: 'UltraTech Cement Ltd.',
-      symbol: 'ULTRACEMCO',
-      exchange: 'NSE',
-      price: 8000.00,
-      change: 60.00,
-      changePercent: 0.75,
-      logo: '🏢'
+  // Helper to add a new category
+  const addCategory = (name: string) => {
+    setCategories(prev => [
+      ...prev,
+      { id: Date.now().toString(), name, watchlists: [] }
+    ]);
+  };
+
+  // Helper to add a new watchlist (stock) to the selected category
+  const addWatchlist = (name: string) => {
+    if (!selectedCategoryId && categories.length > 0) {
+      setSelectedCategoryId(categories[0].id);
     }
-  ];
+    setCategories(prev => prev.map(cat =>
+      cat.id === (selectedCategoryId || categories[0].id)
+        ? { ...cat, watchlists: [...cat.watchlists, { id: Date.now().toString(), name, symbol: name.toUpperCase(), exchange: 'NSE', price: 0, change: 0, changePercent: 0 }] }
+        : cat
+    ));
+  };
 
   // Combine all stocks for searching
-  const allStocks: Stock[] = [...topStocks, ...latestStocks];
+  const allStocks: Stock[] = categories.flatMap(cat => cat.watchlists);
 
   // Filtered search results based on searchQuery
   const filteredSearchResults: Stock[] =
@@ -543,6 +582,16 @@ const Sidebar: React.FC = () => {
     );
   };
 
+  // Modal handlers
+  const handleCreateCategory = (name: string) => {
+    addCategory(name);
+    setShowCategoryModal(false);
+  };
+  const handleCreateWatchlist = (name: string) => {
+    addWatchlist(name);
+    setShowWatchlistModal(false);
+  };
+
   if (showSearchResults) {
     return (
       <div className="fixed top-20 left-0 w-[320px] h-[calc(100vh-64px)] bg-white shadow-sm ml-[26px] mt-[18px] flex flex-col overflow-hidden z-30">
@@ -585,8 +634,7 @@ const Sidebar: React.FC = () => {
   }
 
   return (
-    // <div className="w-[320px] h-screen mx-auto bg-white shadow-sm ml-[26px] mt-[18px] flex flex-col overflow-hidden">
-      <div className="fixed top-20 left-0 w-[328px] h-[calc(100vh-64px)] bg-white shadow-sm ml-[26px] mt-[18px] flex flex-col overflow-hidden z-30">
+    <div className="fixed top-20 left-0 w-[328px] h-[calc(100vh-64px)] bg-white shadow-sm ml-[26px] mt-[18px] flex flex-col overflow-hidden z-30">
       {/* Search Bar - Fixed */}
       <div className=" border-gray-200 flex-shrink-0">
         <div className="flex items-center space-x-2">
@@ -609,9 +657,30 @@ const Sidebar: React.FC = () => {
               <Filter className="w-4 h-4 text-[#686868]" />
             </button>
           </div>
-          <button className="p-1 text-gray-400 hover:text-gray-600 transition-colors">
-            <Plus className="w-5 h-5 text-[#686868]" />
-          </button>
+          <div className="relative">
+            <button
+              className="p-1 text-gray-400 hover:text-gray-600 transition-colors"
+              onClick={() => setShowPopover((v) => !v)}
+            >
+              <Plus className="w-5 h-5 text-[#686868]" />
+            </button>
+            {showPopover && (
+              <div className="absolute right-0 mt-2 w-44 bg-white rounded-lg shadow-lg border border-gray-100 z-50 flex flex-col py-2">
+                <button
+                  className="px-4 py-2 text-left text-sm hover:bg-gray-100 text-gray-800"
+                  onClick={() => { setShowWatchlistModal(true); setShowPopover(false); }}
+                >
+                  Create Watchlist
+                </button>
+                <button
+                  className="px-4 py-2 text-left text-sm hover:bg-gray-100 text-gray-800"
+                  onClick={() => { setShowCategoryModal(true); setShowPopover(false); }}
+                >
+                  Create Category
+                </button>
+              </div>
+            )}
+          </div>
         </div>
       </div>
 
@@ -637,44 +706,37 @@ const Sidebar: React.FC = () => {
 
       {/* Scrollable Content Area */}
       <div className="flex-1 overflow-y-auto hide-scrollbar pr-1 border border-gray-200 pl-[6px] pr-[6px]">
-        {/* Top Stocks Section */}
-        <div className='border-none'>
-          <SectionHeader
-            title="TOP STOCKS"
-            isExpanded={showTopStocks}
-            onToggle={() => setShowTopStocks(!showTopStocks)}
-          />
-          {showTopStocks && (
-            <div className="divide-y divide-gray-100">
-              {topStocks.map((stock) => [
-                <StockItem key={stock.id} stock={stock} />,
-                openDepthId === stock.id && (
-                  <div key={stock.id + '-depth'} className="w-full"><MarketDepth /></div>
-                )
-              ])}
-            </div>
-          )}
-        </div>
-
-        {/* Latest Section */}
-        <div className="">
-          <SectionHeader
-            title="LATEST"
-            isExpanded={showLatest}
-            onToggle={() => setShowLatest(!showLatest)}
-          />
-          {showLatest && (
-            <div className="divide-y divide-gray-100">
-              {latestStocks.map((stock) => [
-                <StockItem key={stock.id} stock={stock} />,
-                openDepthId === stock.id && (
-                  <div key={stock.id + '-depth'} className="w-full"><MarketDepth /></div>
-                )
-              ])}
-            </div>
-          )}
-        </div>
+        {/* Dynamic Category Sections */}
+        {categories.map(category => (
+          <div className="border-none" key={category.id}>
+            <SectionHeader
+              title={category.name}
+              isExpanded={expandedCategories[category.id] ?? true}
+              onToggle={() => setExpandedCategories(prev => ({ ...prev, [category.id]: !(prev[category.id] ?? true) }))}
+            />
+            {(expandedCategories[category.id] ?? true) && (
+              <div className="divide-y divide-gray-100">
+                {category.watchlists.map((stock) => [
+                  <StockItem key={stock.id} stock={stock} />,
+                  openDepthId === stock.id && (
+                    <div key={stock.id + '-depth'} className="w-full"><MarketDepth /></div>
+                  )
+                ])}
+              </div>
+            )}
+          </div>
+        ))}
       </div>
+
+      {/* Modals for Create Watchlist/Category */}
+      <CreateWatchlistCategoryModals
+        showWatchlistModal={showWatchlistModal}
+        setShowWatchlistModal={setShowWatchlistModal}
+        showCategoryModal={showCategoryModal}
+        setShowCategoryModal={setShowCategoryModal}
+        onCreateCategory={handleCreateCategory}
+        onCreateWatchlist={handleCreateWatchlist}
+      />
     </div>
   );
 };
