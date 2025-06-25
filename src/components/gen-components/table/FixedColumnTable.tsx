@@ -49,7 +49,7 @@ const FixedColumnTable = ({ filteredTrades }: any) => {
       </div>
       
       {/* Scrollable columns */}
-      <div className="overflow-x-auto">
+      <div className="overflow-x-auto custom-scrollbar">
         <table className="border-collapse">
           <thead>
             <tr className="bg-[#F4F4F9] dark:bg-dark-insidecard h-[54px]">
@@ -135,6 +135,32 @@ const FixedColumnTable = ({ filteredTrades }: any) => {
           </tbody>
         </table>
       </div>
+
+      <style jsx global>{`
+        /* Custom scrollbar styles */
+        .custom-scrollbar::-webkit-scrollbar {
+          height: 6px;
+        }
+        
+        .custom-scrollbar::-webkit-scrollbar-track {
+          background: transparent;
+        }
+        
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+          background-color: #d1d5db;
+          border-radius: 3px;
+        }
+        
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+          background-color: #9ca3af;
+        }
+        
+        /* Firefox scrollbar */
+        .custom-scrollbar {
+          scrollbar-width: thin;
+          scrollbar-color: #d1d5db transparent;
+        }
+      `}</style>
     </div>
   );
 };

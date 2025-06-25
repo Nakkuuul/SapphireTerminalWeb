@@ -27,24 +27,24 @@ function TradeSelector() {
   return (
     <>
       {/* Desktop Version - Horizontal Tabs */}
-      <div className="hidden border-b-2 border-gray-200 md:flex w-full justify-center items-center gap-x-4 lg:gap-x-[96px]">
+      <div className="hidden border-b-2 border-gray-200 md:flex w-full justify-center items-end gap-x-4 lg:gap-x-[96px] pt-[28px]">
         {tabs.map((tab) => {
           const isActive = pathname === tab.path;
           return (
             <div
               key={tab.name}
-              className="relative group h-[60px] flex items-center"
+              className="relative group h-[10px] flex items-end"
             >
               <Link
                 href={tab.path}
-                className={`relative group text-base xl:text-xl font-medium pt-2 transition-all duration-300 ${
+                className={`relative group text-base xl:text-lg font-medium pb-2 transition-all duration-300 ${
                   isActive ? "text-[#28A745]" : "text-gray-600"
                 } group-hover:text-[#28A745]`}
               >
                 {tab.name}
                 {/* Green underline animation */}
                 <span
-                  className={`absolute -bottom-[14px] -left-[12px] h-[3px] bg-[#28A745] transition-all duration-300 ${
+                  className={`absolute -bottom-[2px] -left-[12px] h-[3px] bg-[#28A745] transition-all duration-300 ${
                     isActive ? "w-[150%]" : "w-0"
                   } group-hover:w-[150%]`}
                 ></span>

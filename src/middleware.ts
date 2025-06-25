@@ -17,6 +17,10 @@ const protectedRoutes = [
 const publicRoutes = [
   '/test',
   '/',
+  '/trades/stocks',
+  '/trades/futures',
+  '/trades/options',
+  '/trades/commodity',
   '/login',
   '/signup',
   '/forgot-password',

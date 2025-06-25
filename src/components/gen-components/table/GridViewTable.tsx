@@ -53,7 +53,7 @@ const GridViewTable: React.FC<GridViewTableProps> = ({ trades }) => {
                     </svg>
                   </div>
                   <div>
-                    <div className="font-normal text-lg text-black dark:text-[#EBEEF5]">
+                    <div className="font-normal text-base text-black dark:text-[#EBEEF5]">
                       {trade.security}
                       <span
                         className={`px-1.5 text-xs ml-3 rounded ${

@@ -63,7 +63,7 @@ function TradeSelector({ activeComponent, closedComponent }: TradeSelectorProps)
         
         <button
           ref={activeButtonRef}
-          className={`flex-1 px-3 sm:px-6 py-2 sm:py-3 rounded-full text-xs sm:text-xl font-medium transition-colors duration-300 z-10 ${
+          className={`flex-1 px-3 sm:px-6 py-2 sm:py-3 rounded-full text-xs sm:text-lg font-medium transition-colors duration-300 z-10 ${
             selected === "active"
               ? "text-[#1DB954]"
               : "text-gray-500 hover:text-gray-700"
@@ -74,7 +74,7 @@ function TradeSelector({ activeComponent, closedComponent }: TradeSelectorProps)
         </button>
         <button
           ref={closedButtonRef}
-          className={`flex-1 px-3 sm:px-6 py-2 sm:py-3 rounded-full text-xs sm:text-xl font-medium transition-colors duration-300 z-10 ${
+          className={`flex-1 px-3 sm:px-6 py-2 sm:py-3 rounded-full text-xs sm:text-lg font-medium transition-colors duration-300 z-10 ${
             selected === "closed"
               ? "text-[#1DB954]"
               : "text-gray-500 hover:text-gray-700"

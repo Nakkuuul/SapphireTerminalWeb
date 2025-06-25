@@ -3,7 +3,6 @@
 import React, { useState, useEffect } from "react";
 import { Search, X, ArrowRight, ChevronDown, ChevronUp } from "lucide-react";
 import { HiOutlineAdjustments } from "react-icons/hi";
-import Whatsapp from "@/components/gen-components/Whatsapp";
 import Image from "next/image";
 
 interface Trade {
@@ -114,7 +113,7 @@ export default function TradesList() {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between flex-wrap gap-2">
-        <Whatsapp />
+        <div></div>
 
         <div className="flex items-center gap-2">
           <div className="relative">
@@ -220,7 +219,7 @@ export default function TradesList() {
             <div className="py-[14px] px-5 ">
               <div className="flex items-center gap-2">
                 <Image src="/globe.svg" alt="Stock" width={24} height={24} />
-                <div className="text-lg font-medium text-[#212529] dark:text-dark-lighttext">{trade.symbol}</div>
+                <div className="text-base font-medium text-[#212529] dark:text-dark-lighttext">{trade.symbol}</div>
                 <div
                   className={`text-xs font-medium px-2 py-0.5 rounded ${
                     trade.type === "BUY"
