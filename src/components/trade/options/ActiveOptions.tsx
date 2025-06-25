@@ -291,7 +291,7 @@ export default function TradesList() {
             <div className="px-6 py-3  ">
               <div className="flex gap-8">
                 <button
-                  className="w-full text-base text-[#6B7280] px-6 py-2.5 border border-[#D1D5DB] text-gray-700 bg-white dark:bg-dark-insidecard rounded-sm h-[42px]  dark:text-white flex items-center justify-center"
+                  className="w-full text-base text-[#6B7280] px-6 py-2.5 border border-[#D1D5DB] bg-white dark:bg-dark-insidecard rounded-sm h-[42px]  dark:text-white flex items-center justify-center"
                 >
                   About Trade
                 </button>
