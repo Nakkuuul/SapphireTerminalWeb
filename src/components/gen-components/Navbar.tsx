@@ -22,7 +22,7 @@ const Navbar = () => {
 
   // Main navigation links without sub-routes for Trade section
   const navLinks = [
-    { href: "/", label: "Home" },
+    { href: "/home", label: "Home" },
     { href: "/trades/stocks", label: "Trades" },
     // { href: "/news", label: "News" },
     { href: "/watchlist", label: "Watchlist" },
@@ -82,35 +82,35 @@ const Navbar = () => {
 
   return (
     <>
-      <nav className="fixed font-poppins w-full top-0 z-50 bg-white border-b-[3px] border-gray-200">
-        <div className="w-full mx-auto flex items-center justify-between h-[70px]">
+      <nav className="fixed font-poppins w-full top-0 z-50 bg-white border-b-[2px] border-gray-200 px-[38px]">
+        <div className="w-full mx-auto flex items-center justify-between h-[56px]">
           {/* Main single-row layout */}
           <div className="w-full flex items-center justify-between">
             {/* Left section with stock information - exactly 30% width */}
             <div className="w-[29%] h-full relative border-r">
               {/* Stock Information - Internal padding */}
-              <div className="px-9 h-full flex items-center">
-                <div className="flex items-center space-x-8 w-full">
-                  <div className="flex pr-3 border-r flex-col">
+              <div className="px-7 h-full flex items-center">
+                <div className="flex items-center space-x-6 w-full">
+                  <div className="flex pr-2 border-r flex-col">
                     <div className="flex items-center ">
-                      <span className="text-sm font-medium">Nifty 50</span>
-                      <span className="ml-2 bg-red-100 p-1 rounded-sm text-[10px] text-red-500">
+                      <span className="text-xs font-medium">Nifty 50</span>
+                      <span className="ml-2 bg-red-100 p-1 rounded-sm text-[8px] text-red-500">
                         Expiry Today
                       </span>
                     </div>
                     <div className="flex items-center mt-0.5">
-                      <span className="text-xs font-semibold">21,754.29</span>
-                      <span className="ml-1 text-[10px] font-semibold text-[#22F07D]">
+                      <span className="text-[10px] font-semibold">21,754.29</span>
+                      <span className="ml-1 text-[8px] font-semibold text-[#22F07D]">
                         +37.02 (+0.17%)
                       </span>
                     </div>
                   </div>
 
                   <div className="flex flex-col">
-                    <span className="text-sm font-medium">Sensex</span>
+                    <span className="text-xs font-medium">Sensex</span>
                     <div className="flex items-center mt-0.5">
-                      <span className="text-xs font-medium">71,715.96</span>
-                      <span className="ml-1 text-[10px] text-xs text-red-500">
+                      <span className="text-[10px] font-medium">71,715.96</span>
+                      <span className="ml-1 text-[8px]  text-red-500">
                         -27.43 (-0.38%)
                       </span>
                     </div>
@@ -120,17 +120,17 @@ const Navbar = () => {
             </div>
 
             {/* Navigation Links - Left aligned with 36px padding from divider */}
-            <div className="hidden lg:flex flex-1 justify-start items-center pl-[18px]">
-              <div className="flex items-center space-x-[6px]"> 
+            <div className="hidden lg:flex flex-1 justify-start items-center pl-[14px]">
+              <div className="flex items-center space-x-[5px]"> 
                 {navLinks.map((link) => { 
                 // Check if this is the active route or its child route 
                 const isActive = isRouteActive(link.href); 
                 
                 return ( 
-                <div key={link.href} className="relative group w-[100px] text-center"> 
+                <div key={link.href} className="relative group w-[80px] text-center"> 
                 <Link 
                 href={link.href} 
-                className={`relative group text-lg font-normal py-2 transition-all duration-300 ${ 
+                className={`relative group text-sm font-normal py-1 transition-all duration-300 ${ 
                 isActive ? "text-[#1DB954]" : "" 
                 } group-hover:text-[#1DB954]`} 
                 onClick={() => setActiveLink(link.href)} 
@@ -139,7 +139,7 @@ const Navbar = () => {
                 
                 {/* Green underline animation - consistent for both hover & active states */} 
                 <span 
-                className={`absolute -bottom-5 left-1/2 transform -translate-x-1/2 h-[3px] bg-[#1DB954] transition-all duration-300 w-0 
+                className={`absolute -bottom-4 left-1/2 transform -translate-x-1/2 h-[2px] bg-[#1DB954] transition-all duration-300 w-0 
                 ${isActive ? "w-[140%]" : ""} 
                 group-hover:w-[140%]`} 
                 ></span> 
@@ -151,52 +151,52 @@ const Navbar = () => {
             </div>
 
             {/* Desktop Right Side Elements */}
-            <div className="hidden md:flex pr-9 items-center space-x-4">
+            <div className="hidden md:flex pr-7 items-center space-x-3">
               {/* Notifications Bell Icon */}
               <button className="text-gray-700">
-                <BellDot color="black" />
+                <BellDot color="black" size={18} />
               </button>
 
               {/* User Profile Avatar with Dropdown Arrow */}
               <div className="flex items-center">
                 <div
-                  className="h-8 w-8 cursor-pointer rounded-full overflow-hidden border border-gray-300"
+                  className="h-6 w-6 cursor-pointer rounded-full overflow-hidden border border-gray-300"
                   onClick={() => router.push("/profile")}
                 >
                   <Image
                     src="/profile.svg"
                     alt="Profile"
-                    width={32}
-                    height={32}
+                    width={24}
+                    height={24}
                     className="object-cover"
                     onError={(e) => {
-                      e.currentTarget.src = "https://via.placeholder.com/32";
+                      e.currentTarget.src = "https://via.placeholder.com/24";
                     }}
                   />
                 </div>
-                <ChevronDown color="black" className="ml-1" />
+                <ChevronDown color="black" className="ml-1" size={16} />
               </div>
             </div>
 
             {/* Mobile Menu Toggle */}
             <button
-              className="lg:hidden flex flex-col space-y-1.5 cursor-pointer z-50"
+              className="lg:hidden flex flex-col space-y-1 cursor-pointer z-50"
               onClick={toggleSidebar}
               aria-label="Toggle mobile menu"
             >
               <span
-                className={`block h-0.5 w-6 bg-black transition-transform duration-300 ease-in-out ${
-                  isSidebarOpen ? "rotate-45 translate-y-2" : ""
+                className={`block h-0.5 w-5 bg-black transition-transform duration-300 ease-in-out ${
+                  isSidebarOpen ? "rotate-45 translate-y-1.5" : ""
                 }`}
               ></span>
               <span
-                className={`block h-0.5 w-6 bg-black transition-opacity duration-300 ease-in-out ${
+                className={`block h-0.5 w-5 bg-black transition-opacity duration-300 ease-in-out ${
                   isSidebarOpen ? "opacity-0" : "opacity-100"
                 }`}
               ></span>
               <span
-                className={`block h-0.5 w-6 bg-black transition-transform duration-300 ease-in-out ${
-                  isSidebarOpen ? "-rotate-45 -translate-y-2" : ""
+                className={`block h-0.5 w-5 bg-black transition-transform duration-300 ease-in-out ${
+                  isSidebarOpen ? "-rotate-45 -translate-y-1.5" : ""
                 }`}
               ></span>
             </button>
@@ -218,17 +218,17 @@ const Navbar = () => {
           isSidebarOpen ? "translate-x-0" : "translate-x-full"
         }`}
       >
-        <div className="flex flex-col h-full pt-20 pb-6 px-6">
-          <div className="absolute backdrop-blur-md shadow-sm pb-3 top-5 right-6 flex items-center justify-between w-full">
-            <div className="ml-10 items-center flex">
+        <div className="flex flex-col h-full pt-16 pb-5 px-5">
+          <div className="absolute backdrop-blur-md shadow-sm pb-2 top-4 right-5 flex items-center justify-between w-full">
+            <div className="ml-8 items-center flex">
               <Image
                 src="/globe.svg"
                 alt="Sapphire Logo"
-                width={100}
-                height={100}
-                className="w-10 h-10"
+                width={80}
+                height={80}
+                className="w-8 h-8"
               />
-              <p className="font-semibold text-2xl text-black">Sapphire</p>
+              <p className="font-semibold text-xl text-black">Sapphire</p>
             </div>
             <button
               onClick={toggleSidebar}
@@ -237,7 +237,7 @@ const Navbar = () => {
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                className="h-10 w-10 text-gray-700"
+                className="h-8 w-8 text-gray-700"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -253,16 +253,16 @@ const Navbar = () => {
           </div>
 
           {/* Stock Information for mobile */}
-          <div className="mt-4 border-b border-gray-200 pb-4">
+          <div className="mt-3 border-b border-gray-200 pb-3">
             <div className="flex justify-between">
               {/* Nifty 50 */}
               <div className="flex flex-col">
-                <span className="font-bold text-sm">Nifty 50</span>
+                <span className="font-bold text-xs">Nifty 50</span>
                 <div className="flex items-center mt-1">
-                  <span className="text-xs text-white bg-red-500 px-1 py-0.5 rounded-sm">
+                  <span className="text-[10px] text-white bg-red-500 px-1 py-0.5 rounded-sm">
                     Expiry Today
                   </span>
-                  <span className="ml-1 text-green-500 text-xs">
+                  <span className="ml-1 text-green-500 text-[10px]">
                     +87.10 (0.10%)
                   </span>
                 </div>
@@ -270,8 +270,8 @@ const Navbar = () => {
 
               {/* Sensex */}
               <div className="flex flex-col">
-                <span className="font-bold text-sm">Sensex</span>
-                <span className="text-red-500 text-xs mt-1">
+                <span className="font-bold text-xs">Sensex</span>
+                <span className="text-red-500 text-[10px] mt-1">
                   -87.10 (-0.10%)
                 </span>
               </div>
@@ -279,12 +279,12 @@ const Navbar = () => {
           </div>
 
           {/* Navigation Links - simplified without Sub-Routes */}
-          <div className="flex flex-col space-y-6 mt-6">
+          <div className="flex flex-col space-y-5 mt-5">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
-                className={`text-lg font-medium py-2 border-l-4 pl-4 transition-colors duration-200 ${
+                className={`text-base font-medium py-2 border-l-3 pl-3 transition-colors duration-200 ${
                   isRouteActive(link.href)
                     ? "border-[#1DB954] text-[#1DB954]"
                     : "border-transparent hover:border-gray-300 hover:text-[#1DB954]"
@@ -300,27 +300,27 @@ const Navbar = () => {
           </div>
 
           {/* Mobile Profile Section */}
-          <div className="mt-auto border-t border-gray-200 pt-6 flex items-center">
-            <div className="h-10 w-10 rounded-full overflow-hidden border border-gray-300">
+          <div className="mt-auto border-t border-gray-200 pt-5 flex items-center">
+            <div className="h-8 w-8 rounded-full overflow-hidden border border-gray-300">
               <Image
                 src="/profile.svg"
                 alt="Profile"
-                width={40}
-                height={40}
+                width={32}
+                height={32}
                 className="object-cover"
                 onError={(e) => {
-                  e.currentTarget.src = "https://via.placeholder.com/40";
+                  e.currentTarget.src = "https://via.placeholder.com/32";
                 }}
               />
             </div>
-            <div className="ml-3">
-              <p className="font-medium text-sm">John Doe</p>
-              <p className="text-xs text-gray-500">ID: SA12345</p>
+            <div className="ml-2">
+              <p className="font-medium text-xs">John Doe</p>
+              <p className="text-[10px] text-gray-500">ID: SA12345</p>
             </div>
           </div>
 
           {/* Social Links */}
-          <div className="mt-8 flex flex-wrap justify-center gap-4">
+          <div className="mt-6 flex flex-wrap justify-center gap-3">
             {FILTERED_SOCIAL_ICONS.map(({ Icon, href }, index) => (
               <a
                 key={index}
@@ -330,7 +330,7 @@ const Navbar = () => {
                 className="text-gray-500 hover:text-[#1DB954] transition-colors duration-300"
                 aria-label={`Visit our ${Icon.name.replace("Fa", "")}`}
               >
-                <Icon className="w-6 h-6" />
+                <Icon className="w-5 h-5" />
               </a>
             ))}
           </div>
