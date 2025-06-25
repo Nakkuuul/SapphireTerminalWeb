@@ -119,3 +119,44 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* Auto-hide scrollbar: only visible while scrolling */
+.auto-hide-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: transparent transparent;
+  transition: scrollbar-color 0.3s;
+}
+.auto-hide-scrollbar:hover, .auto-hide-scrollbar:active, .auto-hide-scrollbar:focus, .auto-hide-scrollbar:focus-within {
+  scrollbar-color: #c1c1c1 #f4f4f4;
+}
+.auto-hide-scrollbar::-webkit-scrollbar {
+  width: 8px;
+  background: transparent;
+  transition: background 0.3s;
+}
+.auto-hide-scrollbar:hover::-webkit-scrollbar,
+.auto-hide-scrollbar:active::-webkit-scrollbar,
+.auto-hide-scrollbar:focus::-webkit-scrollbar,
+.auto-hide-scrollbar:focus-within::-webkit-scrollbar {
+  background: #f4f4f4;
+}
+.auto-hide-scrollbar::-webkit-scrollbar-thumb {
+  background: transparent;
+  border-radius: 8px;
+  transition: background 0.3s;
+}
+.auto-hide-scrollbar:hover::-webkit-scrollbar-thumb,
+.auto-hide-scrollbar:active::-webkit-scrollbar-thumb,
+.auto-hide-scrollbar:focus::-webkit-scrollbar-thumb,
+.auto-hide-scrollbar:focus-within::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+}
+
+/* Fully hide scrollbar for all browsers */
+.hide-scrollbar {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE 10+ */
+}
+.hide-scrollbar::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}

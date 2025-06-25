@@ -231,7 +231,7 @@ const PanVerification: React.FC<PanVerificationProps> = ({
               <button
                 type="button"
                 onClick={refreshCaptcha}
-                className="p-2 rounded bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600"
+                className="p-3 rounded bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600"
               >
                 <RefreshCw
                   size={18}
