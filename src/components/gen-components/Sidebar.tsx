@@ -438,10 +438,10 @@ const Sidebar: React.FC = () => {
         </div>
       </div>
       <div className="flex items-center space-x-3">
-        <button className="px-2 py-1 bg-green-500 text-white text-xs rounded rounded-[3px] transition-colors">
+        <button className="px-2 py-1 bg-green-500 text-white text-xs  rounded-[3px] transition-colors">
           B
         </button>
-        <button className="px-2 py-1 bg-red-500 text-white text-xs rounded rounded-[3px] transition-colors">
+        <button className="px-2 py-1 bg-red-500 text-white text-xs  rounded-[3px] transition-colors">
           S
         </button>
         <button className="p-1 pl-0 text-gray-400 hover:text-gray-600 transition-colors">
@@ -671,30 +671,3 @@ const Sidebar: React.FC = () => {
 };
 
 export default Sidebar;
-
-/* Add this to your global CSS for auto-hide scrollbars */
-/*
-.auto-hide-scrollbar {
-  scrollbar-width: thin;
-  scrollbar-color: transparent transparent;
-  transition: scrollbar-color 0.2s;
-}
-.auto-hide-scrollbar:hover, .auto-hide-scrollbar:focus-within, .auto-hide-scrollbar:active {
-  scrollbar-color: #9CA3AF #F3F4F6;
-}
-.auto-hide-scrollbar::-webkit-scrollbar {
-  height: 0.5px;
-  width: 6px;
-  background: transparent;
-}
-.auto-hide-scrollbar::-webkit-scrollbar-thumb {
-  background: transparent;
-  border-radius: 0;
-  transition: background 0.2s;
-}
-.auto-hide-scrollbar:hover::-webkit-scrollbar-thumb,
-.auto-hide-scrollbar:focus-within::-webkit-scrollbar-thumb,
-.auto-hide-scrollbar:active::-webkit-scrollbar-thumb {
-  background: #9CA3AF;
-}
-*/
