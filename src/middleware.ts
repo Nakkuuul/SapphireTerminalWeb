@@ -2,19 +2,20 @@ import { NextRequest, NextResponse } from 'next/server'
 
 // Define protected routes (routes that require session)
 const protectedRoutes = [
-  '/stocks',
-  '/dashboard',
-  '/trades',
-  '/portfolio',
-  '/trades',
-  '/orders',
-  '/profile',
+  // '/stocks',
+  // '/dashboard',
+  // '/trades',
+  // '/portfolio',
+  // '/trades',
+  // '/orders',
+  // '/profile',
   '/settings',
   // Add more protected routes as needed
 ]
 
 // Define public routes (routes that don't require session)
 const publicRoutes = [
+  '/test',
   '/',
   '/login',
   '/signup',
