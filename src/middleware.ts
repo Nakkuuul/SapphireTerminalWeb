@@ -4,6 +4,7 @@ import { NextRequest, NextResponse } from 'next/server'
 const protectedRoutes = [
   '/stocks',
   '/dashboard',
+  '/trades',
   '/portfolio',
   '/trades',
   '/orders',
