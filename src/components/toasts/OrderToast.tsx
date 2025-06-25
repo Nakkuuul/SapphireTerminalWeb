@@ -41,23 +41,23 @@ const OrderToast = ({
     
     if (status.includes('placed') || status.includes('success') || status.includes('executed')) {
       return {
-        icon: <Check className="h-5 w-5 text-white" />,
+        icon: <Check className="h-4 4 text-white" />,
         title: 'Order Placed'
       };
     } else if (status.includes('modified') || status.includes('updated') || status.includes('amended')) {
       return {
-        icon: <Settings className="h-5 w-5 text-white" />,
+        icon: <Settings className="h-4 w-4 text-white" />,
         title: 'Order Modified'
       };
     } else if (status.includes('cancelled') || status.includes('canceled') || status.includes('rejected')) {
       return {
-        icon: <Trash2 className="h-5 w-5 text-white" />,
+        icon: <Trash2 className="h-4 w-4 text-white" />,
         title: 'Order Cancelled'
       };
     } else {
       // Default case for unknown status
       return {
-        icon: <Check className="h-5 w-5 text-white" />,
+        icon: <Check className="h-4 w-4 text-white" />,
         title: orderStatus // Use the actual status as title
       };
     }
@@ -81,12 +81,12 @@ const OrderToast = ({
       <div className="p-4">
         {/* Title with icon */}
         <div className="flex items-start mb-3">
-          <div className="flex-shrink-0 w-8 h-8 bg-black rounded-full flex items-center justify-center mr-3 mt-0.5">
+          <div className="flex-shrink-0 w-6 h-6 bg-black rounded-full flex items-center justify-center mr-3 mt-0.5">
             {icon}
           </div>
           <div className="flex-1">
-            <h3 className="text-lg font-semibold text-black mb-1">{title}</h3>
-            <p className="text-gray-700 text-base font-medium">
+            <h3 className="text-base font-semibold text-black mb-1">{title}</h3>
+            <p className="text-gray-700 text-sm font-medium">
               {message}
             </p>
           </div>
@@ -94,7 +94,7 @@ const OrderToast = ({
         
         {/* Order Number */}
         <div className="ml-11">
-          <p className="text-gray-500 text-sm">
+          <p className="text-gray-500 text-xs">
             #{orderNumber}
           </p>
         </div>
