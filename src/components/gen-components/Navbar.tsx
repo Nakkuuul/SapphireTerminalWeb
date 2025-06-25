@@ -82,14 +82,14 @@ const Navbar = () => {
 
   return (
     <>
-      <nav className="fixed font-poppins w-full top-0 z-50 bg-white border-b-[2px] border-gray-200 px-[38px]">
+      <nav className="fixed font-poppins w-full top-0 z-50 bg-white border-b-[2px] border-gray-200 px-[28px]">
         <div className="w-full mx-auto flex items-center justify-between h-[56px]">
           {/* Main single-row layout */}
-          <div className="w-full flex items-center justify-between">
-            {/* Left section with stock information - exactly 30% width */}
-            <div className="w-[29%] h-full relative border-r">
-              {/* Stock Information - Internal padding */}
-              <div className="px-7 h-full flex items-center">
+          <div className="w-full  flex items-center justify-between">
+            {/* Left section with stock information - exactly 25% width */}
+            <div className="w-[24%] h-full relative border-r-[0.5px]">
+              {/* Stock Information - 28px padding inside 25% */}
+              <div className="pr-[28px] h-full flex items-center">
                 <div className="flex items-center space-x-6 w-full">
                   <div className="flex pr-2 border-r flex-col">
                     <div className="flex items-center ">
@@ -119,7 +119,7 @@ const Navbar = () => {
               </div>
             </div>
 
-            {/* Navigation Links - Left aligned with 36px padding from divider */}
+            {/* Navigation Links - Center section takes remaining space */}
             <div className="hidden lg:flex flex-1 justify-start items-center pl-[14px]">
               <div className="flex items-center space-x-[5px]"> 
                 {navLinks.map((link) => { 
@@ -150,31 +150,33 @@ const Navbar = () => {
                 </div>
             </div>
 
-            {/* Desktop Right Side Elements */}
-            <div className="hidden md:flex pr-7 items-center space-x-3">
-              {/* Notifications Bell Icon */}
-              <button className="text-gray-700">
-                <BellDot color="black" size={18} />
-              </button>
+            {/* Desktop Right Side Elements - 25% width */}
+            <div className="hidden md:flex w-[25%] items-center justify-end">
+              <div className="px-[28px] flex items-center space-x-3">
+                {/* Notifications Bell Icon */}
+                <button className="text-gray-700">
+                  <BellDot color="black" size={18} />
+                </button>
 
-              {/* User Profile Avatar with Dropdown Arrow */}
-              <div className="flex items-center">
-                <div
-                  className="h-6 w-6 cursor-pointer rounded-full overflow-hidden border border-gray-300"
-                  onClick={() => router.push("/profile")}
-                >
-                  <Image
-                    src="/profile.svg"
-                    alt="Profile"
-                    width={24}
-                    height={24}
-                    className="object-cover"
-                    onError={(e) => {
-                      e.currentTarget.src = "https://via.placeholder.com/24";
-                    }}
-                  />
+                {/* User Profile Avatar with Dropdown Arrow */}
+                <div className="flex items-center">
+                  <div
+                    className="h-6 w-6 cursor-pointer rounded-full overflow-hidden border border-gray-300"
+                    onClick={() => router.push("/profile")}
+                  >
+                    <Image
+                      src="/profile.svg"
+                      alt="Profile"
+                      width={24}
+                      height={24}
+                      className="object-cover"
+                      onError={(e) => {
+                        e.currentTarget.src = "https://via.placeholder.com/24";
+                      }}
+                    />
+                  </div>
+                  <ChevronDown color="black" className="ml-1" size={16} />
                 </div>
-                <ChevronDown color="black" className="ml-1" size={16} />
               </div>
             </div>
 

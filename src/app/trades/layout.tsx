@@ -20,7 +20,7 @@ export default function RootLayout({
     <div className={inter.className}>
       <Navbar />
       <div className="flex w-full pt-[60px]">
-        <div className="w-[25%]  border-r-[0.5px]">
+        <div className="w-[25%] ">
           <Sidebar />
         </div>
         <main className="w-[75%] p-[28px] bg-white dark:bg-[#121212]">
