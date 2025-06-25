@@ -5,7 +5,7 @@ import { toast } from 'sonner';
 import { Check, X } from 'lucide-react';
 
 // Success Toast Component with Timer Bar
-const SuccessOrderToast = ({ 
+const SuccessToast = ({ 
   title, 
   message, 
   orderId,
@@ -35,14 +35,6 @@ const SuccessOrderToast = ({
 
   return (
     <div className="relative w-full max-w-md bg-white rounded-lg shadow-lg border border-gray-200 overflow-hidden">
-      {/* Timer Bar - Green header bar that decreases */}
-      <div className="h-1 bg-gray-200">
-        <div 
-          className="h-full bg-green-500 transition-all duration-100 ease-linear"
-          style={{ width: `${progressPercentage}%` }}
-        ></div>
-      </div>
-      
       {/* Close button */}
       {onClose && (
         <button
@@ -57,11 +49,11 @@ const SuccessOrderToast = ({
       <div className="p-4">
         {/* Title with icon */}
         <div className="flex items-start mb-3">
-          <div className="flex-shrink-0 w-8 h-8 bg-green-500 rounded-full flex items-center justify-center mr-3 mt-0.5">
-            <Check className="h-5 w-5 text-white" />
+          <div className="flex-shrink-0 w-8 h-8 bg-[#00C852] rounded-full flex items-center justify-center mr-3 mt-0.5">
+            <Check className="h-5 w-5 text-[#00C852]" />
           </div>
           <div className="flex-1">
-            <h3 className="text-lg font-semibold text-green-600 mb-1">{title}</h3>
+            <h3 className="text-lg font-semibold text-[#00C852] mb-1">{title}</h3>
             <p className="text-gray-800 text-base font-medium">
               {message}
             </p>
@@ -77,6 +69,14 @@ const SuccessOrderToast = ({
           </div>
         )}
       </div>
+
+      {/* Timer Bar - Green bottom bar that decreases */}
+      <div className="h-1 bg-gray-200">
+        <div 
+          className="h-full bg-[#00C852] transition-all duration-100 ease-linear"
+          style={{ width: `${progressPercentage}%` }}
+        ></div>
+      </div>
     </div>
   );
 };
@@ -89,7 +89,7 @@ export const showOrderPlacedToast = (
   duration: number = 5000
 ) => {
   toast.custom((t) => (
-    <SuccessOrderToast
+    <SuccessToast
       title={title}
       message={message}
       orderId={orderId}
@@ -102,4 +102,4 @@ export const showOrderPlacedToast = (
   });
 };
 
-export default SuccessOrderToast;
+export default SuccessToast;

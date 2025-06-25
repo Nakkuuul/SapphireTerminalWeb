@@ -35,14 +35,6 @@ const ModifiedOrderToast = ({
 
   return (
     <div className="relative w-full max-w-md bg-white rounded-lg shadow-lg border border-gray-200 overflow-hidden">
-      {/* Timer Bar - Orange header bar that decreases */}
-      <div className="h-1 bg-gray-200">
-        <div 
-          className="h-full bg-orange-500 transition-all duration-100 ease-linear"
-          style={{ width: `${progressPercentage}%` }}
-        ></div>
-      </div>
-      
       {/* Close button */}
       {onClose && (
         <button
@@ -57,11 +49,11 @@ const ModifiedOrderToast = ({
       <div className="p-4">
         {/* Title with icon */}
         <div className="flex items-start mb-3">
-          <div className="flex-shrink-0 w-8 h-8 bg-orange-500 rounded-full flex items-center justify-center mr-3 mt-0.5">
+          <div className="flex-shrink-0 w-8 h-8 bg-[#FCC221] rounded-full flex items-center justify-center mr-3 mt-0.5">
             <Settings className="h-5 w-5 text-white" />
           </div>
           <div className="flex-1">
-            <h3 className="text-lg font-semibold text-orange-600 mb-1">{title}</h3>
+            <h3 className="text-lg font-semibold text-[#FCC221] mb-1">{title}</h3>
             <p className="text-gray-800 text-base font-medium">
               {message}
             </p>
@@ -76,6 +68,14 @@ const ModifiedOrderToast = ({
             </p>
           </div>
         )}
+      </div>
+
+      {/* Timer Bar - Orange bottom bar that decreases */}
+      <div className="h-1 bg-gray-200">
+        <div 
+          className="h-full bg-[#FCC221] transition-all duration-100 ease-linear"
+          style={{ width: `${progressPercentage}%` }}
+        ></div>
       </div>
     </div>
   );
