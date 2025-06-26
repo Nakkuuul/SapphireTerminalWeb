@@ -23,7 +23,7 @@ const BalanceChart: React.FC<BalanceChartProps> = ({ data }) => {
     : -60;
 
   return (
-    <div className='border border-[#D1D5DB] mt-4 rounded-md'>
+    <div className='border border-[#D1D5DB] mt-3 rounded-md max-w-[80vw] mx-auto text-xs'>
       <h2 className="text-lg border-b border-b-[#D1D5DB] font-medium p-3">Total Balance Breakup</h2>
       
       <div className="p-4">

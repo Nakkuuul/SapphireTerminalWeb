@@ -113,19 +113,20 @@ const BalanceBreakdown: React.FC<BalanceBreakdownProps> = ({
       <h2 className="text-base  font-medium text-[#1DB954]">
         {title} <Info size={16} className="inline ml-1 text-gray-400" />
       </h2>
-      <div className="ml-auto text-base font-medium text-[#1DB954]">
+      <div className="ml-auto text-base font-medium 18px text-[#1DB954]">
         ₹{formatCurrency(amount)}
       </div>
     </div>
   );
 
   return (
-    <div className="border border-gray-200 rounded-lg p-4">
+    // Nikhil
+    <div className="border border-gray-200 rounded-lg p-3 w-full max-w-[80vw] mx-auto text-xs"> 
       <div className="flex items-center mb-3">
         <h2 className="text-[#1DB954] text-base font-medium flex items-center">
           Total Balance <Info size={14} className="ml-1 text-gray-400" />
         </h2>
-        <div className="ml-auto text-[#1DB954] font-medium">
+        <div className="ml-auto text-[#1DB954] font-medium text-base">
           ₹{formatCurrency(totalBalance)}
         </div>
       </div>
@@ -134,22 +135,22 @@ const BalanceBreakdown: React.FC<BalanceBreakdownProps> = ({
         <table className="w-full">
           <tbody>
             <tr className="bg-gray-50 text-[#6B7380] text-sm">
-              <td className="py-2 px-3  ">Cash Balance</td>
-              <td className="py-2 px-3 text-right ">
+              <td className="py-2 px-3  bg-[#F4F4F9] pl-[30px]">Cash Balance</td>
+              <td className="py-2 px-3 text-right bg-[#F4F4F9] pr-[30px]">
                 ₹{formatCurrency(balanceData.cashBalance)}
               </td>
             </tr>
             <tr className="text-sm text-[#6B7380]">
-              <td className="py-2 px-3">Collateral Balance</td>
-              <td className="py-2 px-3 text-right ">
+              <td className="py-2 px-3 pl-[30px]">Collateral Balance</td>
+              <td className="py-2 px-3 text-right pr-[30px]">
                 ₹{formatCurrency(balanceData.collateralBalance)}
               </td>
             </tr>
             <tr className="bg-gray-50 text-[#6B7380] text-sm">
-              <td className="py-2 px-3 ">
+              <td className="py-2 px-3 bg-[#F4F4F9] pl-[30px]">
                 Collateral (Liquid Funds)
               </td>
-              <td className="py-2 px-3 text-right ">
+              <td className="py-2 px-3 text-right bg-[#F4F4F9] pr-[30px]">
                 ₹{formatCurrency(balanceData.collateralLiquidFunds)}
               </td>
             </tr>

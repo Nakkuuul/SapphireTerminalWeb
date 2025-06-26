@@ -34,6 +34,7 @@ const Sidebar: React.FC = () => {
   const [hoveredPage, setHoveredPage] = useState<number | null>(null);
   const [tooltipPosition, setTooltipPosition] = useState({ left: 0, top: 0 });
   const buttonRefs = React.useRef<{ [key: number]: HTMLButtonElement | null }>({});
+  const overlayInputRef = React.useRef<HTMLInputElement>(null);
 
   // Watchlist names mapping for tooltips - now state-based
   const [watchlistNames, setWatchlistNames] = useState([
@@ -635,6 +636,12 @@ const Sidebar: React.FC = () => {
     setShowWatchlistModal(false);
   };
 
+  React.useEffect(() => {
+    if (showSearchResults && overlayInputRef.current) {
+      overlayInputRef.current.focus();
+    }
+  }, [showSearchResults]);
+
   if (showSearchResults) {
     return (
       <div className="fixed top-20 left-0 w-[320px] h-[calc(100vh-64px)] bg-white shadow-sm ml-[26px] mt-[18px] flex flex-col overflow-hidden z-30">
@@ -643,17 +650,18 @@ const Sidebar: React.FC = () => {
           <div className="flex items-center space-x-2">
             <div className="relative flex-1">
               <button 
-                onClick={handleSearchClick}
+                onClick={() => setShowSearchResults(true)}
                 className="absolute left-3 top-1/2 transform -translate-y-1/2  w-4 h-4 text-[#686868] z-10"
               >
                 <Search className="w-4 h-4" />
               </button>
               <input
+                ref={overlayInputRef}
                 type="text"
                 placeholder="Search everything..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                onFocus={handleSearchClick}
+                onKeyDown={(e) => { if (e.key === 'Escape') handleBackToMain(); }}
                 className="w-full pl-9 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none  text-[#686868]"
               />
             </div>
@@ -677,135 +685,143 @@ const Sidebar: React.FC = () => {
   }
 
   return (
-    <div className="fixed top-20 left-0 w-[328px] h-[calc(100vh-64px)] bg-white shadow-sm ml-[26px] mt-[18px] flex flex-col overflow-hidden z-30 sidebar-container">
-      {/* Search Bar - Fixed */}
-      <div className=" border-gray-200 flex-shrink-0">
-        <div className="flex items-center space-x-2">
-          <div className="relative flex-1">
-            <button 
-              onClick={handleSearchClick}
-              className="absolute left-3 top-1/2 transform -translate-y-1/2  w-4 h-4 text-[#686868] z-10"
-            >
-              <Search className="w-4 h-4" />
-            </button>
-            <input
-              type="text"
-              placeholder="Search everything..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              onFocus={handleSearchClick}
-              className="w-full pl-9 pr-10 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-[#686868]"
-            />
-            <button className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors p-1">
-              <Filter className="w-4 h-4 text-[#686868]" />
-            </button>
-          </div>
-          <div className="relative">
-            <button
-              className="p-1 text-gray-400 hover:text-gray-600 transition-colors"
-              onClick={() => setShowPopover((v) => !v)}
-            >
-              <Plus className="w-5 h-5 text-[#686868]" />
-            </button>
-            {showPopover && (
-              <div className="absolute right-0 mt-2 w-44 bg-white rounded-lg shadow-lg border border-gray-100 z-50 flex flex-col py-2">
-                <button
-                  className="px-4 py-2 text-left text-sm hover:bg-gray-100 text-gray-800"
-                  onClick={() => { setShowWatchlistModal(true); setShowPopover(false); }}
+    <>
+      {/* Sidebar and content */}
+      <div className="fixed top-20 left-0 h-[calc(100vh-64px)] ml-[26px] mt-[18px] flex z-30">
+        <div className="w-[328px] bg-white shadow-sm flex flex-col overflow-hidden sidebar-container">
+          {/* Search Bar - Fixed */}
+          <div className=" border-gray-200 flex-shrink-0">
+            <div className="flex items-center space-x-2">
+              <div className="relative flex-1">
+                <button 
+                  onClick={handleSearchClick}
+                  className="absolute left-3 top-1/2 transform -translate-y-1/2  w-4 h-4 text-[#686868] z-10"
                 >
-                  Create Watchlist
+                  <Search className="w-4 h-4" />
                 </button>
-                <button
-                  className="px-4 py-2 text-left text-sm hover:bg-gray-100 text-gray-800"
-                  onClick={() => { setShowCategoryModal(true); setShowPopover(false); }}
-                >
-                  Create Category
+                <input
+                  type="text"
+                  placeholder="Search everything..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  onFocus={handleSearchClick}
+                  onKeyDown={(e) => { if (e.key === 'Escape') handleBackToMain(); }}
+                  className="w-full pl-9 pr-10 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-[#686868]"
+                />
+                <button className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors p-1">
+                  <Filter className="w-4 h-4 text-[#686868]" />
                 </button>
               </div>
-            )}
-          </div>
-        </div>
-      </div>
-
-      {/* Pagination - Fixed */}
-      <div className="py-3 border-b border-gray-00 flex-shrink-0">
-        <div className="relative">
-          <div className="flex items-center space-x-1 gap-3 overflow-x-auto hide-scrollbar pb-4">
-            {Array.from({ length: watchlistNames.length }, (_, i) => i + 1).map((page) => (
-              <div key={page} className="relative">
+              <div className="relative">
                 <button
-                  ref={(el) => { buttonRefs.current[page] = el; }}
-                  onClick={() => setCurrentPage(page)}
-                  onMouseEnter={() => {
-                    setHoveredPage(page);
-                    calculateTooltipPosition(page);
-                  }}
-                  onMouseLeave={() => setHoveredPage(null)}
-                  className={`px-3 h-8 rounded text-sm font-medium transition-colors border-[0.5px] ${currentPage === page
-                    ? 'bg-[#EEFFF2] text-green-700 border-green-200'
-                    : 'text-gray-600 bg-[#F4F4F9] border-[#E5E7EB]'
-                  }`}
+                  className="p-1 text-gray-400 hover:text-gray-600 transition-colors"
+                  onClick={() => setShowPopover((v) => !v)}
                 >
-                  {page}
+                  <Plus className="w-5 h-5 text-[#686868]" />
                 </button>
+                {showPopover && (
+                  <div className="absolute right-0 mt-2 w-44 bg-white rounded-lg shadow-lg border border-gray-100 z-50 flex flex-col py-2">
+                    <button
+                      className="px-4 py-2 text-left text-sm hover:bg-gray-100 text-gray-800"
+                      onClick={() => { setShowWatchlistModal(true); setShowPopover(false); }}
+                    >
+                      Create Watchlist
+                    </button>
+                    <button
+                      className="px-4 py-2 text-left text-sm hover:bg-gray-100 text-gray-800"
+                      onClick={() => { setShowCategoryModal(true); setShowPopover(false); }}
+                    >
+                      Create Category
+                    </button>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+
+          {/* Pagination - Fixed */}
+          <div className="py-3 border-b border-gray-00 flex-shrink-0">
+            <div className="relative">
+              <div className="flex items-center space-x-1 gap-3 overflow-x-auto hide-scrollbar pb-4">
+                {Array.from({ length: watchlistNames.length }, (_, i) => i + 1).map((page) => (
+                  <div key={page} className="relative">
+                    <button
+                      ref={(el) => { buttonRefs.current[page] = el; }}
+                      onClick={() => setCurrentPage(page)}
+                      onMouseEnter={() => {
+                        setHoveredPage(page);
+                        calculateTooltipPosition(page);
+                      }}
+                      onMouseLeave={() => setHoveredPage(null)}
+                      className={`px-3 h-8 rounded text-sm font-medium transition-colors border-[0.5px] ${currentPage === page
+                        ? 'bg-[#EEFFF2] text-green-700 border-green-200'
+                        : 'text-gray-600 bg-[#F4F4F9] border-[#E5E7EB]'
+                      }`}
+                    >
+                      {page}
+                    </button>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Dynamic Tooltip positioned above the hovered number */}
+          {hoveredPage && (
+            <div 
+              className="absolute z-[999999] pointer-events-none"
+              style={{ 
+                left: `${tooltipPosition.left}px`, 
+                top: `${tooltipPosition.top}px`,
+                transform: 'translateX(-50%)'
+              }}
+            >
+              <div className="px-3 py-2 bg-white text-black text-xs rounded-[4px] shadow-[0_0_4px_#F1F1F1] whitespace-nowrap border border-[#d9d9d9] border-[1px]">
+                {watchlistNames[hoveredPage - 1]}
+                {/* Arrow pointing down */}
+                {/* <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-[6px] border-r-[6px] border-t-[6px] border-transparent border-t-white"></div> */}
+              </div>
+            </div>
+          )}
+
+          {/* Scrollable Content Area */}
+          <div className="flex-1 overflow-y-auto hide-scrollbar pr-1 border border-gray-200 pl-[6px] pr-[6px]">
+            {/* Dynamic Category Sections */}
+            {categories.map(category => (
+              <div className="border-none" key={category.id}>
+                <SectionHeader
+                  title={category.name}
+                  isExpanded={expandedCategories[category.id] ?? true}
+                  onToggle={() => setExpandedCategories(prev => ({ ...prev, [category.id]: !(prev[category.id] ?? true) }))}
+                />
+                {(expandedCategories[category.id] ?? true) && (
+                  <div className="divide-y divide-gray-100">
+                    {category.watchlists.map((stock) => [
+                      <StockItem key={stock.id} stock={stock} />,
+                      openDepthId === stock.id && (
+                        <div key={stock.id + '-depth'} className="w-full"><MarketDepth /></div>
+                      )
+                    ])}
+                  </div>
+                )}
               </div>
             ))}
           </div>
+
+          {/* Modals for Create Watchlist/Category */}
+          <CreateWatchlistCategoryModals
+            showWatchlistModal={showWatchlistModal}
+            setShowWatchlistModal={setShowWatchlistModal}
+            showCategoryModal={showCategoryModal}
+            setShowCategoryModal={setShowCategoryModal}
+            onCreateCategory={handleCreateCategory}
+            onCreateWatchlist={handleCreateWatchlist}
+          />
         </div>
       </div>
-
-      {/* Dynamic Tooltip positioned above the hovered number */}
-      {hoveredPage && (
-        <div 
-          className="absolute z-[999999] pointer-events-none"
-          style={{ 
-            left: `${tooltipPosition.left}px`, 
-            top: `${tooltipPosition.top}px`,
-            transform: 'translateX(-50%)'
-          }}
-        >
-          <div className="px-3 py-2 bg-white text-black text-xs rounded-[4px] shadow-[0_0_4px_#F1F1F1] whitespace-nowrap border border-[#d9d9d9] border-[1px]">
-            {watchlistNames[hoveredPage - 1]}
-            {/* Arrow pointing down */}
-            {/* <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-[6px] border-r-[6px] border-t-[6px] border-transparent border-t-white"></div> */}
-          </div>
-        </div>
-      )}
-
-      {/* Scrollable Content Area */}
-      <div className="flex-1 overflow-y-auto hide-scrollbar pr-1 border border-gray-200 pl-[6px] pr-[6px]">
-        {/* Dynamic Category Sections */}
-        {categories.map(category => (
-          <div className="border-none" key={category.id}>
-            <SectionHeader
-              title={category.name}
-              isExpanded={expandedCategories[category.id] ?? true}
-              onToggle={() => setExpandedCategories(prev => ({ ...prev, [category.id]: !(prev[category.id] ?? true) }))}
-            />
-            {(expandedCategories[category.id] ?? true) && (
-              <div className="divide-y divide-gray-100">
-                {category.watchlists.map((stock) => [
-                  <StockItem key={stock.id} stock={stock} />,
-                  openDepthId === stock.id && (
-                    <div key={stock.id + '-depth'} className="w-full"><MarketDepth /></div>
-                  )
-                ])}
-              </div>
-            )}
-          </div>
-        ))}
-      </div>
-
-      {/* Modals for Create Watchlist/Category */}
-      <CreateWatchlistCategoryModals
-        showWatchlistModal={showWatchlistModal}
-        setShowWatchlistModal={setShowWatchlistModal}
-        showCategoryModal={showCategoryModal}
-        setShowCategoryModal={setShowCategoryModal}
-        onCreateCategory={handleCreateCategory}
-        onCreateWatchlist={handleCreateWatchlist}
-      />
-    </div>
+      {/* Vertical divider aligned with Navbar's left section divider */}
+      <div className="fixed top-[100px] left-[calc(24vw+13px)] h-[calc(100vh-56px)] w-px bg-gray-200 z-40" />
+    </>
   );
 };
 

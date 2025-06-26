@@ -25,7 +25,7 @@ const RecentTransactions: React.FC<RecentTransactionsProps> = ({
   transactions,
 }) => {
   return (
-    <div className="border border-gray-200 rounded-lg p-4 bg-white mb-6">
+    <div className="border border-gray-200 rounded-lg p-3 bg-white mb-4 max-w-[80vw] mx-auto text-xs">
       <div className="mb-4 border-b border-gray-200 pb-3">
         <h2 className="text-gray-800 font-medium">Recent Transactions</h2>
       </div>

@@ -149,19 +149,19 @@ const DepositPage: React.FC<DepositPageProps> = ({ onBack }) => {
   };
 
   return (
-    <div className="mx-auto">
+    <div className="w-full max-w-[80vw] mx-auto text-sm">
       {/* Back button */}
       <button
         onClick={onBack}
-        className="flex items-center text-[#6B7280] mb-4"
+        className="flex items-center text-[#6B7280] mb-2 whitespace-nowrap text-xs py-1 px-2"
       >
-        <ChevronLeft size={20} className="mr-1" />
+        <ChevronLeft size={16} className="mr-1" />
         Deposit
       </button>
 
       {/* Deposit Form */}
-      <div className="bg-[#FAFAFA] max-w-xl border border-gray-200 rounded-md mb-6 mx-auto">
-        <div className="p-6">
+      <div className="bg-[#FAFAFA] border border-gray-200 rounded-md mb-4 max-w-[80vw] mx-auto p-4">
+        <div className="p-3">
           {/* Title and Balance */}
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-sm text-[#212529]">Enter Amount</h2>

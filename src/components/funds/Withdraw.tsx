@@ -137,16 +137,16 @@ const WithdrawPage: React.FC<WithdrawPageProps> = ({ onBack }) => {
   };
 
   return (
-    <div className="mx-auto ">
+    <div className="w-full max-w-[80vw] mx-auto text-sm">
       {/* Back button */}
-      <button onClick={onBack} className="flex items-center text-[#6B7280] mb-4">
-        <ChevronLeft size={20} className="mr-1" />
+      <button onClick={onBack} className="flex items-center text-[#6B7280] mb-2 whitespace-nowrap text-xs py-1 px-2">
+        <ChevronLeft size={16} className="mr-1" />
         Withdraw
       </button>
       
       {/* Withdraw Form */}
-      <div className="max-w-xl mx-auto my-8 bg-[#FAFAFA] border border-gray-200 rounded-md">
-        <div className="p-6">
+      <div className="my-4 bg-[#FAFAFA] border border-gray-200 rounded-md max-w-[80vw] mx-auto p-4">
+        <div className="p-3">
           {/* Title and Balance */}
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-sm text-[#212529]">Enter Amount</h2>
