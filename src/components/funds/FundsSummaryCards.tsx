@@ -1,6 +1,6 @@
 // components/FundsSummaryCards.tsx
-import React from "react";
-import { ChevronRight, RefreshCw } from "lucide-react";
+import React, { useState } from "react";
+import { ChevronRight } from "lucide-react";
 import ActionButtons from "./ActionButtons";
 import TransactionStatusBadge from "../gen-components/TransactionStatusBadge";
 import Image from "next/image";
@@ -15,11 +15,27 @@ interface FundsSummaryCardsProps {
 }
 
 const FundsSummaryCards: React.FC<FundsSummaryCardsProps> = ({ data, onNavigate }) => {
+  const [isRotating, setIsRotating] = useState(false);
+
   const formatCurrency = (value: number) => {
     return new Intl.NumberFormat("en-IN", {
       maximumFractionDigits: 2,
       minimumFractionDigits: 2,
     }).format(value);
+  };
+
+  const handleRefreshClick = () => {
+    if (isRotating) return; // Prevent multiple clicks during animation
+    
+    setIsRotating(true);
+    
+    // Reset the rotation state after animation completes
+    setTimeout(() => {
+      setIsRotating(false);
+    }, 600); // Match this with the CSS animation duration
+    
+    // Add your refresh logic here
+    // For example: refetch data, update state, etc.
   };
 
   return (
@@ -63,9 +79,20 @@ const FundsSummaryCards: React.FC<FundsSummaryCardsProps> = ({ data, onNavigate 
             </div>
             <div className="flex items-center mt-1">
               <span className="text-[18px] font-medium">₹49,561.80</span>
-              <RefreshCw
-                size={16}
-                className="ml-2 text-gray-500 cursor-pointer"
+              <img
+                src="/RefreshIcon.svg"
+                alt="Refresh"
+                width={16}
+                height={16}
+                className={`ml-2 text-gray-500 cursor-pointer ${isRotating ? 'animate-spin-once' : ''}`}
+                onClick={handleRefreshClick}
+                style={{
+                  animationDuration: isRotating ? '0.6s' : undefined,
+                  animationTimingFunction: 'ease-in-out',
+                  animationFillMode: 'forwards',
+                  display: 'inline-block',
+                  verticalAlign: 'middle'
+                }}
               />
             </div>
           </div>
