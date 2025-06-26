@@ -31,6 +31,33 @@ const Sidebar: React.FC = () => {
   const [showWatchlistModal, setShowWatchlistModal] = useState(false);
   const [showCategoryModal, setShowCategoryModal] = useState(false);
   const [selectedCategoryId, setSelectedCategoryId] = useState<string | null>(null);
+  const [hoveredPage, setHoveredPage] = useState<number | null>(null);
+  const [tooltipPosition, setTooltipPosition] = useState({ left: 0, top: 0 });
+  const buttonRefs = React.useRef<{ [key: number]: HTMLButtonElement | null }>({});
+
+  // Watchlist names mapping for tooltips - now state-based
+  const [watchlistNames, setWatchlistNames] = useState([
+    'Top Stocks',
+    'Latest',
+    'Favorites',
+    'Technology',
+    'Banking',
+    'Healthcare',
+    'Automotive',
+    'Energy',
+    'Consumer Goods',
+    'Real Estate',
+    'Telecommunications',
+    'Manufacturing',
+    'Pharmaceuticals',
+    'Finance',
+    'Retail',
+    'Transportation',
+    'Utilities',
+    'Materials',
+    'Industrial',
+    'Services'
+  ]);
 
   // Initial categories state
   const [categories, setCategories] = useState<Category[]>([
@@ -368,6 +395,21 @@ const Sidebar: React.FC = () => {
     ));
   };
 
+  // Calculate tooltip position based on button position
+  const calculateTooltipPosition = (page: number) => {
+    const button = buttonRefs.current[page];
+    if (button) {
+      const rect = button.getBoundingClientRect();
+      const sidebarRect = button.closest('.sidebar-container')?.getBoundingClientRect();
+      if (sidebarRect) {
+        setTooltipPosition({
+          left: rect.left - sidebarRect.left + rect.width / 2,
+          top: rect.top - sidebarRect.top - 40 // 40px above the button
+        });
+      }
+    }
+  };
+
   // Combine all stocks for searching
   const allStocks: Stock[] = categories.flatMap(cat => cat.watchlists);
 
@@ -589,6 +631,7 @@ const Sidebar: React.FC = () => {
   };
   const handleCreateWatchlist = (name: string) => {
     addWatchlist(name);
+    setWatchlistNames(prev => [...prev, name]);
     setShowWatchlistModal(false);
   };
 
@@ -634,7 +677,7 @@ const Sidebar: React.FC = () => {
   }
 
   return (
-    <div className="fixed top-20 left-0 w-[328px] h-[calc(100vh-64px)] bg-white shadow-sm ml-[26px] mt-[18px] flex flex-col overflow-hidden z-30">
+    <div className="fixed top-20 left-0 w-[328px] h-[calc(100vh-64px)] bg-white shadow-sm ml-[26px] mt-[18px] flex flex-col overflow-hidden z-30 sidebar-container">
       {/* Search Bar - Fixed */}
       <div className=" border-gray-200 flex-shrink-0">
         <div className="flex items-center space-x-2">
@@ -687,22 +730,47 @@ const Sidebar: React.FC = () => {
       {/* Pagination - Fixed */}
       <div className="py-3 border-b border-gray-00 flex-shrink-0">
         <div className="relative">
-          <div className="flex items-center space-x-1 gap-3 overflow-x-auto hide-scrollbar pb-0">
-            {Array.from({ length: 20 }, (_, i) => i + 1).map((page) => (
-              <button
-                key={page}
-                onClick={() => setCurrentPage(page)}
-                className={`px-3 h-8 rounded text-sm font-medium transition-colors border-[0.5px] ${currentPage === page
-                  ? 'bg-[#EEFFF2] text-green-700 border-green-200'
-                  : 'text-gray-600 bg-[#F4F4F9] border-[#E5E7EB]'
-                }`}
-              >
-                {page}
-              </button>
+          <div className="flex items-center space-x-1 gap-3 overflow-x-auto hide-scrollbar pb-4">
+            {Array.from({ length: watchlistNames.length }, (_, i) => i + 1).map((page) => (
+              <div key={page} className="relative">
+                <button
+                  ref={(el) => { buttonRefs.current[page] = el; }}
+                  onClick={() => setCurrentPage(page)}
+                  onMouseEnter={() => {
+                    setHoveredPage(page);
+                    calculateTooltipPosition(page);
+                  }}
+                  onMouseLeave={() => setHoveredPage(null)}
+                  className={`px-3 h-8 rounded text-sm font-medium transition-colors border-[0.5px] ${currentPage === page
+                    ? 'bg-[#EEFFF2] text-green-700 border-green-200'
+                    : 'text-gray-600 bg-[#F4F4F9] border-[#E5E7EB]'
+                  }`}
+                >
+                  {page}
+                </button>
+              </div>
             ))}
           </div>
         </div>
       </div>
+
+      {/* Dynamic Tooltip positioned above the hovered number */}
+      {hoveredPage && (
+        <div 
+          className="absolute z-[999999] pointer-events-none"
+          style={{ 
+            left: `${tooltipPosition.left}px`, 
+            top: `${tooltipPosition.top}px`,
+            transform: 'translateX(-50%)'
+          }}
+        >
+          <div className="px-3 py-2 bg-white text-black text-xs rounded-[4px] shadow-[0_0_4px_#F1F1F1] whitespace-nowrap border border-[#d9d9d9] border-[1px]">
+            {watchlistNames[hoveredPage - 1]}
+            {/* Arrow pointing down */}
+            {/* <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-[6px] border-r-[6px] border-t-[6px] border-transparent border-t-white"></div> */}
+          </div>
+        </div>
+      )}
 
       {/* Scrollable Content Area */}
       <div className="flex-1 overflow-y-auto hide-scrollbar pr-1 border border-gray-200 pl-[6px] pr-[6px]">
@@ -737,6 +805,53 @@ const Sidebar: React.FC = () => {
         onCreateCategory={handleCreateCategory}
         onCreateWatchlist={handleCreateWatchlist}
       />
+    </div>
+  );
+};
+
+const TooltipPositioner: React.FC<{ tooltipPosition: { left: number; top: number }, watchlistName: string }> = ({ tooltipPosition, watchlistName }) => {
+  const tooltipRef = React.useRef<HTMLDivElement>(null);
+  const sidebarRef = React.useRef<HTMLDivElement | null>(null);
+  React.useEffect(() => {
+    sidebarRef.current = document.querySelector('.sidebar-container');
+  }, []);
+
+  const [style, setStyle] = React.useState<{ left: number; top: number; transform?: string }>({ left: tooltipPosition.left, top: tooltipPosition.top, transform: 'translateX(-50%)' });
+
+  React.useEffect(() => {
+    if (tooltipRef.current && sidebarRef.current) {
+      const tooltipRect = tooltipRef.current.getBoundingClientRect();
+      const sidebarRect = sidebarRef.current.getBoundingClientRect();
+      let left = tooltipPosition.left;
+      let transform = 'translateX(-50%)';
+      const margin = 8;
+      // If tooltip would overflow left
+      if (left - tooltipRect.width / 2 < margin) {
+        left = tooltipRect.width / 2 + margin;
+        transform = 'none';
+      }
+      // If tooltip would overflow right
+      if (left + tooltipRect.width / 2 > sidebarRect.width - margin) {
+        left = sidebarRect.width - tooltipRect.width / 2 - margin;
+        transform = 'none';
+      }
+      setStyle({ left, top: tooltipPosition.top, transform });
+    }
+  }, [tooltipPosition]);
+
+  return (
+    <div
+      ref={tooltipRef}
+      className="absolute z-[999999] pointer-events-none"
+      style={{
+        left: style.left,
+        top: style.top,
+        transform: style.transform,
+      }}
+    >
+      <div className="px-3 py-2 bg-white text-black text-xs rounded-[4px] shadow-[0_0_4px_rgba(0,0,0,0.2)] whitespace-nowrap border border-[#d9d9d9] border-[1px]">
+        {watchlistName}
+      </div>
     </div>
   );
 };
