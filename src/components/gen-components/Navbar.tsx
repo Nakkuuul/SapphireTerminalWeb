@@ -151,7 +151,7 @@ const Navbar = () => {
             </div>
 
             {/* Desktop Right Side Elements - 25% width */}
-            <div className="hidden md:flex w-[25%] items-center justify-end">
+            <div className="hidden lg:flex w-[25%] items-center justify-end">
               <div className="px-[28px] flex items-center space-x-3">
                 {/* Notifications Bell Icon */}
                 <button className="text-gray-700">

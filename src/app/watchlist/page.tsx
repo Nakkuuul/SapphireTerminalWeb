@@ -21,14 +21,16 @@ function Watchlist() {
       ),
       symbol: "AAPL",
       interval: "1D",
-      fullscreen: true,
+       height: window.innerHeight - 60,
+       width: "100%",
       debug: true,
     });
   }, []);
 
   return (
-    <div>
-      <div className="h-screen w-full" id="chartContainer"></div>
+    <div className="px-2">
+       <div className="w-full " id="chartContainer"></div>
+       {/* <div className="w-screen h-screen bg-green-50"></div> */}
     </div>
   );
 }

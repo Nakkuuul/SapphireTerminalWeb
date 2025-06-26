@@ -19,11 +19,11 @@ export default function RootLayout({
   return (
     <div className={inter.className}>
       <Navbar />
-      <div className="flex w-full pt-[74px]">
-        <div className="w-[25%]">
+      <div className="flex w-full pt-[60px]">
+        <div className="hidden lg:block w-[27vw]">
           <Sidebar />
         </div>
-        <main className="w-[75%] py-6 px-[38px] bg-white dark:bg-[#121212]">
+        <main className=" w-full lg:w-[73vw] bg-white dark:bg-[#121212]">
           {children}
         </main>
       </div>

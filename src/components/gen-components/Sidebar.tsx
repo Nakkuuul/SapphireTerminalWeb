@@ -438,7 +438,7 @@ const Sidebar: React.FC = () => {
 
     return (
       <div 
-        className="flex items-center justify-between py-3 transition-colors relative group"
+        className="flex items-center justify-between p-3 transition-colors relative group"
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
@@ -468,7 +468,7 @@ const Sidebar: React.FC = () => {
         {/* Hover Action Buttons */}
         {isHovered && (
           <div
-            className="absolute right-0 top-1/2 -translate-y-1/2 bg-[#F4F4F9] flex flex-col items-center z-10 rounded-[3px] shadow-[0_2px_4px_0_#FAFAFA] w-1/2 min-w-[120px] w-auto px-[6px] py-[6px] border border-gray-200"
+            className="absolute right-0 top-1/2 -translate-y-1/2 bg-[#F4F4F9] flex flex-col items-center z-10 rounded-[3px]  w-1/2 min-w-[120px] w-auto px-[6px] py-[6px] border border-gray-200"
           >
             <div className="flex items-center space-x-1">
               <button className="w-6 h-6 hover:bg-[#04B94E] text-white rounded flex items-center justify-center transition-colors shadow-sm bg-[#00CA52]">
@@ -644,7 +644,7 @@ const Sidebar: React.FC = () => {
 
   if (showSearchResults) {
     return (
-      <div className="fixed top-20 left-0 w-[320px] h-[calc(100vh-64px)] bg-white shadow-sm ml-[26px] mt-[18px] flex flex-col overflow-hidden z-30">
+      <div className="fixed top-20 left-0 w-[320px] h-[calc(100vh-64px)] bg-white  ml-[26px] mt-[18px] flex flex-col overflow-hidden z-30">
         {/* Search Bar - Fixed */}
         <div className="pt-0  border-gray-200 flex-shrink-0  mb-2">
           <div className="flex items-center space-x-2">
@@ -687,8 +687,8 @@ const Sidebar: React.FC = () => {
   return (
     <>
       {/* Sidebar and content */}
-      <div className="fixed top-20 left-0 h-[calc(100vh-64px)] ml-[26px] mt-[18px] flex z-30">
-        <div className="w-[328px] bg-white shadow-sm flex flex-col overflow-hidden sidebar-container">
+      <div className="fixed flex  top-16 left-0 h-[calc(100vh-60px)] mx-6 z-30">
+        <div className="w-[24vw] bg-white  flex flex-col overflow-hidden sidebar-container">
           {/* Search Bar - Fixed */}
           <div className=" border-gray-200 flex-shrink-0">
             <div className="flex items-center space-x-2">
@@ -740,7 +740,7 @@ const Sidebar: React.FC = () => {
           </div>
 
           {/* Pagination - Fixed */}
-          <div className="py-3 border-b border-gray-00 flex-shrink-0">
+          <div className="py-3  flex-shrink-0">
             <div className="relative">
               <div className="flex items-center space-x-1 gap-3 overflow-x-auto hide-scrollbar pb-4">
                 {Array.from({ length: watchlistNames.length }, (_, i) => i + 1).map((page) => (
@@ -776,7 +776,7 @@ const Sidebar: React.FC = () => {
                 transform: 'translateX(-50%)'
               }}
             >
-              <div className="px-3 py-2 bg-white text-black text-xs rounded-[4px] shadow-[0_0_4px_#F1F1F1] whitespace-nowrap border border-[#d9d9d9] border-[1px]">
+              <div className="px-3 py-2 bg-white text-black text-xs rounded-[4px] whitespace-nowrap  border-[#d9d9d9] border-[1px]">
                 {watchlistNames[hoveredPage - 1]}
                 {/* Arrow pointing down */}
                 {/* <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-[6px] border-r-[6px] border-t-[6px] border-transparent border-t-white"></div> */}
@@ -785,7 +785,7 @@ const Sidebar: React.FC = () => {
           )}
 
           {/* Scrollable Content Area */}
-          <div className="flex-1 overflow-y-auto hide-scrollbar pr-1 border border-gray-200 pl-[6px] pr-[6px]">
+          <div className="flex-1 overflow-y-auto hide-scrollbar border border-gray-200 ">
             {/* Dynamic Category Sections */}
             {categories.map(category => (
               <div className="border-none" key={category.id}>
@@ -820,7 +820,6 @@ const Sidebar: React.FC = () => {
         </div>
       </div>
       {/* Vertical divider aligned with Navbar's left section divider */}
-      <div className="fixed top-[100px] left-[calc(24vw+13px)] h-[calc(100vh-56px)] w-px bg-gray-200 z-40" />
     </>
   );
 };
@@ -865,7 +864,7 @@ const TooltipPositioner: React.FC<{ tooltipPosition: { left: number; top: number
         transform: style.transform,
       }}
     >
-      <div className="px-3 py-2 bg-white text-black text-xs rounded-[4px] shadow-[0_0_4px_rgba(0,0,0,0.2)] whitespace-nowrap border border-[#d9d9d9] border-[1px]">
+      <div className="px-3 py-2 bg-white text-black text-xs rounded-[4px]  whitespace-nowrap  border-[#d9d9d9] border-[1px]">
         {watchlistName}
       </div>
     </div>
