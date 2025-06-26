@@ -21,14 +21,14 @@ function Watchlist() {
       ),
       symbol: "AAPL",
       interval: "1D",
-       height: window.innerHeight - 60,
+       height: window.innerHeight - 88,
        width: "100%",
       debug: true,
     });
   }, []);
 
   return (
-    <div className="px-2">
+    <div className="px-[28px] py-[18px]">
        <div className="w-full " id="chartContainer"></div>
        {/* <div className="w-screen h-screen bg-green-50"></div> */}
     </div>

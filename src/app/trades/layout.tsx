@@ -20,9 +20,13 @@ export default function RootLayout({
     <div className={inter.className}>
       <Navbar />
       <div className="flex w-full pt-[60px]">
-        <div className="hidden lg:block w-[25%] ">
+        <div className="hidden lg:block w-[27vw]">
           <Sidebar />
         </div>
+          <div
+            className="h-auto w-[0.5px] my-[28px] z-100 bg-gray-200"
+            style={{ overflow: "hidden" }}
+          ></div>
         <main className="w-full lg:w-[75%] p-[28px] bg-white dark:bg-[#121212]">
           <div className="bg-white w-full">
             <TradeSelector />
