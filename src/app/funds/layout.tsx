@@ -23,7 +23,7 @@ export default function RootLayout({
         <div className="w-[25%]">
           <Sidebar />
         </div>
-        <main className="w-[75%] py-[28px] px-9">
+        <main className="w-[75%] py-[28px] pt-0 px-9 fixed top-[84px] left-[25%] pr-[28px] pb-40">
           {children}
         </main>
       </div>

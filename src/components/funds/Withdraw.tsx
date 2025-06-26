@@ -137,45 +137,45 @@ const WithdrawPage: React.FC<WithdrawPageProps> = ({ onBack }) => {
   };
 
   return (
-    <div className="w-full max-w-[80vw] mx-auto text-sm">
+    <div className="w-full max-w-full mx-auto text-xs overflow-y-auto hide-scrollbar min-h-0 mb-8" style={{maxHeight: '100vh'}}>
       {/* Back button */}
-      <button onClick={onBack} className="flex items-center text-[#6B7280] mb-2 whitespace-nowrap text-xs py-1 px-2">
-        <ChevronLeft size={16} className="mr-1" />
-        Withdraw
+      <button onClick={onBack} className="flex items-center text-[16px] text-black mb-1 whitespace-nowrap py-0.5 px-1 pb-4">
+        <ChevronLeft size={20} className="mr-0.5" />
+        <span className="text-[16px]">Withdraw</span>
       </button>
       
       {/* Withdraw Form */}
-      <div className="my-4 bg-[#FAFAFA] border border-gray-200 rounded-md max-w-[80vw] mx-auto p-4">
-        <div className="p-3">
+      <div className="my-2 bg-[#FAFAFA] border border-gray-200 rounded-md max-w-full mx-auto p-2 text-xs">
+        <div className="p-1.5">
           {/* Title and Balance */}
-          <div className="flex justify-between items-center mb-4">
-            <h2 className="text-sm text-[#212529]">Enter Amount</h2>
-            <div className="text-sm text-[#6B7280]">Wdl. Balance : <span className='text-[#333333]'>₹{formatCurrency(availableBalance)}</span></div>
+          <div className="flex justify-between items-center mb-2 text-xs">
+            <h2 className="text-xs text-[#212529]">Enter Amount</h2>
+            <div className="text-xs text-[#6B7280]">Wdl. Balance : <span className='text-[#333333]'>₹{formatCurrency(availableBalance)}</span></div>
           </div>
           
           {/* Amount Input */}
           <input 
             type="text" 
             placeholder="₹20,000"
-            className="w-full border border-gray-300 rounded-md px-3 py-2 mb-2"
+            className="w-full border border-gray-300 rounded-md px-2 py-2 mb-1.5 text-xs"
             value={withdrawAmount !== null ? `₹${withdrawAmount}` : ''}
             onChange={handleAmountChange}
           />
-          <div className="text-sm text-gray-500 mb-4">
+          <div className="text-xs text-gray-500 mb-3">
             Amount is Expected to credit by (next settlement cycle)
           </div>
           
           {/* Withdrawal Type Selection */}
-          <div className="flex items-center mb-6">
-            <label className="inline-flex items-center mr-6">
+          <div className="flex items-center mb-3 text-xs">
+            <label className="inline-flex items-center mr-4">
               <input 
                 type="radio" 
                 name="withdrawType" 
                 checked={withdrawType === 'instant'} 
                 onChange={() => setWithdrawType('instant')} 
-                className="mr-2 h-5 w-5"
+                className="mr-1.5 h-4 w-4"
               />
-              <span className="text-gray-500 text-base">Instant Withdraw</span>
+              <span className="text-gray-500 text-xs">Instant Withdraw</span>
             </label>
             <label className="inline-flex items-center">
               <input 
@@ -183,40 +183,40 @@ const WithdrawPage: React.FC<WithdrawPageProps> = ({ onBack }) => {
                 name="withdrawType" 
                 checked={withdrawType === 'normal'} 
                 onChange={() => setWithdrawType('normal')} 
-                className="mr-2 h-5 w-5"
+                className="mr-1.5 h-4 w-4"
               />
-              <span className="text-gray-500 text-base">Normal Withdraw</span>
+              <span className="text-gray-500 text-xs">Normal Withdraw</span>
             </label>
           </div>
           
           {/* Bank Selection */}
-          <h2 className="text-lg font-medium mb-2">Select Bank</h2>
-          <div className="relative mb-4">
-            <div className="flex items-center justify-between w-full border border-gray-300 rounded-md px-3 py-2">
+          <h2 className="text-xs font-medium mb-1.5">Select Bank</h2>
+          <div className="relative mb-3">
+            <div className="flex items-center justify-between w-full bg-white border border-gray-300 rounded-md px-2 py-1.5 text-xs">
               <div className="flex items-center">
-                <div className="w-6 h-6 bg-orange-500 rounded-full flex items-center justify-center text-white text-xs mr-2">
+                <div className="w-5 h-5 bg-orange-500 rounded-full flex items-center justify-center text-white text-xs mr-1.5">
                   B
                 </div>
                 <span>BOB - ******* 8829</span>
               </div>
-              <ChevronDown size={16} className="text-gray-400" />
+              <ChevronDown size={14} className="text-gray-400" />
             </div>
           </div>
           
           {/* Withdraw All Checkbox */}
-          <label className="inline-flex items-center mb-6">
+          <label className="inline-flex items-center mb-4">
             <input 
               type="checkbox" 
               checked={withdrawAll} 
               onChange={() => setWithdrawAll(!withdrawAll)} 
-              className="mr-2 h-5 w-5"
+              className="mr-1.5 h-4 w-4"
             />
-            <span className="text-gray-500 text-base">Withdraw all</span>
+            <span className="text-gray-500 text-xs">Withdraw all</span>
           </label>
           
           {/* Submit Button */}
           <button 
-            className="w-full bg-green-500 text-white font-medium py-3 rounded-md text-center"
+            className="w-full bg-green-500 text-white font-medium py-2 rounded-md text-center text-xs"
             onClick={handleSubmit}
           >
             Withdraw {withdrawAmount ? `₹${formatCurrency(withdrawAmount)}` : 'Amount'}
@@ -225,59 +225,59 @@ const WithdrawPage: React.FC<WithdrawPageProps> = ({ onBack }) => {
       </div>
       
       {/* Horizontal Divider */}
-      <hr className="my-6 border-gray-200" />
+      <hr className="my-4 border-gray-200" />
       
       {/* Withdrawal History */}
       <div>
-        <h2 className="text-lg font-medium my-4">Fund Withdraw History</h2>
+        <h2 className="text-sm font-medium my-3">Fund Withdraw History</h2>
         
         <div className="overflow-x-auto border rounded-md">
           <table className="min-w-full divide-y divide-gray-200">
             <thead className="bg-[#F4F4F9]">
               <tr>
-                <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider border-r group hover:bg-gray-100 cursor-pointer">
+                <th className="px-2 py-2 text-left text-xs font-medium uppercase tracking-wider border-r group hover:bg-gray-100 cursor-pointer">
                   <div 
                     className="flex items-center justify-between w-full"
                     onClick={() => handleSort('account')}
                   >
                     <span>Account</span>
-                    <ArrowUpDown className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity" />
+                    <ArrowUpDown className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity" />
                   </div>
                 </th>
-                <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider border-r group hover:bg-gray-100 cursor-pointer">
+                <th className="px-2 py-2 text-left text-xs font-medium uppercase tracking-wider border-r group hover:bg-gray-100 cursor-pointer">
                   <div 
                     className="flex items-center justify-between w-full"
                     onClick={() => handleSort('bank')}
                   >
                     <span>Bank</span>
-                    <ArrowUpDown className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity" />
+                    <ArrowUpDown className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity" />
                   </div>
                 </th>
-                <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider border-r group hover:bg-gray-100 cursor-pointer">
+                <th className="px-2 py-2 text-left text-xs font-medium uppercase tracking-wider border-r group hover:bg-gray-100 cursor-pointer">
                   <div 
                     className="flex items-center justify-between w-full"
                     onClick={() => handleSort('date')}
                   >
                     <span>Date & Time</span>
-                    <ArrowUpDown className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity" />
+                    <ArrowUpDown className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity" />
                   </div>
                 </th>
-                <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider border-r group hover:bg-gray-100 cursor-pointer">
+                <th className="px-2 py-2 text-left text-xs font-medium uppercase tracking-wider border-r group hover:bg-gray-100 cursor-pointer">
                   <div 
                     className="flex items-center justify-between w-full"
                     onClick={() => handleSort('amount')}
                   >
                     <span>Amount</span>
-                    <ArrowUpDown className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity" />
+                    <ArrowUpDown className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity" />
                   </div>
                 </th>
-                <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider group hover:bg-gray-100 cursor-pointer">
+                <th className="px-2 py-2 text-left text-xs font-medium uppercase tracking-wider group hover:bg-gray-100 cursor-pointer">
                   <div 
                     className="flex items-center justify-between w-full"
                     onClick={() => handleSort('status')}
                   >
                     <span>Status</span>
-                    <ArrowUpDown className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity" />
+                    <ArrowUpDown className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity" />
                   </div>
                 </th>
               </tr>
@@ -285,12 +285,12 @@ const WithdrawPage: React.FC<WithdrawPageProps> = ({ onBack }) => {
             <tbody className="bg-white divide-y divide-gray-200">
               {currentItems.map((item, index) => (
                 <tr key={index}>
-                  <td className="px-4 py-4 whitespace-nowrap text-sm text-[#6B7280] text-center border-r">{item.account}</td>
-                  <td className="px-4 py-4 whitespace-nowrap text-sm text-[#6B7280] text-center border-r">{item.bank}</td>
-                  <td className="px-4 py-4 whitespace-nowrap text-sm text-[#6B7280] text-center border-r">{item.date} {item.time}</td>
-                  <td className="px-4 py-4 whitespace-nowrap text-sm text-[#6B7280] text-center border-r">₹{formatCurrency(item.amount)}</td>
-                  <td className="px-4 py-4 whitespace-nowrap">
-                    <span className={`inline-flex px-2 py-1 text-xs rounded-sm ${
+                  <td className="px-2 py-2 whitespace-nowrap text-xs text-[#6B7280] text-center border-r">{item.account}</td>
+                  <td className="px-2 py-2 whitespace-nowrap text-xs text-[#6B7280] text-center border-r">{item.bank}</td>
+                  <td className="px-2 py-2 whitespace-nowrap text-xs text-[#6B7280] text-center border-r">{item.date} {item.time}</td>
+                  <td className="px-2 py-2 whitespace-nowrap text-xs text-[#6B7280] text-center border-r">₹{formatCurrency(item.amount)}</td>
+                  <td className="px-2 py-2 whitespace-nowrap text-center">
+                    <span className={`inline-flex px-1.5 py-0.5 text-xs rounded-sm ${
                       item.status === 'pending' 
                         ? 'bg-[#FFF6DC] text-[#FFBF00]' 
                         : item.status === 'success' 
@@ -312,19 +312,19 @@ const WithdrawPage: React.FC<WithdrawPageProps> = ({ onBack }) => {
         </div>
 
         {/* Pagination */}
-        <div className="flex items-center justify-between mt-4">
-          <div className="text-sm text-gray-500">
+        <div className="flex items-center justify-between mt-3">
+          <div className="text-xs text-gray-500">
             Showing {startIndex + 1} to {Math.min(endIndex, sortedHistory.length)} of {sortedHistory.length} entries
           </div>
           
-          <div className="flex items-center space-x-2">
+          <div className="flex items-center space-x-1">
             {/* Previous Button */}
             <button
               onClick={() => handlePageChange(currentPage - 1)}
               disabled={currentPage === 1}
-              className="p-2 border border-gray-300 rounded hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="p-1.5 border border-gray-300 rounded hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              <ChevronLeft size={16} />
+              <ChevronLeft size={14} />
             </button>
 
             {/* Page Numbers */}
@@ -332,7 +332,7 @@ const WithdrawPage: React.FC<WithdrawPageProps> = ({ onBack }) => {
               <button
                 key={page}
                 onClick={() => handlePageChange(page)}
-                className={`px-3 py-2 border rounded ${
+                className={`px-2 py-1.5 border rounded text-xs ${
                   currentPage === page
                     ? "bg-blue-500 text-white border-blue-500"
                     : "border-gray-300 hover:bg-gray-50"
@@ -346,9 +346,9 @@ const WithdrawPage: React.FC<WithdrawPageProps> = ({ onBack }) => {
             <button
               onClick={() => handlePageChange(currentPage + 1)}
               disabled={currentPage === totalPages}
-              className="p-2 border border-gray-300 rounded hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="p-1.5 border border-gray-300 rounded hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              <ChevronRight size={16} />
+              <ChevronRight size={14} />
             </button>
           </div>
         </div>
