@@ -25,14 +25,14 @@ const RecentTransactions: React.FC<RecentTransactionsProps> = ({
   transactions,
 }) => {
   return (
-    <div className="border border-gray-200 rounded-lg p-3 bg-white mb-4 max-w-[80vw] mx-auto text-xs">
-      <div className="mb-4 border-b border-gray-200 pb-3">
-        <h2 className="text-gray-800 font-medium">Recent Transactions</h2>
+    <div className="border border-gray-200 rounded-lg bg-white mb-4 max-w-[80vw] mx-auto text-xs">
+      <div className="mb-[6px] border-b border-gray-200">
+        <h2 className="text-gray-800 font-medium text-lg p-3">Recent Transactions</h2>
       </div>
 
       <div>
         {transactions.map((transaction) => (
-          <div key={transaction.id} className="border-b border-gray-200 py-3">
+          <div key={transaction.id} className="border-b border-gray-200 py-3 mx-3">
             <div className="flex justify-between mb-2">
               <div className="text-xs text-gray-500">#{transaction.id}</div>
               <div
@@ -52,12 +52,12 @@ const RecentTransactions: React.FC<RecentTransactionsProps> = ({
                 </span>
                 <span className="text-gray-400">•</span>
                 <span
-                  className={`text-xs px-2 py-0.5 rounded-full ${
+                  className={`text-xs px-2 py-0.5 rounded-[4px] ${
                     transaction.status === "completed"
-                      ? "bg-green-100 text-green-800"
+                      ? "bg-[#deffd3] text-[#24813d]"
                       : transaction.status === "processing"
-                      ? "bg-blue-100 text-blue-800"
-                      : "bg-red-100 text-red-800"
+                      ? "bg-[#fff6dc] text-[#ffbf00]"
+                      : "bg-[#ffe4dd] text-[#ff5252]"
                   }`}
                 >
                   {transaction.statusText}

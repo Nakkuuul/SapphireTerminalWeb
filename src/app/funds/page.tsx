@@ -92,6 +92,8 @@ export default function FundsPage() {
     setActiveSection(section);
   };
 
+  // No need to transform data - pass summaryData directly
+
   // Render based on active section
   const renderContent = () => {
     switch (activeSection) {
@@ -104,36 +106,41 @@ export default function FundsPage() {
       case "main":
       default:
         return (
-          <>
-            <div className="mb-4">
+          <div className="flex flex-col h-full">
+            {/* Fixed Header - FundsSummaryCards */}
+            <div className="flex-shrink-0 mb-4">
               <FundsSummaryCards data={summaryData} onNavigate={handleNavigate} />
             </div>
 
-            {/* Two Column Layout */}
-            <div className="grid grid-cols-1 md:grid-cols-2 pt-3 gap-6">
-              {/* Left Column - Balance Breakdown */}
-              <BalanceBreakdown
-                balanceData={balanceData}
-                profitLossData={profitLossData}
-                margins={margins}
-                premiums={premiums}
-                withdrawable={withdrawable}
-                totalBalance={totalBalance}
-              />
+            {/* Scrollable Content - Two Column Layout */}
+            <div className="flex-1 overflow-y-auto max-h-[calc(100vh-200px)] scrollbar-hide">
+              <div className="grid grid-cols-1 md:grid-cols-2 pt-3 gap-6 pb-6">
+                {/* Left Column - Balance Breakdown */}
+                <div className="mb-12">
+                  <BalanceBreakdown
+                    balanceData={balanceData}
+                    profitLossData={profitLossData}
+                    margins={margins}
+                    premiums={premiums}
+                    withdrawable={withdrawable}
+                    totalBalance={totalBalance}
+                  />
+                </div>
 
-              {/* Right Column - Recent Transactions and Chart */}
-              <div>
-                <RecentTransactions transactions={transactions} />
-                <BalanceChart data={chartValues} />
+                {/* Right Column - Recent Transactions and Chart */}
+                <div className="mb-12">
+                  <RecentTransactions transactions={transactions} />
+                  <BalanceChart data={chartValues} />
+                </div>
               </div>
             </div>
-          </>
+          </div>
         );
     }
   };
 
   return (
-    <div className="pb-10 mx-auto">
+    <div className="h-screen flex flex-col pb-10 mx-auto">
       {renderContent()}
     </div>
   );

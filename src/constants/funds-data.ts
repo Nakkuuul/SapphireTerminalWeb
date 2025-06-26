@@ -89,18 +89,11 @@ export const recentTransactions = [
     statusText: "processing",
   },
   {
-    id: "#562677788391",
-    amount: 2042.63,
-    date: "31 JAN 2025",
-    status: "failed",
-    statusText: "failed",
-  },
-  {
-    id: "#562677788392",
-    amount: 2042.63,
-    date: "31 JAN 2025",
+    id: "#562677788394",
+    amount: 1500.00,
+    date: "01 FEB 2025",
     status: "completed",
-    statusText: "completed",
+    statusText: "Txn Completed",
   },
 ];
 

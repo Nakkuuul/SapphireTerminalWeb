@@ -11,7 +11,7 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({ onNavigate }) => {
       <div className="flex items-center gap-3 whitespace-nowrap">
         <button
           onClick={() => onNavigate("withdraw")}
-          className="py-2 px-4 border border-green-500 text-green-600 rounded-md bg-[#D1FADF4D] hover:bg-green-100 transition-colors text-xs"
+          className="py-2 px-5 border border-green-500 text-green-600 rounded-md bg-[#D1FADF4D] hover:bg-green-100 transition-colors text-xs"
           style={{ width: "120px" }}
         >
           Withdraw
@@ -19,7 +19,7 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({ onNavigate }) => {
 
         <button
           onClick={() => onNavigate("deposit")}
-          className="py-2 px-4 bg-green-500 text-white rounded-md hover:bg-green-600 transition-colors text-xs"
+          className="py-2 px-5 bg-green-500 text-white rounded-md hover:bg-green-600 transition-colors text-xs"
           style={{ width: "120px" }}
         >
           Deposit
