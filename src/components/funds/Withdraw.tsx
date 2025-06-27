@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { ChevronLeft, ChevronDown, HelpCircle, ArrowUpDown, ChevronRight } from 'lucide-react';
+import Image from 'next/image';
 
 // Import sample data - replace with API calls in production
 import { banks, withdrawHistory, withdrawableBalance } from '@/constants/funds-data';
@@ -48,6 +49,14 @@ const WithdrawPage: React.FC<WithdrawPageProps> = ({ onBack }) => {
   
   // Pre-defined withdrawal amounts
   const withdrawAmounts = [5000, 10000, 25000];
+
+  // Add extra banks for dropdown
+  const bankOptions = [
+    { id: 'bob', label: 'BOB - ******* 8829' },
+    { id: 'hdfc', label: 'HDFC - ******* 1234' },
+    { id: 'icici', label: 'ICICI - ******* 5678' },
+  ];
+  const [showBankDropdown, setShowBankDropdown] = useState(false);
 
   // Handle amount selection
   const handleAmountSelect = (amount: number) => {
@@ -157,7 +166,7 @@ const WithdrawPage: React.FC<WithdrawPageProps> = ({ onBack }) => {
           <input 
             type="text" 
             placeholder="₹20,000"
-            className="w-full border border-gray-300 rounded-md px-2 py-2 mb-1.5 text-xs"
+            className="w-full border h-[38px] border-gray-300 rounded-md px-2 py-2 mb-1.5 text-xs"
             value={withdrawAmount !== null ? `₹${withdrawAmount}` : ''}
             onChange={handleAmountChange}
           />
@@ -191,20 +200,50 @@ const WithdrawPage: React.FC<WithdrawPageProps> = ({ onBack }) => {
           
           {/* Bank Selection */}
           <h2 className="text-xs font-medium mb-1.5 mt-2">Select Bank</h2>
-          <div className="relative mb-[18px]">
-            <div className="flex items-center justify-between w-full bg-white border border-gray-300 rounded-md px-2 py-1.5 text-xs">
+          <div className="relative mb-[12px]">
+            <div
+              className="flex items-center h-[38px] justify-between w-full bg-white border border-gray-300 rounded-md px-2 py-1.5 text-xs cursor-pointer"
+              onClick={() => setShowBankDropdown((v) => !v)}
+            >
               <div className="flex items-center">
-                <div className="w-5 h-5 bg-orange-500 rounded-full flex items-center justify-center text-white text-xs mr-1.5">
-                  B
-                </div>
-                <span>BOB - ******* 8829</span>
+                <Image
+                  alt="Bank"
+                  src="/funds/bank-transfer.svg"
+                  width={20}
+                  height={20}
+                  className="mr-1.5"
+                />
+                <span>{bankOptions.find((b) => b.id === selectedBank)?.label}</span>
               </div>
               <ChevronDown size={14} className="text-gray-400" />
             </div>
+            {showBankDropdown && (
+              <div className="absolute left-0 right-0 mt-1 bg-white border border-gray-200 rounded-md shadow-lg z-10">
+                {bankOptions.map((bank) => (
+                  <div
+                    key={bank.id}
+                    className={`flex items-center px-3 py-2 cursor-pointer hover:bg-gray-100 ${selectedBank === bank.id ? 'bg-gray-50' : ''}`}
+                    onClick={() => {
+                      setSelectedBank(bank.id);
+                      setShowBankDropdown(false);
+                    }}
+                  >
+                    <Image
+                      alt="Bank"
+                      src="/funds/bank-transfer.svg"
+                      width={18}
+                      height={18}
+                      className="mr-2"
+                    />
+                    <span className="text-xs text-black">{bank.label}</span>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
           
           {/* Withdraw All Checkbox */}
-          <label className="inline-flex items-center mb-4 mt-[5px]">
+          <label className="inline-flex items-center mb-4">
             <input 
               type="checkbox" 
               checked={withdrawAll} 
@@ -216,7 +255,7 @@ const WithdrawPage: React.FC<WithdrawPageProps> = ({ onBack }) => {
           
           {/* Submit Button */}
           <button 
-            className="w-full bg-green-500 text-white font-medium py-2 rounded-md text-center text-xs mt-3"
+            className="w-full bg-green-500 text-white font-medium py-2 rounded-md text-center text-xs mt-3 h-[38px]"
             onClick={handleSubmit}
           >
             Withdraw {withdrawAmount ? `₹${formatCurrency(withdrawAmount)}` : 'Amount'}

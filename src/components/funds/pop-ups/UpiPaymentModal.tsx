@@ -9,12 +9,12 @@ interface UpiPaymentModalProps {
 }
 
 const UpiPaymentModal: React.FC<UpiPaymentModalProps> = ({ isOpen, onClose = () => {}, amount = 855, onSuccess }) => {
-  const [timeLeft, setTimeLeft] = useState<{ minutes: number; seconds: number }>({ minutes: 3, seconds: 18 });
+  const [timeLeft, setTimeLeft] = useState<{ minutes: number; seconds: number }>({ minutes: 5, seconds: 0 });
   const [progress, setProgress] = useState(100);
 
   useEffect(() => {
     if (!isOpen) return;
-    setTimeLeft({ minutes: 3, seconds: 18 });
+    setTimeLeft({ minutes: 5, seconds: 0 });
     setProgress(100);
     const timer = setInterval(() => {
       setTimeLeft(prev => {
@@ -27,7 +27,7 @@ const UpiPaymentModal: React.FC<UpiPaymentModalProps> = ({ isOpen, onClose = () 
           return { minutes: 0, seconds: 0 };
         }
       });
-      setProgress(prev => Math.max(0, prev - (100 / (3 * 60 + 18))));
+      setProgress(prev => Math.max(0, prev - (100 / (5 * 60))));
     }, 1000);
     return () => clearInterval(timer);
   }, [isOpen]);
@@ -95,7 +95,7 @@ const UpiPaymentModal: React.FC<UpiPaymentModalProps> = ({ isOpen, onClose = () 
           {/* Warning Message */}
           <div className="w-full mb-6">
             <div className="bg-[#fef8e5] border border-[#ffe37f] rounded-lg p-3">
-              <p className="text-[#6b7280] text-sm text-regular">
+              <p className="text-[#6b7280] text-regular text-[12px]">
                 A payment request has been sent to your registered UPI ID. Please complete the transaction to proceed.
               </p>
             </div>

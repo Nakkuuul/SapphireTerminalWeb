@@ -30,7 +30,7 @@ interface DepositPageProps {
 // Main Deposit Page Component
 const DepositPage: React.FC<DepositPageProps> = ({ onBack }) => {
   // State management
-  const [selectedAmount, setSelectedAmount] = useState<number | null>(10000);
+  const [selectedAmount, setSelectedAmount] = useState<number | null>(0);
   const [selectedBank, setSelectedBank] = useState(banks[0]?.id || "");
   const [selectedPaymentMode, setSelectedPaymentMode] = useState("upi");
   const [history, setHistory] = useState(depositHistory);
@@ -47,6 +47,14 @@ const DepositPage: React.FC<DepositPageProps> = ({ onBack }) => {
     key: string;
     direction: 'asc' | 'desc';
   } | null>(null);
+
+  // Add extra banks for dropdown
+  const bankOptions = [
+    { id: 'bob', label: 'BOB - ******* 8829' },
+    { id: 'hdfc', label: 'HDFC - ******* 1234' },
+    { id: 'icici', label: 'ICICI - ******* 5678' },
+  ];
+  const [showBankDropdown, setShowBankDropdown] = useState(false);
 
   // Handle increment from chips
   const handleAmountIncrement = (amount: number) => {
@@ -172,7 +180,7 @@ const DepositPage: React.FC<DepositPageProps> = ({ onBack }) => {
           <input 
             type="text" 
             placeholder="₹20,000"
-            className="w-full border border-gray-300 text-black bg-white rounded-md px-2 py-2 mb-4 text-xs"
+            className="w-full h-[38px] border border-gray-300 text-black bg-white rounded-md px-2 py-2 mb-4 text-xs"
             value={selectedAmount ? `₹${selectedAmount.toLocaleString()}` : ""}
             onChange={handleAmountChange}
           />
@@ -219,8 +227,11 @@ const DepositPage: React.FC<DepositPageProps> = ({ onBack }) => {
           
           {/* Bank Selection */}
           <h2 className="text-xs text-[#212529] mb-1.5">Select Bank</h2>
-          <div className="relative mb-4">
-            <div className="flex items-center justify-between w-full border border-gray-300 rounded-md px-2 py-2 bg-white">
+          <div className="relative mb-4 h-[38px]">
+            <div
+              className="flex items-center justify-between w-full border h-[38px] border-gray-300 rounded-md px-2 py-2 bg-white cursor-pointer"
+              onClick={() => setShowBankDropdown((v) => !v)}
+            >
               <div className="flex items-center">
                 <Image
                   alt="Bank"
@@ -229,10 +240,35 @@ const DepositPage: React.FC<DepositPageProps> = ({ onBack }) => {
                   height={22}
                   className="mr-1.5"
                 />
-                <span className="text-black ml-1 text-xs">BOB - ******* 8829</span>
+                <span className="text-black ml-1 text-xs">
+                  {bankOptions.find((b) => b.id === selectedBank)?.label}
+                </span>
               </div>
               <ChevronDown size={14} className="text-gray-400" />
             </div>
+            {showBankDropdown && (
+              <div className="absolute left-0 right-0 mt-1 bg-white border border-gray-200 rounded-md shadow-lg z-10">
+                {bankOptions.map((bank) => (
+                  <div
+                    key={bank.id}
+                    className={`flex items-center px-3 py-2 cursor-pointer hover:bg-gray-100 ${selectedBank === bank.id ? 'bg-gray-50' : ''}`}
+                    onClick={() => {
+                      setSelectedBank(bank.id);
+                      setShowBankDropdown(false);
+                    }}
+                  >
+                    <Image
+                      alt="Bank"
+                      src="/funds/bank-transfer.svg"
+                      width={18}
+                      height={18}
+                      className="mr-2"
+                    />
+                    <span className="text-xs text-black">{bank.label}</span>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
           
           {/* Payment Mode */}
@@ -257,7 +293,7 @@ const DepositPage: React.FC<DepositPageProps> = ({ onBack }) => {
             </button>
           
             <button
-              className={`flex items-center justify-center border rounded py-2 px-2 ${
+              className={`flex items-center justify-center border rounded py-2 px-2 h-[38px] ${
                 selectedPaymentMode === "qr"
                   ? "border-green-500 text-green-600"
                   : "border-gray-300 text-[#212529]"
@@ -275,7 +311,7 @@ const DepositPage: React.FC<DepositPageProps> = ({ onBack }) => {
             </button>
           
             <button
-              className={`flex items-center justify-center border rounded py-2 px-2 ${
+              className={`flex items-center justify-center border rounded py-2 px-2 h-[38px] ${
                 selectedPaymentMode === "netbanking"
                   ? "border-green-500 text-green-600"
                   : "border-gray-300 text-[#212529]"
@@ -300,14 +336,14 @@ const DepositPage: React.FC<DepositPageProps> = ({ onBack }) => {
               <input
                 type="text"
                 placeholder="abcd@ybl"
-                className="w-full border border-gray-300 rounded-md px-2 py-2 text-xs"
+                className="w-full border h-[38px] border-gray-300 rounded-md px-2 py-2 text-xs"
               />
             </div>
           )}
           
           {/* Submit Button */}
           <button 
-            className="w-full bg-green-500 text-white font-medium py-3 mt-[18px] rounded-md text-center text-xs"
+            className="w-full bg-green-500 text-white font-medium py-3 mt-[18px] h-[38px] rounded-md text-center text-xs"
             onClick={handlePaymentClick}
             disabled={!selectedAmount}
           >

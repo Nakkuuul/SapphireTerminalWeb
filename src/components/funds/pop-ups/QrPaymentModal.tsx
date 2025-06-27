@@ -95,7 +95,7 @@ const QrPaymentModal = ({ isOpen, onClose, onSuccess }: { isOpen: boolean, onClo
             </span>
           </div>
           {/* Instruction */}
-          <div className="text-center text-gray-700  font-regular mb-[8px]" style={{ fontSize: '16px', fontWeight: 400 }}>Scan the QR using any UPI App</div>
+          <div className="text-center text-[#6b7280]  font-regular mb-[8px]" style={{ fontSize: '16px', fontWeight: 400 }}>Scan the QR using any UPI App</div>
           {/* UPI App Icons */}
           <div className="flex items-center justify-center space-x-2 mt-2 mb-[18px]">
             <img src="/funds/PhonePeLogo.svg" alt="PhonePe" className="" style={{ width: '28px', height: '28px' }} />
