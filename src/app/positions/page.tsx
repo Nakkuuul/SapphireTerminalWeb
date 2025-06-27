@@ -317,14 +317,40 @@ const Positions: React.FC = () => {
     );
   };
 
+  const [searchExpanded, setSearchExpanded] = useState(false);
+  const [searchValue, setSearchValue] = useState('');
+
   return (
     <div className="w-full max-w-[80vw] mx-auto">
       {/* Positions Section Header */}
-      <div className="flex justify-between items-end mb-2">
+      <div className="flex justify-between items-center mb-2">
         <h2 className="text-base font-normal">Positions (5)</h2>
         <div className="flex items-center gap-2">
+          <div
+            className={`relative flex items-center transition-all duration-200 overflow-hidden`}
+            style={{ width: searchExpanded ? 192 : 32 }}
+          >
+            <button
+              onClick={() => setSearchExpanded(true)}
+              className="absolute left-0 top-1/2 -translate-y-1/2 w-8 h-8 flex items-center justify-center z-10"
+              aria-label="Expand search"
+              tabIndex={searchExpanded ? -1 : 0}
+              style={{ pointerEvents: searchExpanded ? 'none' : 'auto' }}
+            >
+              <SearchButton />
+            </button>
+            <input
+              type="text"
+              value={searchValue}
+              onChange={e => setSearchValue(e.target.value)}
+              onBlur={() => setSearchExpanded(false)}
+              autoFocus={searchExpanded}
+              className={`pl-9 pr-2 py-2 border border-gray-300 rounded-lg text-sm text-[#686868] focus:outline-none focus:border-blue-500 transition-all duration-200 bg-white ${searchExpanded ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
+              placeholder="Search..."
+              style={{ width: searchExpanded ? 192 : 32, minWidth: 0 }}
+            />
+          </div>
           <DownloadButton />
-          <SearchButton />
         </div>
       </div>
 
@@ -374,10 +400,10 @@ const Positions: React.FC = () => {
                     >
                       {position.security}
                     </span>
-                    <MoreHorizontal
+                    {/* <MoreHorizontal
                       strokeWidth={2}
                       className="w-3 h-3 ml-2 rotate-90 text-gray-400"
-                    />
+                    /> */}
                   </div>
                 </td>
                 <td
@@ -469,14 +495,14 @@ const Positions: React.FC = () => {
                       >
                         B
                       </button>
-                      <span className="text-[#00c852] text-xs font-medium cursor-pointer">Buy</span>
+                      {/* <span className="text-[#00c852] text-xs font-medium cursor-pointer">Buy</span> */}
                       <button 
                         className="flex items-center justify-center w-5 h-5 bg-[#ff5254] text-white text-xs font-medium rounded ml-2"
                         onClick={() => console.log('Sell clicked for', position.security)}
                       >
                         S
                       </button>
-                      <span className="text-[#ff5254] text-xs font-medium cursor-pointer">Sell</span>
+                      {/* <span className="text-[#ff5254] text-xs font-medium cursor-pointer">Sell</span> */}
                       <button 
                         className="flex items-center justify-center w-4 h-6 text-[#6b7280] ml-1"
                         onClick={() => console.log('More options clicked for', position.security)}
@@ -492,28 +518,28 @@ const Positions: React.FC = () => {
                   <td className="absolute left-20 top-1/2 transform -translate-y-1/2 z-20">
                     <div className="flex items-center gap-1 bg-[#ffffff] rounded-md px-2 py-1 border-[0.5px] border-[#d1d5d3]">
                       <button 
-                        className="flex items-center justify-center w-5 h-5 bg-[#00c852] text-white text-xs font-medium rounded"
+                        className="flex items-center justify-center w-3 h-3 text-gray-500 text-[20px] font-medium rounded"
                         onClick={() => console.log('Buy clicked for', position.security)}
                         aria-label="Buy more"
                       >
-                        B
+                        <img src="/positions/Add.svg" alt="Add" className="w-4 h-4" />
                       </button>
-                      <span className="text-[#00c852] text-xs font-medium cursor-pointer">Buy more</span>
+                      <span className="text-[#6b7280] text-xs font-medium cursor-pointer">Buy more</span>
 
                       <span 
-                        className="flex items-center gap-1 text-[#6b7280] text-xs font-medium cursor-pointer ml-2"
+                        className="flex items-center gap-1 text-[#6b7280] text-xs cursor-pointer ml-2 text-gray-500"
                         onClick={() => console.log('Set SL/Target clicked for', position.security)}
                       >
-                        <img src="/positions/Danger.svg" width={14} height={14} alt="Danger" className="inline-block align-middle text-[#6b7280]" />
+                        <img src="/positions/Danger.svg" width={14} height={14} alt="Danger" className="inline-block align-middle text-gray-200" />
                         Set SL/Target
                       </span>
 
                       <button 
-                        className="flex items-center justify-center w-5 h-5 text-white text-xs font-medium rounded ml-2"
+                        className="flex items-center justify-center w-5 h-5 text-white text-xs rounded ml-2 text-gray-500"
                         onClick={() => console.log('Exit clicked for', position.security)}
                         aria-label="Exit"
                       >
-                        <img src="/positions/MinusSquare.svg" width={14} height={14} alt="Exit" className="inline-block align-middle text-[#6b7280]" />
+                        <img src="/positions/MinusSquare.svg" width={14} height={14} alt="Exit" className="inline-block align-middle" />
                       </button>
                       <span className="text-gray-500 text-xs font-medium cursor-pointer">Exit</span>
 
