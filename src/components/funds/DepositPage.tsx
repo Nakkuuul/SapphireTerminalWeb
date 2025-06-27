@@ -160,7 +160,7 @@ const DepositPage: React.FC<DepositPageProps> = ({ onBack }) => {
       </button>
 
       {/* Deposit Form */}
-      <div className="bg-[#FAFAFA] border border-gray-200 rounded-md mb-3 max-w-full mx-auto p-3">
+      <div className="bg-[#FAFAFA] border border-gray-200 rounded-md mb-3 max-w-full mx-auto p-3 w-[508px]">
         <div className="p-2">
           {/* Title and Balance */}
           <div className="flex justify-between items-center mb-3">
@@ -178,7 +178,7 @@ const DepositPage: React.FC<DepositPageProps> = ({ onBack }) => {
           />
           
           {/* Quick Amount Selection */}
-          <div className="flex space-x-2 mb-4">
+          <div className="flex space-x-2 mb-[18px]">
             <div className="relative">
               <div
                 className="bg-[#F4F4F9] rounded text-[#333333] px-2 py-1.5 text-xs cursor-pointer hover:bg-gray-50"
@@ -307,7 +307,7 @@ const DepositPage: React.FC<DepositPageProps> = ({ onBack }) => {
           
           {/* Submit Button */}
           <button 
-            className="w-full bg-green-500 text-white font-medium py-3 rounded-md text-center text-xs"
+            className="w-full bg-green-500 text-white font-medium py-3 mt-[18px] rounded-md text-center text-xs"
             onClick={handlePaymentClick}
             disabled={!selectedAmount}
           >
@@ -321,9 +321,9 @@ const DepositPage: React.FC<DepositPageProps> = ({ onBack }) => {
 
       {/* Deposit History */}
       <div>
-        <h2 className="text-sm font-medium mb-3">Fund Deposit History</h2>
+        {/* <h2 className="text-sm font-medium mb-3">Fund Deposit History</h2> */}
 
-        <div className="overflow-x-auto border rounded-md">
+        {/* <div className="overflow-x-auto border rounded-md">
           <table className="min-w-full divide-y divide-gray-200">
             <thead className="bg-[#F4F4F9]">
               <tr>
@@ -410,10 +410,10 @@ const DepositPage: React.FC<DepositPageProps> = ({ onBack }) => {
               ))}
             </tbody>
           </table>
-        </div>
+        </div> */}
 
         {/* Pagination */}
-        <div className="flex items-center justify-between mt-3">
+        <div className="flex items-center justify-between mt-3 hidden">
           <div className="text-xs text-gray-500">
             Showing {startIndex + 1} to {Math.min(endIndex, sortedHistory.length)} of {sortedHistory.length} entries
           </div>
