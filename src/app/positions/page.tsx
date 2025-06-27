@@ -46,6 +46,7 @@ const Positions: React.FC = () => {
   const [sortField, setSortField] = useState<SortField | null>(null);
   const [sortDirection, setSortDirection] = useState<SortDirection>("asc");
   const [hoveredHeader, setHoveredHeader] = useState<SortField | null>(null);
+  const [hoveredRow, setHoveredRow] = useState<number | null>(null);
 
   // Summary data
   const summaryData: SummaryData = {
@@ -298,7 +299,7 @@ const Positions: React.FC = () => {
 
     return (
       <th
-        className={`px-4 py-0 text-left text-base font-normal border-r cursor-pointer hover:bg-gray-100 ${className} 
+        className={`px-2.5 py-0 text-left text-xs font-normal border-r cursor-pointer hover:bg-gray-100 ${className} 
           ${isActive ? "bg-gray-200" : "bg-gray-50"}`}
         onClick={() => handleSort(field)}
         onMouseEnter={() => setHoveredHeader(field)}
@@ -307,7 +308,7 @@ const Positions: React.FC = () => {
         <div className="flex items-center justify-between">
           <span>{label}</span>
           <ArrowUpDown
-            className={`w-4 h-4 ml-2 ${
+            className={`w-3 h-3 ml-1 ${
               hoveredHeader === field || isActive ? "opacity-100" : "opacity-0"
             }`}
           />
@@ -317,10 +318,10 @@ const Positions: React.FC = () => {
   };
 
   return (
-    <div className="w-full">
+    <div className="w-full max-w-[80vw] mx-auto">
       {/* Positions Section Header */}
-      <div className="flex justify-between items-end mt-6 mb-4">
-        <h2 className="text-xl font-normal">Positions (5)</h2>
+      <div className="flex justify-between items-end mb-2">
+        <h2 className="text-base font-normal">Positions (5)</h2>
         <div className="flex items-center gap-2">
           <DownloadButton />
           <SearchButton />
@@ -331,7 +332,7 @@ const Positions: React.FC = () => {
       <div className="overflow-x-auto border rounded-md">
         <table className="min-w-full divide-y divide-gray-200">
           <thead>
-            <tr className="bg-gray-50" style={{ height: "54px" }}>
+            <tr className="bg-gray-50" style={{ height: "42px" }}>
               <HeaderCell
                 field="security"
                 label="Security"
@@ -357,59 +358,61 @@ const Positions: React.FC = () => {
             {sortedPositions.map((position, index) => (
               <tr 
                 key={index} 
+                className="relative"
                 style={{ 
-                  height: "50px", 
+                  height: "38px", 
                   backgroundColor: position.isClosed ? "rgba(232, 232, 232, 0.4)" : "" 
                 }}
+                onMouseEnter={() => setHoveredRow(index)}
+                onMouseLeave={() => setHoveredRow(null)}
               >
-                <td className="px-4 py-0 whitespace-nowrap border-r">
+                <td className="px-2.5 py-0 whitespace-nowrap border-r">
                   <div className="flex items-center justify-between">
                     <span
                       className={position.isClosed ? "text-[#9E9E9E]" : "text-[#6B7280]"}
-                      style={{ fontSize: "14px" }}
+                      style={{ fontSize: "12px" }}
                     >
                       {position.security}
                     </span>
                     <MoreHorizontal
                       strokeWidth={2}
-                      className="w-4 h-4 ml-4 rotate-90 text-gray-400"
+                      className="w-3 h-3 ml-2 rotate-90 text-gray-400"
                     />
                   </div>
                 </td>
                 <td
-                  className={`px-4 py-0 text-center whitespace-nowrap border-r ${position.isClosed ? "text-[#9E9E9E]" : "text-[#6B7280]"}`}
-                  style={{ fontSize: "14px" }}
+                  className={`px-2.5 py-0 text-center whitespace-nowrap border-r ${position.isClosed ? "text-[#9E9E9E]" : "text-[#6B7280]"}`}
+                  style={{ fontSize: "12px" }}
                 >
                   {position.quantity}
                 </td>
                 <td
-                  className={`px-4 py-0 text-center whitespace-nowrap border-r ${position.isClosed ? "text-[#9E9E9E]" : "text-[#6B7280]"}`}
-                  style={{ fontSize: "14px" }}
+                  className={`px-2.5 py-0 text-center whitespace-nowrap border-r ${position.isClosed ? "text-[#9E9E9E]" : "text-[#6B7280]"}`}
+                  style={{ fontSize: "12px" }}
                 >
                   {formatCurrency(position.avgPrice)}
                 </td>
                 <td
-                  className={`px-4 py-0 text-center whitespace-nowrap border-r ${position.isClosed ? "text-[#9E9E9E]" : "text-[#6B7280]"}`}
-                  style={{ fontSize: "14px" }}
+                  className={`px-2.5 py-0 text-center whitespace-nowrap border-r ${position.isClosed ? "text-[#9E9E9E]" : "text-[#6B7280]"}`}
+                  style={{ fontSize: "12px" }}
                 >
                   {formatCurrency(position.ltp)}
                 </td>
                 <td
-                  className="px-4 py-0 whitespace-nowrap border-r"
-                  style={{ fontSize: "14px" }}
+                  className="px-2.5 py-0 whitespace-nowrap border-r"
+                  style={{ fontSize: "12px" }}
                 >
-                  <div className="flex items-center justify-start">
+                  <div className="flex items-center justify-center ">
                     <div
-                      className="text-xs py-[3px] px-1 rounded-md min-w-[50px] text-center mr-3"
+                      className="text-[10px] py-[3px] px-1 rounded-[4px] text-center mr-2 w-auto"
                       style={getActionBadgeStyles(position.action, position.isClosed)}
                     >
                       {position.action}
                     </div>
                     <div
-                      className="text-xs rounded-md text-center"
+                      className="text-[10px] rounded-[4px] text-center w-auto"
                       style={{
-                        padding: "3px 12px",
-                        minWidth: "50px",
+                        padding: "3px 4px",
                         ...getTypeBadgeStyles(position.type, position.isClosed)
                       }}
                     >
@@ -418,8 +421,8 @@ const Positions: React.FC = () => {
                   </div>
                 </td>
                 <td
-                  className="px-4 py-0 text-center whitespace-nowrap border-r"
-                  style={{ fontSize: "14px" }}
+                  className="px-2.5 py-0 text-center whitespace-nowrap border-r"
+                  style={{ fontSize: "12px" }}
                 >
                   <span
                     className={
@@ -437,8 +440,8 @@ const Positions: React.FC = () => {
                   </span>
                 </td>
                 <td
-                  className="px-4 py-0 text-center whitespace-nowrap"
-                  style={{ fontSize: "14px" }}
+                  className="px-2.5 py-0 text-center whitespace-nowrap"
+                  style={{ fontSize: "12px" }}
                 >
                   <span
                     className={
@@ -455,22 +458,96 @@ const Positions: React.FC = () => {
                     {formatPercentage(position.dailyPL.percentage)}
                   </span>
                 </td>
+
+                {/* Hover Buttons - Only show for closed positions */}
+                {position.isClosed && hoveredRow === index && (
+                  <td className="absolute left-20 top-1/2 transform -translate-y-1/2 z-20">
+                    <div className="flex items-center gap-1 bg-[#ffffff] rounded-md px-2 py-1 border-[0.5px] border-[#d1d5d3]">
+                      <button 
+                        className="flex items-center justify-center w-5 h-5 bg-[#00c852] text-white text-xs font-medium rounded"
+                        onClick={() => console.log('Buy clicked for', position.security)}
+                      >
+                        B
+                      </button>
+                      <span className="text-[#00c852] text-xs font-medium cursor-pointer">Buy</span>
+                      <button 
+                        className="flex items-center justify-center w-5 h-5 bg-[#ff5254] text-white text-xs font-medium rounded ml-2"
+                        onClick={() => console.log('Sell clicked for', position.security)}
+                      >
+                        S
+                      </button>
+                      <span className="text-[#ff5254] text-xs font-medium cursor-pointer">Sell</span>
+                      <button 
+                        className="flex items-center justify-center w-4 h-6 text-[#6b7280] ml-1"
+                        onClick={() => console.log('More options clicked for', position.security)}
+                      >
+                        <MoreHorizontal className="w-3 h-3" />
+                      </button>
+                    </div>
+                  </td>
+                )}
+
+                {/* Hover Buttons - Only show for open positions */}
+                {!position.isClosed && hoveredRow === index && (
+                  <td className="absolute left-20 top-1/2 transform -translate-y-1/2 z-20">
+                    <div className="flex items-center gap-1 bg-[#ffffff] rounded-md px-2 py-1 border-[0.5px] border-[#d1d5d3]">
+                      <button 
+                        className="flex items-center justify-center w-5 h-5 bg-[#00c852] text-white text-xs font-medium rounded"
+                        onClick={() => console.log('Buy clicked for', position.security)}
+                        aria-label="Buy more"
+                      >
+                        B
+                      </button>
+                      <span className="text-[#00c852] text-xs font-medium cursor-pointer">Buy more</span>
+
+                      <span 
+                        className="flex items-center gap-1 text-[#6b7280] text-xs font-medium cursor-pointer ml-2"
+                        onClick={() => console.log('Set SL/Target clicked for', position.security)}
+                      >
+                        <img src="/positions/Danger.svg" width={14} height={14} alt="Danger" className="inline-block align-middle text-[#6b7280]" />
+                        Set SL/Target
+                      </span>
+
+                      <button 
+                        className="flex items-center justify-center w-5 h-5 text-white text-xs font-medium rounded ml-2"
+                        onClick={() => console.log('Exit clicked for', position.security)}
+                        aria-label="Exit"
+                      >
+                        <img src="/positions/MinusSquare.svg" width={14} height={14} alt="Exit" className="inline-block align-middle text-[#6b7280]" />
+                      </button>
+                      <span className="text-gray-500 text-xs font-medium cursor-pointer">Exit</span>
+
+                      <button 
+                        className="flex items-center justify-center w-4 h-6 text-[#6b7280] ml-1 cursor-pointer"
+                        onClick={() => console.log('More options clicked for', position.security)}
+                        aria-label="More options"
+                      >
+                        <svg width="12" height="12" fill="none" stroke="#6b7280" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24">
+                          <circle cx="12" cy="12" r="1" />
+                          <circle cx="19" cy="12" r="1" />
+                          <circle cx="5" cy="12" r="1" />
+                        </svg>
+                      </button>
+                    </div>
+                  </td>
+                )}
+
               </tr>
             ))}
-            <tr className="bg-gray-50 font-medium" style={{ height: "50px" }}>
+            <tr className="bg-gray-50 font-medium" style={{ height: "38px" }}>
               <td
                 colSpan={5}
-                className="px-4 py-0 whitespace-nowrap text-sm text-center border-r"
+                className="px-2.5 py-0 whitespace-nowrap text-xs text-center border-r"
               >
                 Total
               </td>
-              <td className="px-4 py-0 whitespace-nowrap text-center text-sm border-r">
+              <td className="px-2.5 py-0 whitespace-nowrap text-center text-xs border-r">
                 <span className="text-[#22A06B]">
                   {formatCurrency(totalNetPL.value)}{" "}
                   {formatPercentage(totalNetPL.percentage)}
                 </span>
               </td>
-              <td className="px-4 py-0 whitespace-nowrap text-center text-sm">
+              <td className="px-2.5 py-0 whitespace-nowrap text-center text-xs">
                 <span className="text-[#22A06B]">
                   {formatCurrency(totalDailyPL.value)}{" "}
                   {formatPercentage(totalDailyPL.percentage)}
