@@ -252,8 +252,8 @@ const EquityHoldings = () => {
 
     return (
       <th
-        className={`px-4 py-0 text-left text-base font-normal border-r cursor-pointer hover:bg-gray-100 ${className} 
-          ${isActive ? "bg-gray-200" : "bg-gray-50"}`}
+        className={`px-2 py-0 text-left text-xs font-normal border-r cursor-pointer hover:bg-gray-100 ${className} 
+          ${isActive ? "bg-[#E8E8F0]" : "bg-[#F4F4F9]"}`}
         onClick={() => handleSort(field)}
         onMouseEnter={() => setHoveredHeader(field)}
         onMouseLeave={() => setHoveredHeader(null)}
@@ -262,7 +262,7 @@ const EquityHoldings = () => {
         <div className="flex items-center justify-between">
           <span>{label}</span>
           <ArrowUpDown
-            className={`w-4 h-4 ml-2 ${
+            className={`w-3 h-3 ml-1 ${
               hoveredHeader === field || isActive ? "opacity-100" : "opacity-0"
             }`}
           />
@@ -271,44 +271,48 @@ const EquityHoldings = () => {
     );
   };
 
+  // Search state
+  const [searchExpanded, setSearchExpanded] = useState(false);
+  const [searchValue, setSearchValue] = useState("");
+
   return (
-    <div className="mx-auto">
+    <div className="w-full">
       <HoldingSelector />
       {/* Summary Section */}
-      <div className="grid grid-cols-4 bg-[#F4F4F9] mb-4 h-24 overflow-hidden">
-        <div className="flex flex-col justify-center h-full px-3 relative text-center">
-          <div className="text-base text-gray-600 text-center">
+      <div className="grid grid-cols-4 bg-[#F4F4F9] mb-2 h-16 overflow-hidden">
+        <div className="flex flex-col justify-center h-full px-1.5 relative text-center">
+          <div className="text-xs text-gray-600 text-center">
             Investment Value
           </div>
-          <div className="font-normal text-xl text-center">
+          <div className="font-normal text-sm text-center">
             {formatCurrency(portfolioSummary.investmentValue)}
           </div>
-          <div className="absolute right-0 top-2 h-4/5 w-px bg-[#D1D5DB]"></div>
+          <div className="absolute right-0 top-3 h-3/5 w-px bg-[#D1D5DB]"></div>
         </div>
-        <div className="flex flex-col justify-center h-full px-3 relative text-center">
-          <div className="text-base text-gray-600 text-center">
+        <div className="flex flex-col justify-center h-full px-1.5 relative text-center">
+          <div className="text-xs text-gray-600 text-center">
             Current Value
           </div>
-          <div className="font-normal text-xl text-center">
+          <div className="font-normal text-sm text-center">
             {formatCurrency(portfolioSummary.currentValue)}
           </div>
-          <div className="absolute right-0 top-2 h-4/5 w-px bg-[#D1D5DB]"></div>
+          <div className="absolute right-0 top-3 h-3/5 w-px bg-[#D1D5DB]"></div>
         </div>
-        <div className="flex flex-col justify-center h-full px-3 relative text-center">
-          <div className="text-base text-gray-600 text-center">Daily P&L</div>
-          <div className="font-normal text-xl text-center text-[#22A06B]">
+        <div className="flex flex-col justify-center h-full px-1.5 relative text-center">
+          <div className="text-xs text-gray-600 text-center">Daily P&L</div>
+          <div className="font-normal text-sm text-center text-[#22A06B]">
             {formatCurrency(portfolioSummary.dailyPL.value)}{" "}
-            <span className="text-[#22A06B] text-sm">
+            <span className="text-[#22A06B] text-xs">
               {formatPercentage(portfolioSummary.dailyPL.percentage)}
             </span>
           </div>
-          <div className="absolute right-0 top-2 h-4/5 w-px bg-[#D1D5DB]"></div>
+          <div className="absolute right-0 top-3 h-3/5 w-px bg-[#D1D5DB]"></div>
         </div>
-        <div className="flex flex-col justify-center h-full px-3 text-center">
-          <div className="text-base text-gray-600 text-center">Net P&L</div>
-          <div className="font-normal text-xl text-center text-red-500">
+        <div className="flex flex-col justify-center h-full px-1.5 text-center">
+          <div className="text-xs text-gray-600 text-center">Net P&L</div>
+          <div className="font-normal text-sm text-center text-red-500">
             {formatCurrency(portfolioSummary.netPL.value)}{" "}
-            <span className="text-red-500 text-sm">
+            <span className="text-red-500 text-xs">
               {formatPercentage(portfolioSummary.netPL.percentage)}
             </span>
           </div>
@@ -316,42 +320,65 @@ const EquityHoldings = () => {
       </div>
 
       {/* Equity Section */}
-      <div className="mb-4">
-        <div className="flex justify-between items-end mb-4">
-          <h2 className="text-xl font-normal">Equity (5)</h2>
+      <div className="mb-2">
+        <div className="flex justify-between items-center mb-3 mt-4">
+          <h2 className="text-sm font-normal">Equity (5)</h2>
           <div className="flex items-center gap-2">
+            <div
+              className={`relative flex items-center transition-all duration-200 overflow-hidden`}
+              style={{ width: searchExpanded ? 192 : 32 }}
+            >
+              <button
+                onClick={() => setSearchExpanded(true)}
+                className="absolute left-0 top-1/2 -translate-y-1/2 w-8 h-8 flex items-center justify-center z-10"
+                aria-label="Expand search"
+                tabIndex={searchExpanded ? -1 : 0}
+                style={{ pointerEvents: searchExpanded ? 'none' : 'auto' }}
+              >
+                <SearchButton />
+              </button>
+              <input
+                type="text"
+                value={searchValue}
+                onChange={e => setSearchValue(e.target.value)}
+                onBlur={() => setSearchExpanded(false)}
+                autoFocus={searchExpanded}
+                className={`pl-9 pr-2 py-2 border border-gray-300 rounded-lg text-sm text-[#686868] focus:outline-none focus:border-blue-500 transition-all duration-200 bg-white ${searchExpanded ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
+                placeholder="Search..."
+                style={{ width: searchExpanded ? 192 : 32, minWidth: 0 }}
+              />
+            </div>
             <DownloadButton />
-            <SearchButton />
           </div>
         </div>
 
         {/* Equity Table with vertical columns and divider lines */}
         <div className="overflow-x-auto border rounded-md">
           <table className="min-w-full divide-y divide-gray-200 table-fixed">
-            <thead>
-              <tr className="bg-gray-50" style={{ height: "54px" }}>
+            <thead className="bg-[#F4F4F9]">
+              <tr className="bg-[#F4F4F9]" style={{ height: "36px" }}>
                 <HeaderCell
                   field="security"
                   label="Security"
-                  width="216px"
+                  width="180px"
                 />
-                <HeaderCell field="quantity" label="Qty" width="100px" />
+                <HeaderCell field="quantity" label="Qty" width="80px" />
                 <HeaderCell
                   field="avgPrice"
                   label="Avg. Price"
-                  width="120px"
+                  width="100px"
                 />
-                <HeaderCell field="ltp" label="LTP" width="120px" />
+                <HeaderCell field="ltp" label="LTP" width="100px" />
                 <HeaderCell
                   field="investmentValue"
                   label="Investment Value"
-                  width="160px"
+                  width="130px"
                 />
-                <HeaderCell field="netPL" label="Net P&L" width="150px" />
+                <HeaderCell field="netPL" label="Net P&L" width="120px" />
                 <HeaderCell
                   field="dailyPL"
                   label="Daily P&L"
-                  width="150px"
+                  width="120px"
                 />
               </tr>
             </thead>
@@ -359,50 +386,50 @@ const EquityHoldings = () => {
               {sortedHoldings.map((holding, index) => (
                 <tr 
                   key={index} 
-                  style={{ height: "50px" }}
+                  style={{ height: "32px" }}
                   className="hover:bg-[#FAFAFA] transition-colors duration-150"
                 >
-                  <td className="px-4 py-0 whitespace-nowrap border-r">
+                  <td className="px-2 py-0 whitespace-nowrap border-r">
                     <div className="flex items-center justify-between">
                       <span
                         className="text-[#6B7280]"
-                        style={{ fontSize: "14px" }}
+                        style={{ fontSize: "11px" }}
                       >
                         {holding.security}
                       </span>
                       <MoreHorizontal
                         strokeWidth={2}
-                        className="w-4 h-4 ml-4 rotate-90 text-gray-400"
+                        className="w-3 h-3 ml-1.5 rotate-90 text-gray-400"
                       />
                     </div>
                   </td>
                   <td
-                    className="px-4 py-0 text-center text-[#6B7280] whitespace-nowrap border-r"
-                    style={{ fontSize: "14px" }}
+                    className="px-2 py-0 text-center text-[#6B7280] whitespace-nowrap border-r"
+                    style={{ fontSize: "11px" }}
                   >
                     {holding.quantity}
                   </td>
                   <td
-                    className="px-4 py-0 text-center text-[#6B7280] whitespace-nowrap border-r"
-                    style={{ fontSize: "14px" }}
+                    className="px-2 py-0 text-center text-[#6B7280] whitespace-nowrap border-r"
+                    style={{ fontSize: "11px" }}
                   >
                     {formatCurrency(holding.avgPrice)}
                   </td>
                   <td
-                    className="px-4 py-0 text-center text-[#6B7280] whitespace-nowrap border-r"
-                    style={{ fontSize: "14px" }}
+                    className="px-2 py-0 text-center text-[#6B7280] whitespace-nowrap border-r"
+                    style={{ fontSize: "11px" }}
                   >
                     {formatCurrency(holding.ltp)}
                   </td>
                   <td
-                    className="px-4 py-0 text-center text-[#6B7280] border-r"
-                    style={{ fontSize: "14px" }}
+                    className="px-2 py-0 text-center text-[#6B7280] border-r"
+                    style={{ fontSize: "11px" }}
                   >
                     {formatCurrency(holding.investmentValue)}
                   </td>
                   <td
-                    className="px-4 py-0 text-center whitespace-nowrap border-r"
-                    style={{ fontSize: "14px" }}
+                    className="px-2 py-0 text-center whitespace-nowrap border-r"
+                    style={{ fontSize: "11px" }}
                   >
                     <span
                       className={
@@ -416,8 +443,8 @@ const EquityHoldings = () => {
                     </span>
                   </td>
                   <td
-                    className="px-4 py-0 text-center whitespace-nowrap"
-                    style={{ fontSize: "14px" }}
+                    className="px-2 py-0 text-center whitespace-nowrap"
+                    style={{ fontSize: "11px" }}
                   >
                     <span className="text-[#22A06B]">
                       {formatCurrency(holding.dailyPL.value)}{" "}
@@ -428,23 +455,23 @@ const EquityHoldings = () => {
               ))}
             </tbody>
             <tfoot>
-              <tr className="bg-gray-50 font-medium" style={{ height: "50px" }}>
+              <tr className="bg-[#F4F4F9] font-medium" style={{ height: "32px" }}>
                 <td
                   colSpan={4}
-                  className="px-4 py-0 text-center whitespace-nowrap border-r"
-                  style={{ fontSize: "14px" }}
+                  className="px-2 py-0 text-center whitespace-nowrap border-r"
+                  style={{ fontSize: "11px" }}
                 >
                   Total
                 </td>
                 <td
-                  className="px-4 py-0 text-center text-[#6B7280] whitespace-nowrap border-r"
-                  style={{ fontSize: "14px" }}
+                  className="px-2 py-0 text-center text-[#6B7280] whitespace-nowrap border-r"
+                  style={{ fontSize: "11px" }}
                 >
                   {formatCurrency(totalInvestmentValue)}
                 </td>
                 <td
-                  className="px-4 py-0 text-center whitespace-nowrap border-r"
-                  style={{ fontSize: "14px" }}
+                  className="px-2 py-0 text-center whitespace-nowrap border-r"
+                  style={{ fontSize: "11px" }}
                 >
                   <span className="text-red-500">
                     {formatCurrency(totalNetPL.value)}{" "}
@@ -452,8 +479,8 @@ const EquityHoldings = () => {
                   </span>
                 </td>
                 <td
-                  className="px-4 py-0 text-center whitespace-nowrap"
-                  style={{ fontSize: "14px" }}
+                  className="px-2 py-0 text-center whitespace-nowrap"
+                  style={{ fontSize: "11px" }}
                 >
                   <span className="text-[#22A06B]">
                     {formatCurrency(totalDailyPL.value)}{" "}
