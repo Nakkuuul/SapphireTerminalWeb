@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { ChevronLeft, ChevronDown, HelpCircle, ArrowUpDown, ChevronRight } from 'lucide-react';
+import Image from 'next/image';
 
 // Import sample data - replace with API calls in production
 import { banks, withdrawHistory, withdrawableBalance } from '@/constants/funds-data';
@@ -48,6 +49,14 @@ const WithdrawPage: React.FC<WithdrawPageProps> = ({ onBack }) => {
   
   // Pre-defined withdrawal amounts
   const withdrawAmounts = [5000, 10000, 25000];
+
+  // Add extra banks for dropdown
+  const bankOptions = [
+    { id: 'bob', label: 'BOB - ******* 8829' },
+    { id: 'hdfc', label: 'HDFC - ******* 1234' },
+    { id: 'icici', label: 'ICICI - ******* 5678' },
+  ];
+  const [showBankDropdown, setShowBankDropdown] = useState(false);
 
   // Handle amount selection
   const handleAmountSelect = (amount: number) => {
@@ -145,11 +154,11 @@ const WithdrawPage: React.FC<WithdrawPageProps> = ({ onBack }) => {
       </button>
       
       {/* Withdraw Form */}
-      <div className="my-2 bg-[#FAFAFA] border border-gray-200 rounded-md max-w-full mx-auto p-2 text-xs">
+      <div className="my-2 bg-[#FAFAFA] border border-gray-200 rounded-md max-w-full mx-auto p-2 text-xs w-[508px]">
         <div className="p-1.5">
           {/* Title and Balance */}
           <div className="flex justify-between items-center mb-2 text-xs">
-            <h2 className="text-xs text-[#212529]">Enter Amount</h2>
+            <h2 className="text-xs text-[#212529] font-medium">Enter Amount</h2>
             <div className="text-xs text-[#6B7280]">Wdl. Balance : <span className='text-[#333333]'>₹{formatCurrency(availableBalance)}</span></div>
           </div>
           
@@ -157,7 +166,7 @@ const WithdrawPage: React.FC<WithdrawPageProps> = ({ onBack }) => {
           <input 
             type="text" 
             placeholder="₹20,000"
-            className="w-full border border-gray-300 rounded-md px-2 py-2 mb-1.5 text-xs"
+            className="w-full border h-[38px] border-gray-300 rounded-md px-2 py-2 mb-1.5 text-xs"
             value={withdrawAmount !== null ? `₹${withdrawAmount}` : ''}
             onChange={handleAmountChange}
           />
@@ -190,17 +199,47 @@ const WithdrawPage: React.FC<WithdrawPageProps> = ({ onBack }) => {
           </div>
           
           {/* Bank Selection */}
-          <h2 className="text-xs font-medium mb-1.5">Select Bank</h2>
-          <div className="relative mb-3">
-            <div className="flex items-center justify-between w-full bg-white border border-gray-300 rounded-md px-2 py-1.5 text-xs">
+          <h2 className="text-xs font-medium mb-1.5 mt-2">Select Bank</h2>
+          <div className="relative mb-[12px]">
+            <div
+              className="flex items-center h-[38px] justify-between w-full bg-white border border-gray-300 rounded-md px-2 py-1.5 text-xs cursor-pointer"
+              onClick={() => setShowBankDropdown((v) => !v)}
+            >
               <div className="flex items-center">
-                <div className="w-5 h-5 bg-orange-500 rounded-full flex items-center justify-center text-white text-xs mr-1.5">
-                  B
-                </div>
-                <span>BOB - ******* 8829</span>
+                <Image
+                  alt="Bank"
+                  src="/funds/bank-transfer.svg"
+                  width={20}
+                  height={20}
+                  className="mr-1.5"
+                />
+                <span>{bankOptions.find((b) => b.id === selectedBank)?.label}</span>
               </div>
               <ChevronDown size={14} className="text-gray-400" />
             </div>
+            {showBankDropdown && (
+              <div className="absolute left-0 right-0 mt-1 bg-white border border-gray-200 rounded-md shadow-lg z-10">
+                {bankOptions.map((bank) => (
+                  <div
+                    key={bank.id}
+                    className={`flex items-center px-3 py-2 cursor-pointer hover:bg-gray-100 ${selectedBank === bank.id ? 'bg-gray-50' : ''}`}
+                    onClick={() => {
+                      setSelectedBank(bank.id);
+                      setShowBankDropdown(false);
+                    }}
+                  >
+                    <Image
+                      alt="Bank"
+                      src="/funds/bank-transfer.svg"
+                      width={18}
+                      height={18}
+                      className="mr-2"
+                    />
+                    <span className="text-xs text-black">{bank.label}</span>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
           
           {/* Withdraw All Checkbox */}
@@ -216,7 +255,7 @@ const WithdrawPage: React.FC<WithdrawPageProps> = ({ onBack }) => {
           
           {/* Submit Button */}
           <button 
-            className="w-full bg-green-500 text-white font-medium py-2 rounded-md text-center text-xs"
+            className="w-full bg-green-500 text-white font-medium py-2 rounded-md text-center text-xs mt-3 h-[38px]"
             onClick={handleSubmit}
           >
             Withdraw {withdrawAmount ? `₹${formatCurrency(withdrawAmount)}` : 'Amount'}
@@ -229,9 +268,9 @@ const WithdrawPage: React.FC<WithdrawPageProps> = ({ onBack }) => {
       
       {/* Withdrawal History */}
       <div>
-        <h2 className="text-sm font-medium my-3">Fund Withdraw History</h2>
+        {/* <h2 className="text-sm font-medium my-3">Fund Withdraw History</h2> */}
         
-        <div className="overflow-x-auto border rounded-md">
+        {/* <div className="overflow-x-auto border rounded-md">
           <table className="min-w-full divide-y divide-gray-200">
             <thead className="bg-[#F4F4F9]">
               <tr>
@@ -309,10 +348,10 @@ const WithdrawPage: React.FC<WithdrawPageProps> = ({ onBack }) => {
               ))}
             </tbody>
           </table>
-        </div>
+        </div> */}
 
         {/* Pagination */}
-        <div className="flex items-center justify-between mt-3">
+        <div className="flex items-center justify-between mt-3 hidden">
           <div className="text-xs text-gray-500">
             Showing {startIndex + 1} to {Math.min(endIndex, sortedHistory.length)} of {sortedHistory.length} entries
           </div>
@@ -352,6 +391,7 @@ const WithdrawPage: React.FC<WithdrawPageProps> = ({ onBack }) => {
             </button>
           </div>
         </div>
+        
       </div>
     </div>
   );

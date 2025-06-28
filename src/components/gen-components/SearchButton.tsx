@@ -1,21 +1,11 @@
 import { Search } from 'lucide-react'
 import React from 'react'
 
-function SearchButton() {
+function SearchButton(props: React.ButtonHTMLAttributes<HTMLButtonElement>) {
   return (
-    <div className="relative ">
-    <input
-      type="text"
-      placeholder="Search everything..."
-      className="border rounded-sm h-12 pl-3 text-[#686868] py-3 text-sm w-56"
-    />
-    <button
-      className="absolute right-1 top-1/2 transform -translate-y-1/2"
-      style={{ padding: '8px' }}
-    >
-      <Search className="w-4 h-4 text-[#686868]" />
+    <button {...props} className={`flex items-center justify-center w-[18px] h-[18px] p-0 bg-transparent border-none focus:outline-none ${props.className || ''}`.trim()}>
+      <Search className="w-[18px] h-[18px] text-[#686868]" />
     </button>
-  </div>
   )
 }
 

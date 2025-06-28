@@ -468,7 +468,7 @@ const Sidebar: React.FC = () => {
         {/* Hover Action Buttons */}
         {isHovered && (
           <div
-            className="absolute right-0 top-1/2 -translate-y-1/2 bg-[#F4F4F9] flex flex-col items-center z-10 rounded-[3px]  w-1/2 min-w-[120px] w-auto px-[6px] py-[6px] border border-gray-200"
+            className="absolute right-0 top-1/2 -translate-y-1/2 bg-[#F4F4F9] flex flex-col items-center z-10 rounded-[3px] min-w-[120px] w-auto px-[6px] py-[6px] border border-gray-200"
           >
             <div className="flex items-center space-x-1">
               <button className="w-6 h-6 hover:bg-[#04B94E] text-white rounded flex items-center justify-center transition-colors shadow-sm bg-[#00CA52]">
@@ -644,14 +644,14 @@ const Sidebar: React.FC = () => {
 
   if (showSearchResults) {
     return (
-      <div className="fixed top-20 left-0 w-[320px] h-[calc(100vh-64px)] bg-white  ml-[26px] mt-[18px] flex flex-col overflow-hidden z-30">
+      <div className="fixed top-20 left-0 w-[320px] h-[calc(100vh-64px)] bg-white ml-[18px] mt-[18px] flex flex-col overflow-hidden z-30">
         {/* Search Bar - Fixed */}
-        <div className="pt-0  border-gray-200 flex-shrink-0  mb-2">
+        <div className="mt-[18px] border-gray-200 flex-shrink-0 mb-2">
           <div className="flex items-center space-x-2">
             <div className="relative flex-1">
               <button 
                 onClick={() => setShowSearchResults(true)}
-                className="absolute left-3 top-1/2 transform -translate-y-1/2  w-4 h-4 text-[#686868] z-10"
+                className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-[#686868] z-10"
               >
                 <Search className="w-4 h-4" />
               </button>
@@ -662,7 +662,7 @@ const Sidebar: React.FC = () => {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 onKeyDown={(e) => { if (e.key === 'Escape') handleBackToMain(); }}
-                className="w-full pl-9 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none  text-[#686868]"
+                className="w-full pl-9 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none text-[#686868]"
               />
             </div>
           </div>
@@ -687,15 +687,15 @@ const Sidebar: React.FC = () => {
   return (
     <>
       {/* Sidebar and content */}
-      <div className="fixed flex  top-16 left-0 h-[calc(100vh-60px)] mx-6 z-30">
-        <div className="w-[24vw] bg-white  flex flex-col overflow-hidden sidebar-container">
+      <div className="fixed flex top-16 left-0 h-[calc(100vh-60px)] pl-[18px] z-30">
+        <div className="w-[24vw] bg-white flex flex-col overflow-hidden sidebar-container">
           {/* Search Bar - Fixed */}
-          <div className=" border-gray-200 flex-shrink-0">
+          <div className="border-gray-200 flex-shrink-0">
             <div className="flex items-center space-x-2">
               <div className="relative flex-1">
                 <button 
                   onClick={handleSearchClick}
-                  className="absolute left-3 top-1/2 transform -translate-y-1/2  w-4 h-4 text-[#686868] z-10"
+                  className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-[#686868] z-10"
                 >
                   <Search className="w-4 h-4" />
                 </button>
@@ -740,7 +740,7 @@ const Sidebar: React.FC = () => {
           </div>
 
           {/* Pagination - Fixed */}
-          <div className="py-3  flex-shrink-0">
+          <div className="py-3 flex-shrink-0">
             <div className="relative">
               <div className="flex items-center space-x-1 gap-3 overflow-x-auto hide-scrollbar pb-4">
                 {Array.from({ length: watchlistNames.length }, (_, i) => i + 1).map((page) => (
@@ -769,7 +769,7 @@ const Sidebar: React.FC = () => {
           {/* Dynamic Tooltip positioned above the hovered number */}
           {hoveredPage && (
             <div 
-              className="absolute z-[999999] pointer-events-none"
+              className="fixed z-[999999] pointer-events-none"
               style={{ 
                 left: `${tooltipPosition.left}px`, 
                 top: `${tooltipPosition.top}px`,
@@ -778,14 +778,12 @@ const Sidebar: React.FC = () => {
             >
               <div className="px-3 py-2 bg-white text-black text-xs rounded-[4px] whitespace-nowrap  border-[#d9d9d9] border-[1px]">
                 {watchlistNames[hoveredPage - 1]}
-                {/* Arrow pointing down */}
-                {/* <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-[6px] border-r-[6px] border-t-[6px] border-transparent border-t-white"></div> */}
               </div>
             </div>
           )}
 
           {/* Scrollable Content Area */}
-          <div className="flex-1 overflow-y-auto hide-scrollbar border border-gray-200 ">
+          <div className="flex-1 overflow-y-auto hide-scrollbar border border-gray-200">
             {/* Dynamic Category Sections */}
             {categories.map(category => (
               <div className="border-none" key={category.id}>
@@ -864,7 +862,7 @@ const TooltipPositioner: React.FC<{ tooltipPosition: { left: number; top: number
         transform: style.transform,
       }}
     >
-      <div className="px-3 py-2 bg-white text-black text-xs rounded-[4px]  whitespace-nowrap  border-[#d9d9d9] border-[1px]">
+      <div className="px-3 py-2 bg-white text-black text-xs rounded-[4px] whitespace-nowrap border-[#d9d9d9] border-[1px]">
         {watchlistName}
       </div>
     </div>
