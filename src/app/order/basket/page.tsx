@@ -12,6 +12,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { ArrowUpDown, MoreVertical, Move, Plus, Search, X } from "lucide-react";
 import { Input } from "@/components/ui/input";
+import SearchButton from "@/components/gen-components/SearchButton";
 
 // Define proper types for the basket items
 interface BasketItem {
@@ -94,7 +95,7 @@ const BasketNameInput: React.FC<BasketNameInputProps> = ({ show, onClose, onConf
   return (
     <div 
       ref={dialogRef}
-      className="fixed z-50 bg-white rounded-lg shadow-xl w-[400px]"
+      className="fixed z-50 bg-white rounded-lg shadow-xl w-[320px]"
       style={{
         left: `${position.x}px`,
         top: `${position.y}px`,
@@ -103,38 +104,38 @@ const BasketNameInput: React.FC<BasketNameInputProps> = ({ show, onClose, onConf
     >
       {/* Header with grab handle */}
       <div 
-        className="flex items-center justify-between p-4 border-b cursor-grab bg-[#F4F4F9] rounded-t-lg"
+        className="flex items-center justify-between p-3 border-b cursor-grab bg-[#F4F4F9] rounded-t-lg"
         onMouseDown={startDrag}
       >
         <div className="flex items-center">
-          <h2 className="text-lg font-medium">Create New Basket</h2>
+          <h2 className="text-sm font-medium">Create New Basket</h2>
         </div>
         <button 
           onClick={onClose}
           className="text-gray-400 hover:text-gray-600"
         >
-          <X size={28} />
+          <X size={20} />
         </button>
       </div>
       
       {/* Content */}
-      <div className="p-6">
-        <div className="mb-6">
-          <label htmlFor="basket-name" className="text-base mb-2 block">
+      <div className="p-4">
+        <div className="mb-4">
+          <label htmlFor="basket-name" className="text-sm mb-1 block">
             Enter Basket Name
           </label>
           <Input
             id="basket-name"
             value={basketName}
             onChange={(e) => setBasketName(e.target.value)}
-            className="h-12 text-base"
+            className="h-9 text-sm"
             placeholder=""
           />
         </div>
 
         <Button
           onClick={handleConfirm}
-          className="w-full h-12 bg-[#00C852] hover:bg-[#00B84D] text-white text-base"
+          className="w-full h-9 bg-[#00C852] hover:bg-[#00B84D] text-white text-sm"
         >
           Create
         </Button>
@@ -147,6 +148,10 @@ export default function Page() {
   const [showDialog, setShowDialog] = useState(false);
   const [showBasketNameInput, setShowBasketNameInput] = useState(false);
   const [selectedBasket, setSelectedBasket] = useState<BasketItem | null>(null);
+
+  // Expandable search functionality
+  const [searchExpanded, setSearchExpanded] = useState(false);
+  const [searchValue, setSearchValue] = useState('');
 
   // Sample data for the baskets with proper typing
   const baskets: BasketItem[] = [
@@ -181,54 +186,68 @@ export default function Page() {
   };
 
   return (
-    <div className="min-h-screen">
-      <div className="bg-white">
-        <div className="py-4 flex justify-between items-center">
+    <div className="w-full flex justify-center">
+      <div className="bg-white max-w-[80vw] w-full">
+        <div className="py-3 flex justify-between items-center">
           <button 
-            className="flex items-center bg-[#F4F4F9] text-xs text-[#1A1A1A] px-3 py-[10px] rounded"
+            className="flex items-center bg-[#F4F4F9] text-xs text-[#1A1A1A] px-2 py-2 rounded"
             onClick={() => {
               setShowBasketNameInput(true);
             }}
           >
-        <Plus size={18} className="mr-2" /> Basket Order
+        <Plus size={14} className="mr-1" /> Basket Order
           </button>
-          <div className="relative">
-          <input
-            type="text"
-            placeholder="Search everything..."
-            className="pl-4 pr-11 py-2 border border-[#D1D5DB] rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-blue-500"
-          />
-          <button className="absolute right-3 top-1/2 transform -translate-y-1/2">
-            <Search size={16} className="text-gray-500" />
-          </button>
+          <div
+            className={`relative flex items-center transition-all duration-200 overflow-hidden`}
+            style={{ width: searchExpanded ? 192 : 32 }}
+          >
+            <button
+              onClick={() => setSearchExpanded(true)}
+              className="absolute left-0 top-1/2 -translate-y-1/2 w-8 h-8 flex items-center justify-center z-10"
+              aria-label="Expand search"
+              tabIndex={searchExpanded ? -1 : 0}
+              style={{ pointerEvents: searchExpanded ? 'none' : 'auto' }}
+            >
+              <SearchButton />
+            </button>
+            <input
+              type="text"
+              value={searchValue}
+              onChange={e => setSearchValue(e.target.value)}
+              onBlur={() => setSearchExpanded(false)}
+              autoFocus={searchExpanded}
+              className={`pl-9 pr-2 py-2 border border-gray-300 rounded-lg text-sm text-[#686868] focus:outline-none focus:border-blue-500 transition-all duration-200 bg-white ${searchExpanded ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
+              placeholder="Search..."
+              style={{ width: searchExpanded ? 192 : 32, minWidth: 0 }}
+            />
           </div>
         </div>
         <div className="overflow-hidden rounded-md border border-[#D1D5DB]">
           <table className="w-full border-collapse">
             <thead>
-              <tr className="bg-[#F4F4F9] text-xs font-medium text-gray-600 border-b border-[#D1D5DB]">
-                <th className="px-4 py-4 whitespace-nowrap border-r border-[#D1D5DB]">
+              <tr className="bg-[#F4F4F9] text-xs font-medium text-gray-600 border-b border-[#D1D5DB]" style={{ height: "36px" }}>
+                <th className="px-3 py-2 whitespace-nowrap border-r border-[#D1D5DB]">
                   <div className="flex justify-between items-center">
-                    <span className="mr-2 text-[#1A1A1A] text-sm font-[400]">Date</span>
-                    <ArrowUpDown size={16}/>
+                    <span className="mr-1 text-xs text-[#1A1A1A] font-[400]">Date</span>
+                    <ArrowUpDown size={12}/>
                   </div>
                 </th>
-                <th className="px-4 py-4 whitespace-nowrap border-r border-[#D1D5DB]">
+                <th className="px-3 py-2 whitespace-nowrap border-r border-[#D1D5DB]">
                   <div className="flex justify-between items-center">
-                    <span className="mr-2 text-[#1A1A1A] text-sm font-[400]">Basket ID</span>
-                    <ArrowUpDown size={16}/>
+                    <span className="mr-1 text-xs text-[#1A1A1A] font-[400]">Basket ID</span>
+                    <ArrowUpDown size={12}/>
                   </div>
                 </th>
-                <th className="px-4 py-4 whitespace-nowrap border-r border-[#D1D5DB]">
+                <th className="px-3 py-2 whitespace-nowrap border-r border-[#D1D5DB]">
                   <div className="flex justify-between items-center">
-                    <span className="mr-2 text-[#1A1A1A] text-sm font-[400]">Basket Name</span>
-                    <ArrowUpDown size={16}/>
+                    <span className="mr-1 text-xs text-[#1A1A1A] font-[400]">Basket Name</span>
+                    <ArrowUpDown size={12}/>
                   </div>
                 </th>
-                <th className="px-4 py-4 whitespace-nowrap">
+                <th className="px-3 py-2 whitespace-nowrap">
                   <div className="flex justify-between items-center">
-                    <span className="mr-2 text-[#1A1A1A] text-sm font-[400]">Items</span>
-                    <ArrowUpDown size={16}/>
+                    <span className="mr-1 text-xs text-[#1A1A1A] font-[400]">Items</span>
+                    <ArrowUpDown size={12}/>
                   </div>
                 </th>
               </tr>
@@ -241,29 +260,30 @@ export default function Page() {
                     index === baskets.length - 1 ? "rounded-b-md overflow-hidden" : ""
                   }`}
                   onClick={() => handleBasketClick(basket)}
+                  style={{ height: "32px" }}
                 >
-                  <td className="px-4 py-3 text-sm text-[#515C7A] border-r border-[#D1D5DB]">
+                  <td className="px-3 py-2 text-xs text-[#515C7A] border-r border-[#D1D5DB]">
                     <div className="flex items-center">
                       <span>{basket.date}</span>
                     </div>
                   </td>
-                  <td className="px-4 py-3 text-sm text-[#515C7A] border-r border-[#D1D5DB]">
+                  <td className="px-3 py-2 text-xs text-[#515C7A] border-r border-[#D1D5DB]">
                     <div className="flex items-center justify-between">
                       <span>{basket.id}</span>
                       <button className="text-[#515C7A] hover:text-gray-600">
-                        <MoreVertical size={16}/>
+                        <MoreVertical size={12}/>
                       </button>
                     </div>
                   </td>
-                  <td className="px-4 py-3 text-sm text-[#515C7A] border-r border-[#D1D5DB]">
+                  <td className="px-3 py-2 text-xs text-[#515C7A] border-r border-[#D1D5DB]">
                     <div className="flex items-center justify-between">
                       <span>{basket.name}</span>
                       <button className="text-[#515C7A] hover:text-gray-600">
-                        <MoreVertical size={16}/>
+                        <MoreVertical size={12}/>
                       </button>
                     </div>
                   </td>
-                  <td className="px-4 py-3 text-sm text-[#515C7A] text-right">
+                  <td className="px-3 py-2 text-xs text-[#515C7A] text-right">
                     <div className="flex justify-end items-center">
                       <span>₹{basket.items}</span>
                     </div>

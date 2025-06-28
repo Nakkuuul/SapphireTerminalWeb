@@ -27,36 +27,32 @@ function OrderSelector() {
   return (
     <>
       {/* Desktop Version - Horizontal Tabs */}
-      <div className="hidden border-b-2 border-gray-200 md:flex w-full justify-between items-center px-4 lg:px-8">
-        <div className="flex items-center w-full justify-between px-8">
-          {tabs.map((tab) => {
-            const isActive = pathname === tab.path;
-            return (
-              <div
-                key={tab.name}
-                className="relative group h-[60px] flex items-center"
+      <div className="hidden mb-0 border-b-2 border-gray-200 md:flex w-full justify-center items-center gap-x-4 lg:gap-x-20">
+        {tabs.map((tab) => {
+          const isActive = pathname === tab.path;
+          return (
+            <div
+              key={tab.name}
+              className="relative group h-[40px] flex items-start text-[#1DB954]"
+            >
+              <Link
+                href={tab.path}
+                className={`relative group font-medium py-1 pb-0 transition-all duration-300 px-1 ${
+                  isActive ? "text-[#1DB954]" : "text-gray-600"
+                } group-hover:text-[#1DB954]`}
+                style={{ fontSize: "14px" }}
               >
-                <Link
-                  href={tab.path}
-                  className={`relative group text-base xl:text-xl font-medium py-2 transition-all duration-300 ${
-                    isActive
-                      ? "text-[#28A745]"
-                      : "text-gray-600 hover:text-[#28A745]"
-                  }`}
-                >
-                  {tab.name}
-                  {/* Green underline animation */}
-                  <span
-                    className={`absolute -bottom-2.5 -left-[12px] h-[3px] bg-[#28A745] transition-all duration-300 ${
-                      isActive ? "w-[150%]" : "w-0"
-                    } group-hover:w-[150%]`}
-                  ></span>
-                </Link>
-              </div>
-            );
-          })}
-        </div>
-
+                {tab.name}
+                {/* Green underline animation */}
+                <span
+                  className={`absolute -bottom-[16px] left-[50%] transform -translate-x-1/2 h-[2px] bg-[#1DB954] transition-all duration-300 ${
+                    isActive ? "w-[125%]" : "w-0"
+                  } group-hover:w-[125%]`}
+                ></span>
+              </Link>
+            </div>
+          );
+        })}
       </div>
 
       {/* Mobile Version - Dropdown */}
@@ -64,11 +60,12 @@ function OrderSelector() {
         <div className="relative">
           <button
             onClick={toggleDropdown}
-            className={`w-full px-4 py-2 font-medium text-sm flex items-center justify-between rounded-sm border transition-all duration-300 ${
+            className={`w-full px-4 py-2 font-medium flex items-center justify-between rounded-sm border transition-all duration-300 ${
               pathname === activeTab.path
-                ? "text-[#28A745] border-[#28A745]"
+                ? "text-[#1DB954] border-[#1DB954]"
                 : "text-gray-600 border-gray-300"
             }`}
+            style={{ fontSize: "14px" }}
           >
             <span>{activeTab.name}</span>
             <div className="flex items-center">
@@ -92,11 +89,12 @@ function OrderSelector() {
                     key={tab.name}
                     href={tab.path}
                     onClick={() => setIsDropdownOpen(false)}
-                    className={`block px-4 py-3 text-sm transition-colors duration-200 ${
+                    className={`block px-4 py-3 transition-colors duration-200 ${
                       isActive
-                        ? "text-[#28A745] bg-green-50"
-                        : "text-gray-600 hover:text-[#28A745] hover:bg-gray-50"
+                        ? "text-[#1DB954] bg-green-50"
+                        : "text-gray-600 hover:text-[#1DB954] hover:bg-gray-50"
                     }`}
+                    style={{ fontSize: "14px" }}
                   >
                     {tab.name}
                   </Link>

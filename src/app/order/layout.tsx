@@ -22,8 +22,7 @@ export default function RootLayout({
         <div className="w-[30%]">
           <Sidebar />
         </div>
-        <main className="w-[70%] py-6 pl-[27px] pr-[38px] bg-white dark:bg-[#121212]">
-          
+        <main className="w-[80%] p-7 bg-white dark:bg-[#121212]">
           <div className="bg-white w-full">
             <OrderSelector />
           </div>

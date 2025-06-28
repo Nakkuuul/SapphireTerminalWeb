@@ -687,7 +687,7 @@ const Sidebar: React.FC = () => {
   return (
     <>
       {/* Sidebar and content */}
-      <div className="fixed flex top-16 left-0 h-[calc(100vh-60px)] pl-[18px] z-30">
+      <div className="fixed flex top-16 mt-[28px] left-0 h-[calc(100vh-60px)] pl-[18px] z-30">
         <div className="w-[24vw] bg-white flex flex-col overflow-hidden sidebar-container">
           {/* Search Bar - Fixed */}
           <div className="border-gray-200 flex-shrink-0">
