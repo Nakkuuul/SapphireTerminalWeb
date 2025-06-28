@@ -300,7 +300,7 @@ const Positions: React.FC = () => {
     return (
       <th
         className={`px-2.5 py-0 text-left text-xs font-normal border-r cursor-pointer hover:bg-gray-100 ${className} 
-          ${isActive ? "bg-gray-200" : "bg-gray-50"}`}
+          ${isActive ? "bg-[#E8E8F0]" : "bg-[#F4F4F9]"}`}
         onClick={() => handleSort(field)}
         onMouseEnter={() => setHoveredHeader(field)}
         onMouseLeave={() => setHoveredHeader(null)}
@@ -357,8 +357,8 @@ const Positions: React.FC = () => {
       {/* Positions Table */}
       <div className="overflow-x-auto border rounded-md">
         <table className="min-w-full divide-y divide-gray-200">
-          <thead>
-            <tr className="bg-gray-50" style={{ height: "42px" }}>
+          <thead className="bg-[#F4F4F9]">
+            <tr className="bg-[#F4F4F9]" style={{ height: "42px" }}>
               <HeaderCell
                 field="security"
                 label="Security"
@@ -487,8 +487,9 @@ const Positions: React.FC = () => {
 
                 {/* Hover Buttons - Only show for closed positions */}
                 {position.isClosed && hoveredRow === index && (
-                  <td className="absolute left-20 top-1/2 transform -translate-y-1/2 z-20">
-                    <div className="flex items-center gap-1 bg-[#ffffff] rounded-md px-2 py-1 border-[0.5px] border-[#d1d5d3]">
+                  <td className="absolute left-28 top-1/2 transform -translate-y-1/2 z-20">
+                    <div className="px-12 bg-transparent">
+                    <div className="flex items-center gap-1.5 bg-[#ffffff] rounded-md px-2 py-1 border-[0.5px] border-[#d1d5d3]">
                       <button 
                         className="flex items-center justify-center w-5 h-5 bg-[#00c852] text-white text-xs font-medium rounded"
                         onClick={() => console.log('Buy clicked for', position.security)}
@@ -509,6 +510,7 @@ const Positions: React.FC = () => {
                       >
                         <MoreHorizontal className="w-3 h-3" />
                       </button>
+                    </div>
                     </div>
                   </td>
                 )}
@@ -539,7 +541,7 @@ const Positions: React.FC = () => {
                         onClick={() => console.log('Exit clicked for', position.security)}
                         aria-label="Exit"
                       >
-                        <img src="/positions/MinusSquare.svg" width={14} height={14} alt="Exit" className="inline-block align-middle" />
+                        <img src="/positions/ExitIcon.svg" width={16} height={16} alt="Exit" className="inline-block align-middle" />
                       </button>
                       <span className="text-gray-500 text-xs font-medium cursor-pointer">Exit</span>
 
@@ -560,20 +562,20 @@ const Positions: React.FC = () => {
 
               </tr>
             ))}
-            <tr className="bg-gray-50 font-medium" style={{ height: "38px" }}>
+            <tr className="bg-[#F4F4F9] font-medium" style={{ height: "38px" }}>
               <td
                 colSpan={5}
-                className="px-2.5 py-0 whitespace-nowrap text-xs text-center border-r"
+                className="px-2.5 py-0 whitespace-nowrap text-xs text-center border-r bg-[#F4F4F9]"
               >
                 Total
               </td>
-              <td className="px-2.5 py-0 whitespace-nowrap text-center text-xs border-r">
+              <td className="px-2.5 py-0 whitespace-nowrap text-center text-xs border-r bg-[#F4F4F9]">
                 <span className="text-[#22A06B]">
                   {formatCurrency(totalNetPL.value)}{" "}
                   {formatPercentage(totalNetPL.percentage)}
                 </span>
               </td>
-              <td className="px-2.5 py-0 whitespace-nowrap text-center text-xs">
+              <td className="px-2.5 py-0 whitespace-nowrap text-center text-xs bg-[#F4F4F9]">
                 <span className="text-[#22A06B]">
                   {formatCurrency(totalDailyPL.value)}{" "}
                   {formatPercentage(totalDailyPL.percentage)}
