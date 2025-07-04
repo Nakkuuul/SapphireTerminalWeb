@@ -443,9 +443,6 @@ const Sidebar: React.FC = () => {
         onMouseLeave={() => setIsHovered(false)}
       >
         <div className="flex items-center space-x-3">
-          <div className="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center text-sm">
-            {stock.logo}
-          </div>
           <div>
             <div
               className="font-medium text-gray-900 text-sm mb-[4px]"
@@ -510,9 +507,6 @@ const Sidebar: React.FC = () => {
   const SearchResultItem: React.FC<{ stock: Stock }> = ({ stock }) => (
     <div className="flex items-center justify-between py-3 hover:bg-gray-50 transition-colors border-b border-gray-100">
       <div className="flex items-center space-x-3 flex-1">
-        <div className="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center text-sm">
-          {stock.logo}
-        </div>
         <div className="flex-1">
           <div className="font-medium text-gray-900 text-sm mb-[4px]">
             {stock.name}
